@@ -1,19 +1,6 @@
 const express = require("express");
 const app = express();
 const path = require("path");
-const sqlite3 = require("sqlite3").verbose();
-
-// DB setup
-const db = new sqlite3.Database("messages.db");
-
-db.run(`
-CREATE TABLE IF NOT EXISTS messages (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT,
-    email TEXT,
-    message TEXT
-)
-`);
 
 app.use(express.static(__dirname));
 app.use(express.urlencoded({ extended: true }));
@@ -31,17 +18,6 @@ app.get("/contact", (req, res) => {
     res.sendFile(path.join(__dirname, "contact.html"));
 });
 
-// Save form data to DB
-app.post("/contact", (req, res) => {
-    const { name, email, message } = req.body;
-
-    db.run(
-        "INSERT INTO messages (name, email, message) VALUES (?, ?, ?)",
-        [name, email, message]
-    );
-
-    res.send("<h1>Message Saved Successfully 👍</h1><a href='/'>Go Back</a>");
-});
 
 const PORT = process.env.PORT || 3000;
 
