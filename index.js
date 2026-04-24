@@ -4,9 +4,13 @@ const app = express();
 const path = require("path");
 const mongoose = require("mongoose");
 const Message = require("./models/Message");
-mongoose.connect("mongodb+srv://TESTING:Testing123@cluster0.xezkqea.mongodb.net/excelyou?retryWrites=true&w=majority&appName=Cluster0")
+console.log("ENV CHECK:", process.env.MONGO_URI);
+mongoose.connect(process.env.MONGO_URI)
 .then(() => console.log("MongoDB Connected ✔"))
-.catch(err => console.log(err));
+.catch(err => {
+    console.error("FULL MONGO ERROR:", err);
+});
+
 app.use(express.static(__dirname));
 app.use(express.urlencoded({ extended: true }));
 
