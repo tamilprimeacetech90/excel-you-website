@@ -1,31 +1,73 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Contact</title>
-    <link rel="stylesheet" href="/style.css">
+  <title>Contact - EXCEL YOU</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: white;
+      text-align: center;
+      padding: 40px;
+    }
+
+    .form-box {
+      max-width: 400px;
+      margin: auto;
+      background: rgba(255,255,255,0.1);
+      padding: 30px;
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: white;
+      color: #2a5298;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background: #ddd;
+    }
+
+    a {
+      color: white;
+      display: block;
+      margin-top: 15px;
+    }
+  </style>
 </head>
+
 <body>
 
-    <div class="navbar">
-        <div class="logo">EXCEL YOU</div>
-        <div class="links">
-            <a href="/">Home</a>
-            <a href="/about">About</a>
-            <a href="/contact">Contact</a>
-        </div>
-    </div>
+  <div class="form-box">
+    <h1>Contact Us 📩</h1>
 
-    <div class="hero">
-        <h1>Contact Me 📩</h1>
+    <form method="POST" action="/contact">
+      <input type="text" name="name" placeholder="Your Name" required />
+      <input type="email" name="email" placeholder="Your Email" required />
+      <textarea name="message" placeholder="Your Message" rows="4" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
 
-        <form method="POST" action="/contact">
-            <input type="text" name="name" placeholder="Your Name" required><br><br>
-            <input type="email" name="email" placeholder="Your Email" required><br><br>
-            <textarea name="message" placeholder="Your Message" required></textarea><br><br>
-            <button type="submit">Send</button>
-        </form>
-    </div>
+    <a href="/">Back to Home</a>
+  </div>
 
 </body>
 </html>
