@@ -49,6 +49,11 @@ app.listen(PORT, () => {
     console.log("Server running");
 });   
 
+
+
+const PORT = process.env.PORT || 3000;
+
+// Admin route (MUST be before listen)
 app.get("/admin", (req, res) => {
     db.all("SELECT * FROM messages", (err, rows) => {
         let html = "<h1>Admin Panel 📊</h1><a href='/'>Home</a><hr>";
@@ -65,4 +70,9 @@ app.get("/admin", (req, res) => {
 
         res.send(html);
     });
+});
+
+// LISTEN (LAST LINE)
+app.listen(PORT, () => {
+    console.log("Server running");
 });
