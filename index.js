@@ -1,6 +1,13 @@
+
 const express = require("express");
 const app = express();
 const path = require("path");
+const mongoose = require("mongoose");
+
+mongoose.connect("mongodb+srv://tamilprimeacetech90:adhiyeTHUNAI@90+++@cluster0.xezkqea.mongodb.net/excelyou?retryWrites=true&w=majority")
+.then(() => console.log("MongoDB Connected ✔"))
+.catch(err => console.log(err));
+
 
 app.use(express.static(__dirname));
 app.use(express.urlencoded({ extended: true }));
