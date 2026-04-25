@@ -2,9 +2,11 @@ const express = require("express");
 const path = require("path");
 const session = require("express-session");
 const dotenv = require("dotenv");
+dotenv.config();
+console.log("ENV CHECK:", process.env.MONGO_URI);
+
 const bcrypt = require("bcrypt");
 
-dotenv.config();
 
 // Models
 const Admin = require("./models/Admin");
