@@ -1,43 +1,75 @@
-
 const express = require("express");
-const app = express();
 const path = require("path");
-const mongoose = require("mongoose");
-const Message = require("./models/Message");
 const session = require("express-session");
+const dotenv = require("dotenv");
+const bcrypt = require("bcrypt");
 
+dotenv.config();
 
-console.log("ENV CHECK:", process.env.MONGO_URI);
-mongoose.connect(process.env.MONGO_URI)
-.then(() => console.log("MongoDB Connected ✔"))
-.catch(err => {
-    console.error("FULL MONGO ERROR:", err);
-});
+// Models
+const Admin = require("./models/Admin");
 
-app.use(express.static(__dirname));
+// DB connection
+const connectDB = require("./config/db");
+
+// Routes
+const adminRoutes = require("./routes/adminRoutes");
+const contentRoutes = require("./routes/contentRoutes");
+const isAdmin = require("./middleware/isAdmin");
+// App init
+const app = express();
+
+// =====================
+// 🔌 DATABASE CONNECT
+// =====================
+connectDB();
+
+// =====================
+// 🔐 MIDDLEWARE
+// =====================
+
+// Body parsers
+app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
-app.use(session({
-  secret: process.env.SESSION_SECRET|| "fallbackSecret123",
-    resave: false,
-    saveUninitialized: true
-}));
+app.use(express.json());
 
+// Session
+app.use(
+    session({
+        secret: process.env.SESSION_SECRET || "fallbackSecret123",
+        resave: false,
+        saveUninitialized: false,
+    })
+);
 
+// =====================
+// 🔒 AUTH MIDDLEWARE
+// =====================
 
+// =====================
+// 🔗 API ROUTES (PROTECTED)
+// =====================
+app.use("/api/admin", isAdmin, adminRoutes);
+app.use("/api", contentRoutes);
+
+// =====================
+// 🏠 FRONTEND ROUTES
+// =====================
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "index.html"));
+    res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 app.get("/about", (req, res) => {
-    res.sendFile(path.join(__dirname, "about.html"));
+    res.sendFile(path.join(__dirname, "public", "about.html"));
 });
 
 app.get("/contact", (req, res) => {
-    res.sendFile(path.join(__dirname, "contact.html"));
+    res.sendFile(path.join(__dirname, "public", "contact.html"));
 });
 
-
-
+// =====================
+// 🔐 LOGIN PAGE
+// =====================
 app.get("/login", (req, res) => {
     res.send(`
         <h2>Admin Login 🔐</h2>
@@ -49,68 +81,60 @@ app.get("/login", (req, res) => {
     `);
 });
 
-app.post("/login", (req, res) => {
+// =====================
+// 🔐 LOGIN HANDLER (SECURE)
+// =====================
+app.post("/login", async (req, res) => {
     const { username, password } = req.body;
 
-    if (username === "admin" && password === "1234") {
-        req.session.user = "admin";
+    try {
+        const admin = await Admin.findOne({ username });
+
+        if (!admin) {
+            return res.send("❌ Invalid credentials");
+        }
+
+        const isMatch = await bcrypt.compare(password, admin.password);
+
+        if (!isMatch) {
+            return res.send("❌ Invalid credentials");
+        }
+
+        // store session securely
+        req.session.adminId = admin._id;
+
         res.redirect("/admin");
-    } else {
-        res.send("❌ Invalid login");
-    }
-});
-app.post("/contact", async (req, res) => {
-    try {
-        const { name, email, message } = req.body;
-
-        await Message.create({ name, email, message });
-
-        res.send("<h1>Message Saved in Database 👍</h1><a href='/'>Go Back</a>");
     } catch (err) {
         console.error(err);
-        res.status(500).send("❌ Error saving message");
+        res.status(500).send("Server error");
     }
 });
-app.get("/admin", async (req, res) => {
 
-    // 🔒 Block if not logged in
-    if (!req.session.user) {
-        return res.redirect("/login");
-    }
-
-    try {
-        const messages = await Message.find();
-
-        let html = `
+// =====================
+// 📊 ADMIN PANEL (PROTECTED)
+// =====================
+app.get("/admin", isAdmin, (req, res) => {
+    res.send(`
         <h1>Admin Panel 📊</h1>
-        <a href="/">Home</a> | <a href="/logout">Logout</a>
-        <hr>
-        `;
-
-        messages.forEach(m => {
-            html += `
-            <div style="margin:10px;padding:10px;border:1px solid #ccc;border-radius:8px;">
-                <b>Name:</b> ${m.name} <br>
-                <b>Email:</b> ${m.email} <br>
-                <b>Message:</b> ${m.message}
-            </div>
-            `;
-        });
-
-        res.send(html);
-
-    } catch (err) {
-        console.error(err);
-        res.status(500).send("❌ Error loading admin panel");
-    }
+        <p>Welcome Admin</p>
+        <a href="/logout">Logout</a>
+    `);
 });
+
+// =====================
+// 🚪 LOGOUT
+// =====================
 app.get("/logout", (req, res) => {
     req.session.destroy(() => {
         res.redirect("/login");
     });
 });
+
+// =====================
+// 🚀 START SERVER
+// =====================
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, "0.0.0.0", () => {
+app.listen(PORT, () => {
     console.log("Server running on port " + PORT);
 });

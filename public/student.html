@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EXCEL YOU - Learn</title>
+    <link rel="stylesheet" href="student.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+    <h1>📘 EXCEL YOU</h1>
+
+    <div class="controls">
+        <select id="lang" onchange="loadSubjects()">
+            <option value="en">English</option>
+            <option value="ta">Tamil</option>
+        </select>
+
+        <input type="text" id="search" placeholder="Search subjects..." onkeyup="searchSubjects()">
+    </div>
+</header>
+
+<!-- SUBJECT LIST -->
+<div id="subjectContainer"></div>
+
+<!-- TOPIC VIEW -->
+<div id="topicContainer" style="display:none;"></div>
+
+<script src="student.js"></script>
+
+</body>
+</html>

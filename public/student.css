@@ -1,0 +1,54 @@
+body {
+    font-family: Arial;
+    margin: 0;
+    background: #0f172a;
+    color: white;
+}
+
+/* HEADER */
+header {
+    padding: 20px;
+    background: #1e293b;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* SEARCH + LANGUAGE */
+.controls {
+    display: flex;
+    gap: 10px;
+}
+
+input, select {
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+}
+
+/* CARDS */
+#subjectContainer, #topicContainer {
+    padding: 20px;
+}
+
+.card, .topic-card {
+    background: #1e293b;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.card:hover, .topic-card:hover {
+    background: #334155;
+}
+
+/* CONTENT */
+p {
+    line-height: 1.6;
+}
+
+img {
+    margin: 10px 0;
+    border-radius: 8px;
+}
