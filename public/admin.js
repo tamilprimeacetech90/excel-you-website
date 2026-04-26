@@ -218,11 +218,48 @@ async function loadStats() {
     const data = await res.json();
 
     document.getElementById("statsBox").innerHTML = `
-        <h3>📊 Dashboard</h3>
-        <p>Subjects: ${data.subjects}</p>
-        <p>Topics: ${data.topics}</p>
+        <div class="stats-grid">
+
+            <div class="stat-card">
+                <div class="icon">📘</div>
+                <h3>Subjects</h3>
+                <h1 id="subjectsCount">0</h1>
+            </div>
+
+            <div class="stat-card">
+                <div class="icon">📖</div>
+                <h3>Topics</h3>
+                <h1 id="topicsCount">0</h1>
+            </div>
+
+        </div>
     `;
+
+    // animate numbers
+    animateCount("subjectsCount", data.subjects);
+    animateCount("topicsCount", data.topics);
 }
+function animateCount(id, target) {
+    let current = 0;
+    const increment = Math.ceil(target / 40);
+
+    const interval = setInterval(() => {
+        current += increment;
+
+        if (current >= target) {
+            current = target;
+            clearInterval(interval);
+        }
+
+        document.getElementById(id).innerText = current;
+    }, 20);
+}
+
+function toggleSidebar()
+ {
+    document.querySelector(".sidebar").classList.toggle("active");
+}
+
 // =========================
 // LOGOUT
 // =========================

@@ -4,13 +4,16 @@
     <title>EXCEL YOU Admin</title>
     <link rel="stylesheet" href="admin.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
 
-<div class="layout">
+<div class="container">
 
-    <!-- SIDEBAR -->
+    <!-- ================= SIDEBAR ================= -->
     <div class="sidebar">
         <h2>📊 EXCEL YOU</h2>
 
@@ -19,82 +22,90 @@
         <button onclick="showSection('topic')">📖 Topics</button>
         <button onclick="showSection('block')">🧱 Content</button>
 
-        <div class="bottom">
-            <button onclick="logout()">🚪 Logout</button>
-        </div>
+        <hr>
+
+        <button onclick="logout()">🚪 Logout</button>
     </div>
-<div id="statsBox"></div>
-    <!-- MAIN -->
+
+    <!-- ================= MAIN ================= -->
     <div class="main">
 
-        <!-- DASHBOARD -->
-        <div id="dashboardSection" class="section">
-            <h1>👋 Admin Dashboard</h1>
+        <!-- 🔝 TOPBAR -->
+        <div class="topbar">
+            <span class="menu-btn" onclick="toggleSidebar()">☰</span>
+            <h3>Admin Dashboard</h3>
+            <button onclick="logout()">Logout</button>
+        </div>
 
-            <div class="cards">
-                <div class="card">
-                    <h3>📘 Subjects</h3>
-                    <p id="subjectCount">0</p>
-                </div>
+        <!-- 📦 CONTENT -->
+        <div class="content">
 
-                <div class="card">
-                    <h3>📖 Topics</h3>
-                    <p id="topicCount">0</p>
-                </div>
+            <!-- 📊 STATS -->
+            <div id="statsBox" class="section" style="max-width:100%; margin-bottom:20px;"></div>
 
-                <div class="card">
-                    <h3>🧱 Blocks</h3>
-                    <p>Dynamic</p>
-                </div>
+            <!-- ================= DASHBOARD ================= -->
+            <div id="dashboardSection" class="section">
+                <h1>👋 Welcome Admin</h1>
+                <p>Manage subjects, topics, and content easily.</p>
+
+                <!-- 📊 CHART -->
+                <canvas id="mainChart" height="100"></canvas>
             </div>
+
+            <!-- ================= SUBJECT ================= -->
+            <div id="subjectSection" class="section hidden">
+                <h2>📘 Create Subject</h2>
+
+                <input id="subjectName" placeholder="Subject Name">
+                <input id="subjectDesc" placeholder="Description">
+
+                <select id="subjectLang">
+                    <option value="en">English</option>
+                    <option value="ta">Tamil</option>
+                </select>
+
+                <button onclick="addSubject()">+ Create Subject</button>
+
+                <hr>
+
+                <h3>📚 LMS Tree</h3>
+                <div id="subjectList"></div>
+            </div>
+
+            <!-- ================= TOPIC ================= -->
+            <div id="topicSection" class="section hidden">
+                <h2>📖 Create Topic</h2>
+
+                <input id="topicTitle" placeholder="Topic Title">
+                <input id="subjectId" placeholder="Subject ID">
+
+                <select id="topicLang">
+                    <option value="en">English</option>
+                    <option value="ta">Tamil</option>
+                </select>
+
+                <button onclick="addTopic()">+ Create Topic</button>
+            </div>
+
+            <!-- ================= CONTENT BLOCK ================= -->
+            <div id="blockSection" class="section hidden">
+                <h2>🧱 Add Content</h2>
+
+                <input id="topicId" placeholder="Topic ID">
+
+                <select id="blockType">
+                    <option value="text">Text</option>
+                    <option value="image">Image</option>
+                    <option value="video">Video</option>
+                    <option value="heading">Heading</option>
+                </select>
+
+                <textarea id="blockValue" placeholder="Content or URL"></textarea>
+
+                <button onclick="addBlock()">+ Add Block</button>
+            </div>
+
         </div>
-
-        <!-- SUBJECT -->
-        <div id="subjectSection" class="section hidden">
-            <h2>📘 Create Subject</h2>
-
-            <input id="subjectName" placeholder="Subject Name">
-            <input id="subjectDesc" placeholder="Description">
-
-            <select id="subjectLang">
-                <option value="en">English</option>
-                <option value="ta">Tamil</option>
-            </select>
-
-            <button onclick="addSubject()">+ Create Subject</button>
-
-            <h3>📚 LMS Tree</h3>
-            <div id="subjectList"></div>
-        </div>
-
-        <!-- TOPIC -->
-        <div id="topicSection" class="section hidden">
-            <h2>📖 Create Topic</h2>
-
-            <input id="topicTitle" placeholder="Topic Title">
-            <input id="subjectId" placeholder="Subject ID">
-
-            <button onclick="addTopic()">+ Create Topic</button>
-        </div>
-
-        <!-- CONTENT -->
-        <div id="blockSection" class="section hidden">
-            <h2>🧱 Add Content</h2>
-
-            <input id="topicId" placeholder="Topic ID">
-
-            <select id="blockType">
-                <option value="text">Text</option>
-                <option value="image">Image</option>
-                <option value="video">Video</option>
-                <option value="heading">Heading</option>
-            </select>
-
-            <textarea id="blockValue" placeholder="Content"></textarea>
-
-            <button onclick="addBlock()">+ Add Block</button>
-        </div>
-
     </div>
 </div>
 
