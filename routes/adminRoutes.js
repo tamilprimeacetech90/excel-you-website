@@ -12,10 +12,11 @@ function isAdmin(req, res, next) {
     return res.redirect("/Login.html"); // or send 401 if API
 }
 // ✅ Protected route
-router.get("/admin", isAdmin, (req, res) => {
-    res.send("Admin Dashboard");
-});
+const path = require("path");
 
+router.get("/admin", (req, res) => {
+    res.sendFile(path.join(__dirname, "../public", "admin.html"));
+});
 
 // 📘 CREATE SUBJECT
 //
