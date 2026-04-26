@@ -1,61 +1,66 @@
 const express = require("express");
 const path = require("path");
 const session = require("express-session");
+const MongoStore = require("connect-mongo").default;
 const dotenv = require("dotenv");
-dotenv.config();
-console.log("ENV CHECK:", process.env.MONGO_URI);
-
 const bcrypt = require("bcrypt");
 
+dotenv.config();
 
-// Models
 const Admin = require("./models/Admin");
-
-// DB connection
 const connectDB = require("./config/db");
 
-// Routes
 const adminRoutes = require("./routes/adminRoutes");
 const contentRoutes = require("./routes/contentRoutes");
 const isAdmin = require("./middleware/isAdmin");
-// App init
+
 const app = express();
+
 
 // =====================
 // 🔌 DATABASE CONNECT
 // =====================
 connectDB();
 
+
 // =====================
 // 🔐 MIDDLEWARE
 // =====================
-
-// Body parsers
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Session
+
+// =====================
+// 🔐 SESSION SETUP
+// =====================
 app.use(
     session({
-        secret: process.env.SESSION_SECRET || "fallbackSecret123",
+        secret: process.env.SESSION_SECRET || "mySuperSecretKey@2026!",
         resave: false,
         saveUninitialized: false,
+        store: new MongoStore({
+            mongoUrl: process.env.MONGO_URI,
+            collectionName: "sessions"
+        }),
+        cookie: {
+            maxAge: 1000 * 60 * 60 * 24
+        }
     })
 );
 
-// =====================
-// 🔒 AUTH MIDDLEWARE
-// =====================
 
 // =====================
-// 🔗 API ROUTES (PROTECTED)
+// 🔗 ROUTES
 // =====================
-app.use("/api/admin", isAdmin, adminRoutes);
+
+// ✅ FIXED (no duplicate /admin)
+app.use("/", adminRoutes);
 app.use("/api", contentRoutes);
 
+
 // =====================
-// 🏠 FRONTEND ROUTES
+// 🏠 FRONTEND
 // =====================
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "index.html"));
@@ -69,59 +74,43 @@ app.get("/contact", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "contact.html"));
 });
 
+
 // =====================
 // 🔐 LOGIN PAGE
 // =====================
 app.get("/login", (req, res) => {
-    res.send(`
-        <h2>Admin Login 🔐</h2>
-        <form method="POST" action="/login">
-            <input name="username" placeholder="Username" required /><br><br>
-            <input name="password" type="password" placeholder="Password" required /><br><br>
-            <button type="submit">Login</button>
-        </form>
-    `);
+    res.sendFile(path.join(__dirname, "public", "Login.html"));
 });
 
+
 // =====================
-// 🔐 LOGIN HANDLER (SECURE)
+// 🔐 LOGIN HANDLER
 // =====================
 app.post("/login", async (req, res) => {
+    console.log("BODY:", req.body);
+
     const { username, password } = req.body;
 
     try {
         const admin = await Admin.findOne({ username });
 
-        if (!admin) {
-            return res.send("❌ Invalid credentials");
-        }
+        if (!admin) return res.send("❌ Invalid credentials");
 
         const isMatch = await bcrypt.compare(password, admin.password);
 
-        if (!isMatch) {
-            return res.send("❌ Invalid credentials");
-        }
+        if (!isMatch) return res.send("❌ Invalid credentials");
 
-        // store session securely
+        // ✅ SESSION SAVE
         req.session.adminId = admin._id;
 
         res.redirect("/admin");
+
     } catch (err) {
         console.error(err);
         res.status(500).send("Server error");
     }
 });
 
-// =====================
-// 📊 ADMIN PANEL (PROTECTED)
-// =====================
-app.get("/admin", isAdmin, (req, res) => {
-    res.send(`
-        <h1>Admin Panel 📊</h1>
-        <p>Welcome Admin</p>
-        <a href="/logout">Logout</a>
-    `);
-});
 
 // =====================
 // 🚪 LOGOUT
@@ -132,10 +121,11 @@ app.get("/logout", (req, res) => {
     });
 });
 
+
 // =====================
 // 🚀 START SERVER
 // =====================
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
     console.log("Server running on port " + PORT);

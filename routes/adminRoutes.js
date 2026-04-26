@@ -6,13 +6,17 @@ const Topic = require("../models/Topic");
 
 // 🔒 Admin middleware
 function isAdmin(req, res, next) {
-    if (req.session.user === "admin") {
+    if (req.session.adminId) {
         return next();
     }
-    return res.status(401).send("Unauthorized ❌");
+    return res.redirect("/Login.html"); // or send 401 if API
 }
+// ✅ Protected route
+router.get("/admin", isAdmin, (req, res) => {
+    res.send("Admin Dashboard");
+});
 
-//
+
 // 📘 CREATE SUBJECT
 //
 router.post("/subject", isAdmin, async (req, res) => {
