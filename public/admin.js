@@ -213,7 +213,16 @@ async function addBlock() {
     loadPreview(topicId);
 }
 
+async function loadStats() {
+    const res = await fetch("/api/admin/stats");
+    const data = await res.json();
 
+    document.getElementById("statsBox").innerHTML = `
+        <h3>📊 Dashboard</h3>
+        <p>Subjects: ${data.subjects}</p>
+        <p>Topics: ${data.topics}</p>
+    `;
+}
 // =========================
 // LOGOUT
 // =========================
@@ -229,3 +238,4 @@ function logout() {
 
 showSection("subject");
 loadSubjects();
+loadStats();

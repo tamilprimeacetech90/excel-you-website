@@ -165,5 +165,13 @@ router.delete("/topic/:id", isAdmin, async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+router.get("/stats", async (req, res) => {
+    const subjects = await Subject.countDocuments();
+    const topics = await Topic.countDocuments();
 
+    res.json({
+        subjects,
+        topics
+    });
+});
 module.exports = router;
