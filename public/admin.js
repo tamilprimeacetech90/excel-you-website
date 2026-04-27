@@ -255,11 +255,10 @@ function animateCount(id, target) {
     }, 20);
 }
 
-function toggleSidebar()
- {
-    document.querySelector(".sidebar").classList.toggle("active");
+function toggleSidebar() {
+    const sidebar = document.querySelector(".sidebar");
+    sidebar.classList.toggle("active");
 }
-
 // =========================
 // LOGOUT
 // =========================
