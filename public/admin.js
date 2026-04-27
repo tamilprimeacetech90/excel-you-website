@@ -1,14 +1,8 @@
 // =========================
 // SECTION NAVIGATION
 // =========================
-
 function showSection(section) {
-    const sections = [
-        "dashboard",
-        "subject",
-        "topic",
-        "block"
-    ];
+    const sections = ["dashboard", "subject", "topic", "block"];
 
     sections.forEach(sec => {
         const el = document.getElementById(sec + "Section");
@@ -37,7 +31,6 @@ function escapeHTML(str = "") {
 // =========================
 // SUBJECT
 // =========================
-
 async function addSubject() {
     const name = document.getElementById("subjectName").value;
     const description = document.getElementById("subjectDesc").value;
@@ -46,11 +39,7 @@ async function addSubject() {
     await fetch("/api/admin/subject", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({
-            name,
-            description,
-            language
-        })
+        body: new URLSearchParams({ name, description, language })
     });
 
     alert("Subject Created ✔");
@@ -65,9 +54,8 @@ function selectSubject(id, name) {
 
 
 // =========================
-// LMS TREE (SUBJECTS)
+// LMS TREE
 // =========================
-
 async function loadSubjects() {
     const res = await fetch("/api/admin/subjects");
     const subjects = await res.json();
@@ -81,8 +69,8 @@ async function loadSubjects() {
         container.innerHTML += `
             <div class="subject-node">
                 <div class="subject-header"
-                    onclick="toggleTopics('${sub._id}', ${JSON.stringify(sub.name)})">
-                    📘 ${sub.name}
+                    onclick="toggleTopics('${sub._id}')">
+                    📘 ${escapeHTML(sub.name)}
                 </div>
 
                 <div id="topics-${sub._id}" class="topic-container hidden"></div>
@@ -93,12 +81,10 @@ async function loadSubjects() {
 
 
 // =========================
-// LOAD TOPICS UNDER SUBJECT
+// LOAD TOPICS
 // =========================
-
 async function toggleTopics(subjectId) {
     const container = document.getElementById(`topics-${subjectId}`);
-
     if (!container) return;
 
     if (!container.classList.contains("hidden")) {
@@ -115,8 +101,8 @@ async function toggleTopics(subjectId) {
     topics.forEach(topic => {
         container.innerHTML += `
             <div class="topic-node"
-                onclick="selectTopic('${topic._id}', ${JSON.stringify(topic.title)})">
-                📖 ${topic.title}
+                onclick="selectTopic('${topic._id}')">
+                📖 ${escapeHTML(topic.title)}
             </div>
         `;
     });
@@ -128,7 +114,6 @@ async function toggleTopics(subjectId) {
 // =========================
 // TOPIC
 // =========================
-
 async function addTopic() {
     const title = document.getElementById("topicTitle").value;
     const subjectId = document.getElementById("subjectId").value;
@@ -137,18 +122,14 @@ async function addTopic() {
     await fetch("/api/admin/topic", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({
-            title,
-            subjectId,
-            language
-        })
+        body: new URLSearchParams({ title, subjectId, language })
     });
 
     alert("Topic Created ✔");
     loadSubjects();
 }
 
-function selectTopic(id, title) {
+function selectTopic(id) {
     document.getElementById("topicId").value = id;
     showSection("block");
     loadPreview(id);
@@ -156,9 +137,8 @@ function selectTopic(id, title) {
 
 
 // =========================
-// PREVIEW (STUDENT VIEW)
+// PREVIEW
 // =========================
-
 async function loadPreview(topicId) {
     const res = await fetch(`/api/topic/${topicId}`);
     const topic = await res.json();
@@ -192,9 +172,8 @@ async function loadPreview(topicId) {
 
 
 // =========================
-// BLOCKS
+// BLOCK
 // =========================
-
 async function addBlock() {
     const topicId = document.getElementById("topicId").value;
     const type = document.getElementById("blockType").value;
@@ -203,23 +182,26 @@ async function addBlock() {
     await fetch(`/api/admin/topic/${topicId}/block`, {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({
-            type,
-            value
-        })
+        body: new URLSearchParams({ type, value })
     });
 
     alert("Block Added ✔");
     loadPreview(topicId);
 }
 
+
+// =========================
+// DASHBOARD STATS
+// =========================
 async function loadStats() {
     const res = await fetch("/api/admin/stats");
     const data = await res.json();
 
-    document.getElementById("statsBox").innerHTML = `
-        <div class="stats-grid">
+    const box = document.getElementById("statsBox");
+    if (!box) return;
 
+    box.innerHTML = `
+        <div class="stats-grid">
             <div class="stat-card">
                 <div class="icon">📘</div>
                 <h3>Subjects</h3>
@@ -231,14 +213,13 @@ async function loadStats() {
                 <h3>Topics</h3>
                 <h1 id="topicsCount">0</h1>
             </div>
-
         </div>
     `;
 
-    // animate numbers
     animateCount("subjectsCount", data.subjects);
     animateCount("topicsCount", data.topics);
 }
+
 function animateCount(id, target) {
     let current = 0;
     const increment = Math.ceil(target / 40);
@@ -255,23 +236,34 @@ function animateCount(id, target) {
     }, 20);
 }
 
+
+// =========================
+// SIDEBAR TOGGLE
+// =========================
 function toggleSidebar() {
     const sidebar = document.querySelector(".sidebar");
     sidebar.classList.toggle("active");
 }
+
+
 // =========================
 // LOGOUT
 // =========================
-
 function logout() {
     window.location.href = "/logout";
 }
 
 
 // =========================
-// INIT
+// INIT (FINAL FIX)
 // =========================
+window.onload = () => {
+    showSection("subject");
 
-showSection("subject");
-loadSubjects();
-loadStats();
+    // ✅ ensure sidebar CLOSED on load
+    const sidebar = document.querySelector(".sidebar");
+    if (sidebar) sidebar.classList.remove("active");
+
+    loadSubjects();
+    loadStats();
+};
