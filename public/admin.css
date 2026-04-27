@@ -17,7 +17,7 @@ body {
 }
 
 /* =========================
-   SIDEBAR
+   SIDEBAR (FIXED)
 ========================= */
 .sidebar {
     width: 260px;
@@ -25,11 +25,15 @@ body {
     background: rgba(30, 41, 59, 0.7);
     border-right: 1px solid rgba(255,255,255,0.05);
     padding: 20px;
-    transition: 0.3s;
+    transition: all 0.3s ease;
+
+    /* 👇 DEFAULT CLOSED */
+    margin-left: -260px;
 }
 
-.sidebar.collapsed {
-    width: 70px;
+/* 👇 OPEN STATE */
+.sidebar.active {
+    margin-left: 0;
 }
 
 .sidebar h2 {
@@ -79,7 +83,7 @@ body {
 }
 
 .menu-btn {
-    font-size: 20px;
+    font-size: 22px;
     cursor: pointer;
 }
 
@@ -191,51 +195,19 @@ button:hover {
 }
 
 /* =========================
-   RESPONSIVE
+   MOBILE FIX
 ========================= */
-/* SIDEBAR DEFAULT (DESKTOP) */
-.sidebar {
-    width: 240px;
-    background: #1e293b;
-    transition: all 0.3s ease;
-}
-
-/* MOBILE FIX */
 @media (max-width: 768px) {
     .sidebar {
         position: fixed;
         top: 0;
-        left: -240px;   /* 🔴 hidden by default */
-        height: 100%;
-        z-index: 1000;
-    }
-
-    .sidebar.active {
-        left: 0;        /* 🟢 show when active */
-    }
-}
-/* Desktop */
-.sidebar {
-    width: 240px;
-    transition: all 0.3s ease;
-}
-
-.sidebar.active {
-    margin-left: -240px;
-}
-
-/* Mobile */
-@media (max-width: 768px) {
-    .sidebar {
-        position: fixed;
-        top: 0;
-        left: -240px;
+        left: -260px;   /* hidden */
+        margin-left: 0;
         height: 100%;
         z-index: 1000;
     }
 
     .sidebar.active {
         left: 0;
-        margin-left: 0;
     }
-}}
+}
