@@ -193,30 +193,49 @@ button:hover {
 /* =========================
    RESPONSIVE
 ========================= */
-/* MOBILE SIDEBAR FIX */
-/* Hide sidebar by default (mobile) */
+/* SIDEBAR DEFAULT (DESKTOP) */
 .sidebar {
-    transition: 0.3s;
+    width: 240px;
+    background: #1e293b;
+    transition: all 0.3s ease;
 }
 
-/* Mobile behavior */
+/* MOBILE FIX */
 @media (max-width: 768px) {
     .sidebar {
         position: fixed;
         top: 0;
-        left: -260px; /* hidden */
+        left: -240px;   /* 🔴 hidden by default */
         height: 100%;
         z-index: 1000;
     }
 
     .sidebar.active {
-        left: 0; /* show */
-    }
-
-    .menu-btn {
-        font-size: 24px;
-        cursor: pointer;
-        margin-bottom: 10px;
-        display: block;
+        left: 0;        /* 🟢 show when active */
     }
 }
+/* Desktop */
+.sidebar {
+    width: 240px;
+    transition: all 0.3s ease;
+}
+
+.sidebar.active {
+    margin-left: -240px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: -240px;
+        height: 100%;
+        z-index: 1000;
+    }
+
+    .sidebar.active {
+        left: 0;
+        margin-left: 0;
+    }
+}}
