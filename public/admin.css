@@ -193,13 +193,30 @@ button:hover {
 /* =========================
    RESPONSIVE
 ========================= */
+/* MOBILE SIDEBAR FIX */
+/* Hide sidebar by default (mobile) */
+.sidebar {
+    transition: 0.3s;
+}
+
+/* Mobile behavior */
 @media (max-width: 768px) {
     .sidebar {
-        position: absolute;
-        left: -260px;
+        position: fixed;
+        top: 0;
+        left: -260px; /* hidden */
+        height: 100%;
+        z-index: 1000;
     }
 
     .sidebar.active {
-        left: 0;
+        left: 0; /* show */
+    }
+
+    .menu-btn {
+        font-size: 24px;
+        cursor: pointer;
+        margin-bottom: 10px;
+        display: block;
     }
 }
