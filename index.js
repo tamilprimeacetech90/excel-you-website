@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("path");
 const session = require("express-session");
-const MongoStore = require("connect-mongo").default;
+const MongoStore = require("connect-mongo");
 const dotenv = require("dotenv");
 const bcrypt = require("bcrypt");
 
@@ -12,7 +12,7 @@ const connectDB = require("./config/db");
 
 const adminRoutes = require("./routes/adminRoutes");
 const contentRoutes = require("./routes/contentRoutes");
-const isAdmin = require("./middleware/isAdmin");
+const uploadRoutes = require("./routes/uploadRoutes");
 
 const app = express();
 
@@ -24,90 +24,156 @@ connectDB();
 
 
 // =====================
-// 🔐 MIDDLEWARE
+// 🔐 BODY PARSER
 // =====================
-app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 
 // =====================
-// 🔐 SESSION SETUP
+// 📁 STATIC FILES
+// =====================
+app.use(express.static(path.join(__dirname, "public")));
+
+app.use(
+    "/uploads",
+    express.static(path.join(__dirname, "public/uploads"))
+);
+
+
+// =====================
+// 🔐 SESSION
 // =====================
 app.use(
     session({
-        secret: process.env.SESSION_SECRET || "mySuperSecretKey@2026!",
+        secret:
+            process.env.SESSION_SECRET ||
+            "mySuperSecretKey@2026!",
+
         resave: false,
         saveUninitialized: false,
-        store: new MongoStore({
+
+        store: MongoStore.create({
             mongoUrl: process.env.MONGO_URI,
             collectionName: "sessions"
         }),
+
         cookie: {
-            maxAge: 1000 * 60 * 60 * 24
+            maxAge: 1000 * 60 * 60 * 24, // 1 day
+            httpOnly: true,
+
+            // render/production ready
+            secure: false
         }
     })
 );
 
 
 // =====================
-// 🔗 ROUTES
+// 📤 UPLOAD API
 // =====================
+app.use("/api/upload", uploadRoutes);
 
-// ✅ FIXED (no duplicate /admin)
-app.use("/", adminRoutes);
+
+// =====================
+// 🔗 API ROUTES
+// =====================
+app.use("/api/admin", adminRoutes);
 app.use("/api", contentRoutes);
 
 
 // =====================
-// 🏠 FRONTEND
+// 🌍 WEBSITE PAGES
 // =====================
+
+// HOME
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "index.html"));
+    res.sendFile(
+        path.join(__dirname, "public", "index.html")
+    );
 });
 
+// ABOUT
 app.get("/about", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "about.html"));
+    res.sendFile(
+        path.join(__dirname, "public", "about.html")
+    );
 });
 
+// CONTACT
 app.get("/contact", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "contact.html"));
+    res.sendFile(
+        path.join(__dirname, "public", "contact.html")
+    );
 });
 
+// STUDENT LMS
+app.get("/student", (req, res) => {
+    res.sendFile(
+        path.join(__dirname, "public", "student.html")
+    );
+});
 
-// =====================
-// 🔐 LOGIN PAGE
-// =====================
+// LOGIN PAGE
 app.get("/login", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "Login.html"));
+    res.sendFile(
+        path.join(__dirname, "public", "Login.html")
+    );
 });
 
 
 // =====================
-// 🔐 LOGIN HANDLER
+// 🔐 LOGIN
 // =====================
 app.post("/login", async (req, res) => {
-    console.log("BODY:", req.body);
-
-    const { username, password } = req.body;
 
     try {
-        const admin = await Admin.findOne({ username });
 
-        if (!admin) return res.send("❌ Invalid credentials");
+        const { username, password } = req.body;
 
-        const isMatch = await bcrypt.compare(password, admin.password);
+        if (!username || !password) {
 
-        if (!isMatch) return res.send("❌ Invalid credentials");
+            return res.send(
+                "❌ Username and password required"
+            );
+        }
 
-        // ✅ SESSION SAVE
+        // find admin
+        const admin = await Admin.findOne({
+            username
+        });
+
+        if (!admin) {
+
+            return res.send(
+                "❌ Invalid username or password"
+            );
+        }
+
+        // compare password
+        const isMatch = await bcrypt.compare(
+            password,
+            admin.password
+        );
+
+        if (!isMatch) {
+
+            return res.send(
+                "❌ Invalid username or password"
+            );
+        }
+
+        // save session
         req.session.adminId = admin._id;
 
+        // redirect admin
         res.redirect("/admin");
 
     } catch (err) {
-        console.error(err);
-        res.status(500).send("Server error");
+
+        console.error("LOGIN ERROR:", err);
+
+        res.status(500).send("Server Error");
     }
 });
 
@@ -116,17 +182,36 @@ app.post("/login", async (req, res) => {
 // 🚪 LOGOUT
 // =====================
 app.get("/logout", (req, res) => {
+
     req.session.destroy(() => {
+
+        res.clearCookie("connect.sid");
+
         res.redirect("/login");
     });
 });
 
 
 // =====================
+// ❌ 404 PAGE
+// =====================
+app.use((req, res) => {
+
+    res.status(404).send(`
+        <h1>404 - Page Not Found</h1>
+        <a href="/">Go Home</a>
+    `);
+});
+
+
+// =====================
 // 🚀 START SERVER
 // =====================
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-    console.log("Server running on port " + PORT);
+
+    console.log(
+        `✅ Server running on port ${PORT}`
+    );
 });

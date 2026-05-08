@@ -1,97 +1,334 @@
+// =========================
+// GLOBAL
+// =========================
 let allSubjects = [];
 let allTopics = [];
 
-async function loadSubjects() {
-    const lang = document.getElementById("lang").value;
 
-    const res = await fetch("/api/subjects");
-    const data = await res.json();
+// =========================
+// SAFE HTML
+// =========================
+function escapeHTML(str = "") {
 
-    allSubjects = data.filter(s => s.language === lang);
-
-    renderSubjects(allSubjects);
+    return str.replace(/[&<>"']/g, match => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    }[match]));
 }
 
+
+// =========================
+// LOAD SUBJECTS
+// =========================
+async function loadSubjects() {
+
+    try {
+
+        const lang =
+            document.getElementById("lang").value;
+
+        const res =
+            await fetch("/api/subjects");
+
+        const data =
+            await res.json();
+
+        // FILTER LANGUAGE
+        allSubjects = data.filter(subject =>
+            subject.language === lang
+        );
+
+        renderSubjects(allSubjects);
+
+        // RESET UI
+        document
+            .getElementById("welcomeBox")
+            ?.classList.remove("hidden");
+
+        document
+            .getElementById("topicContainer")
+            ?.classList.add("hidden");
+
+        document
+            .getElementById("lessonViewer")
+            ?.classList.add("hidden");
+
+    } catch (err) {
+
+        console.error("LOAD SUBJECTS ERROR:", err);
+
+    }
+}
+
+
+// =========================
+// RENDER SUBJECTS
+// =========================
 function renderSubjects(subjects) {
-    const container = document.getElementById("subjectContainer");
-    container.style.display = "block";
-    document.getElementById("topicContainer").style.display = "none";
+
+    const container =
+        document.getElementById("subjectContainer");
+
+    if (!container) return;
 
     container.innerHTML = "";
 
-    subjects.forEach(sub => {
+    if (!subjects.length) {
+
+        container.innerHTML = `
+            <div class="empty-box">
+                No subjects found.
+            </div>
+        `;
+
+        return;
+    }
+
+    subjects.forEach(subject => {
+
         container.innerHTML += `
-            <div class="card" onclick="openSubject('${sub._id}', '${sub.name}')">
-                <h2>${sub.name}</h2>
-                <p>${sub.description || ""}</p>
+            <div
+                class="subject-card"
+                onclick="openSubject(
+                    '${subject._id}',
+                    '${escapeHTML(subject.name)}'
+                )"
+            >
+
+                <h3>
+                    📘 ${escapeHTML(subject.name)}
+                </h3>
+
+                <p>
+                    ${escapeHTML(
+                        subject.description || "No description"
+                    )}
+                </p>
+
             </div>
         `;
     });
 }
 
+
+// =========================
+// OPEN SUBJECT
+// =========================
 async function openSubject(id, name) {
-    const res = await fetch(`/api/topics/${id}`);
-    const data = await res.json();
 
-    allTopics = data;
+    try {
 
-    const container = document.getElementById("subjectContainer");
-    const topicBox = document.getElementById("topicContainer");
+        const res =
+            await fetch(`/api/topics/${id}`);
 
-    container.style.display = "none";
-    topicBox.style.display = "block";
+        const topics =
+            await res.json();
 
-    topicBox.innerHTML = `<h2>📖 ${name}</h2>`;
+        allTopics = topics;
 
-    data.forEach(topic => {
-        topicBox.innerHTML += `
-            <div class="topic-card" onclick="openTopic('${topic._id}')">
-                <h3>${topic.title}</h3>
+        const topicContainer =
+            document.getElementById("topicContainer");
+
+        if (!topicContainer) return;
+
+        // HIDE OTHER AREAS
+        document
+            .getElementById("welcomeBox")
+            ?.classList.add("hidden");
+
+        document
+            .getElementById("lessonViewer")
+            ?.classList.add("hidden");
+
+        topicContainer.classList.remove("hidden");
+
+        topicContainer.innerHTML = `
+            <div class="topic-header">
+
+                <h2>
+                    📖 ${escapeHTML(name)}
+                </h2>
+
+                <p>
+                    ${topics.length} Topics Available
+                </p>
+
             </div>
         `;
-    });
-}
 
-async function openTopic(id) {
-    const res = await fetch(`/api/topic/${id}`);
-    const topic = await res.json();
+        if (!topics.length) {
 
-    const container = document.getElementById("topicContainer");
-
-    container.innerHTML = `<button onclick="loadSubjects()">⬅ Back</button><h2>${topic.title}</h2>`;
-
-    topic.contentBlocks.forEach(block => {
-        if (block.type === "text") {
-            container.innerHTML += `<p>${block.value}</p>`;
-        }
-
-        if (block.type === "heading") {
-            container.innerHTML += `<h3>${block.value}</h3>`;
-        }
-
-        if (block.type === "image") {
-            container.innerHTML += `<img src="${block.value}" style="max-width:100%">`;
-        }
-
-        if (block.type === "video") {
-            container.innerHTML += `
-                <iframe width="100%" height="300"
-                src="${block.value}"
-                frameborder="0"
-                allowfullscreen></iframe>
+            topicContainer.innerHTML += `
+                <div class="empty-box">
+                    No topics available.
+                </div>
             `;
+
+            return;
         }
-    });
+
+        topics.forEach(topic => {
+
+            topicContainer.innerHTML += `
+                <div
+                    class="topic-card"
+                    onclick="openTopic('${topic._id}')"
+                >
+
+                    <h3>
+                        ${escapeHTML(topic.title)}
+                    </h3>
+
+                </div>
+            `;
+        });
+
+    } catch (err) {
+
+        console.error("OPEN SUBJECT ERROR:", err);
+
+    }
 }
 
-function searchSubjects() {
-    const value = document.getElementById("search").value.toLowerCase();
 
-    const filtered = allSubjects.filter(s =>
-        s.name.toLowerCase().includes(value)
-    );
+// =========================
+// OPEN TOPIC
+// =========================
+async function openTopic(id) {
+
+    try {
+
+        const res =
+            await fetch(`/api/topic/${id}`);
+
+        const topic =
+            await res.json();
+
+        if (!topic) return;
+
+        // HIDE TOPICS
+        document
+            .getElementById("topicContainer")
+            ?.classList.add("hidden");
+
+        // SHOW LESSON
+        const lessonViewer =
+            document.getElementById("lessonViewer");
+
+        lessonViewer.classList.remove("hidden");
+
+        // TITLE
+        document.getElementById("lessonTitle")
+            .innerText = topic.title;
+
+        // CONTENT
+        const content =
+            document.getElementById("lessonContent");
+
+        content.innerHTML = "";
+
+        // =========================
+        // NEW HTML CONTENT SUPPORT
+        // =========================
+        if (topic.contentHTML) {
+
+            content.innerHTML = topic.contentHTML;
+
+            return;
+        }
+
+        // =========================
+        // OLD BLOCK SUPPORT
+        // =========================
+        if (topic.contentBlocks?.length) {
+
+            topic.contentBlocks.forEach(block => {
+
+                // TEXT
+                if (block.type === "text") {
+
+                    content.innerHTML += `
+                        <p>
+                            ${block.value}
+                        </p>
+                    `;
+                }
+
+                // HEADING
+                if (block.type === "heading") {
+
+                    content.innerHTML += `
+                        <h2>
+                            ${block.value}
+                        </h2>
+                    `;
+                }
+
+                // IMAGE
+                if (block.type === "image") {
+
+                    content.innerHTML += `
+                        <img
+                            src="${block.value}"
+                            class="lesson-image"
+                        >
+                    `;
+                }
+
+                // VIDEO
+                if (block.type === "video") {
+
+                    content.innerHTML += `
+                        <iframe
+                            class="lesson-video"
+                            src="${block.value}"
+                            frameborder="0"
+                            allowfullscreen
+                        ></iframe>
+                    `;
+                }
+
+            });
+        }
+
+    } catch (err) {
+
+        console.error("OPEN TOPIC ERROR:", err);
+
+    }
+}
+
+
+// =========================
+// SEARCH SUBJECTS
+// =========================
+function searchSubjects() {
+
+    const value =
+        document.getElementById("search")
+            .value
+            .toLowerCase();
+
+    const filtered =
+        allSubjects.filter(subject =>
+
+            subject.name
+                .toLowerCase()
+                .includes(value)
+        );
 
     renderSubjects(filtered);
 }
 
-loadSubjects();
+
+// =========================
+// INITIAL LOAD
+// =========================
+window.onload = () => {
+
+    loadSubjects();
+
+};

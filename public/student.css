@@ -1,54 +1,484 @@
-body {
-    font-family: Arial;
+/* =========================
+   GLOBAL
+========================= */
+* {
+    box-sizing: border-box;
     margin: 0;
-    background: #0f172a;
-    color: white;
+    padding: 0;
 }
 
-/* HEADER */
-header {
-    padding: 20px;
-    background: #1e293b;
+body {
+    font-family: Arial, sans-serif;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0f172a,
+            #020617
+        );
+
+    color: white;
+
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* =========================
+   SCROLLBAR
+========================= */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #475569;
+    border-radius: 20px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+
+/* =========================
+   TOPBAR
+========================= */
+.topbar {
+
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    padding: 18px 25px;
+
+    background: rgba(15, 23, 42, 0.9);
+
+    backdrop-filter: blur(10px);
+
+    border-bottom:
+        1px solid rgba(255,255,255,0.05);
+
+    flex-wrap: wrap;
+
+    gap: 15px;
 }
 
-/* SEARCH + LANGUAGE */
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+
+    color: #818cf8;
+}
+
+
+/* =========================
+   CONTROLS
+========================= */
 .controls {
     display: flex;
     gap: 10px;
+    flex-wrap: wrap;
 }
 
-input, select {
-    padding: 8px;
-    border-radius: 5px;
-    border: none;
-}
+input,
+select {
 
-/* CARDS */
-#subjectContainer, #topicContainer {
-    padding: 20px;
-}
+    padding: 10px 12px;
 
-.card, .topic-card {
-    background: #1e293b;
-    padding: 15px;
-    margin: 10px 0;
     border-radius: 10px;
-    cursor: pointer;
+
+    border:
+        1px solid rgba(255,255,255,0.05);
+
+    background: #1e293b;
+
+    color: white;
+
+    outline: none;
 }
 
-.card:hover, .topic-card:hover {
+input:focus,
+select:focus {
+    border-color: #6366f1;
+}
+
+
+/* =========================
+   HERO
+========================= */
+.hero {
+
+    text-align: center;
+
+    padding: 50px 20px 30px;
+}
+
+.hero h1 {
+
+    font-size: 40px;
+
+    margin-bottom: 12px;
+
+    color: #c7d2fe;
+}
+
+.hero p {
+
+    opacity: 0.8;
+
+    font-size: 18px;
+}
+
+
+/* =========================
+   MAIN LAYOUT
+========================= */
+.main-layout {
+
+    display: flex;
+
+    flex: 1;
+
+    overflow: hidden;
+}
+
+
+/* =========================
+   SIDEBAR
+========================= */
+.sidebar {
+
+    width: 320px;
+
+    background: rgba(15, 23, 42, 0.82);
+
+    border-right:
+        1px solid rgba(255,255,255,0.05);
+
+    padding: 20px;
+
+    overflow-y: auto;
+}
+
+.sidebar h2 {
+
+    margin-bottom: 20px;
+
+    color: #a5b4fc;
+}
+
+
+/* =========================
+   CONTENT AREA
+========================= */
+.content-area {
+
+    flex: 1;
+
+    padding: 25px;
+
+    overflow-y: auto;
+}
+
+
+/* =========================
+   SUBJECT CARD
+========================= */
+.subject-card {
+
+    background: rgba(30, 41, 59, 0.9);
+
+    border:
+        1px solid rgba(255,255,255,0.05);
+
+    padding: 18px;
+
+    border-radius: 16px;
+
+    margin-bottom: 15px;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.subject-card:hover {
+
+    transform: translateY(-4px);
+
     background: #334155;
 }
 
-/* CONTENT */
-p {
-    line-height: 1.6;
+.subject-card h3 {
+
+    margin-bottom: 8px;
+
+    color: #c7d2fe;
 }
 
-img {
-    margin: 10px 0;
-    border-radius: 8px;
+.subject-card p {
+
+    opacity: 0.8;
+
+    line-height: 1.5;
+}
+
+
+/* =========================
+   TOPIC CARD
+========================= */
+.topic-card {
+
+    background: rgba(30, 41, 59, 0.9);
+
+    border:
+        1px solid rgba(255,255,255,0.05);
+
+    padding: 16px;
+
+    border-radius: 14px;
+
+    margin-bottom: 15px;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.topic-card:hover {
+
+    transform: translateX(5px);
+
+    background: #334155;
+}
+
+.topic-card h3 {
+
+    color: #e2e8f0;
+}
+
+
+/* =========================
+   TOPIC HEADER
+========================= */
+.topic-header {
+
+    margin-bottom: 25px;
+}
+
+.topic-header h2 {
+
+    margin-bottom: 8px;
+
+    color: #c7d2fe;
+}
+
+
+/* =========================
+   WELCOME BOX
+========================= */
+.welcome-box {
+
+    background: rgba(30, 41, 59, 0.85);
+
+    padding: 40px;
+
+    border-radius: 20px;
+
+    text-align: center;
+
+    border:
+        1px solid rgba(255,255,255,0.05);
+}
+
+.welcome-box h2 {
+
+    margin-bottom: 15px;
+
+    color: #c7d2fe;
+}
+
+
+/* =========================
+   LESSON VIEWER
+========================= */
+.lesson-viewer {
+
+    background: rgba(15, 23, 42, 0.92);
+
+    padding: 30px;
+
+    border-radius: 20px;
+
+    border:
+        1px solid rgba(255,255,255,0.05);
+}
+
+.lesson-header {
+
+    margin-bottom: 25px;
+}
+
+.lesson-header h1 {
+
+    color: #c7d2fe;
+}
+
+
+/* =========================
+   LESSON CONTENT
+========================= */
+.lesson-content {
+
+    line-height: 1.8;
+
+    font-size: 17px;
+}
+
+.lesson-content h1,
+.lesson-content h2,
+.lesson-content h3 {
+
+    margin-top: 25px;
+    margin-bottom: 12px;
+
+    color: #c7d2fe;
+}
+
+.lesson-content p {
+
+    margin-bottom: 15px;
+
+    opacity: 0.95;
+}
+
+.lesson-content img {
+
+    max-width: 100%;
+
+    border-radius: 14px;
+
+    margin: 20px 0;
+}
+
+.lesson-content iframe {
+
+    width: 100%;
+
+    height: 420px;
+
+    border: none;
+
+    border-radius: 14px;
+
+    margin: 20px 0;
+}
+
+
+/* =========================
+   EMPTY BOX
+========================= */
+.empty-box {
+
+    background: rgba(30, 41, 59, 0.85);
+
+    padding: 20px;
+
+    border-radius: 14px;
+
+    text-align: center;
+
+    opacity: 0.8;
+}
+
+
+/* =========================
+   HIDDEN
+========================= */
+.hidden {
+    display: none;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+footer {
+
+    text-align: center;
+
+    padding: 20px;
+
+    background: rgba(15, 23, 42, 0.92);
+
+    border-top:
+        1px solid rgba(255,255,255,0.05);
+
+    opacity: 0.8;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+@media (max-width: 900px) {
+
+    .main-layout {
+
+        flex-direction: column;
+    }
+
+    .sidebar {
+
+        width: 100%;
+
+        border-right: none;
+
+        border-bottom:
+            1px solid rgba(255,255,255,0.05);
+    }
+
+    .hero h1 {
+
+        font-size: 30px;
+    }
+
+    .lesson-content iframe {
+
+        height: 250px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .topbar {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .controls {
+
+        width: 100%;
+    }
+
+    input,
+    select {
+
+        width: 100%;
+    }
+
+    .content-area {
+
+        padding: 15px;
+    }
+
+    .lesson-viewer {
+
+        padding: 20px;
+    }
 }

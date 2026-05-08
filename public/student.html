@@ -1,32 +1,154 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>EXCEL YOU - Learn</title>
-    <link rel="stylesheet" href="student.css">
+
+    <link
+        rel="stylesheet"
+        href="student.css?v=2"
+    >
+
 </head>
+
 <body>
 
-<!-- HEADER -->
-<header>
-    <h1>📘 EXCEL YOU</h1>
+    <!-- ================= HEADER ================= -->
+    <header class="topbar">
 
-    <div class="controls">
-        <select id="lang" onchange="loadSubjects()">
-            <option value="en">English</option>
-            <option value="ta">Tamil</option>
-        </select>
+        <div class="logo">
+            📘 EXCEL YOU
+        </div>
 
-        <input type="text" id="search" placeholder="Search subjects..." onkeyup="searchSubjects()">
-    </div>
-</header>
+        <div class="controls">
 
-<!-- SUBJECT LIST -->
-<div id="subjectContainer"></div>
+            <!-- LANGUAGE -->
+            <select
+                id="lang"
+                onchange="loadSubjects()"
+            >
+                <option value="en">
+                    English
+                </option>
 
-<!-- TOPIC VIEW -->
-<div id="topicContainer" style="display:none;"></div>
+                <option value="ta">
+                    Tamil
+                </option>
+            </select>
 
-<script src="student.js"></script>
+            <!-- SEARCH -->
+            <input
+                type="text"
+                id="search"
+                placeholder="Search subjects..."
+                onkeyup="searchSubjects()"
+            >
+
+        </div>
+
+    </header>
+
+
+    <!-- ================= HERO ================= -->
+    <section class="hero">
+
+        <h1>
+            Learn Smarter with EXCEL YOU 🚀
+        </h1>
+
+        <p>
+            Explore subjects, lessons, videos, and notes.
+        </p>
+
+    </section>
+
+
+    <!-- ================= MAIN ================= -->
+    <main class="main-layout">
+
+        <!-- SUBJECT SIDEBAR -->
+        <aside class="sidebar">
+
+            <h2>
+                📚 Subjects
+            </h2>
+
+            <div id="subjectContainer"></div>
+
+        </aside>
+
+
+        <!-- CONTENT AREA -->
+        <section class="content-area">
+
+            <!-- WELCOME -->
+            <div
+                id="welcomeBox"
+                class="welcome-box"
+            >
+
+                <h2>
+                    Welcome Student 👋
+                </h2>
+
+                <p>
+                    Select a subject to start learning.
+                </p>
+
+            </div>
+
+
+            <!-- TOPICS -->
+            <div
+                id="topicContainer"
+                class="hidden"
+            ></div>
+
+
+            <!-- LESSON VIEWER -->
+            <div
+                id="lessonViewer"
+                class="lesson-viewer hidden"
+            >
+
+                <div class="lesson-header">
+
+                    <h1 id="lessonTitle">
+                        Lesson Title
+                    </h1>
+
+                </div>
+
+                <div
+                    id="lessonContent"
+                    class="lesson-content"
+                ></div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+    <footer>
+
+        © 2026 EXCEL YOU • Learning Platform
+
+    </footer>
+
+
+    <!-- ================= JS ================= -->
+    <script src="student.js?v=2"></script>
 
 </body>
 </html>

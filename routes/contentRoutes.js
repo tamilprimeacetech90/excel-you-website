@@ -4,45 +4,141 @@ const router = express.Router();
 const Subject = require("../models/Subject");
 const Topic = require("../models/Topic");
 
-//
-// 📚 GET ALL SUBJECTS
-//
-router.get("/admin/subjects", async (req, res) => {
+
+// =========================
+// 🔒 ADMIN CHECK
+// =========================
+function isAdmin(req, res, next) {
+
+    if (req.session.adminId) {
+        return next();
+    }
+
+    return res.status(401).json({
+        error: "Unauthorized"
+    });
+}
+
+
+// =========================
+// 📚 GET ALL SUBJECTS (ADMIN)
+// =========================
+router.get("/admin/subjects", isAdmin, async (req, res) => {
+
     try {
-        const subjects = await Subject.find().sort({ createdAt: -1 });
+
+        const subjects = await Subject.find()
+            .sort({ createdAt: -1 });
+
         res.json(subjects);
+
     } catch (err) {
-        res.status(500).json({ error: err.message });
+
+        res.status(500).json({
+            error: err.message
+        });
     }
 });
 
-//
-// 📖 GET TOPICS BY SUBJECT
-//
-router.get("/admin/topics/:subjectId", async (req, res) => {
+
+// =========================
+// 📖 GET TOPICS BY SUBJECT (ADMIN)
+// =========================
+router.get("/admin/topics/:subjectId", isAdmin, async (req, res) => {
+
     try {
-        const topics = await Topic.find({ subjectId: req.params.subjectId });
+
+        // ADMIN CAN SEE ALL POSTS
+        const topics = await Topic.find({
+            subjectId: req.params.subjectId
+        })
+        .sort({ updatedAt: -1 });
+
         res.json(topics);
+
     } catch (err) {
-        res.status(500).json({ error: err.message });
+
+        res.status(500).json({
+            error: err.message
+        });
     }
 });
 
-//
-// 👀 GET SINGLE TOPIC (STUDENT PREVIEW)
-//
+
+// =========================
+// 👀 GET SINGLE TOPIC (STUDENT)
+// =========================
 router.get("/topic/:id", async (req, res) => {
+
     try {
-        const topic = await Topic.findById(req.params.id);
+
+        // STUDENTS ONLY SEE PUBLISHED
+        const topic = await Topic.findOne({
+            _id: req.params.id,
+            visibility: "public"
+        });
 
         if (!topic) {
-            return res.status(404).json({ error: "Topic not found" });
+
+            return res.status(404).json({
+                error: "Topic not found"
+            });
         }
 
         res.json(topic);
+
     } catch (err) {
-        res.status(500).json({ error: err.message });
+
+        res.status(500).json({
+            error: err.message
+        });
     }
 });
+
+
+// =========================
+// 📚 GET PUBLIC SUBJECTS
+// =========================
+router.get("/subjects", async (req, res) => {
+
+    try {
+
+        const subjects = await Subject.find()
+            .sort({ createdAt: -1 });
+
+        res.json(subjects);
+
+    } catch (err) {
+
+        res.status(500).json({
+            error: err.message
+        });
+    }
+});
+
+
+// =========================
+// 📖 GET PUBLIC TOPICS
+// =========================
+router.get("/topics/:subjectId", async (req, res) => {
+
+    try {
+
+        const topics = await Topic.find({
+            subjectId: req.params.subjectId,
+            visibility: "public"
+        })
+        .sort({ updatedAt: -1 });
+
+        res.json(topics);
+
+    } catch (err) {
+
+        res.status(500).json({
+            error: err.message
+        });
+    }
+});
+
 
 module.exports = router;

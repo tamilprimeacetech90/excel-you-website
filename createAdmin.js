@@ -2,29 +2,64 @@ const dotenv = require("dotenv");
 dotenv.config({ path: "./.env" });
 
 const bcrypt = require("bcrypt");
+
 const connectDB = require("./config/db");
-const Admin = require("./models/Admin");const createAdmin = async () => {
+const Admin = require("./models/Admin");
+
+
+// =====================
+// CREATE ADMIN
+// =====================
+const createAdmin = async () => {
+
     try {
+
+        // ✅ CONNECT DATABASE
         await connectDB();
 
-        await Admin.deleteMany({}); // optional reset
+        console.log("✅ MongoDB Connected");
 
+        // =====================
+        // ADMIN DETAILS
+        // =====================
+        const username = "master";
         const password = "admin123";
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        // =====================
+        // DELETE OLD ADMINS
+        // =====================
+        await Admin.deleteMany({});
 
+        console.log("🗑 Old admins removed");
+
+        // =====================
+        // HASH PASSWORD
+        // =====================
+        const hashedPassword =
+            await bcrypt.hash(password, 10);
+
+        // =====================
+        // CREATE ADMIN
+        // =====================
         await Admin.create({
-            username: "master",
+            username,
             password: hashedPassword
         });
 
         console.log("✅ Admin created successfully");
-console.log("BODY:", require.body);
+        console.log("👤 Username:", username);
+        console.log("🔑 Password:", password);
 
         process.exit();
+
     } catch (err) {
-        console.error(err);
+
+        console.error("❌ ERROR:", err);
+
         process.exit(1);
     }
 };
+
+
+// RUN
 createAdmin();
