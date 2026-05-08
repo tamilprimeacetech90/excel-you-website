@@ -1,8 +1,7 @@
 const express = require("express");
 const path = require("path");
 const session = require("express-session");
-const MongoStore = require("connect-mongo");
-const dotenv = require("dotenv");
+const MongoStore = require("connect-mongo").default;const dotenv = require("dotenv");
 const bcrypt = require("bcrypt");
 
 dotenv.config();
