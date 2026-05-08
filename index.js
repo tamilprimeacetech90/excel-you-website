@@ -53,6 +53,7 @@ app.use(
         resave: false,
         saveUninitialized: false,
 
+        // ✅ FIXED
         store: MongoStore.create({
             mongoUrl: process.env.MONGO_URI,
             collectionName: "sessions"
@@ -60,10 +61,7 @@ app.use(
 
         cookie: {
             maxAge: 1000 * 60 * 60 * 24, // 1 day
-            httpOnly: true,
-
-            // render/production ready
-            secure: false
+            httpOnly: true
         }
     })
 );
@@ -88,37 +86,51 @@ app.use("/api", contentRoutes);
 
 // HOME
 app.get("/", (req, res) => {
+
     res.sendFile(
         path.join(__dirname, "public", "index.html")
     );
+
 });
+
 
 // ABOUT
 app.get("/about", (req, res) => {
+
     res.sendFile(
         path.join(__dirname, "public", "about.html")
     );
+
 });
+
 
 // CONTACT
 app.get("/contact", (req, res) => {
+
     res.sendFile(
         path.join(__dirname, "public", "contact.html")
     );
+
 });
 
-// STUDENT LMS
+
+// 🎓 STUDENT LMS
 app.get("/student", (req, res) => {
+
     res.sendFile(
         path.join(__dirname, "public", "student.html")
     );
+
 });
 
-// LOGIN PAGE
+
+// 🔐 LOGIN PAGE
 app.get("/login", (req, res) => {
+
     res.sendFile(
         path.join(__dirname, "public", "Login.html")
     );
+
 });
 
 
@@ -174,7 +186,9 @@ app.post("/login", async (req, res) => {
         console.error("LOGIN ERROR:", err);
 
         res.status(500).send("Server Error");
+
     }
+
 });
 
 
@@ -188,7 +202,9 @@ app.get("/logout", (req, res) => {
         res.clearCookie("connect.sid");
 
         res.redirect("/login");
+
     });
+
 });
 
 
@@ -201,6 +217,7 @@ app.use((req, res) => {
         <h1>404 - Page Not Found</h1>
         <a href="/">Go Home</a>
     `);
+
 });
 
 
@@ -214,4 +231,5 @@ app.listen(PORT, () => {
     console.log(
         `✅ Server running on port ${PORT}`
     );
+
 });
