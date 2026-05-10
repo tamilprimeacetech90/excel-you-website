@@ -140,7 +140,7 @@
 
       align-items: center;
 
-      padding: 20px 8%;
+      padding: 14px 5%;
 
       position: sticky;
 
@@ -154,11 +154,27 @@
 
       border-bottom: 1px solid var(--border);
 
+      gap: 20px;
+
+    }
+
+    .logo-wrap {
+
+      display: flex;
+
+      align-items: center;
+
+      flex-shrink: 0;
+
     }
 
     .logo-img {
 
-      height: 58px;
+      width: clamp(140px, 18vw, 240px);
+
+      height: auto;
+
+      object-fit: contain;
 
     }
 
@@ -167,6 +183,8 @@
       display: flex;
 
       align-items: center;
+
+      justify-content: flex-end;
 
       gap: 18px;
 
@@ -179,6 +197,14 @@
       color: var(--text);
 
       font-size: 15px;
+
+      transition: 0.3s;
+
+    }
+
+    .nav-links a:hover {
+
+      opacity: 0.7;
 
     }
 
@@ -198,6 +224,8 @@
 
       font-weight: 600;
 
+      white-space: nowrap;
+
     }
 
     .theme-toggle {
@@ -216,6 +244,14 @@
       color: var(--text);
 
       font-size: 18px;
+
+      transition: 0.3s;
+
+    }
+
+    .theme-toggle:hover {
+
+      transform: rotate(15deg);
 
     }
 
@@ -322,6 +358,8 @@
 
       font-weight: 600;
 
+      transition: 0.3s;
+
     }
 
     .primary-btn {
@@ -343,6 +381,13 @@
       background: var(--glass);
 
       color: var(--text);
+
+    }
+
+    .primary-btn:hover,
+    .secondary-btn:hover {
+
+      transform: translateY(-4px);
 
     }
 
@@ -510,6 +555,32 @@
     }
 
     /* =========================
+       TABLET
+    ========================= */
+
+    @media(max-width:992px){
+
+      nav {
+
+        padding: 14px 4%;
+
+      }
+
+      .nav-links {
+
+        gap: 14px;
+
+      }
+
+      .logo-img {
+
+        width: clamp(130px, 22vw, 210px);
+
+      }
+
+    }
+
+    /* =========================
        MOBILE
     ========================= */
 
@@ -519,7 +590,35 @@
 
         flex-direction: column;
 
-        gap: 18px;
+        align-items: center;
+
+        gap: 16px;
+
+        padding: 14px 20px;
+
+      }
+
+      .logo-wrap {
+
+        width: 100%;
+
+        justify-content: center;
+
+      }
+
+      .logo-img {
+
+        width: clamp(150px, 50vw, 240px);
+
+      }
+
+      .nav-links {
+
+        width: 100%;
+
+        justify-content: center;
+
+        gap: 14px;
 
       }
 
@@ -558,6 +657,33 @@
 
     }
 
+    /* =========================
+       SMALL MOBILE
+    ========================= */
+
+    @media(max-width:480px){
+
+      .nav-links a {
+
+        font-size: 14px;
+
+      }
+
+      .theme-toggle {
+
+        width: 42px;
+        height: 42px;
+
+      }
+
+      .hero h1 {
+
+        font-size: 38px;
+
+      }
+
+    }
+
   </style>
 
 </head>
@@ -573,11 +699,15 @@
 
   <nav>
 
-    <img
-      src="/assets/logo/full-logo.png"
-      class="logo-img"
-      alt="EXCEL YOU"
-    >
+    <div class="logo-wrap">
+
+      <img
+        src="/assets/logo/full-logo.png"
+        class="logo-img"
+        alt="EXCEL YOU"
+      >
+
+    </div>
 
     <div class="nav-links">
 
