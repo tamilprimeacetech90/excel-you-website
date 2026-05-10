@@ -1,10 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
-const Subject = require("./models/Subject");
-const Topic = require("./models/Topic");
-const path = require("path");
-
+const Subject = require("../models/Subject");
+const Topic = require("../models/Topic");
+path.join(__dirname, "../public", "admin.html")
 
 // =========================
 // 🔒 ADMIN MIDDLEWARE
