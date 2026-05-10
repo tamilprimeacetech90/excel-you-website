@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-const Subject = require("./models/Subject");
-const Topic = require("./models/Topic");
+const Subject = require("../models/Subject");
+const Topic = require("../models/Topic");
 const path = require("path");
 
 // =========================

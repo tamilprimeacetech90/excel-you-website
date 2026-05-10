@@ -1,491 +1,372 @@
+console.log("🚀 INDEX FILE STARTED");
+
+process.on("uncaughtException", (err) => {
+    console.error("UNCAUGHT EXCEPTION:", err);
+});
+
+process.on("unhandledRejection", (err) => {
+    console.error("UNHANDLED REJECTION:", err);
+});
+
 const express = require("express");
-const router = express.Router();
+const path = require("path");
+const session = require("express-session");
+const MongoStore = require("connect-mongo").default;
+const dotenv = require("dotenv");
+const bcrypt = require("bcrypt");
 
-const Subject = require("../models/Subject");
-const Topic = require("../models/Topic");
-path.join(__dirname, "../public", "admin.html")
+dotenv.config();
 
-// =========================
-// 🔒 ADMIN MIDDLEWARE
-// =========================
-function isAdmin(req, res, next) {
+const Admin = require("./models/Admin");
+const connectDB = require("./config/db");
 
-    if (req.session.adminId) {
-        return next();
+const adminRoutes = require("./routes/adminRoutes");
+const contentRoutes = require("./routes/contentRoutes");
+const uploadRoutes = require("./routes/uploadRoutes");
+
+const app = express();
+
+
+// =====================
+// 🔌 DATABASE CONNECT
+// =====================
+(async () => {
+
+    try {
+
+        await connectDB();
+
+        console.log("✅ DATABASE CONNECTED");
+
+    } catch (err) {
+
+        console.error(
+            "❌ DATABASE CONNECTION ERROR:",
+            err
+        );
+
+        process.exit(1);
     }
 
-    return res.redirect("/login");
-}
+})();
 
 
-// =========================
-// 🏠 ADMIN PAGE
-// FINAL URL => /api/admin
-// =========================
-router.get("/", isAdmin, (req, res) => {
+// =====================
+// 🔐 TRUST PROXY
+// =====================
+app.set("trust proxy", 1);
+
+
+// =====================
+// 🔐 BODY PARSER
+// =====================
+app.use(express.urlencoded({
+    extended: true
+}));
+
+app.use(express.json());
+
+
+// =====================
+// 📁 STATIC FILES
+// =====================
+app.use(
+    express.static(
+        path.join(__dirname, "public")
+    )
+);
+
+app.use(
+    "/uploads",
+    express.static(
+        path.join(__dirname, "public/uploads")
+    )
+);
+
+
+// =====================
+// 🔐 SESSION SETUP
+// =====================
+app.use(
+    session({
+
+        secret:
+            process.env.SESSION_SECRET ||
+            "mySuperSecretKey@2026!",
+
+        resave: false,
+
+        saveUninitialized: false,
+
+        store: MongoStore.create({
+
+            mongoUrl:
+                process.env.MONGO_URI,
+
+            collectionName:
+                "sessions"
+
+        }),
+
+        cookie: {
+
+            maxAge:
+                1000 * 60 * 60 * 24,
+
+            httpOnly: true,
+
+            secure: false
+
+        }
+
+    })
+);
+
+
+// =====================
+// 📤 UPLOAD ROUTES
+// =====================
+app.use(
+    "/api/upload",
+    uploadRoutes
+);
+
+
+// =====================
+// 🔗 API ROUTES
+// =====================
+app.use(
+    "/api/admin",
+    adminRoutes
+);
+
+app.use(
+    "/api",
+    contentRoutes
+);
+
+
+// =====================
+// 🌍 WEBSITE PAGES
+// =====================
+
+// HOME
+app.get("/", (req, res) => {
 
     res.sendFile(
-        path.join(__dirname, "../public", "admin.html")
+        path.join(
+            __dirname,
+            "public",
+            "index.html"
+        )
     );
 
 });
 
 
-// =========================
-// 📘 CREATE SUBJECT
-// =========================
-router.post("/subject", isAdmin, async (req, res) => {
+// ABOUT
+app.get("/about", (req, res) => {
+
+    res.sendFile(
+        path.join(
+            __dirname,
+            "public",
+            "about.html"
+        )
+    );
+
+});
+
+
+// CONTACT
+app.get("/contact", (req, res) => {
+
+    res.sendFile(
+        path.join(
+            __dirname,
+            "public",
+            "contact.html"
+        )
+    );
+
+});
+
+
+// STUDENT
+app.get("/student", (req, res) => {
+
+    res.sendFile(
+        path.join(
+            __dirname,
+            "public",
+            "student.html"
+        )
+    );
+
+});
+
+
+// LOGIN PAGE
+app.get("/login", (req, res) => {
+
+    res.sendFile(
+        path.join(
+            __dirname,
+            "public",
+            "Login.html"
+        )
+    );
+
+});
+
+
+// =====================
+// 🔐 LOGIN HANDLER
+// =====================
+app.post("/login", async (req, res) => {
 
     try {
 
         const {
-            name,
-            description,
-            language
+            username,
+            password
         } = req.body;
 
-        if (!name) {
+        if (!username || !password) {
 
-            return res.status(400).json({
-                error: "Subject name required"
-            });
-        }
-
-        const subject = await Subject.create({
-
-            name,
-            description,
-            language,
-
-            createdAt: Date.now()
-
-        });
-
-        res.json(subject);
-
-    } catch (err) {
-
-        console.error(err);
-
-        res.status(500).json({
-            error: err.message
-        });
-    }
-});
-
-
-// =========================
-// 📚 GET SUBJECTS
-// =========================
-router.get("/subjects", isAdmin, async (req, res) => {
-
-    try {
-
-        const subjects = await Subject.find()
-            .sort({ createdAt: -1 });
-
-        res.json(subjects);
-
-    } catch (err) {
-
-        console.error(err);
-
-        res.status(500).json({
-            error: err.message
-        });
-    }
-});
-
-
-// =========================
-// 📖 GET TOPICS BY SUBJECT
-// =========================
-router.get("/topics/:subjectId", isAdmin, async (req, res) => {
-
-    try {
-
-        const topics = await Topic.find({
-            subjectId: req.params.subjectId
-        }).sort({ updatedAt: -1 });
-
-        res.json(topics);
-
-    } catch (err) {
-
-        console.error(err);
-
-        res.status(500).json({
-            error: err.message
-        });
-    }
-});
-
-
-// =========================
-// 📖 CREATE TOPIC
-// =========================
-router.post("/topic", isAdmin, async (req, res) => {
-
-    try {
-
-        const {
-            title,
-            subjectId,
-            language
-        } = req.body;
-
-        if (!title || !subjectId) {
-
-            return res.status(400).json({
-                error: "Title and Subject ID required"
-            });
-        }
-
-        const topic = await Topic.create({
-
-            title,
-            subjectId,
-            language,
-
-            visibility: "private",
-
-            contentBlocks: [],
-
-            contentHTML: "",
-
-            createdAt: Date.now(),
-            updatedAt: Date.now()
-
-        });
-
-        res.json(topic);
-
-    } catch (err) {
-
-        console.error(err);
-
-        res.status(500).json({
-            error: err.message
-        });
-    }
-});
-
-
-// =========================
-// 👀 GET SINGLE TOPIC
-// =========================
-router.get("/topic/:id", isAdmin, async (req, res) => {
-
-    try {
-
-        const topic = await Topic.findById(req.params.id);
-
-        if (!topic) {
-
-            return res.status(404).json({
-                error: "Topic not found"
-            });
-        }
-
-        res.json(topic);
-
-    } catch (err) {
-
-        console.error(err);
-
-        res.status(500).json({
-            error: err.message
-        });
-    }
-});
-
-
-// =========================
-// ✏️ UPDATE TOPIC
-// =========================
-router.put("/topic/:id", isAdmin, async (req, res) => {
-
-    try {
-
-        const updateData = {
-
-            updatedAt: Date.now()
-
-        };
-
-        // HTML CONTENT
-        if (req.body.contentHTML !== undefined) {
-
-            updateData.contentHTML =
-                req.body.contentHTML;
-        }
-
-        // CONTENT BLOCKS
-        if (req.body.contentBlocks !== undefined) {
-
-            updateData.contentBlocks =
-                req.body.contentBlocks;
-        }
-
-        // TITLE
-        if (req.body.title !== undefined) {
-
-            updateData.title =
-                req.body.title;
-        }
-
-        const updated =
-            await Topic.findByIdAndUpdate(
-
-                req.params.id,
-
-                updateData,
-
-                { new: true }
-
+            return res.send(
+                "❌ Username and password required"
             );
 
-        if (!updated) {
-
-            return res.status(404).json({
-                error: "Topic not found"
-            });
         }
 
-        res.json(updated);
+        // FIND ADMIN
+        const admin =
+            await Admin.findOne({
+                username
+            });
 
-    } catch (err) {
+        if (!admin) {
 
-        console.error(err);
-
-        res.status(500).json({
-            error: err.message
-        });
-    }
-});
-
-
-// =========================
-// 🚀 PUBLISH TOPIC
-// =========================
-router.post("/topic/publish/:id", isAdmin, async (req, res) => {
-
-    try {
-
-        const topic =
-            await Topic.findByIdAndUpdate(
-
-                req.params.id,
-
-                {
-                    visibility: "public",
-                    updatedAt: Date.now()
-                },
-
-                { new: true }
+            return res.send(
+                "❌ Invalid username or password"
             );
 
-        if (!topic) {
-
-            return res.status(404).json({
-                error: "Topic not found"
-            });
         }
 
-        res.json(topic);
-
-    } catch (err) {
-
-        console.error(err);
-
-        res.status(500).json({
-            error: err.message
-        });
-    }
-});
-
-
-// =========================
-// 🔒 UNPUBLISH TOPIC
-// =========================
-router.post("/topic/unpublish/:id", isAdmin, async (req, res) => {
-
-    try {
-
-        const topic =
-            await Topic.findByIdAndUpdate(
-
-                req.params.id,
-
-                {
-                    visibility: "private",
-                    updatedAt: Date.now()
-                },
-
-                { new: true }
+        // CHECK PASSWORD
+        const isMatch =
+            await bcrypt.compare(
+                password,
+                admin.password
             );
 
-        if (!topic) {
+        if (!isMatch) {
 
-            return res.status(404).json({
-                error: "Topic not found"
-            });
+            return res.send(
+                "❌ Invalid username or password"
+            );
+
         }
 
-        res.json(topic);
+        // SAVE SESSION
+        req.session.adminId =
+            admin._id;
+
+        req.session.save((err) => {
+
+            if (err) {
+
+                console.error(
+                    "❌ SESSION SAVE ERROR:",
+                    err
+                );
+
+                return res
+                    .status(500)
+                    .send("Session Error");
+
+            }
+
+            console.log(
+                "✅ LOGIN SUCCESS"
+            );
+
+            return res.redirect(
+                "/api/admin"
+            );
+
+        });
 
     } catch (err) {
 
-        console.error(err);
-
-        res.status(500).json({
-            error: err.message
-        });
-    }
-});
-
-
-// =========================
-// 🗑️ DELETE SUBJECT
-// =========================
-router.delete("/subject/:id", isAdmin, async (req, res) => {
-
-    try {
-
-        await Subject.findByIdAndDelete(
-            req.params.id
+        console.error(
+            "❌ LOGIN ERROR:",
+            err
         );
 
-        await Topic.deleteMany({
-            subjectId: req.params.id
-        });
+        res.status(500)
+            .send("Server Error");
 
-        res.json({
-            message: "Subject + Topics deleted ✔"
-        });
-
-    } catch (err) {
-
-        console.error(err);
-
-        res.status(500).json({
-            error: err.message
-        });
     }
+
 });
 
 
-// =========================
-// 🗑️ DELETE TOPIC
-// =========================
-router.delete("/topic/:id", isAdmin, async (req, res) => {
+// =====================
+// 🚪 LOGOUT
+// =====================
+app.get("/logout", (req, res) => {
 
-    try {
+    req.session.destroy(() => {
 
-        await Topic.findByIdAndDelete(
-            req.params.id
+        res.clearCookie(
+            "connect.sid"
         );
 
-        res.json({
-            message: "Topic deleted ✔"
-        });
+        res.redirect("/login");
 
-    } catch (err) {
+    });
 
-        console.error(err);
-
-        res.status(500).json({
-            error: err.message
-        });
-    }
 });
 
 
-// =========================
-// 📊 DASHBOARD STATS
-// =========================
-router.get("/stats", isAdmin, async (req, res) => {
+// =====================
+// ❌ 404 PAGE
+// =====================
+app.use((req, res) => {
+
+    res.status(404).send(`
+        <h1>404 - Page Not Found</h1>
+        <a href="/">Go Home</a>
+    `);
+
+});
+
+
+// =====================
+// 🚀 START SERVER
+// =====================
+const PORT = process.env.PORT || 3000;
+
+(async () => {
 
     try {
 
-        const subjects =
-            await Subject.countDocuments();
+        await connectDB();
 
-        const topics =
-            await Topic.countDocuments();
+        console.log("MongoDB Connected ✔");
 
-        const published =
-            await Topic.countDocuments({
-                visibility: "public"
-            });
+        app.listen(PORT, "0.0.0.0", () => {
 
-        const drafts =
-            await Topic.countDocuments({
-                visibility: "private"
-            });
-
-        res.json({
-
-            subjects,
-            topics,
-            published,
-            drafts
+            console.log(`Server running on port ${PORT}`);
 
         });
 
     } catch (err) {
 
-        console.error(err);
+        console.error("FAILED TO START:", err);
 
-        res.status(500).json({
-            error: err.message
-        });
     }
-});
 
-
-// =========================
-// 📰 GET POSTS
-// =========================
-router.get("/posts", isAdmin, async (req, res) => {
-
-    try {
-
-        const filter = {};
-
-        // SUBJECT FILTER
-        if (req.query.subjectId) {
-
-            filter.subjectId =
-                req.query.subjectId;
-        }
-
-        // VISIBILITY FILTER
-        if (req.query.visibility) {
-
-            filter.visibility =
-                req.query.visibility;
-        }
-
-        const posts = await Topic.find(filter)
-
-            .populate("subjectId")
-
-            .sort({
-                updatedAt: -1
-            });
-
-        res.json(posts);
-
-    } catch (err) {
-
-        console.error(err);
-
-        res.status(500).json({
-            error: err.message
-        });
-    }
-});
-
-
-module.exports = router;
+})();
