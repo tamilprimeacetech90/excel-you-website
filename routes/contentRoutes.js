@@ -1,8 +1,12 @@
 const express = require("express");
+
 const router = express.Router();
 
-const Subject = require("../models/Subject");
-const Topic = require("../models/Topic");
+const Subject =
+    require("../models/Subject");
+
+const Topic =
+    require("../models/Topic");
 
 
 // =========================
@@ -11,134 +15,280 @@ const Topic = require("../models/Topic");
 function isAdmin(req, res, next) {
 
     if (req.session.adminId) {
+
         return next();
+
     }
 
     return res.status(401).json({
+
         error: "Unauthorized"
+
     });
+
 }
 
 
 // =========================
 // 📚 GET ALL SUBJECTS (ADMIN)
 // =========================
-router.get("/admin/subjects", isAdmin, async (req, res) => {
+router.get(
+    "/admin/subjects",
+    isAdmin,
+    async (req, res) => {
 
-    try {
+        try {
 
-        const subjects = await Subject.find()
-            .sort({ createdAt: -1 });
+            const subjects =
+                await Subject.find()
+                .sort({
+                    createdAt: -1
+                });
 
-        res.json(subjects);
+            res.json(subjects);
 
-    } catch (err) {
+        } catch (err) {
 
-        res.status(500).json({
-            error: err.message
-        });
+            res.status(500).json({
+
+                error: err.message
+
+            });
+
+        }
+
     }
-});
+);
 
 
 // =========================
 // 📖 GET TOPICS BY SUBJECT (ADMIN)
 // =========================
-router.get("/admin/topics/:subjectId", isAdmin, async (req, res) => {
+router.get(
+    "/admin/topics/:subjectId",
+    isAdmin,
+    async (req, res) => {
 
-    try {
+        try {
 
-        // ADMIN CAN SEE ALL POSTS
-        const topics = await Topic.find({
-            subjectId: req.params.subjectId
-        })
-        .sort({ updatedAt: -1 });
+            const topics =
+                await Topic.find({
 
-        res.json(topics);
+                    subjectId:
+                        req.params.subjectId
 
-    } catch (err) {
+                })
+                .sort({
+                    updatedAt: -1
+                });
 
-        res.status(500).json({
-            error: err.message
-        });
+            res.json(topics);
+
+        } catch (err) {
+
+            res.status(500).json({
+
+                error: err.message
+
+            });
+
+        }
+
     }
-});
+);
 
 
 // =========================
 // 👀 GET SINGLE TOPIC (STUDENT)
 // =========================
-router.get("/topic/:id", async (req, res) => {
+router.get(
+    "/topic/:id",
+    async (req, res) => {
 
-    try {
+        try {
 
-        // STUDENTS ONLY SEE PUBLISHED
-        const topic = await Topic.findOne({
-            _id: req.params.id,
-            visibility: "public"
-        });
+            const topic =
+                await Topic.findOne({
 
-        if (!topic) {
+                    _id:
+                        req.params.id,
 
-            return res.status(404).json({
-                error: "Topic not found"
+                    visibility:
+                        "public"
+
+                });
+
+            if (!topic) {
+
+                return res.status(404).json({
+
+                    error:
+                        "Topic not found"
+
+                });
+
+            }
+
+            res.json(topic);
+
+        } catch (err) {
+
+            res.status(500).json({
+
+                error: err.message
+
             });
+
         }
 
-        res.json(topic);
-
-    } catch (err) {
-
-        res.status(500).json({
-            error: err.message
-        });
     }
-});
+);
 
 
 // =========================
 // 📚 GET PUBLIC SUBJECTS
 // =========================
-router.get("/subjects", async (req, res) => {
+router.get(
+    "/subjects",
+    async (req, res) => {
 
-    try {
+        try {
 
-        const subjects = await Subject.find()
-            .sort({ createdAt: -1 });
+            const subjects =
+                await Subject.find()
+                .sort({
+                    createdAt: -1
+                });
 
-        res.json(subjects);
+            res.json(subjects);
 
-    } catch (err) {
+        } catch (err) {
 
-        res.status(500).json({
-            error: err.message
-        });
+            res.status(500).json({
+
+                error: err.message
+
+            });
+
+        }
+
     }
-});
+);
 
 
 // =========================
 // 📖 GET PUBLIC TOPICS
 // =========================
-router.get("/topics/:subjectId", async (req, res) => {
+router.get(
+    "/topics/:subjectId",
+    async (req, res) => {
 
-    try {
+        try {
 
-        const topics = await Topic.find({
-            subjectId: req.params.subjectId,
-            visibility: "public"
-        })
-        .sort({ updatedAt: -1 });
+            const topics =
+                await Topic.find({
 
-        res.json(topics);
+                    subjectId:
+                        req.params.subjectId,
 
-    } catch (err) {
+                    visibility:
+                        "public"
 
-        res.status(500).json({
-            error: err.message
-        });
+                })
+                .sort({
+                    updatedAt: -1
+                });
+
+            res.json(topics);
+
+        } catch (err) {
+
+            res.status(500).json({
+
+                error: err.message
+
+            });
+
+        }
+
     }
-});
+);
+
+
+// =========================
+// 🏠 HOMEPAGE API
+// =========================
+router.get(
+    "/homepage",
+    async (req, res) => {
+
+        try {
+
+            // SUBJECTS
+            const subjects =
+                await Subject.find()
+                .sort({
+                    createdAt: -1
+                })
+                .limit(6);
+
+            // LATEST PUBLIC TOPICS
+            const latestTopics =
+                await Topic.find({
+
+                    visibility:
+                        "public"
+
+                })
+                .sort({
+                    updatedAt: -1
+                })
+                .limit(6);
+
+            // STATS
+            const totalSubjects =
+                await Subject.countDocuments();
+
+            const totalTopics =
+                await Topic.countDocuments({
+
+                    visibility:
+                        "public"
+
+                });
+
+            // RESPONSE
+            res.json({
+
+                subjects,
+
+                latestTopics,
+
+                stats: {
+
+                    totalSubjects,
+
+                    totalTopics
+
+                }
+
+            });
+
+        } catch (err) {
+
+            console.error(err);
+
+            res.status(500).json({
+
+                error:
+                    "Failed to load homepage"
+
+            });
+
+        }
+
+    }
+);
 
 
 module.exports = router;

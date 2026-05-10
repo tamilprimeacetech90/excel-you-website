@@ -40,6 +40,37 @@
 
   <style>
 
+    /* =========================
+       THEME VARIABLES
+    ========================= */
+
+    :root {
+
+      --bg: #ffffff;
+      --text: #07111f;
+      --card: rgba(255,255,255,0.8);
+      --border: rgba(15,23,42,0.08);
+      --muted: #475569;
+      --nav: rgba(255,255,255,0.7);
+      --glass: rgba(255,255,255,0.6);
+
+      --primary: #2563eb;
+      --secondary: #7c3aed;
+
+    }
+
+    [data-theme="dark"] {
+
+      --bg: #07111f;
+      --text: #ffffff;
+      --card: rgba(255,255,255,0.06);
+      --border: rgba(255,255,255,0.08);
+      --muted: #94a3b8;
+      --nav: rgba(6,11,20,0.7);
+      --glass: rgba(255,255,255,0.05);
+
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -48,29 +79,30 @@
 
     html {
       scroll-behavior: smooth;
-      font-size: 16px;
     }
 
     body {
-      font-family: 'Poppins', sans-serif;
-      background: #07111f;
-      color: white;
-      overflow-x: hidden;
-    }
 
-    img {
-      max-width: 100%;
-      height: auto;
-      display: block;
+      font-family: 'Poppins', sans-serif;
+
+      background: var(--bg);
+
+      color: var(--text);
+
+      overflow-x: hidden;
+
+      transition: 0.3s;
+
     }
 
     a {
       text-decoration: none;
     }
 
-    /* =========================
-       BACKGROUND GLOW
-    ========================= */
+    img {
+      max-width: 100%;
+      display: block;
+    }
 
     .bg-glow {
       position: fixed;
@@ -99,141 +131,219 @@
     ========================= */
 
     nav {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 22px 8%;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      backdrop-filter: blur(16px);
-      background: rgba(6, 11, 20, 0.7);
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
 
-    .logo {
+      width: 100%;
+
       display: flex;
+
+      justify-content: space-between;
+
       align-items: center;
+
+      padding: 20px 8%;
+
+      position: sticky;
+
+      top: 0;
+
+      z-index: 100;
+
+      backdrop-filter: blur(16px);
+
+      background: var(--nav);
+
+      border-bottom: 1px solid var(--border);
+
     }
 
     .logo-img {
-      height: clamp(48px, 5vw, 68px);
-      width: auto;
-      object-fit: contain;
-      display: block;
+
+      height: 58px;
+
     }
 
     .nav-links {
+
       display: flex;
+
       align-items: center;
-      gap: 28px;
+
+      gap: 18px;
+
       flex-wrap: wrap;
+
     }
 
     .nav-links a {
-      color: rgba(255,255,255,0.85);
-      font-size: 15px;
-      transition: 0.3s;
-    }
 
-    .nav-links a:hover {
-      color: white;
+      color: var(--text);
+
+      font-size: 15px;
+
     }
 
     .nav-btn {
-      padding: 11px 20px;
+
+      padding: 11px 18px;
+
       border-radius: 999px;
-      background: linear-gradient(135deg, #2563eb, #7c3aed);
-      color: white;
-      font-weight: 500;
-      box-shadow: 0 10px 25px rgba(37,99,235,0.35);
+
+      background: linear-gradient(
+        135deg,
+        var(--primary),
+        var(--secondary)
+      );
+
+      color: white !important;
+
+      font-weight: 600;
+
+    }
+
+    .theme-toggle {
+
+      width: 46px;
+      height: 46px;
+
+      border-radius: 50%;
+
+      border: none;
+
+      cursor: pointer;
+
+      background: var(--glass);
+
+      color: var(--text);
+
+      font-size: 18px;
+
     }
 
     /* =========================
-       HERO SECTION
+       HERO
     ========================= */
 
     .hero {
-      width: 100%;
+
       min-height: 90vh;
+
       display: flex;
+
       align-items: center;
+
       justify-content: center;
+
       padding: 100px 8%;
-      gap: 70px;
+
+      gap: 60px;
+
       flex-wrap: wrap;
+
     }
 
     .hero-left {
+
       flex: 1;
       min-width: 320px;
+
     }
 
     .hero-badge {
+
       display: inline-block;
+
       padding: 10px 18px;
+
       border-radius: 999px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.12);
+
+      background: var(--glass);
+
+      border: 1px solid var(--border);
+
       margin-bottom: 24px;
-      color: #cbd5e1;
-      font-size: 14px;
+
+      color: var(--muted);
+
     }
 
     .hero h1 {
-      font-size: clamp(42px, 6vw, 68px);
+
+      font-size: clamp(42px, 6vw, 70px);
+
       line-height: 1.1;
+
       margin-bottom: 24px;
-      font-weight: 700;
+
     }
 
     .hero h1 span {
-      background: linear-gradient(135deg, #60a5fa, #a855f7);
+
+      background: linear-gradient(
+        135deg,
+        #60a5fa,
+        #a855f7
+      );
+
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+
     }
 
     .hero p {
+
       font-size: 18px;
-      color: #cbd5e1;
+
+      color: var(--muted);
+
       line-height: 1.8;
+
+      margin-bottom: 34px;
+
       max-width: 620px;
-      margin-bottom: 36px;
+
     }
 
     .hero-buttons {
+
       display: flex;
+
       gap: 18px;
+
       flex-wrap: wrap;
+
+    }
+
+    .primary-btn,
+    .secondary-btn {
+
+      padding: 16px 28px;
+
+      border-radius: 16px;
+
+      font-weight: 600;
+
     }
 
     .primary-btn {
-      padding: 16px 28px;
-      border-radius: 16px;
-      background: linear-gradient(135deg, #2563eb, #7c3aed);
-      color: white;
-      font-weight: 600;
-      transition: 0.3s;
-      box-shadow: 0 12px 35px rgba(37,99,235,0.35);
-    }
 
-    .primary-btn:hover {
-      transform: translateY(-4px);
+      background: linear-gradient(
+        135deg,
+        var(--primary),
+        var(--secondary)
+      );
+
+      color: white;
+
     }
 
     .secondary-btn {
-      padding: 16px 28px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.05);
-      color: white;
-      font-weight: 500;
-      transition: 0.3s;
-    }
 
-    .secondary-btn:hover {
-      background: rgba(255,255,255,0.08);
+      border: 1px solid var(--border);
+
+      background: var(--glass);
+
+      color: var(--text);
+
     }
 
     /* =========================
@@ -241,240 +351,144 @@
     ========================= */
 
     .hero-right {
+
       flex: 1;
+
       min-width: 320px;
+
       display: flex;
+
       justify-content: center;
+
     }
 
     .dashboard-card {
+
       width: 100%;
+
       max-width: 480px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.08);
+
+      background: var(--card);
+
+      border: 1px solid var(--border);
+
       border-radius: 28px;
+
       padding: 28px;
-      backdrop-filter: blur(18px);
-      box-shadow: 0 25px 60px rgba(0,0,0,0.4);
-    }
 
-    .dashboard-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 28px;
-    }
+      backdrop-filter: blur(20px);
 
-    .dashboard-title h3 {
-      font-size: 20px;
-      margin-bottom: 4px;
-    }
+      box-shadow: 0 25px 60px rgba(0,0,0,0.2);
 
-    .dashboard-title p {
-      color: #94a3b8;
-      font-size: 14px;
     }
 
     .dashboard-grid {
+
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+
+      grid-template-columns: repeat(2,1fr);
+
       gap: 18px;
-      margin-bottom: 24px;
+
+      margin-top: 24px;
+
     }
 
     .mini-card {
-      background: rgba(255,255,255,0.05);
-      padding: 20px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,0.06);
-    }
 
-    .mini-card h4 {
-      font-size: 28px;
-      margin-bottom: 8px;
+      background: var(--glass);
+
+      padding: 20px;
+
+      border-radius: 18px;
+
+      border: 1px solid var(--border);
+
     }
 
     .mini-card p {
-      color: #94a3b8;
-      font-size: 14px;
-    }
 
-    .lesson-card {
-      background: rgba(255,255,255,0.05);
-      padding: 18px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,0.06);
-      margin-top: 18px;
-    }
+      color: var(--muted);
 
-    .lesson-card small {
-      color: #60a5fa;
-      font-weight: 500;
-    }
+      margin-top: 8px;
 
-    .lesson-card h3 {
-      margin-top: 10px;
-      margin-bottom: 10px;
-    }
-
-    .lesson-card p {
-      color: #94a3b8;
-      font-size: 14px;
-      line-height: 1.7;
-    }
-
-    /* =========================
-       SECTION
-    ========================= */
-
-    .section {
-      padding: 100px 8%;
-    }
-
-    .section-header {
-      text-align: center;
-      margin-bottom: 60px;
-    }
-
-    .section-header h2 {
-      font-size: clamp(32px, 5vw, 42px);
-      margin-bottom: 18px;
-    }
-
-    .section-header p {
-      color: #94a3b8;
-      max-width: 700px;
-      margin: auto;
-      line-height: 1.8;
-    }
-
-    /* =========================
-       FEATURES
-    ========================= */
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
-    }
-
-    .feature-card {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 24px;
-      padding: 30px;
-      transition: 0.3s;
-      backdrop-filter: blur(14px);
-    }
-
-    .feature-card:hover {
-      transform: translateY(-10px);
-      border-color: rgba(96,165,250,0.4);
-    }
-
-    .feature-icon {
-      font-size: 38px;
-      margin-bottom: 20px;
-    }
-
-    .feature-card h3 {
-      margin-bottom: 14px;
-      font-size: 22px;
-    }
-
-    .feature-card p {
-      color: #94a3b8;
-      line-height: 1.8;
-      font-size: 15px;
     }
 
     /* =========================
        SUBJECTS
     ========================= */
 
+    .section {
+
+      padding: 100px 8%;
+
+    }
+
+    .section-title {
+
+      text-align: center;
+
+      margin-bottom: 50px;
+
+    }
+
+    .section-title h2 {
+
+      font-size: 42px;
+
+      margin-bottom: 14px;
+
+    }
+
+    .section-title p {
+
+      color: var(--muted);
+
+    }
+
     .subjects-grid {
+
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+
+      grid-template-columns:
+        repeat(auto-fit,minmax(280px,1fr));
+
       gap: 24px;
+
     }
 
     .subject-card {
-      overflow: hidden;
-      border-radius: 26px;
-      background: linear-gradient(
-        135deg,
-        rgba(37,99,235,0.18),
-        rgba(124,58,237,0.18)
-      );
-      padding: 32px;
-      border: 1px solid rgba(255,255,255,0.08);
+
+      background: var(--card);
+
+      border: 1px solid var(--border);
+
+      border-radius: 24px;
+
+      padding: 28px;
+
       transition: 0.3s;
+
     }
 
     .subject-card:hover {
-      transform: translateY(-10px);
-    }
 
-    .subject-icon {
-      width: 64px;
-      height: 64px;
-      border-radius: 18px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: rgba(255,255,255,0.08);
-      margin-bottom: 24px;
-      font-size: 28px;
+      transform: translateY(-8px);
+
     }
 
     .subject-card h3 {
-      font-size: 24px;
+
       margin-bottom: 14px;
+
     }
 
     .subject-card p {
-      color: #cbd5e1;
+
+      color: var(--muted);
+
       line-height: 1.7;
-      margin-bottom: 24px;
-    }
 
-    .subject-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: #94a3b8;
-      font-size: 14px;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    /* =========================
-       CTA
-    ========================= */
-
-    .cta {
-      margin: 100px 8%;
-      padding: 60px;
-      border-radius: 32px;
-      text-align: center;
-      background: linear-gradient(
-        135deg,
-        rgba(37,99,235,0.18),
-        rgba(124,58,237,0.18)
-      );
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .cta h2 {
-      font-size: clamp(32px, 5vw, 46px);
-      margin-bottom: 20px;
-    }
-
-    .cta p {
-      color: #cbd5e1;
-      max-width: 700px;
-      margin: auto auto 34px;
-      line-height: 1.8;
     }
 
     /* =========================
@@ -482,150 +496,73 @@
     ========================= */
 
     footer {
-      margin-top: 80px;
+
+      margin-top: 100px;
+
       padding: 40px 8%;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
 
-    footer p {
-      color: #94a3b8;
-    }
+      border-top: 1px solid var(--border);
 
-    .footer-links {
-      display: flex;
-      gap: 24px;
-      flex-wrap: wrap;
-    }
+      text-align: center;
 
-    .footer-links a {
-      color: #cbd5e1;
-      font-size: 15px;
-    }
+      color: var(--muted);
 
-    /* =========================
-       LARGE DESKTOP
-    ========================= */
-
-    @media (min-width: 1600px) {
-
-      .hero,
-      .section,
-      nav,
-      footer {
-        max-width: 1600px;
-        margin: auto;
-      }
-    }
-
-    /* =========================
-       TABLET
-    ========================= */
-
-    @media (max-width: 992px) {
-
-      nav {
-        padding: 20px 5%;
-      }
-
-      .hero {
-        flex-direction: column;
-        text-align: center;
-        padding: 70px 5%;
-      }
-
-      .hero-buttons {
-        justify-content: center;
-      }
-
-      .hero p {
-        margin: auto auto 30px;
-      }
-
-      .section {
-        padding: 80px 5%;
-      }
-
-      .cta {
-        margin: 80px 5%;
-      }
     }
 
     /* =========================
        MOBILE
     ========================= */
 
-    @media (max-width: 768px) {
+    @media(max-width:768px){
 
       nav {
-        flex-direction: column;
-        gap: 18px;
-        padding: 18px 20px;
-      }
 
-      .nav-links {
-        justify-content: center;
-        gap: 14px;
+        flex-direction: column;
+
+        gap: 18px;
+
       }
 
       .hero {
-        padding: 60px 20px;
-        gap: 40px;
-      }
 
-      .hero p {
-        font-size: 16px;
+        padding: 70px 20px;
+
+        text-align: center;
+
       }
 
       .hero-buttons {
+
         flex-direction: column;
-        width: 100%;
+
       }
 
       .primary-btn,
       .secondary-btn {
+
         width: 100%;
-        text-align: center;
+
       }
 
       .dashboard-grid {
+
         grid-template-columns: 1fr;
+
       }
 
       .section {
+
         padding: 70px 20px;
+
       }
 
-      .features-grid,
-      .subjects-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .cta {
-        margin: 60px 20px;
-        padding: 40px 24px;
-      }
-
-      footer {
-        flex-direction: column;
-        text-align: center;
-        padding: 30px 20px;
-      }
-
-      .footer-links {
-        justify-content: center;
-      }
     }
 
   </style>
 
 </head>
 
-<body>
+<body data-theme="dark">
 
   <!-- BACKGROUND -->
 
@@ -636,23 +573,34 @@
 
   <nav>
 
-    <div class="logo">
-
-      <img
-        src="/assets/logo/full-logo.png"
-        alt="EXCEL YOU"
-        class="logo-img"
-      >
-
-    </div>
+    <img
+      src="/assets/logo/full-logo.png"
+      class="logo-img"
+      alt="EXCEL YOU"
+    >
 
     <div class="nav-links">
+
       <a href="/">Home</a>
       <a href="/subjects">Subjects</a>
       <a href="/student">Learn</a>
       <a href="/about">About</a>
       <a href="/contact">Contact</a>
-      <a class="nav-btn" href="/login">Admin</a>
+
+      <button
+        onclick="toggleTheme()"
+        class="theme-toggle"
+      >
+        🌙
+      </button>
+
+      <a
+        href="/login"
+        class="nav-btn"
+      >
+        Admin
+      </a>
+
     </div>
 
   </nav>
@@ -664,26 +612,35 @@
     <div class="hero-left">
 
       <div class="hero-badge">
-        🚀 Modern Tamil + English Learning Platform
+        🚀 Modern Tamil + English LMS Platform
       </div>
 
       <h1>
-        Learn Smarter With <span>EXCEL YOU</span>
+        Learn Smarter With
+        <span>EXCEL YOU</span>
       </h1>
 
       <p>
-        A professional learning platform designed for structured education,
-        powerful lessons, modern UI, and real student-focused learning
-        experiences.
+
+        A modern structured learning platform
+        built for Tamil and English education,
+        professional lessons, and powerful student learning experiences.
+
       </p>
 
       <div class="hero-buttons">
 
-        <a href="/student" class="primary-btn">
+        <a
+          href="/student"
+          class="primary-btn"
+        >
           Start Learning
         </a>
 
-        <a href="/subjects" class="secondary-btn">
+        <a
+          href="/subjects"
+          class="secondary-btn"
+        >
           Browse Subjects
         </a>
 
@@ -695,57 +652,29 @@
 
       <div class="dashboard-card">
 
-        <div class="dashboard-top">
-
-          <div class="dashboard-title">
-            <h3>Learning Dashboard</h3>
-            <p>Modern LMS Experience</p>
-          </div>
-
-          <div style="font-size: 28px;">
-            📘
-          </div>
-
-        </div>
+        <h2>Learning Dashboard</h2>
 
         <div class="dashboard-grid">
 
           <div class="mini-card">
-            <h4>120+</h4>
-            <p>Published Lessons</p>
-          </div>
-
-          <div class="mini-card">
-            <h4>15+</h4>
+            <h3 id="subjectCount">0+</h3>
             <p>Subjects</p>
           </div>
 
           <div class="mini-card">
-            <h4>2K+</h4>
-            <p>Students</p>
+            <h3 id="topicCount">0+</h3>
+            <p>Topics</p>
           </div>
 
           <div class="mini-card">
-            <h4>24/7</h4>
-            <p>Learning Access</p>
+            <h3>24/7</h3>
+            <p>Learning</p>
           </div>
 
-        </div>
-
-        <div class="lesson-card">
-
-          <small>
-            Latest Published Topic
-          </small>
-
-          <h3>
-            Introduction to Machine Learning
-          </h3>
-
-          <p>
-            Learn the fundamentals of AI systems,
-            data patterns, and intelligent prediction models.
-          </p>
+          <div class="mini-card">
+            <h3>AI</h3>
+            <p>Future Ready</p>
+          </div>
 
         </div>
 
@@ -755,6 +684,145 @@
 
   </section>
 
-</body>
+  <!-- SUBJECTS -->
 
+  <section class="section">
+
+    <div class="section-title">
+
+      <h2>Popular Subjects</h2>
+
+      <p>
+        Explore professional structured learning paths
+      </p>
+
+    </div>
+
+    <div
+      class="subjects-grid"
+      id="subjectsContainer"
+    >
+
+    </div>
+
+  </section>
+
+  <!-- FOOTER -->
+
+  <footer>
+
+    © 2026 EXCEL YOU —
+    Modern Tamil + English Learning Platform
+
+  </footer>
+
+  <script>
+
+    // =========================
+    // THEME SYSTEM
+    // =========================
+
+    function toggleTheme() {
+
+      const body =
+        document.body;
+
+      const current =
+        body.getAttribute(
+          "data-theme"
+        );
+
+      const next =
+        current === "dark"
+        ? "light"
+        : "dark";
+
+      body.setAttribute(
+        "data-theme",
+        next
+      );
+
+      localStorage.setItem(
+        "theme",
+        next
+      );
+
+    }
+
+    const savedTheme =
+      localStorage.getItem(
+        "theme"
+      );
+
+    if(savedTheme){
+
+      document.body.setAttribute(
+        "data-theme",
+        savedTheme
+      );
+
+    }
+
+    // =========================
+    // LOAD HOMEPAGE DATA
+    // =========================
+
+    async function loadHomepage() {
+
+      try {
+
+        const res =
+          await fetch(
+            "/api/homepage"
+          );
+
+        const data =
+          await res.json();
+
+        document.getElementById(
+          "subjectCount"
+        ).innerText =
+          data.stats.totalSubjects + "+";
+
+        document.getElementById(
+          "topicCount"
+        ).innerText =
+          data.stats.totalTopics + "+";
+
+        const container =
+          document.getElementById(
+            "subjectsContainer"
+          );
+
+        data.subjects.forEach(subject => {
+
+          container.innerHTML += `
+
+            <div class="subject-card">
+
+              <h3>${subject.name}</h3>
+
+              <p>
+                ${subject.description.substring(0,140)}...
+              </p>
+
+            </div>
+
+          `;
+
+        });
+
+      } catch(err) {
+
+        console.error(err);
+
+      }
+
+    }
+
+    loadHomepage();
+
+  </script>
+
+</body>
 </html>
