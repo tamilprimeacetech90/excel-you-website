@@ -779,13 +779,16 @@
 
   <nav class="navbar">
 
-    <a href="/">
-      <img
-        src="/assets/logo/full-logo.png"
-        class="logo-img"
-      />
-    </a>
+   <a href="/" class="logo-wrap">
 
+  <img
+    id="siteLogo"
+    src="/assets/logo/full-logo-dark.png"
+    alt="EXCEL YOU"
+    class="logo-img"
+  >
+
+</a>
     <button
       class="menu-toggle"
       id="menuToggle"
@@ -977,48 +980,62 @@
 
     // THEME SYSTEM
 
-    const themeBtn =
-      document.getElementById("themeToggle");
+   // THEME SYSTEM
 
-    function applyTheme(theme){
+const themeBtn =
+  document.getElementById("themeToggle");
 
-      document.body.setAttribute(
-        "data-theme",
-        theme
-      );
+const siteLogo =
+  document.getElementById("siteLogo");
 
-      themeBtn.innerHTML =
-        theme === "dark"
-        ? "☀️"
-        : "🌙";
+function applyTheme(theme){
 
-      localStorage.setItem(
-        "theme",
-        theme
-      );
+  document.body.setAttribute(
+    "data-theme",
+    theme
+  );
 
-    }
+  // THEME ICON
 
-    applyTheme(
-      localStorage.getItem("theme")
-      || "light"
+  themeBtn.innerHTML =
+    theme === "dark"
+    ? "☀️"
+    : "🌙";
+
+  // CHANGE LOGO
+
+ siteLogo.src =
+  theme === "dark"
+  ? "/assets/logo/full-logo-white.png"
+  : "/assets/logo/full-logo.png";
+  // SAVE THEME
+
+  localStorage.setItem(
+    "theme",
+    theme
+  );
+
+}
+
+applyTheme(
+  localStorage.getItem("theme")
+  || "light"
+);
+
+themeBtn.onclick = () => {
+
+  const current =
+    document.body.getAttribute(
+      "data-theme"
     );
 
-    themeBtn.onclick = () => {
+  applyTheme(
+    current === "dark"
+    ? "light"
+    : "dark"
+  );
 
-      const current =
-        document.body.getAttribute(
-          "data-theme"
-        );
-
-      applyTheme(
-        current === "dark"
-        ? "light"
-        : "dark"
-      );
-
-    };
-
+};
     // LOAD HOMEPAGE DATA
 
     async function loadHomepage(){
