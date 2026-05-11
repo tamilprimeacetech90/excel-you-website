@@ -28,30 +28,6 @@ const app = express();
 
 
 // =====================
-// 🔌 DATABASE CONNECT
-// =====================
-(async () => {
-
-    try {
-
-        await connectDB();
-
-        console.log("✅ DATABASE CONNECTED");
-
-    } catch (err) {
-
-        console.error(
-            "❌ DATABASE CONNECTION ERROR:",
-            err
-        );
-
-        process.exit(1);
-    }
-
-})();
-
-
-// =====================
 // 🔐 TRUST PROXY
 // =====================
 app.set("trust proxy", 1);
@@ -353,19 +329,28 @@ const PORT = process.env.PORT || 3000;
 
     try {
 
+        // CONNECT DATABASE
         await connectDB();
 
-        console.log("MongoDB Connected ✔");
+        console.log(
+            "✅ MongoDB Connected"
+        );
 
+        // START SERVER
         app.listen(PORT, "0.0.0.0", () => {
 
-            console.log(`Server running on port ${PORT}`);
+            console.log(
+                `🚀 Server running on port ${PORT}`
+            );
 
         });
 
     } catch (err) {
 
-        console.error("FAILED TO START:", err);
+        console.error(
+            "❌ FAILED TO START:",
+            err
+        );
 
     }
 
