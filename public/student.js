@@ -56,6 +56,10 @@ const welcomeBox =
     document.getElementById(
         "welcomeBox"
     );
+const siteLogo =
+    document.getElementById(
+        "siteLogo"
+    );
 
 const searchInput =
     document.getElementById(
@@ -762,6 +766,7 @@ function applyTheme(theme){
         theme
     );
 
+    // THEME BUTTON ICON
     if(themeBtn){
 
         themeBtn.innerHTML =
@@ -774,7 +779,27 @@ function applyTheme(theme){
 
     }
 
+    // =========================
+    // LOGO CHANGE
+    // =========================
+
+    if(siteLogo){
+
+        siteLogo.src =
+
+            theme === "dark"
+
+            ? "/assets/logo/full-logo-white.png"
+
+            : "/assets/logo/full-logo.png";
+
+    }
+
 }
+
+// =========================
+// THEME INIT
+// =========================
 
 const savedTheme =
 
@@ -782,7 +807,13 @@ const savedTheme =
         "theme"
     ) || "dark";
 
+// APPLY SAVED THEME
 applyTheme(savedTheme);
+
+
+// =========================
+// THEME TOGGLE
+// =========================
 
 if(themeBtn){
 
@@ -815,7 +846,6 @@ if(themeBtn){
     );
 
 }
-
 
 // =========================
 // LANGUAGE CHANGE
