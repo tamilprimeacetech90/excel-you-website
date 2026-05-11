@@ -1,484 +1,358 @@
 /* =========================
-   GLOBAL
+   THEME SYSTEM (LIGHT + DARK)
 ========================= */
+
+:root {
+
+    /* LIGHT MODE */
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --text: #0f172a;
+    --text-muted: #64748b;
+    --border: rgba(15, 23, 42, 0.12);
+
+    --primary: #38bdf8;
+    --accent: #2563eb;
+}
+
+[data-theme="dark"] {
+
+    /* DARK MODE */
+    --bg: #0f172a;
+    --card: #111827;
+    --text: #ffffff;
+    --text-muted: #94a3b8;
+    --border: rgba(255, 255, 255, 0.08);
+
+    --primary: #38bdf8;
+    --accent: #7c3aed;
+}
+
+
+/* =========================
+   GLOBAL RESET
+========================= */
+
 * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 body {
+
+    margin: 0;
+
     font-family: Arial, sans-serif;
 
-    background:
-        linear-gradient(
-            135deg,
-            #0f172a,
-            #020617
-        );
+    background: var(--bg);
 
-    color: white;
+    color: var(--text);
 
-    min-height: 100vh;
+    transition: all 0.3s ease;
+}
 
-    display: flex;
-    flex-direction: column;
+a {
+
+    text-decoration: none;
+
+    color: inherit;
 }
 
 
 /* =========================
-   SCROLLBAR
+   NAVBAR
 ========================= */
-::-webkit-scrollbar {
-    width: 8px;
-}
 
-::-webkit-scrollbar-thumb {
-    background: #475569;
-    border-radius: 20px;
-}
-
-::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-
-/* =========================
-   TOPBAR
-========================= */
-.topbar {
+.navbar {
 
     display: flex;
+
     justify-content: space-between;
+
     align-items: center;
 
-    padding: 18px 25px;
+    padding: 15px 40px;
 
-    background: rgba(15, 23, 42, 0.9);
+    background: var(--card);
 
-    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
 
-    border-bottom:
-        1px solid rgba(255,255,255,0.05);
+    position: fixed;
 
-    flex-wrap: wrap;
+    width: 100%;
 
-    gap: 15px;
-}
+    top: 0;
 
-.logo {
-    font-size: 24px;
-    font-weight: bold;
+    z-index: 100;
 
-    color: #818cf8;
+    gap: 20px;
 }
 
 
 /* =========================
-   CONTROLS
+   LOGO
 ========================= */
-.controls {
+
+.logo {
+
+    font-weight: bold;
+
+    color: var(--primary);
+}
+
+.logo-wrap{
+
+    display:flex;
+
+    align-items:center;
+
+    text-decoration:none;
+}
+
+.logo-img{
+
+    height: clamp(42px, 5vw, 58px);
+
+    width:auto;
+
+    max-width:100%;
+
+    object-fit:contain;
+
+    display:block;
+}
+
+
+/* =========================
+   NAV LINKS
+========================= */
+
+.links {
+
     display: flex;
-    gap: 10px;
+
+    align-items: center;
+
     flex-wrap: wrap;
 }
 
-input,
-select {
+.links a {
 
-    padding: 10px 12px;
+    color: var(--text-muted);
 
-    border-radius: 10px;
+    margin: 0 15px;
 
-    border:
-        1px solid rgba(255,255,255,0.05);
+    transition: 0.3s;
 
-    background: #1e293b;
-
-    color: white;
-
-    outline: none;
+    font-weight: 500;
 }
 
-input:focus,
-select:focus {
-    border-color: #6366f1;
+.links a:hover {
+
+    color: var(--primary);
 }
 
 
 /* =========================
    HERO
 ========================= */
+
 .hero {
 
     text-align: center;
 
-    padding: 50px 20px 30px;
+    margin-top: 120px;
+
+    padding: 50px 20px;
 }
 
 .hero h1 {
 
-    font-size: 40px;
+    font-size: 50px;
 
-    margin-bottom: 12px;
+    color: var(--text);
 
-    color: #c7d2fe;
+    margin-bottom: 15px;
 }
 
 .hero p {
 
-    opacity: 0.8;
+    color: var(--text-muted);
 
     font-size: 18px;
+
+    line-height: 1.7;
 }
 
 
 /* =========================
-   MAIN LAYOUT
+   BUTTON
 ========================= */
-.main-layout {
 
-    display: flex;
+button {
 
-    flex: 1;
+    padding: 12px 24px;
 
-    overflow: hidden;
-}
-
-
-/* =========================
-   SIDEBAR
-========================= */
-.sidebar {
-
-    width: 320px;
-
-    background: rgba(15, 23, 42, 0.82);
-
-    border-right:
-        1px solid rgba(255,255,255,0.05);
-
-    padding: 20px;
-
-    overflow-y: auto;
-}
-
-.sidebar h2 {
-
-    margin-bottom: 20px;
-
-    color: #a5b4fc;
-}
-
-
-/* =========================
-   CONTENT AREA
-========================= */
-.content-area {
-
-    flex: 1;
-
-    padding: 25px;
-
-    overflow-y: auto;
-}
-
-
-/* =========================
-   SUBJECT CARD
-========================= */
-.subject-card {
-
-    background: rgba(30, 41, 59, 0.9);
-
-    border:
-        1px solid rgba(255,255,255,0.05);
-
-    padding: 18px;
-
-    border-radius: 16px;
-
-    margin-bottom: 15px;
-
-    cursor: pointer;
-
-    transition: 0.3s;
-}
-
-.subject-card:hover {
-
-    transform: translateY(-4px);
-
-    background: #334155;
-}
-
-.subject-card h3 {
-
-    margin-bottom: 8px;
-
-    color: #c7d2fe;
-}
-
-.subject-card p {
-
-    opacity: 0.8;
-
-    line-height: 1.5;
-}
-
-
-/* =========================
-   TOPIC CARD
-========================= */
-.topic-card {
-
-    background: rgba(30, 41, 59, 0.9);
-
-    border:
-        1px solid rgba(255,255,255,0.05);
-
-    padding: 16px;
-
-    border-radius: 14px;
-
-    margin-bottom: 15px;
-
-    cursor: pointer;
-
-    transition: 0.3s;
-}
-
-.topic-card:hover {
-
-    transform: translateX(5px);
-
-    background: #334155;
-}
-
-.topic-card h3 {
-
-    color: #e2e8f0;
-}
-
-
-/* =========================
-   TOPIC HEADER
-========================= */
-.topic-header {
-
-    margin-bottom: 25px;
-}
-
-.topic-header h2 {
-
-    margin-bottom: 8px;
-
-    color: #c7d2fe;
-}
-
-
-/* =========================
-   WELCOME BOX
-========================= */
-.welcome-box {
-
-    background: rgba(30, 41, 59, 0.85);
-
-    padding: 40px;
-
-    border-radius: 20px;
-
-    text-align: center;
-
-    border:
-        1px solid rgba(255,255,255,0.05);
-}
-
-.welcome-box h2 {
-
-    margin-bottom: 15px;
-
-    color: #c7d2fe;
-}
-
-
-/* =========================
-   LESSON VIEWER
-========================= */
-.lesson-viewer {
-
-    background: rgba(15, 23, 42, 0.92);
-
-    padding: 30px;
-
-    border-radius: 20px;
-
-    border:
-        1px solid rgba(255,255,255,0.05);
-}
-
-.lesson-header {
-
-    margin-bottom: 25px;
-}
-
-.lesson-header h1 {
-
-    color: #c7d2fe;
-}
-
-
-/* =========================
-   LESSON CONTENT
-========================= */
-.lesson-content {
-
-    line-height: 1.8;
-
-    font-size: 17px;
-}
-
-.lesson-content h1,
-.lesson-content h2,
-.lesson-content h3 {
-
-    margin-top: 25px;
-    margin-bottom: 12px;
-
-    color: #c7d2fe;
-}
-
-.lesson-content p {
-
-    margin-bottom: 15px;
-
-    opacity: 0.95;
-}
-
-.lesson-content img {
-
-    max-width: 100%;
-
-    border-radius: 14px;
-
-    margin: 20px 0;
-}
-
-.lesson-content iframe {
-
-    width: 100%;
-
-    height: 420px;
+    background: linear-gradient(
+        135deg,
+        var(--primary),
+        var(--accent)
+    );
 
     border: none;
 
-    border-radius: 14px;
+    color: white;
 
-    margin: 20px 0;
+    font-weight: bold;
+
+    margin-top: 20px;
+
+    cursor: pointer;
+
+    border-radius: 10px;
+
+    transition: 0.3s;
+}
+
+button:hover {
+
+    transform: translateY(-3px);
 }
 
 
 /* =========================
-   EMPTY BOX
+   SECTION
 ========================= */
-.empty-box {
 
-    background: rgba(30, 41, 59, 0.85);
-
-    padding: 20px;
-
-    border-radius: 14px;
+.section {
 
     text-align: center;
 
-    opacity: 0.8;
+    margin-top: 50px;
+
+    padding: 20px;
+}
+
+.section h2 {
+
+    color: var(--text);
+
+    margin-bottom: 20px;
 }
 
 
 /* =========================
-   HIDDEN
+   CARDS
 ========================= */
-.hidden {
-    display: none;
+
+.cards {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 20px;
+
+    margin-top: 20px;
+
+    flex-wrap: wrap;
 }
 
+.card {
 
-/* =========================
-   FOOTER
-========================= */
-footer {
-
-    text-align: center;
+    background: var(--card);
 
     padding: 20px;
 
-    background: rgba(15, 23, 42, 0.92);
+    border-radius: 12px;
 
-    border-top:
-        1px solid rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
 
-    opacity: 0.8;
+    transition: 0.3s;
+
+    min-width: 200px;
+}
+
+.card:hover {
+
+    transform: translateY(-5px);
 }
 
 
 /* =========================
-   MOBILE
+   PROFILE IMAGE
 ========================= */
-@media (max-width: 900px) {
 
-    .main-layout {
+.profile {
 
-        flex-direction: column;
-    }
+    width: 150px;
 
-    .sidebar {
+    height: 150px;
 
-        width: 100%;
+    border-radius: 50%;
 
-        border-right: none;
+    margin-bottom: 20px;
 
-        border-bottom:
-            1px solid rgba(255,255,255,0.05);
-    }
+    border: 3px solid var(--primary);
+
+    object-fit: cover;
+}
+
+
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
 
     .hero h1 {
 
         font-size: 30px;
     }
 
-    .lesson-content iframe {
+    .hero p {
 
-        height: 250px;
+        font-size: 16px;
     }
-}
 
-@media (max-width: 600px) {
-
-    .topbar {
+    .cards {
 
         flex-direction: column;
 
-        align-items: flex-start;
+        align-items: center;
     }
 
-    .controls {
+    .card {
 
-        width: 100%;
+        width: 90%;
     }
 
-    input,
-    select {
+    .navbar {
 
-        width: 100%;
+        flex-direction: column;
+
+        text-align: center;
+
+        gap: 15px;
+
+        padding: 15px 20px;
     }
 
-    .content-area {
+    .links {
 
-        padding: 15px;
+        justify-content: center;
     }
 
-    .lesson-viewer {
+    .links a {
 
-        padding: 20px;
+        display: block;
+
+        margin: 8px 10px;
+    }
+
+    .logo-img{
+
+        height: 48px;
     }
 }

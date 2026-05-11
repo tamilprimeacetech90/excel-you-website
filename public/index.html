@@ -4,684 +4,216 @@
 <head>
 
   <meta charset="UTF-8" />
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  />
-
-  <meta
-    name="theme-color"
-    content="#07111f"
-  />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#07111f" />
 
   <title>EXCEL YOU</title>
 
-  <!-- FAVICON -->
-  <link
-    rel="icon"
-    type="image/png"
-    href="/assets/logo/favicon.png"
-  />
+  <link rel="icon" type="image/png" href="/assets/logo/favicon.png" />
 
-  <!-- GOOGLE FONT -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <link
-    rel="preconnect"
-    href="https://fonts.gstatic.com"
-    crossorigin
-  >
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet"
-  >
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
 
-    /* =========================
-       THEME VARIABLES
-    ========================= */
+    /* ================= THEME ================= */
 
     :root {
-
       --bg: #ffffff;
       --text: #07111f;
-      --card: rgba(255,255,255,0.8);
-      --border: rgba(15,23,42,0.08);
+      --card: #ffffff;
+      --border: rgba(0,0,0,0.08);
       --muted: #475569;
-      --nav: rgba(255,255,255,0.7);
-      --glass: rgba(255,255,255,0.6);
-
+      --nav: rgba(255,255,255,0.85);
       --primary: #2563eb;
       --secondary: #7c3aed;
-
     }
 
     [data-theme="dark"] {
-
       --bg: #07111f;
       --text: #ffffff;
       --card: rgba(255,255,255,0.06);
       --border: rgba(255,255,255,0.08);
       --muted: #94a3b8;
-      --nav: rgba(6,11,20,0.7);
-      --glass: rgba(255,255,255,0.05);
-
+      --nav: rgba(6,11,20,0.75);
     }
 
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
+      font-family: 'Poppins', sans-serif;
     }
 
     body {
-
-      font-family: 'Poppins', sans-serif;
-
       background: var(--bg);
-
       color: var(--text);
-
-      overflow-x: hidden;
-
       transition: 0.3s;
-
+      overflow-x: hidden;
     }
 
-    a {
-      text-decoration: none;
-    }
+    a { text-decoration: none; color: inherit; }
 
-    img {
-      max-width: 100%;
-      display: block;
-    }
+    /* ================= NAV ================= */
 
-    .bg-glow {
-      position: fixed;
-      width: 500px;
-      height: 500px;
-      border-radius: 50%;
-      filter: blur(120px);
-      opacity: 0.18;
-      z-index: -1;
-    }
-
-    .glow1 {
-      background: #2563eb;
-      top: -120px;
-      left: -100px;
-    }
-
-    .glow2 {
-      background: #9333ea;
-      bottom: -120px;
-      right: -100px;
-    }
-
-    /* =========================
-       NAVBAR
-    ========================= */
-
-    nav {
-
-      width: 100%;
-
+    .navbar {
       display: flex;
-
       justify-content: space-between;
-
       align-items: center;
-
       padding: 14px 5%;
-
       position: sticky;
-
       top: 0;
-
-      z-index: 100;
-
-      backdrop-filter: blur(16px);
-
+      z-index: 1000;
       background: var(--nav);
-
+      backdrop-filter: blur(15px);
       border-bottom: 1px solid var(--border);
-
-      gap: 20px;
-
-    }
-
-    .logo-wrap {
-
-      display: flex;
-
-      align-items: center;
-
-      flex-shrink: 0;
-
     }
 
     .logo-img {
-
-      width: clamp(140px, 18vw, 240px);
-
-      height: auto;
-
-      object-fit: contain;
-
+      width: 170px;
     }
 
-    .nav-links {
-
+    .links {
       display: flex;
-
-      align-items: center;
-
-      justify-content: flex-end;
-
       gap: 18px;
-
-      flex-wrap: wrap;
-
+      align-items: center;
     }
 
-    .nav-links a {
-
-      color: var(--text);
-
-      font-size: 15px;
-
-      transition: 0.3s;
-
-    }
-
-    .nav-links a:hover {
-
-      opacity: 0.7;
-
+    .links a:hover {
+      color: #60a5fa;
     }
 
     .nav-btn {
-
-      padding: 11px 18px;
-
-      border-radius: 999px;
-
-      background: linear-gradient(
-        135deg,
-        var(--primary),
-        var(--secondary)
-      );
-
-      color: white !important;
-
-      font-weight: 600;
-
-      white-space: nowrap;
-
+      padding: 10px 16px;
+      border-radius: 20px;
+      background: linear-gradient(135deg,var(--primary),var(--secondary));
+      color: white;
     }
 
-    .theme-toggle {
-
-      width: 46px;
-      height: 46px;
-
+    .theme-btn {
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
-
       border: none;
-
       cursor: pointer;
+      background: linear-gradient(135deg,var(--primary),var(--secondary));
+      color: white;
+    }
 
-      background: var(--glass);
-
+    .menu-toggle {
+      display: none;
+      font-size: 26px;
+      background: none;
+      border: none;
       color: var(--text);
-
-      font-size: 18px;
-
-      transition: 0.3s;
-
     }
 
-    .theme-toggle:hover {
-
-      transform: rotate(15deg);
-
-    }
-
-    /* =========================
-       HERO
-    ========================= */
+    /* ================= HERO ================= */
 
     .hero {
-
-      min-height: 90vh;
-
       display: flex;
-
+      justify-content: space-between;
       align-items: center;
-
-      justify-content: center;
-
-      padding: 100px 8%;
-
-      gap: 60px;
-
+      padding: 80px 8%;
       flex-wrap: wrap;
-
+      gap: 40px;
     }
 
     .hero-left {
-
       flex: 1;
-      min-width: 320px;
-
-    }
-
-    .hero-badge {
-
-      display: inline-block;
-
-      padding: 10px 18px;
-
-      border-radius: 999px;
-
-      background: var(--glass);
-
-      border: 1px solid var(--border);
-
-      margin-bottom: 24px;
-
-      color: var(--muted);
-
+      min-width: 300px;
     }
 
     .hero h1 {
-
-      font-size: clamp(42px, 6vw, 70px);
-
-      line-height: 1.1;
-
-      margin-bottom: 24px;
-
-    }
-
-    .hero h1 span {
-
-      background: linear-gradient(
-        135deg,
-        #60a5fa,
-        #a855f7
-      );
-
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-
+      font-size: 48px;
+      margin-bottom: 20px;
     }
 
     .hero p {
-
-      font-size: 18px;
-
       color: var(--muted);
-
-      line-height: 1.8;
-
-      margin-bottom: 34px;
-
-      max-width: 620px;
-
+      margin-bottom: 25px;
+      line-height: 1.7;
     }
 
     .hero-buttons {
-
       display: flex;
-
-      gap: 18px;
-
+      gap: 15px;
       flex-wrap: wrap;
-
     }
 
     .primary-btn,
     .secondary-btn {
-
-      padding: 16px 28px;
-
-      border-radius: 16px;
-
+      padding: 12px 18px;
+      border-radius: 12px;
       font-weight: 600;
-
-      transition: 0.3s;
-
     }
 
     .primary-btn {
-
-      background: linear-gradient(
-        135deg,
-        var(--primary),
-        var(--secondary)
-      );
-
+      background: linear-gradient(135deg,var(--primary),var(--secondary));
       color: white;
-
     }
 
     .secondary-btn {
-
       border: 1px solid var(--border);
-
-      background: var(--glass);
-
-      color: var(--text);
-
     }
 
-    .primary-btn:hover,
-    .secondary-btn:hover {
-
-      transform: translateY(-4px);
-
-    }
-
-    /* =========================
-       HERO CARD
-    ========================= */
-
-    .hero-right {
-
-      flex: 1;
-
-      min-width: 320px;
-
-      display: flex;
-
-      justify-content: center;
-
-    }
-
-    .dashboard-card {
-
-      width: 100%;
-
-      max-width: 480px;
-
-      background: var(--card);
-
-      border: 1px solid var(--border);
-
-      border-radius: 28px;
-
-      padding: 28px;
-
-      backdrop-filter: blur(20px);
-
-      box-shadow: 0 25px 60px rgba(0,0,0,0.2);
-
-    }
-
-    .dashboard-grid {
-
-      display: grid;
-
-      grid-template-columns: repeat(2,1fr);
-
-      gap: 18px;
-
-      margin-top: 24px;
-
-    }
-
-    .mini-card {
-
-      background: var(--glass);
-
-      padding: 20px;
-
-      border-radius: 18px;
-
-      border: 1px solid var(--border);
-
-    }
-
-    .mini-card p {
-
-      color: var(--muted);
-
-      margin-top: 8px;
-
-    }
-
-    /* =========================
-       SUBJECTS
-    ========================= */
+    /* ================= SUBJECTS ================= */
 
     .section {
-
-      padding: 100px 8%;
-
+      padding: 80px 8%;
     }
 
     .section-title {
-
       text-align: center;
-
-      margin-bottom: 50px;
-
-    }
-
-    .section-title h2 {
-
-      font-size: 42px;
-
-      margin-bottom: 14px;
-
-    }
-
-    .section-title p {
-
-      color: var(--muted);
-
+      margin-bottom: 40px;
     }
 
     .subjects-grid {
-
       display: grid;
-
-      grid-template-columns:
-        repeat(auto-fit,minmax(280px,1fr));
-
-      gap: 24px;
-
+      grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+      gap: 20px;
     }
 
     .subject-card {
-
       background: var(--card);
-
       border: 1px solid var(--border);
-
-      border-radius: 24px;
-
-      padding: 28px;
-
+      padding: 20px;
+      border-radius: 18px;
       transition: 0.3s;
-
+      cursor: pointer;
     }
 
     .subject-card:hover {
-
-      transform: translateY(-8px);
-
+      transform: translateY(-6px);
     }
 
-    .subject-card h3 {
-
-      margin-bottom: 14px;
-
-    }
-
-    .subject-card p {
-
-      color: var(--muted);
-
-      line-height: 1.7;
-
-    }
-
-    /* =========================
-       FOOTER
-    ========================= */
+    /* ================= FOOTER ================= */
 
     footer {
-
-      margin-top: 100px;
-
-      padding: 40px 8%;
-
-      border-top: 1px solid var(--border);
-
       text-align: center;
-
+      padding: 40px;
+      border-top: 1px solid var(--border);
       color: var(--muted);
-
     }
 
-    /* =========================
-       TABLET
-    ========================= */
-
-    @media(max-width:992px){
-
-      nav {
-
-        padding: 14px 4%;
-
-      }
-
-      .nav-links {
-
-        gap: 14px;
-
-      }
-
-      .logo-img {
-
-        width: clamp(130px, 22vw, 210px);
-
-      }
-
-    }
-
-    /* =========================
-       MOBILE
-    ========================= */
+    /* ================= MOBILE ================= */
 
     @media(max-width:768px){
-
-      nav {
-
-        flex-direction: column;
-
-        align-items: center;
-
-        gap: 16px;
-
-        padding: 14px 20px;
-
+      .menu-toggle { display:block; }
+      .links {
+        display:none;
+        position:absolute;
+        top:70px;
+        left:0;
+        width:100%;
+        flex-direction:column;
+        background: var(--nav);
+        padding:20px;
       }
-
-      .logo-wrap {
-
-        width: 100%;
-
-        justify-content: center;
-
-      }
-
-      .logo-img {
-
-        width: clamp(150px, 50vw, 240px);
-
-      }
-
-      .nav-links {
-
-        width: 100%;
-
-        justify-content: center;
-
-        gap: 14px;
-
-      }
-
-      .hero {
-
-        padding: 70px 20px;
-
-        text-align: center;
-
-      }
-
-      .hero-buttons {
-
-        flex-direction: column;
-
-      }
-
-      .primary-btn,
-      .secondary-btn {
-
-        width: 100%;
-
-      }
-
-      .dashboard-grid {
-
-        grid-template-columns: 1fr;
-
-      }
-
-      .section {
-
-        padding: 70px 20px;
-
-      }
-
-    }
-
-    /* =========================
-       SMALL MOBILE
-    ========================= */
-
-    @media(max-width:480px){
-
-      .nav-links a {
-
-        font-size: 14px;
-
-      }
-
-      .theme-toggle {
-
-        width: 42px;
-        height: 42px;
-
-      }
-
-      .hero h1 {
-
-        font-size: 38px;
-
-      }
-
+      .links.active { display:flex; }
+      .hero { text-align:center; justify-content:center; }
     }
 
   </style>
@@ -690,26 +222,14 @@
 
 <body data-theme="dark">
 
-  <!-- BACKGROUND -->
+  <!-- NAV -->
+  <nav class="navbar">
 
-  <div class="bg-glow glow1"></div>
-  <div class="bg-glow glow2"></div>
+    <img src="/assets/logo/full-logo.png" class="logo-img" />
 
-  <!-- NAVBAR -->
+    <button class="menu-toggle" id="menuToggle">☰</button>
 
-  <nav>
-
-    <div class="logo-wrap">
-
-      <img
-        src="/assets/logo/full-logo.png"
-        class="logo-img"
-        alt="EXCEL YOU"
-      >
-
-    </div>
-
-    <div class="nav-links">
+    <div class="links" id="navLinks">
 
       <a href="/">Home</a>
       <a href="/subjects">Subjects</a>
@@ -717,97 +237,28 @@
       <a href="/about">About</a>
       <a href="/contact">Contact</a>
 
-      <button
-        onclick="toggleTheme()"
-        class="theme-toggle"
-      >
-        🌙
-      </button>
+      <button id="themeToggle" class="theme-btn">🌙</button>
 
-      <a
-        href="/login"
-        class="nav-btn"
-      >
-        Admin
-      </a>
+      <a href="/login" class="nav-btn">Admin</a>
 
     </div>
 
   </nav>
 
   <!-- HERO -->
-
   <section class="hero">
 
     <div class="hero-left">
 
-      <div class="hero-badge">
-        🚀 Modern Tamil + English LMS Platform
-      </div>
-
-      <h1>
-        Learn Smarter With
-        <span>EXCEL YOU</span>
-      </h1>
+      <h1>Learn Smarter With EXCEL YOU</h1>
 
       <p>
-
-        A modern structured learning platform
-        built for Tamil and English education,
-        professional lessons, and powerful student learning experiences.
-
+        Modern Tamil + English LMS platform with structured learning system.
       </p>
 
       <div class="hero-buttons">
-
-        <a
-          href="/student"
-          class="primary-btn"
-        >
-          Start Learning
-        </a>
-
-        <a
-          href="/subjects"
-          class="secondary-btn"
-        >
-          Browse Subjects
-        </a>
-
-      </div>
-
-    </div>
-
-    <div class="hero-right">
-
-      <div class="dashboard-card">
-
-        <h2>Learning Dashboard</h2>
-
-        <div class="dashboard-grid">
-
-          <div class="mini-card">
-            <h3 id="subjectCount">0+</h3>
-            <p>Subjects</p>
-          </div>
-
-          <div class="mini-card">
-            <h3 id="topicCount">0+</h3>
-            <p>Topics</p>
-          </div>
-
-          <div class="mini-card">
-            <h3>24/7</h3>
-            <p>Learning</p>
-          </div>
-
-          <div class="mini-card">
-            <h3>AI</h3>
-            <p>Future Ready</p>
-          </div>
-
-        </div>
-
+        <a href="/student" class="primary-btn">Start Learning</a>
+        <a href="/subjects" class="secondary-btn">Browse Subjects</a>
       </div>
 
     </div>
@@ -815,137 +266,71 @@
   </section>
 
   <!-- SUBJECTS -->
-
   <section class="section">
 
     <div class="section-title">
-
       <h2>Popular Subjects</h2>
-
-      <p>
-        Explore professional structured learning paths
-      </p>
-
     </div>
 
-    <div
-      class="subjects-grid"
-      id="subjectsContainer"
-    >
-
+    <div class="subjects-grid" id="subjectsContainer">
+      <p>Loading...</p>
     </div>
 
   </section>
 
   <!-- FOOTER -->
-
   <footer>
-
-    © 2026 EXCEL YOU —
-    Modern Tamil + English Learning Platform
-
+    © 2026 EXCEL YOU
   </footer>
 
   <script>
 
-    // =========================
-    // THEME SYSTEM
-    // =========================
+    // MENU
+    document.getElementById("menuToggle")
+    .addEventListener("click", () => {
+      document.getElementById("navLinks").classList.toggle("active");
+    });
 
-    function toggleTheme() {
+    // THEME (FINAL CLEAN)
+    const themeBtn = document.getElementById("themeToggle");
 
-      const body =
-        document.body;
-
-      const current =
-        body.getAttribute(
-          "data-theme"
-        );
-
-      const next =
-        current === "dark"
-        ? "light"
-        : "dark";
-
-      body.setAttribute(
-        "data-theme",
-        next
-      );
-
-      localStorage.setItem(
-        "theme",
-        next
-      );
-
+    function setTheme(theme){
+      document.body.setAttribute("data-theme", theme);
+      themeBtn.innerHTML = theme === "dark" ? "☀️" : "🌙";
+      localStorage.setItem("theme", theme);
     }
 
-    const savedTheme =
-      localStorage.getItem(
-        "theme"
-      );
+    setTheme(localStorage.getItem("theme") || "dark");
 
-    if(savedTheme){
+    themeBtn.addEventListener("click", () => {
+      const current = document.body.getAttribute("data-theme");
+      setTheme(current === "dark" ? "light" : "dark");
+    });
 
-      document.body.setAttribute(
-        "data-theme",
-        savedTheme
-      );
-
-    }
-
-    // =========================
-    // LOAD HOMEPAGE DATA
-    // =========================
-
-    async function loadHomepage() {
+    // LOAD DATA
+    async function loadHomepage(){
 
       try {
 
-        const res =
-          await fetch(
-            "/api/homepage"
-          );
+        const res = await fetch("/api/homepage");
+        const data = await res.json();
 
-        const data =
-          await res.json();
+        const container = document.getElementById("subjectsContainer");
+        container.innerHTML = "";
 
-        document.getElementById(
-          "subjectCount"
-        ).innerText =
-          data.stats.totalSubjects + "+";
-
-        document.getElementById(
-          "topicCount"
-        ).innerText =
-          data.stats.totalTopics + "+";
-
-        const container =
-          document.getElementById(
-            "subjectsContainer"
-          );
-
-        data.subjects.forEach(subject => {
+        data.subjects.forEach(s => {
 
           container.innerHTML += `
-
             <div class="subject-card">
-
-              <h3>${subject.name}</h3>
-
-              <p>
-                ${subject.description.substring(0,140)}...
-              </p>
-
+              <h3>${s.name}</h3>
+              <p>${(s.description || "").substring(0,120)}...</p>
             </div>
-
           `;
 
         });
 
-      } catch(err) {
-
+      } catch(err){
         console.error(err);
-
       }
 
     }

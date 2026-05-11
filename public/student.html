@@ -1,33 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+<!-- ================= HEADER ================= -->
+<header class="topbar">
 
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
+    <!-- LOGO -->
+    <a
+        href="/"
+        class="logo-wrap"
     >
 
-    <title>EXCEL YOU - Learn</title>
+        <img
+            src="/assets/logo/full-logo.png"
+            alt="EXCEL YOU"
+            class="logo-img"
+        >
 
-    <link
-        rel="stylesheet"
-        href="student.css?v=2"
-    >
+    </a>
 
-</head>
+    <!-- CONTROLS -->
+    <div class="controls">
 
-<body>
+        <!-- LANGUAGE -->
+        <select
+            id="lang"
+            onchange="loadSubjects()"
+        >
 
-    <!-- ================= HEADER ================= -->
+            <option value="en">
+                English
+            </option>
+
+            <option value="ta">
+                Tamil
+            </option>
+
+        </select>
+
+        <!-- SEARCH -->
+        <input
+            type="text"
+            id="search"
+            placeholder="Search subjects..."
+            onkeyup="searchSubjects()"
+        >
+
+    </div>
+
+</header>
+
+<body data-theme="dark">
+
+    <!-- BACKGROUND GLOW -->
+    <div class="bg-glow glow1"></div>
+    <div class="bg-glow glow2"></div>
+
+    <!-- ================= NAVBAR ================= -->
+
     <header class="topbar">
 
-        <div class="logo">
-            📘 EXCEL YOU
-        </div>
+        <!-- LOGO -->
+        <a
+            href="/"
+            class="logo-wrap"
+        >
 
+            <img
+                src="/assets/logo/full-logo.png"
+                class="logo-img"
+                alt="EXCEL YOU"
+            >
+
+        </a>
+
+        <!-- CONTROLS -->
         <div class="controls">
 
             <!-- LANGUAGE -->
@@ -35,6 +81,7 @@
                 id="lang"
                 onchange="loadSubjects()"
             >
+
                 <option value="en">
                     English
                 </option>
@@ -42,6 +89,7 @@
                 <option value="ta">
                     Tamil
                 </option>
+
             </select>
 
             <!-- SEARCH -->
@@ -52,41 +100,71 @@
                 onkeyup="searchSubjects()"
             >
 
+            <!-- THEME -->
+            <button
+                class="theme-btn"
+                onclick="toggleTheme()"
+            >
+                🌙
+            </button>
+
         </div>
 
     </header>
 
 
     <!-- ================= HERO ================= -->
+
     <section class="hero">
 
-        <h1>
-            Learn Smarter with EXCEL YOU 🚀
-        </h1>
+        <div class="hero-content">
 
-        <p>
-            Explore subjects, lessons, videos, and notes.
-        </p>
+            <div class="hero-badge">
+                🚀 Modern LMS Platform
+            </div>
+
+            <h1>
+
+                Learn Smarter with
+                <span>EXCEL YOU</span>
+
+            </h1>
+
+            <p>
+
+                Explore professional lessons,
+                structured topics, videos,
+                notes and powerful learning
+                experiences in Tamil & English.
+
+            </p>
+
+        </div>
 
     </section>
 
 
     <!-- ================= MAIN ================= -->
+
     <main class="main-layout">
 
-        <!-- SUBJECT SIDEBAR -->
+        <!-- SIDEBAR -->
         <aside class="sidebar">
 
-            <h2>
-                📚 Subjects
-            </h2>
+            <div class="sidebar-header">
+
+                <h2>
+                    📚 Subjects
+                </h2>
+
+            </div>
 
             <div id="subjectContainer"></div>
 
         </aside>
 
 
-        <!-- CONTENT AREA -->
+        <!-- CONTENT -->
         <section class="content-area">
 
             <!-- WELCOME -->
@@ -100,7 +178,10 @@
                 </h2>
 
                 <p>
-                    Select a subject to start learning.
+
+                    Select a subject from the
+                    sidebar to start learning.
+
                 </p>
 
             </div>
@@ -140,15 +221,68 @@
 
 
     <!-- ================= FOOTER ================= -->
+
     <footer>
 
-        © 2026 EXCEL YOU • Learning Platform
+        © 2026 EXCEL YOU —
+        Modern Tamil + English Learning Platform
 
     </footer>
 
 
     <!-- ================= JS ================= -->
-    <script src="student.js?v=2"></script>
+
+    <script>
+
+        // =========================
+        // THEME SYSTEM
+        // =========================
+
+        function toggleTheme() {
+
+            const body =
+                document.body;
+
+            const current =
+                body.getAttribute(
+                    "data-theme"
+                );
+
+            const next =
+                current === "dark"
+                ? "light"
+                : "dark";
+
+            body.setAttribute(
+                "data-theme",
+                next
+            );
+
+            localStorage.setItem(
+                "theme",
+                next
+            );
+
+        }
+
+        // LOAD SAVED THEME
+        const savedTheme =
+            localStorage.getItem(
+                "theme"
+            );
+
+        if(savedTheme){
+
+            document.body.setAttribute(
+                "data-theme",
+                savedTheme
+            );
+
+        }
+
+    </script>
+
+    <script src="student.js?v=3"></script>
 
 </body>
 </html>

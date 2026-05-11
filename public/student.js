@@ -3,6 +3,7 @@
 // =========================
 let allSubjects = [];
 let allTopics = [];
+let activeSubjectId = null;
 
 
 // =========================
@@ -21,11 +22,39 @@ function escapeHTML(str = "") {
 
 
 // =========================
+// SHOW LOADER
+// =========================
+function showLoading(containerId) {
+
+    const container =
+        document.getElementById(containerId);
+
+    if (!container) return;
+
+    container.innerHTML = `
+
+        <div class="loading-box">
+
+            <div class="loader"></div>
+
+            <p>
+                Loading...
+            </p>
+
+        </div>
+
+    `;
+}
+
+
+// =========================
 // LOAD SUBJECTS
 // =========================
 async function loadSubjects() {
 
     try {
+
+        showLoading("subjectContainer");
 
         const lang =
             document.getElementById("lang").value;
@@ -58,7 +87,10 @@ async function loadSubjects() {
 
     } catch (err) {
 
-        console.error("LOAD SUBJECTS ERROR:", err);
+        console.error(
+            "LOAD SUBJECTS ERROR:",
+            err
+        );
 
     }
 }
@@ -70,7 +102,9 @@ async function loadSubjects() {
 function renderSubjects(subjects) {
 
     const container =
-        document.getElementById("subjectContainer");
+        document.getElementById(
+            "subjectContainer"
+        );
 
     if (!container) return;
 
@@ -79,9 +113,13 @@ function renderSubjects(subjects) {
     if (!subjects.length) {
 
         container.innerHTML = `
+
             <div class="empty-box">
+
                 No subjects found.
+
             </div>
+
         `;
 
         return;
@@ -89,9 +127,15 @@ function renderSubjects(subjects) {
 
     subjects.forEach(subject => {
 
+        const activeClass =
+            activeSubjectId === subject._id
+            ? "active-subject"
+            : "";
+
         container.innerHTML += `
+
             <div
-                class="subject-card"
+                class="subject-card ${activeClass}"
                 onclick="openSubject(
                     '${subject._id}',
                     '${escapeHTML(subject.name)}'
@@ -104,11 +148,13 @@ function renderSubjects(subjects) {
 
                 <p>
                     ${escapeHTML(
-                        subject.description || "No description"
+                        subject.description ||
+                        "No description available"
                     )}
                 </p>
 
             </div>
+
         `;
     });
 }
@@ -121,18 +167,16 @@ async function openSubject(id, name) {
 
     try {
 
-        const res =
-            await fetch(`/api/topics/${id}`);
+        activeSubjectId = id;
 
-        const topics =
-            await res.json();
-
-        allTopics = topics;
+        renderSubjects(allSubjects);
 
         const topicContainer =
-            document.getElementById("topicContainer");
+            document.getElementById(
+                "topicContainer"
+            );
 
-        if (!topicContainer) return;
+        showLoading("topicContainer");
 
         // HIDE OTHER AREAS
         document
@@ -145,7 +189,16 @@ async function openSubject(id, name) {
 
         topicContainer.classList.remove("hidden");
 
+        const res =
+            await fetch(`/api/topics/${id}`);
+
+        const topics =
+            await res.json();
+
+        allTopics = topics;
+
         topicContainer.innerHTML = `
+
             <div class="topic-header">
 
                 <h2>
@@ -153,18 +206,24 @@ async function openSubject(id, name) {
                 </h2>
 
                 <p>
-                    ${topics.length} Topics Available
+                    ${topics.length}
+                    Topics Available
                 </p>
 
             </div>
+
         `;
 
         if (!topics.length) {
 
             topicContainer.innerHTML += `
+
                 <div class="empty-box">
+
                     No topics available.
+
                 </div>
+
             `;
 
             return;
@@ -173,9 +232,12 @@ async function openSubject(id, name) {
         topics.forEach(topic => {
 
             topicContainer.innerHTML += `
+
                 <div
                     class="topic-card"
-                    onclick="openTopic('${topic._id}')"
+                    onclick="openTopic(
+                        '${topic._id}'
+                    )"
                 >
 
                     <h3>
@@ -183,12 +245,16 @@ async function openSubject(id, name) {
                     </h3>
 
                 </div>
+
             `;
         });
 
     } catch (err) {
 
-        console.error("OPEN SUBJECT ERROR:", err);
+        console.error(
+            "OPEN SUBJECT ERROR:",
+            err
+        );
 
     }
 }
@@ -216,32 +282,38 @@ async function openTopic(id) {
 
         // SHOW LESSON
         const lessonViewer =
-            document.getElementById("lessonViewer");
+            document.getElementById(
+                "lessonViewer"
+            );
 
         lessonViewer.classList.remove("hidden");
 
         // TITLE
-        document.getElementById("lessonTitle")
-            .innerText = topic.title;
+        document.getElementById(
+            "lessonTitle"
+        ).innerText = topic.title;
 
         // CONTENT
         const content =
-            document.getElementById("lessonContent");
+            document.getElementById(
+                "lessonContent"
+            );
 
         content.innerHTML = "";
 
         // =========================
-        // NEW HTML CONTENT SUPPORT
+        // HTML CONTENT SUPPORT
         // =========================
         if (topic.contentHTML) {
 
-            content.innerHTML = topic.contentHTML;
+            content.innerHTML =
+                topic.contentHTML;
 
             return;
         }
 
         // =========================
-        // OLD BLOCK SUPPORT
+        // BLOCK CONTENT SUPPORT
         // =========================
         if (topic.contentBlocks?.length) {
 
@@ -251,9 +323,11 @@ async function openTopic(id) {
                 if (block.type === "text") {
 
                     content.innerHTML += `
+
                         <p>
                             ${block.value}
                         </p>
+
                     `;
                 }
 
@@ -261,9 +335,11 @@ async function openTopic(id) {
                 if (block.type === "heading") {
 
                     content.innerHTML += `
+
                         <h2>
                             ${block.value}
                         </h2>
+
                     `;
                 }
 
@@ -271,10 +347,12 @@ async function openTopic(id) {
                 if (block.type === "image") {
 
                     content.innerHTML += `
+
                         <img
                             src="${block.value}"
                             class="lesson-image"
                         >
+
                     `;
                 }
 
@@ -282,12 +360,14 @@ async function openTopic(id) {
                 if (block.type === "video") {
 
                     content.innerHTML += `
+
                         <iframe
                             class="lesson-video"
                             src="${block.value}"
                             frameborder="0"
                             allowfullscreen
                         ></iframe>
+
                     `;
                 }
 
@@ -296,7 +376,10 @@ async function openTopic(id) {
 
     } catch (err) {
 
-        console.error("OPEN TOPIC ERROR:", err);
+        console.error(
+            "OPEN TOPIC ERROR:",
+            err
+        );
 
     }
 }
