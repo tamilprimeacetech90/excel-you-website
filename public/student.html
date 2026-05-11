@@ -1,65 +1,853 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- ================= HEADER ================= -->
-<header class="topbar">
+<head>
 
-    <!-- LOGO -->
-    <a
-        href="/"
-        class="logo-wrap"
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
     >
 
-        <img
-            src="/assets/logo/full-logo.png"
-            alt="EXCEL YOU"
-            class="logo-img"
-        >
+    <meta
+        name="theme-color"
+        content="#07111f"
+    >
 
-    </a>
+    <title>
+        EXCEL YOU — Student Learning
+    </title>
 
-    <!-- CONTROLS -->
-    <div class="controls">
+    <!-- FAVICON -->
+    <link
+        rel="icon"
+        type="image/png"
+        href="/assets/logo/favicon.png"
+    >
 
-        <!-- LANGUAGE -->
-        <select
-            id="lang"
-            onchange="loadSubjects()"
-        >
+    <!-- GOOGLE FONT -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
 
-            <option value="en">
-                English
-            </option>
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
 
-            <option value="ta">
-                Tamil
-            </option>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
 
-        </select>
+    <style>
 
-        <!-- SEARCH -->
-        <input
-            type="text"
-            id="search"
-            placeholder="Search subjects..."
-            onkeyup="searchSubjects()"
-        >
+        /* =========================
+           THEME
+        ========================= */
 
-    </div>
+        :root {
 
-</header>
+            --bg: #f8fafc;
+            --card: rgba(255,255,255,0.75);
+            --text: #07111f;
+            --muted: #64748b;
+            --border: rgba(15,23,42,0.08);
+            --glass: rgba(255,255,255,0.55);
+
+            --primary: #2563eb;
+            --secondary: #7c3aed;
+
+        }
+
+        [data-theme="dark"] {
+
+            --bg: #07111f;
+            --card: rgba(255,255,255,0.06);
+            --text: #ffffff;
+            --muted: #94a3b8;
+            --border: rgba(255,255,255,0.08);
+            --glass: rgba(255,255,255,0.05);
+
+            --primary: #38bdf8;
+            --secondary: #8b5cf6;
+
+        }
+
+        /* =========================
+           RESET
+        ========================= */
+
+        * {
+
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+
+        }
+
+        html {
+
+            scroll-behavior: smooth;
+
+        }
+
+        body {
+
+            font-family: 'Poppins', sans-serif;
+
+            background: var(--bg);
+
+            color: var(--text);
+
+            overflow-x: hidden;
+
+            transition: 0.3s ease;
+
+        }
+
+        a {
+
+            text-decoration: none;
+
+            color: inherit;
+
+        }
+
+        img {
+
+            max-width: 100%;
+            display: block;
+
+        }
+
+        /* =========================
+           GLOW BACKGROUND
+        ========================= */
+
+        .bg-glow {
+
+            position: fixed;
+
+            width: 500px;
+            height: 500px;
+
+            border-radius: 50%;
+
+            filter: blur(120px);
+
+            opacity: 0.18;
+
+            z-index: -1;
+
+        }
+
+        .glow1 {
+
+            background: #2563eb;
+
+            top: -120px;
+            left: -100px;
+
+        }
+
+        .glow2 {
+
+            background: #7c3aed;
+
+            right: -120px;
+            bottom: -120px;
+
+        }
+
+        /* =========================
+           TOPBAR
+        ========================= */
+
+        .topbar {
+
+            width: 100%;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 1000;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 14px 5%;
+
+            backdrop-filter: blur(18px);
+
+            background: rgba(6,11,20,0.72);
+
+            border-bottom: 1px solid var(--border);
+
+        }
+
+        .logo-wrap {
+
+            display: flex;
+
+            align-items: center;
+
+        }
+
+        .logo-img {
+
+            width: clamp(140px, 18vw, 240px);
+
+            height: auto;
+
+            object-fit: contain;
+
+        }
+
+        .controls {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+        }
+
+        .controls select,
+        .controls input {
+
+            border: 1px solid var(--border);
+
+            background: var(--glass);
+
+            color: var(--text);
+
+            padding: 12px 16px;
+
+            border-radius: 14px;
+
+            outline: none;
+
+            backdrop-filter: blur(14px);
+
+        }
+
+        #search {
+
+            width: 260px;
+
+        }
+
+        .theme-btn,
+        .mobile-btn {
+
+            width: 48px;
+            height: 48px;
+
+            border-radius: 50%;
+
+            border: none;
+
+            cursor: pointer;
+
+            background: linear-gradient(
+                135deg,
+                var(--primary),
+                var(--secondary)
+            );
+
+            color: white;
+
+            font-size: 18px;
+
+            transition: 0.3s;
+
+        }
+
+        .theme-btn:hover,
+        .mobile-btn:hover {
+
+            transform: scale(1.08);
+
+        }
+
+        .mobile-btn {
+
+            display: none;
+
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+
+            padding: 70px 8% 40px;
+
+            text-align: center;
+
+        }
+
+        .hero-badge {
+
+            display: inline-block;
+
+            padding: 10px 18px;
+
+            border-radius: 999px;
+
+            background: var(--glass);
+
+            border: 1px solid var(--border);
+
+            margin-bottom: 24px;
+
+            color: var(--muted);
+
+        }
+
+        .hero h1 {
+
+            font-size: clamp(42px, 6vw, 68px);
+
+            line-height: 1.1;
+
+            margin-bottom: 20px;
+
+        }
+
+        .hero h1 span {
+
+            background: linear-gradient(
+                135deg,
+                #60a5fa,
+                #a855f7
+            );
+
+            -webkit-background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+
+        }
+
+        .hero p {
+
+            max-width: 760px;
+
+            margin: auto;
+
+            color: var(--muted);
+
+            line-height: 1.8;
+
+            font-size: 18px;
+
+        }
+
+        /* =========================
+           MAIN LAYOUT
+        ========================= */
+
+        .main-layout {
+
+            display: grid;
+
+            grid-template-columns: 320px 1fr;
+
+            gap: 24px;
+
+            padding: 0 5% 60px;
+
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+
+            position: sticky;
+
+            top: 110px;
+
+            height: calc(100vh - 130px);
+
+            overflow-y: auto;
+
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 28px;
+
+            padding: 24px;
+
+            backdrop-filter: blur(18px);
+
+        }
+
+        .sidebar::-webkit-scrollbar {
+
+            width: 6px;
+
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+
+            background: rgba(255,255,255,0.12);
+
+            border-radius: 20px;
+
+        }
+
+        .sidebar-header {
+
+            margin-bottom: 24px;
+
+        }
+
+        .sidebar-header h2 {
+
+            font-size: 24px;
+
+        }
+
+        .subject-card {
+
+            background: var(--glass);
+
+            border: 1px solid var(--border);
+
+            padding: 18px;
+
+            border-radius: 18px;
+
+            margin-bottom: 16px;
+
+            cursor: pointer;
+
+            transition: 0.3s ease;
+
+        }
+
+        .subject-card:hover {
+
+            transform: translateY(-4px);
+
+            border-color: rgba(96,165,250,0.4);
+
+            box-shadow:
+                0 0 20px rgba(96,165,250,0.15);
+
+        }
+
+        .subject-card.active {
+
+            border-color: #60a5fa;
+
+            box-shadow:
+                0 0 25px rgba(96,165,250,0.18);
+
+        }
+
+        .subject-card h3 {
+
+            margin-bottom: 8px;
+
+            font-size: 18px;
+
+        }
+
+        .subject-card p {
+
+            color: var(--muted);
+
+            font-size: 14px;
+
+            line-height: 1.6;
+
+        }
+
+        /* =========================
+           CONTENT AREA
+        ========================= */
+
+        .content-area {
+
+            min-height: 700px;
+
+        }
+
+        .welcome-box,
+        .lesson-viewer,
+        .topic-box {
+
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 28px;
+
+            padding: 32px;
+
+            backdrop-filter: blur(18px);
+
+            margin-bottom: 24px;
+
+        }
+
+        .welcome-box h2 {
+
+            margin-bottom: 14px;
+
+            font-size: 32px;
+
+        }
+
+        .welcome-box p {
+
+            color: var(--muted);
+
+            line-height: 1.8;
+
+        }
+
+        /* =========================
+           TOPICS
+        ========================= */
+
+        .topic-box h2 {
+
+            margin-bottom: 20px;
+
+        }
+
+        .topics-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit,minmax(220px,1fr));
+
+            gap: 18px;
+
+        }
+
+        .topic-card {
+
+            background: var(--glass);
+
+            border: 1px solid var(--border);
+
+            border-radius: 18px;
+
+            padding: 20px;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+
+        }
+
+        .topic-card:hover {
+
+            transform: translateY(-4px);
+
+            box-shadow:
+                0 0 20px rgba(96,165,250,0.14);
+
+        }
+
+        .topic-card.active {
+
+            border-color: #60a5fa;
+
+        }
+
+        .topic-card h3 {
+
+            margin-bottom: 10px;
+
+        }
+
+        .topic-card p {
+
+            color: var(--muted);
+
+            line-height: 1.6;
+
+            font-size: 14px;
+
+        }
+
+        /* =========================
+           LESSON VIEWER
+        ========================= */
+
+        .lesson-header {
+
+            margin-bottom: 30px;
+
+            border-bottom: 1px solid var(--border);
+
+            padding-bottom: 20px;
+
+        }
+
+        .lesson-header h1 {
+
+            font-size: clamp(30px,5vw,46px);
+
+            line-height: 1.2;
+
+        }
+
+        .lesson-content {
+
+            line-height: 1.9;
+
+            color: var(--muted);
+
+            font-size: 17px;
+
+        }
+
+        .lesson-content h1,
+        .lesson-content h2,
+        .lesson-content h3 {
+
+            color: var(--text);
+
+            margin-top: 30px;
+            margin-bottom: 16px;
+
+        }
+
+        .lesson-content p {
+
+            margin-bottom: 18px;
+
+        }
+
+        .lesson-content img {
+
+            border-radius: 20px;
+
+            margin: 24px auto;
+
+            border: 1px solid var(--border);
+
+        }
+
+        .lesson-content iframe {
+
+            width: 100%;
+
+            min-height: 420px;
+
+            border: none;
+
+            border-radius: 20px;
+
+            margin-top: 24px;
+
+        }
+
+        /* =========================
+           SKELETON
+        ========================= */
+
+        .skeleton {
+
+            width: 100%;
+
+            height: 120px;
+
+            border-radius: 20px;
+
+            margin-bottom: 16px;
+
+            background: linear-gradient(
+                90deg,
+                rgba(255,255,255,0.04),
+                rgba(255,255,255,0.10),
+                rgba(255,255,255,0.04)
+            );
+
+            background-size: 300% 100%;
+
+            animation: shimmer 1.5s infinite;
+
+        }
+
+        @keyframes shimmer {
+
+            0% {
+
+                background-position: 200% 0;
+
+            }
+
+            100% {
+
+                background-position: -200% 0;
+
+            }
+
+        }
+
+        /* =========================
+           UTILITIES
+        ========================= */
+
+        .hidden {
+
+            display: none;
+
+        }
+
+        footer {
+
+            text-align: center;
+
+            padding: 40px 20px;
+
+            color: var(--muted);
+
+            border-top: 1px solid var(--border);
+
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media(max-width:992px) {
+
+            .main-layout {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .sidebar {
+
+                position: fixed;
+
+                left: -100%;
+
+                top: 90px;
+
+                width: 300px;
+
+                height: calc(100vh - 100px);
+
+                z-index: 999;
+
+                transition: 0.3s ease;
+
+            }
+
+            .sidebar.active {
+
+                left: 20px;
+
+            }
+
+            .mobile-btn {
+
+                display: flex;
+
+                align-items: center;
+
+                justify-content: center;
+
+            }
+
+        }
+
+        @media(max-width:768px) {
+
+            .topbar {
+
+                flex-direction: column;
+
+                gap: 18px;
+
+                padding: 18px;
+
+            }
+
+            .controls {
+
+                width: 100%;
+
+                flex-wrap: wrap;
+
+                justify-content: center;
+
+            }
+
+            #search {
+
+                width: 100%;
+
+            }
+
+            .hero {
+
+                padding: 50px 20px 30px;
+
+            }
+
+            .main-layout {
+
+                padding: 0 20px 50px;
+
+            }
+
+            .lesson-viewer,
+            .welcome-box,
+            .topic-box {
+
+                padding: 24px;
+
+            }
+
+            .lesson-content iframe {
+
+                min-height: 240px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
 
 <body data-theme="dark">
 
-    <!-- BACKGROUND GLOW -->
+    <!-- GLOW -->
+
     <div class="bg-glow glow1"></div>
     <div class="bg-glow glow2"></div>
 
-    <!-- ================= NAVBAR ================= -->
+    <!-- =========================
+         TOPBAR
+    ========================= -->
 
     <header class="topbar">
 
         <!-- LOGO -->
+
         <a
             href="/"
             class="logo-wrap"
@@ -67,16 +855,25 @@
 
             <img
                 src="/assets/logo/full-logo.png"
-                class="logo-img"
                 alt="EXCEL YOU"
+                class="logo-img"
             >
 
         </a>
 
         <!-- CONTROLS -->
+
         <div class="controls">
 
+            <button
+                class="mobile-btn"
+                id="mobileBtn"
+            >
+                ☰
+            </button>
+
             <!-- LANGUAGE -->
+
             <select
                 id="lang"
                 onchange="loadSubjects()"
@@ -93,6 +890,7 @@
             </select>
 
             <!-- SEARCH -->
+
             <input
                 type="text"
                 id="search"
@@ -101,9 +899,10 @@
             >
 
             <!-- THEME -->
+
             <button
                 class="theme-btn"
-                onclick="toggleTheme()"
+                id="themeBtn"
             >
                 🌙
             </button>
@@ -112,44 +911,41 @@
 
     </header>
 
-
-    <!-- ================= HERO ================= -->
+    <!-- =========================
+         HERO
+    ========================= -->
 
     <section class="hero">
 
-        <div class="hero-content">
-
-            <div class="hero-badge">
-                🚀 Modern LMS Platform
-            </div>
-
-            <h1>
-
-                Learn Smarter with
-                <span>EXCEL YOU</span>
-
-            </h1>
-
-            <p>
-
-                Explore professional lessons,
-                structured topics, videos,
-                notes and powerful learning
-                experiences in Tamil & English.
-
-            </p>
-
+        <div class="hero-badge">
+            🚀 Modern Tamil + English LMS
         </div>
+
+        <h1>
+            Learn Smarter With
+            <span>EXCEL YOU</span>
+        </h1>
+
+        <p>
+            Explore structured subjects, topics,
+            notes, videos and professional learning
+            experiences built for modern students.
+        </p>
 
     </section>
 
-
-    <!-- ================= MAIN ================= -->
+    <!-- =========================
+         MAIN
+    ========================= -->
 
     <main class="main-layout">
 
         <!-- SIDEBAR -->
-        <aside class="sidebar">
+
+        <aside
+            class="sidebar"
+            id="sidebar"
+        >
 
             <div class="sidebar-header">
 
@@ -159,18 +955,25 @@
 
             </div>
 
-            <div id="subjectContainer"></div>
+            <div id="subjectContainer">
+
+                <div class="skeleton"></div>
+                <div class="skeleton"></div>
+                <div class="skeleton"></div>
+
+            </div>
 
         </aside>
 
-
         <!-- CONTENT -->
+
         <section class="content-area">
 
             <!-- WELCOME -->
+
             <div
-                id="welcomeBox"
                 class="welcome-box"
+                id="welcomeBox"
             >
 
                 <h2>
@@ -178,26 +981,35 @@
                 </h2>
 
                 <p>
-
-                    Select a subject from the
-                    sidebar to start learning.
-
+                    Select a subject from the sidebar
+                    to start your learning journey.
                 </p>
 
             </div>
 
-
             <!-- TOPICS -->
+
             <div
+                class="topic-box hidden"
                 id="topicContainer"
-                class="hidden"
-            ></div>
+            >
 
+                <h2>
+                    📘 Topics
+                </h2>
 
-            <!-- LESSON VIEWER -->
+                <div
+                    class="topics-grid"
+                    id="topicsGrid"
+                ></div>
+
+            </div>
+
+            <!-- LESSON -->
+
             <div
-                id="lessonViewer"
                 class="lesson-viewer hidden"
+                id="lessonViewer"
             >
 
                 <div class="lesson-header">
@@ -209,8 +1021,8 @@
                 </div>
 
                 <div
-                    id="lessonContent"
                     class="lesson-content"
+                    id="lessonContent"
                 ></div>
 
             </div>
@@ -219,8 +1031,7 @@
 
     </main>
 
-
-    <!-- ================= FOOTER ================= -->
+    <!-- FOOTER -->
 
     <footer>
 
@@ -229,60 +1040,416 @@
 
     </footer>
 
-
-    <!-- ================= JS ================= -->
+    <!-- =========================
+         SCRIPT
+    ========================= -->
 
     <script>
+
+        // =========================
+        // ELEMENTS
+        // =========================
+
+        const body = document.body;
+
+        const themeBtn =
+            document.getElementById(
+                "themeBtn"
+            );
+
+        const sidebar =
+            document.getElementById(
+                "sidebar"
+            );
+
+        const mobileBtn =
+            document.getElementById(
+                "mobileBtn"
+            );
+
+        const subjectContainer =
+            document.getElementById(
+                "subjectContainer"
+            );
+
+        const topicsGrid =
+            document.getElementById(
+                "topicsGrid"
+            );
+
+        const topicContainer =
+            document.getElementById(
+                "topicContainer"
+            );
+
+        const lessonViewer =
+            document.getElementById(
+                "lessonViewer"
+            );
+
+        const lessonTitle =
+            document.getElementById(
+                "lessonTitle"
+            );
+
+        const lessonContent =
+            document.getElementById(
+                "lessonContent"
+            );
+
+        const welcomeBox =
+            document.getElementById(
+                "welcomeBox"
+            );
+
+        // =========================
+        // MOBILE SIDEBAR
+        // =========================
+
+        mobileBtn.addEventListener(
+            "click",
+            () => {
+
+                sidebar.classList.toggle(
+                    "active"
+                );
+
+            }
+        );
 
         // =========================
         // THEME SYSTEM
         // =========================
 
-        function toggleTheme() {
-
-            const body =
-                document.body;
-
-            const current =
-                body.getAttribute(
-                    "data-theme"
-                );
-
-            const next =
-                current === "dark"
-                ? "light"
-                : "dark";
+        function applyTheme(theme) {
 
             body.setAttribute(
                 "data-theme",
-                next
+                theme
             );
 
-            localStorage.setItem(
-                "theme",
-                next
-            );
+            themeBtn.innerHTML =
+                theme === "dark"
+                ? "☀️"
+                : "🌙";
 
         }
 
-        // LOAD SAVED THEME
         const savedTheme =
             localStorage.getItem(
                 "theme"
-            );
+            ) || "dark";
 
-        if(savedTheme){
+        applyTheme(savedTheme);
 
-            document.body.setAttribute(
-                "data-theme",
-                savedTheme
-            );
+        themeBtn.addEventListener(
+            "click",
+            () => {
+
+                const current =
+                    body.getAttribute(
+                        "data-theme"
+                    );
+
+                const next =
+                    current === "dark"
+                    ? "light"
+                    : "dark";
+
+                applyTheme(next);
+
+                localStorage.setItem(
+                    "theme",
+                    next
+                );
+
+            }
+        );
+
+        // =========================
+        // LOAD SUBJECTS
+        // =========================
+
+        let allSubjects = [];
+
+        async function loadSubjects() {
+
+            try {
+
+                subjectContainer.innerHTML = `
+
+                    <div class="skeleton"></div>
+                    <div class="skeleton"></div>
+                    <div class="skeleton"></div>
+
+                `;
+
+                const res =
+                    await fetch(
+                        "/api/subjects"
+                    );
+
+                const subjects =
+                    await res.json();
+
+                allSubjects = subjects;
+
+                renderSubjects(subjects);
+
+            } catch(err) {
+
+                console.error(err);
+
+                subjectContainer.innerHTML = `
+
+                    <div class="welcome-box">
+                        Failed to load subjects
+                    </div>
+
+                `;
+
+            }
 
         }
 
-    </script>
+        // =========================
+        // RENDER SUBJECTS
+        // =========================
 
-    <script src="student.js?v=3"></script>
+        function renderSubjects(subjects) {
+
+            subjectContainer.innerHTML = "";
+
+            if(subjects.length === 0) {
+
+                subjectContainer.innerHTML = `
+
+                    <div class="subject-card">
+                        <h3>No subjects found</h3>
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+            subjects.forEach(subject => {
+
+                subjectContainer.innerHTML += `
+
+                    <div
+                        class="subject-card"
+                        onclick="loadTopics('${subject._id}', this)"
+                    >
+
+                        <h3>
+                            ${subject.name}
+                        </h3>
+
+                        <p>
+                            ${(subject.description || "No description")
+                                .substring(0,90)}...
+                        </p>
+
+                    </div>
+
+                `;
+
+            });
+
+        }
+
+        // =========================
+        // SEARCH
+        // =========================
+
+        function searchSubjects() {
+
+            const value =
+                document.getElementById(
+                    "search"
+                ).value.toLowerCase();
+
+            const filtered =
+                allSubjects.filter(subject =>
+
+                    subject.name
+                    .toLowerCase()
+                    .includes(value)
+
+                );
+
+            renderSubjects(filtered);
+
+        }
+
+        // =========================
+        // LOAD TOPICS
+        // =========================
+
+        async function loadTopics(subjectId, element) {
+
+            try {
+
+                document
+                    .querySelectorAll(
+                        ".subject-card"
+                    )
+                    .forEach(card => {
+
+                        card.classList.remove(
+                            "active"
+                        );
+
+                    });
+
+                element.classList.add(
+                    "active"
+                );
+
+                topicContainer.classList.remove(
+                    "hidden"
+                );
+
+                welcomeBox.classList.add(
+                    "hidden"
+                );
+
+                topicsGrid.innerHTML = `
+
+                    <div class="skeleton"></div>
+                    <div class="skeleton"></div>
+                    <div class="skeleton"></div>
+
+                `;
+
+                const res =
+                    await fetch(
+                        `/api/topics/${subjectId}`
+                    );
+
+                const topics =
+                    await res.json();
+
+                topicsGrid.innerHTML = "";
+
+                if(topics.length === 0) {
+
+                    topicsGrid.innerHTML = `
+
+                        <div class="topic-card">
+                            <h3>No Topics</h3>
+                            <p>
+                                No topics added yet.
+                            </p>
+                        </div>
+
+                    `;
+
+                    return;
+
+                }
+
+                topics.forEach(topic => {
+
+                    topicsGrid.innerHTML += `
+
+                        <div
+                            class="topic-card"
+                            onclick='openLesson(${JSON.stringify(topic)})'
+                        >
+
+                            <h3>
+                                ${topic.title || "Untitled Topic"}
+                            </h3>
+
+                            <p>
+                                ${(topic.content || "No content")
+                                    .replace(/<[^>]*>/g, "")
+                                    .substring(0,100)}...
+                            </p>
+
+                        </div>
+
+                    `;
+
+                });
+
+            } catch(err) {
+
+                console.error(err);
+
+            }
+
+        }
+
+        // =========================
+// OPEN LESSON
+// =========================
+
+function openLesson(topic, element) {
+
+    // REMOVE ACTIVE FROM ALL TOPICS
+    document
+        .querySelectorAll(".topic-card")
+        .forEach(card => {
+
+            card.classList.remove("active");
+
+        });
+
+    // ADD ACTIVE TO CLICKED TOPIC
+    if(element){
+
+        element.classList.add("active");
+
+    }
+
+    // SHOW LESSON VIEWER
+    lessonViewer.classList.remove(
+        "hidden"
+    );
+
+    // SET TITLE
+    lessonTitle.innerHTML =
+        topic.title || "Lesson";
+
+    // SHOW LOADER
+    lessonContent.innerHTML = `
+
+        <div class="loader"></div>
+
+    `;
+
+    // LOAD CONTENT
+    setTimeout(() => {
+
+        lessonContent.innerHTML =
+            topic.content ||
+            "No lesson content available.";
+
+    }, 300);
+
+    // SCROLL TO LESSON
+    window.scrollTo({
+
+        top:
+            lessonViewer.offsetTop - 100,
+
+        behavior: "smooth"
+
+    });
+
+}
+
+        // =========================
+        // INITIAL LOAD
+        // =========================
+
+        loadSubjects();
+
+    </script>
 
 </body>
 </html>

@@ -1,35 +1,148 @@
 // =========================
-// GLOBAL
+// EXCEL YOU STUDENT SYSTEM
+// FULL UPGRADED VERSION
+// student.js
 // =========================
+
+
+// =========================
+// GLOBAL STATE
+// =========================
+
 let allSubjects = [];
+
 let allTopics = [];
+
 let activeSubjectId = null;
+
+let activeTopicId = null;
+
+
+// =========================
+// ELEMENTS
+// =========================
+
+const subjectContainer =
+    document.getElementById(
+        "subjectContainer"
+    );
+
+const topicContainer =
+    document.getElementById(
+        "topicContainer"
+    );
+
+const topicsGrid =
+    document.getElementById(
+        "topicsGrid"
+    );
+
+const lessonViewer =
+    document.getElementById(
+        "lessonViewer"
+    );
+
+const lessonTitle =
+    document.getElementById(
+        "lessonTitle"
+    );
+
+const lessonContent =
+    document.getElementById(
+        "lessonContent"
+    );
+
+const welcomeBox =
+    document.getElementById(
+        "welcomeBox"
+    );
+
+const searchInput =
+    document.getElementById(
+        "search"
+    );
+
+const langSelect =
+    document.getElementById(
+        "lang"
+    );
+
+const sidebar =
+    document.getElementById(
+        "sidebar"
+    );
+
+const mobileBtn =
+    document.getElementById(
+        "mobileBtn"
+    );
+
+
+// =========================
+// MOBILE SIDEBAR
+// =========================
+
+if(mobileBtn){
+
+    mobileBtn.addEventListener(
+        "click",
+        () => {
+
+            sidebar.classList.toggle(
+                "active"
+            );
+
+        }
+    );
+
+}
 
 
 // =========================
 // SAFE HTML
 // =========================
+
 function escapeHTML(str = "") {
 
-    return str.replace(/[&<>"']/g, match => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
-    }[match]));
+    return str.replace(
+        /[&<>"']/g,
+        match => ({
+
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+
+        }[match])
+    );
+
+}
+
+
+// =========================
+// FORMAT TEXT
+// =========================
+
+function shortText(
+    text = "",
+    limit = 100
+){
+
+    return text.length > limit
+
+        ? text.substring(0, limit) + "..."
+
+        : text;
+
 }
 
 
 // =========================
 // SHOW LOADER
 // =========================
-function showLoading(containerId) {
 
-    const container =
-        document.getElementById(containerId);
-
-    if (!container) return;
+function showLoading(container) {
 
     container.innerHTML = `
 
@@ -44,322 +157,473 @@ function showLoading(containerId) {
         </div>
 
     `;
+
+}
+
+
+// =========================
+// EMPTY BOX
+// =========================
+
+function emptyBox(message) {
+
+    return `
+
+        <div class="empty-box">
+
+            ${message}
+
+        </div>
+
+    `;
+
+}
+
+
+// =========================
+// API FETCH
+// =========================
+
+async function fetchJSON(url) {
+
+    const res =
+        await fetch(url);
+
+    if(!res.ok){
+
+        throw new Error(
+            "Request Failed"
+        );
+
+    }
+
+    return await res.json();
+
 }
 
 
 // =========================
 // LOAD SUBJECTS
 // =========================
+
 async function loadSubjects() {
 
     try {
 
-        showLoading("subjectContainer");
+        showLoading(
+            subjectContainer
+        );
 
         const lang =
-            document.getElementById("lang").value;
+            langSelect?.value || "en";
 
-        const res =
-            await fetch("/api/subjects");
-
-        const data =
-            await res.json();
+        const subjects =
+            await fetchJSON(
+                "/api/subjects"
+            );
 
         // FILTER LANGUAGE
-        allSubjects = data.filter(subject =>
-            subject.language === lang
-        );
+        allSubjects =
+            subjects.filter(subject =>
+
+                !subject.language ||
+
+                subject.language === lang
+
+            );
 
         renderSubjects(allSubjects);
 
         // RESET UI
-        document
-            .getElementById("welcomeBox")
-            ?.classList.remove("hidden");
+        welcomeBox?.classList.remove(
+            "hidden"
+        );
 
-        document
-            .getElementById("topicContainer")
-            ?.classList.add("hidden");
+        topicContainer?.classList.add(
+            "hidden"
+        );
 
-        document
-            .getElementById("lessonViewer")
-            ?.classList.add("hidden");
+        lessonViewer?.classList.add(
+            "hidden"
+        );
 
-    } catch (err) {
+    } catch(err) {
 
         console.error(
             "LOAD SUBJECTS ERROR:",
             err
         );
 
+        subjectContainer.innerHTML =
+            emptyBox(
+                "❌ Failed to load subjects"
+            );
+
     }
+
 }
 
 
 // =========================
 // RENDER SUBJECTS
 // =========================
+
 function renderSubjects(subjects) {
 
-    const container =
-        document.getElementById(
-            "subjectContainer"
-        );
+    subjectContainer.innerHTML = "";
 
-    if (!container) return;
+    if(!subjects.length){
 
-    container.innerHTML = "";
-
-    if (!subjects.length) {
-
-        container.innerHTML = `
-
-            <div class="empty-box">
-
-                No subjects found.
-
-            </div>
-
-        `;
+        subjectContainer.innerHTML =
+            emptyBox(
+                "No subjects found."
+            );
 
         return;
+
     }
 
     subjects.forEach(subject => {
 
         const activeClass =
+
             activeSubjectId === subject._id
-            ? "active-subject"
+
+            ? "active"
+
             : "";
 
-        container.innerHTML += `
+        subjectContainer.innerHTML += `
 
             <div
                 class="subject-card ${activeClass}"
                 onclick="openSubject(
-                    '${subject._id}',
-                    '${escapeHTML(subject.name)}'
+                    '${subject._id}'
                 )"
             >
 
                 <h3>
-                    📘 ${escapeHTML(subject.name)}
+                    📘
+                    ${escapeHTML(
+                        subject.name
+                    )}
                 </h3>
 
                 <p>
-                    ${escapeHTML(
-                        subject.description ||
-                        "No description available"
+                    ${shortText(
+
+                        escapeHTML(
+                            subject.description ||
+                            "No description available"
+                        ),
+
+                        90
                     )}
                 </p>
 
             </div>
 
         `;
+
     });
+
 }
 
 
 // =========================
 // OPEN SUBJECT
 // =========================
-async function openSubject(id, name) {
+
+async function openSubject(subjectId) {
 
     try {
 
-        activeSubjectId = id;
+        activeSubjectId =
+            subjectId;
 
-        renderSubjects(allSubjects);
+        activeTopicId = null;
 
-        const topicContainer =
-            document.getElementById(
-                "topicContainer"
-            );
+        renderSubjects(
+            allSubjects
+        );
 
-        showLoading("topicContainer");
+        welcomeBox?.classList.add(
+            "hidden"
+        );
 
-        // HIDE OTHER AREAS
-        document
-            .getElementById("welcomeBox")
-            ?.classList.add("hidden");
+        lessonViewer?.classList.add(
+            "hidden"
+        );
 
-        document
-            .getElementById("lessonViewer")
-            ?.classList.add("hidden");
+        topicContainer?.classList.remove(
+            "hidden"
+        );
 
-        topicContainer.classList.remove("hidden");
+        topicsGrid.innerHTML = "";
 
-        const res =
-            await fetch(`/api/topics/${id}`);
+        showLoading(
+            topicsGrid
+        );
 
         const topics =
-            await res.json();
+            await fetchJSON(
+                `/api/topics/${subjectId}`
+            );
 
         allTopics = topics;
 
-        topicContainer.innerHTML = `
+        renderTopics(topics);
 
-            <div class="topic-header">
+        // MOBILE AUTO CLOSE
+        if(window.innerWidth < 992){
 
-                <h2>
-                    📖 ${escapeHTML(name)}
-                </h2>
+            sidebar.classList.remove(
+                "active"
+            );
 
-                <p>
-                    ${topics.length}
-                    Topics Available
-                </p>
-
-            </div>
-
-        `;
-
-        if (!topics.length) {
-
-            topicContainer.innerHTML += `
-
-                <div class="empty-box">
-
-                    No topics available.
-
-                </div>
-
-            `;
-
-            return;
         }
 
-        topics.forEach(topic => {
-
-            topicContainer.innerHTML += `
-
-                <div
-                    class="topic-card"
-                    onclick="openTopic(
-                        '${topic._id}'
-                    )"
-                >
-
-                    <h3>
-                        ${escapeHTML(topic.title)}
-                    </h3>
-
-                </div>
-
-            `;
-        });
-
-    } catch (err) {
+    } catch(err) {
 
         console.error(
             "OPEN SUBJECT ERROR:",
             err
         );
 
+        topicsGrid.innerHTML =
+            emptyBox(
+                "❌ Failed to load topics"
+            );
+
     }
+
+}
+
+
+// =========================
+// RENDER TOPICS
+// =========================
+
+function renderTopics(topics) {
+
+    topicsGrid.innerHTML = "";
+
+    if(!topics.length){
+
+        topicsGrid.innerHTML =
+            emptyBox(
+                "No topics available."
+            );
+
+        return;
+
+    }
+
+    topics.forEach(topic => {
+
+        const activeClass =
+
+            activeTopicId === topic._id
+
+            ? "active"
+
+            : "";
+
+        const preview =
+
+            topic.content
+
+            ? topic.content
+                .replace(/<[^>]*>/g, "")
+
+            : "No content";
+
+        topicsGrid.innerHTML += `
+
+            <div
+                class="topic-card ${activeClass}"
+                onclick="openTopic(
+                    '${topic._id}'
+                )"
+            >
+
+                <h3>
+
+                    📖
+                    ${escapeHTML(
+                        topic.title ||
+                        "Untitled Topic"
+                    )}
+
+                </h3>
+
+                <p>
+
+                    ${shortText(
+                        escapeHTML(preview),
+                        100
+                    )}
+
+                </p>
+
+            </div>
+
+        `;
+
+    });
+
 }
 
 
 // =========================
 // OPEN TOPIC
 // =========================
-async function openTopic(id) {
+
+async function openTopic(topicId) {
 
     try {
 
-        const res =
-            await fetch(`/api/topic/${id}`);
+        activeTopicId =
+            topicId;
+
+        renderTopics(allTopics);
+
+        lessonViewer.classList.remove(
+            "hidden"
+        );
+
+        lessonTitle.innerHTML =
+            "Loading Lesson...";
+
+        lessonContent.innerHTML = `
+
+            <div class="loading-box">
+
+                <div class="loader"></div>
+
+                <p>
+                    Loading lesson...
+                </p>
+
+            </div>
+
+        `;
 
         const topic =
-            await res.json();
-
-        if (!topic) return;
-
-        // HIDE TOPICS
-        document
-            .getElementById("topicContainer")
-            ?.classList.add("hidden");
-
-        // SHOW LESSON
-        const lessonViewer =
-            document.getElementById(
-                "lessonViewer"
+            await fetchJSON(
+                `/api/topic/${topicId}`
             );
-
-        lessonViewer.classList.remove("hidden");
 
         // TITLE
-        document.getElementById(
-            "lessonTitle"
-        ).innerText = topic.title;
+        lessonTitle.innerHTML =
 
-        // CONTENT
-        const content =
-            document.getElementById(
-                "lessonContent"
-            );
+            topic.title ||
+            "Lesson";
 
-        content.innerHTML = "";
+        // CONTENT RESET
+        lessonContent.innerHTML = "";
 
         // =========================
-        // HTML CONTENT SUPPORT
+        // HTML CONTENT
         // =========================
-        if (topic.contentHTML) {
 
-            content.innerHTML =
+        if(topic.contentHTML){
+
+            lessonContent.innerHTML =
                 topic.contentHTML;
 
-            return;
         }
 
         // =========================
-        // BLOCK CONTENT SUPPORT
+        // NORMAL CONTENT
         // =========================
-        if (topic.contentBlocks?.length) {
+
+        else if(topic.content){
+
+            lessonContent.innerHTML = `
+
+                <div class="lesson-text">
+
+                    ${topic.content}
+
+                </div>
+
+            `;
+
+        }
+
+        // =========================
+        // BLOCK CONTENT SYSTEM
+        // =========================
+
+        else if(
+            topic.contentBlocks &&
+            topic.contentBlocks.length
+        ){
 
             topic.contentBlocks.forEach(block => {
 
-                // TEXT
-                if (block.type === "text") {
-
-                    content.innerHTML += `
-
-                        <p>
-                            ${block.value}
-                        </p>
-
-                    `;
-                }
-
+                // =================
                 // HEADING
-                if (block.type === "heading") {
+                // =================
 
-                    content.innerHTML += `
+                if(block.type === "heading"){
+
+                    lessonContent.innerHTML += `
 
                         <h2>
+
                             ${block.value}
+
                         </h2>
 
                     `;
+
                 }
 
-                // IMAGE
-                if (block.type === "image") {
+                // =================
+                // TEXT
+                // =================
 
-                    content.innerHTML += `
+                if(block.type === "text"){
+
+                    lessonContent.innerHTML += `
+
+                        <p>
+
+                            ${block.value}
+
+                        </p>
+
+                    `;
+
+                }
+
+                // =================
+                // IMAGE
+                // =================
+
+                if(block.type === "image"){
+
+                    lessonContent.innerHTML += `
 
                         <img
                             src="${block.value}"
+                            alt="Lesson Image"
                             class="lesson-image"
                         >
 
                     `;
+
                 }
 
+                // =================
                 // VIDEO
-                if (block.type === "video") {
+                // =================
 
-                    content.innerHTML += `
+                if(block.type === "video"){
+
+                    lessonContent.innerHTML += `
 
                         <iframe
                             class="lesson-video"
@@ -369,49 +633,255 @@ async function openTopic(id) {
                         ></iframe>
 
                     `;
+
+                }
+
+                // =================
+                // CODE
+                // =================
+
+                if(block.type === "code"){
+
+                    lessonContent.innerHTML += `
+
+                        <pre class="code-block">
+
+<code>${escapeHTML(block.value)}</code>
+
+                        </pre>
+
+                    `;
+
+                }
+
+                // =================
+                // QUOTE
+                // =================
+
+                if(block.type === "quote"){
+
+                    lessonContent.innerHTML += `
+
+                        <blockquote>
+
+                            ${block.value}
+
+                        </blockquote>
+
+                    `;
+
                 }
 
             });
+
         }
 
-    } catch (err) {
+        // =========================
+        // EMPTY
+        // =========================
+
+        else {
+
+            lessonContent.innerHTML =
+                emptyBox(
+                    "No lesson content available."
+                );
+
+        }
+
+        // =========================
+        // SCROLL
+        // =========================
+
+        window.scrollTo({
+
+            top:
+                lessonViewer.offsetTop - 100,
+
+            behavior: "smooth"
+
+        });
+
+    } catch(err) {
 
         console.error(
             "OPEN TOPIC ERROR:",
             err
         );
 
+        lessonContent.innerHTML =
+            emptyBox(
+                "❌ Failed to load lesson"
+            );
+
     }
+
 }
 
 
 // =========================
 // SEARCH SUBJECTS
 // =========================
+
 function searchSubjects() {
 
     const value =
-        document.getElementById("search")
-            .value
-            .toLowerCase();
+
+        searchInput.value
+            .toLowerCase()
+            .trim();
 
     const filtered =
+
         allSubjects.filter(subject =>
 
             subject.name
                 .toLowerCase()
                 .includes(value)
+
         );
 
     renderSubjects(filtered);
+
 }
+
+
+// =========================
+// THEME SYSTEM
+// =========================
+
+const themeBtn =
+    document.getElementById(
+        "themeBtn"
+    );
+
+function applyTheme(theme){
+
+    document.body.setAttribute(
+        "data-theme",
+        theme
+    );
+
+    if(themeBtn){
+
+        themeBtn.innerHTML =
+
+            theme === "dark"
+
+            ? "☀️"
+
+            : "🌙";
+
+    }
+
+}
+
+const savedTheme =
+
+    localStorage.getItem(
+        "theme"
+    ) || "dark";
+
+applyTheme(savedTheme);
+
+if(themeBtn){
+
+    themeBtn.addEventListener(
+        "click",
+        () => {
+
+            const current =
+
+                document.body.getAttribute(
+                    "data-theme"
+                );
+
+            const next =
+
+                current === "dark"
+
+                ? "light"
+
+                : "dark";
+
+            applyTheme(next);
+
+            localStorage.setItem(
+                "theme",
+                next
+            );
+
+        }
+    );
+
+}
+
+
+// =========================
+// LANGUAGE CHANGE
+// =========================
+
+if(langSelect){
+
+    langSelect.addEventListener(
+        "change",
+        loadSubjects
+    );
+
+}
+
+
+// =========================
+// SEARCH EVENT
+// =========================
+
+if(searchInput){
+
+    searchInput.addEventListener(
+        "keyup",
+        searchSubjects
+    );
+
+}
+
+
+// =========================
+// CLOSE SIDEBAR OUTSIDE CLICK
+// =========================
+
+document.addEventListener(
+    "click",
+    (e) => {
+
+        if(
+
+            window.innerWidth < 992 &&
+
+            !sidebar.contains(e.target) &&
+
+            !mobileBtn.contains(e.target)
+
+        ){
+
+            sidebar.classList.remove(
+                "active"
+            );
+
+        }
+
+    }
+);
 
 
 // =========================
 // INITIAL LOAD
 // =========================
-window.onload = () => {
 
-    loadSubjects();
+window.addEventListener(
+    "load",
+    () => {
 
-};
+        loadSubjects();
+
+    }
+);
