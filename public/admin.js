@@ -161,6 +161,7 @@ async function loadSubjectFilter() {
 }
 
 
+
 // =========================
 // LOAD POSTS
 // =========================
@@ -168,25 +169,40 @@ async function loadPosts() {
 
     try {
 
+        // SUBJECT FILTER
         const subjectId =
             document.getElementById("filterSubject")
                 ?.value || "";
 
+        // STATUS FILTER
         const visibility =
             document.getElementById("filterVisibility")
                 ?.value || "";
 
+        // SEARCH
+        const search =
+            document.getElementById("searchPost")
+                ?.value
+                .trim() || "";
+
+        // QUERY
         const query =
             new URLSearchParams({
                 subjectId,
-                visibility
+                visibility,
+                search
             });
 
+        // FETCH POSTS
         const res =
-            await fetch(`/api/admin/posts?${query}`);
+            await fetch(
+                `/api/admin/posts?${query}`
+            );
 
-        const posts = await res.json();
+        const posts =
+            await res.json();
 
+        // POSTS CONTAINER
         const container =
             document.getElementById("postsList");
 
@@ -194,15 +210,19 @@ async function loadPosts() {
 
         container.innerHTML = "";
 
+        // EMPTY STATE
         if (!posts.length) {
 
             container.innerHTML = `
-                <p>No posts found.</p>
+                <div class="empty-posts">
+                    No posts found.
+                </div>
             `;
 
             return;
         }
 
+        // RENDER POSTS
         posts.forEach(post => {
 
             const status =
@@ -215,20 +235,34 @@ async function loadPosts() {
                     ? "published"
                     : "draft";
 
+            const updatedDate =
+                new Date(
+                    post.updatedAt || Date.now()
+                ).toLocaleString();
+
             container.innerHTML += `
 
                 <div class="post-card">
 
                     <div class="post-top">
 
-                        <div>
+                        <div class="post-info">
 
                             <div class="post-title">
-                                ${escapeHTML(post.title)}
+                                ${escapeHTML(
+                                    post.title || "Untitled"
+                                )}
                             </div>
 
                             <div class="post-subject">
-                                📘 ${escapeHTML(post.subjectId?.name || "Unknown")}
+                                📘 ${escapeHTML(
+                                    post.subjectId?.name || "Unknown"
+                                )}
+                            </div>
+
+                            <div class="post-date">
+                                Updated:
+                                ${updatedDate}
                             </div>
 
                         </div>
@@ -243,18 +277,16 @@ async function loadPosts() {
 
                         <button
                             class="edit-btn"
-                            onclick="editPost('${post._id}')">
-
+                            onclick="editPost('${post._id}')"
+                        >
                             ✏️ Edit
-
                         </button>
 
                         <button
                             class="delete-btn"
-                            onclick="deletePost('${post._id}')">
-
+                            onclick="deletePost('${post._id}')"
+                        >
                             🗑 Delete
-
                         </button>
 
                     </div>
@@ -266,10 +298,20 @@ async function loadPosts() {
     } catch (err) {
 
         console.error(err);
+
+        const container =
+            document.getElementById("postsList");
+
+        if (container) {
+
+            container.innerHTML = `
+                <div class="empty-posts">
+                    Failed to load posts ❌
+                </div>
+            `;
+        }
     }
 }
-
-
 // =========================
 // EDIT POST
 // =========================

@@ -250,6 +250,7 @@
 
                     <div class="filters">
 
+                        <!-- SUBJECT FILTER -->
                         <select
                             id="filterSubject"
                             onchange="loadPosts()"
@@ -261,6 +262,7 @@
 
                         </select>
 
+                        <!-- STATUS FILTER -->
                         <select
                             id="filterVisibility"
                             onchange="loadPosts()"
@@ -274,16 +276,25 @@
                                 Published
                             </option>
 
-                            <option value="private">
+                            <option value="draft">
                                 Draft
                             </option>
 
                         </select>
 
+                        <!-- SEARCH -->
+                        <input
+                            type="text"
+                            id="searchPost"
+                            placeholder="Search topic..."
+                            oninput="loadPosts()"
+                        >
+
                     </div>
 
                 </div>
 
+                <!-- POSTS -->
                 <div id="postsList"></div>
 
             </section>
