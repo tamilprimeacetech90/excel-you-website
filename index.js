@@ -23,7 +23,7 @@ const connectDB = require("./config/db");
 const adminRoutes = require("./routes/adminRoutes");
 const contentRoutes = require("./routes/contentRoutes");
 const uploadRoutes = require("./routes/uploadRoutes");
-
+const subjectRoutes = require("./routes/subjectRoutes");
 const app = express();
 
 
@@ -121,7 +121,7 @@ app.use(
     contentRoutes
 );
 
-
+app.use("/api", subjectRoutes);
 // =====================
 // 🌍 WEBSITE PAGES
 // =====================
