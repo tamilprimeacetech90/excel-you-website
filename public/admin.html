@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,7 +16,7 @@
     <!-- MAIN CSS -->
     <link
         rel="stylesheet"
-        href="/admin.css?v=3"
+        href="/admin.css?v=4"
     >
 
     <!-- QUILL CSS -->
@@ -30,7 +31,7 @@
         href="https://unpkg.com/quill-image-uploader@1.2.3/dist/quill.imageUploader.min.css"
     >
 
-    <!-- CHART JS -->
+    <!-- CHART -->
     <script
         src="https://cdn.jsdelivr.net/npm/chart.js"
     ></script>
@@ -51,7 +52,12 @@
 
             <h2>📊 EXCEL YOU</h2>
 
+            <p class="sidebar-subtitle">
+                Admin Panel
+            </p>
+
         </div>
+
 
         <nav class="sidebar-menu">
 
@@ -68,14 +74,15 @@
             </button>
 
             <button onclick="showSection('posts')">
-                📝 Posts
+                📝 Articles
             </button>
 
             <button onclick="showSection('block')">
-                🧱 Content
+                ✍️ Editor
             </button>
 
         </nav>
+
 
         <div class="sidebar-bottom">
 
@@ -112,7 +119,17 @@
                 ☰
             </button>
 
-            <h3>Admin Dashboard</h3>
+            <div>
+
+                <h3>
+                    EXCEL YOU CMS
+                </h3>
+
+                <p class="topbar-subtitle">
+                    Content Management System
+                </p>
+
+            </div>
 
             <button
                 class="top-logout"
@@ -127,72 +144,91 @@
         <!-- ================= CONTENT ================= -->
         <div class="content">
 
-            <!-- ================= STATS ================= -->
-            <section
-                id="statsBox"
-                class="section"
-            ></section>
+<!-- ================= DASHBOARD ================= -->
+<section
+    id="dashboardSection"
+    class="section"
+>
 
+    <!-- STATS -->
+    <div id="statsBox"></div>
 
-            <!-- ================= DASHBOARD ================= -->
-            <section
-                id="dashboardSection"
-                class="section"
-            >
+    <div class="dashboard-header">
 
-                <h1>👋 Welcome Admin</h1>
+        <h1>
+            👋 Welcome Admin
+        </h1>
 
-                <p>
-                    Manage subjects, topics, and LMS content.
-                </p>
+        <p>
+            Manage subjects, topics, articles and content.
+        </p>
 
-                <canvas
-                    id="mainChart"
-                    height="100"
-                ></canvas>
+    </div>
 
-            </section>
+    <canvas
+        id="mainChart"
+        height="100"
+    ></canvas>
 
-
+</section>
             <!-- ================= SUBJECT SECTION ================= -->
             <section
                 id="subjectSection"
                 class="section hidden"
             >
 
-                <h2>📘 Create Subject</h2>
+                <div class="section-header">
 
-                <input
-                    id="subjectName"
-                    type="text"
-                    placeholder="Subject Name"
+                    <h2>
+                        📘 Create Subject
+                    </h2>
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <input
+                        id="subjectName"
+                        type="text"
+                        placeholder="Subject Name"
+                    >
+
+                    <input
+                        id="subjectDesc"
+                        type="text"
+                        placeholder="Description"
+                    >
+
+                    <select id="subjectLang">
+
+                        <option value="en">
+                            English
+                        </option>
+
+                        <option value="ta">
+                            Tamil
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <button
+                    class="primary-btn"
+                    onclick="addSubject()"
                 >
-
-                <input
-                    id="subjectDesc"
-                    type="text"
-                    placeholder="Description"
-                >
-
-                <select id="subjectLang">
-
-                    <option value="en">
-                        English
-                    </option>
-
-                    <option value="ta">
-                        Tamil
-                    </option>
-
-                </select>
-
-                <button onclick="addSubject()">
                     + Create Subject
                 </button>
 
+
                 <hr>
 
-                <h3>📚 LMS Subjects</h3>
+
+                <h3>
+                    📚 Subject List
+                </h3>
 
                 <div id="subjectList"></div>
 
@@ -205,33 +241,52 @@
                 class="section hidden"
             >
 
-                <h2>📖 Create Topic</h2>
+                <div class="section-header">
 
-                <input
-                    id="topicTitle"
-                    type="text"
-                    placeholder="Topic Title"
+                    <h2>
+                        📖 Create Topic
+                    </h2>
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <input
+                        id="topicTitle"
+                        type="text"
+                        placeholder="Topic Title"
+                    >
+
+
+                    <select id="subjectId">
+
+                        <option value="">
+                            Select Subject
+                        </option>
+
+                    </select>
+
+
+                    <select id="topicLang">
+
+                        <option value="en">
+                            English
+                        </option>
+
+                        <option value="ta">
+                            Tamil
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <button
+                    class="primary-btn"
+                    onclick="addTopic()"
                 >
-
-                <input
-                    id="subjectId"
-                    type="text"
-                    placeholder="Subject ID"
-                >
-
-                <select id="topicLang">
-
-                    <option value="en">
-                        English
-                    </option>
-
-                    <option value="ta">
-                        Tamil
-                    </option>
-
-                </select>
-
-                <button onclick="addTopic()">
                     + Create Topic
                 </button>
 
@@ -246,7 +301,18 @@
 
                 <div class="posts-header">
 
-                    <h2>📝 Manage Posts</h2>
+                    <div>
+
+                        <h2>
+                            📝 Manage Articles
+                        </h2>
+
+                        <p>
+                            Edit published and draft articles
+                        </p>
+
+                    </div>
+
 
                     <div class="filters">
 
@@ -261,6 +327,7 @@
                             </option>
 
                         </select>
+
 
                         <!-- STATUS FILTER -->
                         <select
@@ -282,17 +349,19 @@
 
                         </select>
 
+
                         <!-- SEARCH -->
                         <input
                             type="text"
                             id="searchPost"
-                            placeholder="Search topic..."
+                            placeholder="Search article..."
                             oninput="loadPosts()"
                         >
 
                     </div>
 
                 </div>
+
 
                 <!-- POSTS -->
                 <div id="postsList"></div>
@@ -306,9 +375,20 @@
                 class="section hidden"
             >
 
+                <!-- HEADER -->
                 <div class="editor-header">
 
-                    <h2>🧱 Content Editor</h2>
+                    <div>
+
+                        <h2>
+                            ✍️ Article Editor
+                        </h2>
+
+                        <p class="editor-subtitle">
+                            Create and edit blog articles
+                        </p>
+
+                    </div>
 
                     <div class="publish-box">
 
@@ -331,20 +411,104 @@
                 </div>
 
 
-                <!-- TOPIC ID -->
+                <!-- HIDDEN TOPIC ID -->
                 <input
+                    type="hidden"
                     id="topicId"
-                    type="text"
-                    placeholder="Topic ID"
                 >
+
+
+                <!-- SUBJECT + ARTICLE -->
+                <div class="editor-grid">
+
+                    <!-- SUBJECT -->
+                    <div class="editor-field">
+
+                        <label for="editorSubject">
+                            📘 Subject
+                        </label>
+
+                        <select
+                            id="editorSubject"
+                            onchange="loadTopicsForEditor()"
+                        >
+
+                            <option value="">
+                                Select Subject
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- ARTICLE -->
+                    <div class="editor-field">
+
+                        <label for="editorTopic">
+                            📖 Article
+                        </label>
+
+                        <select
+                            id="editorTopic"
+                            onchange="openSelectedTopic()"
+                        >
+
+                            <option value="">
+                                Select Article
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TITLE -->
+                <div class="editor-field">
+
+                    <label for="editorTitle">
+                        ✍️ Article Title
+                    </label>
+
+                    <input
+                        id="editorTitle"
+                        type="text"
+                        class="editor-title"
+                        placeholder="Enter article title..."
+                    >
+
+                </div>
+
+
+                <!-- BUTTONS -->
+                <div class="editor-actions">
+
+                    <button
+                        class="new-post-btn"
+                        onclick="createNewArticle()"
+                    >
+                        ➕ Create New Article
+                    </button>
+
+                </div>
 
 
                 <!-- IMAGE -->
-                <input
-                    type="file"
-                    id="imageUpload"
-                    accept="image/*"
-                >
+                <div class="editor-field">
+
+                    <label for="imageUpload">
+                        🖼 Upload Image
+                    </label>
+
+                    <input
+                        type="file"
+                        id="imageUpload"
+                        accept="image/*"
+                    >
+
+                </div>
 
 
                 <!-- QUILL -->
@@ -376,7 +540,8 @@
 <script src="https://unpkg.com/quill-image-uploader@1.2.3/dist/quill.imageUploader.min.js"></script>
 
 <!-- ================= ADMIN JS ================= -->
-<script src="/admin.js?v=3"></script>
+<script src="/admin.js?v=4"></script>
 
 </body>
 </html>
+```

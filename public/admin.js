@@ -42,7 +42,7 @@ function showSection(section) {
 // =========================
 function escapeHTML(str = "") {
 
-    return str.replace(/[&<>"']/g, m => ({
+    return String(str).replace(/[&<>"']/g, m => ({
         "&": "&amp;",
         "<": "&lt;",
         ">": "&gt;",
@@ -59,15 +59,15 @@ async function addSubject() {
 
     const name =
         document.getElementById("subjectName")
-            .value.trim();
+            ?.value.trim();
 
     const description =
         document.getElementById("subjectDesc")
-            .value.trim();
+            ?.value.trim();
 
     const language =
         document.getElementById("subjectLang")
-            .value;
+            ?.value || "en";
 
     if (!name) {
 
@@ -78,32 +78,35 @@ async function addSubject() {
 
     try {
 
-        await fetch("/api/admin/subject", {
+        const res =
+            await fetch("/api/admin/subject", {
 
-            method: "POST",
+                method: "POST",
 
-            headers: {
-                "Content-Type":
-                    "application/x-www-form-urlencoded"
-            },
+                headers: {
+                    "Content-Type":
+                        "application/x-www-form-urlencoded"
+                },
 
-            body: new URLSearchParams({
-                name,
-                description,
-                language
-            })
-        });
+                body: new URLSearchParams({
+                    name,
+                    description,
+                    language
+                })
+            });
+
+        if (!res.ok) {
+            throw new Error("Failed");
+        }
 
         alert("Subject Created ✔");
 
-        document.getElementById("subjectName")
-            .value = "";
+        document.getElementById("subjectName").value = "";
+        document.getElementById("subjectDesc").value = "";
 
-        document.getElementById("subjectDesc")
-            .value = "";
-
-        loadSubjects();
-        loadSubjectFilter();
+        await loadSubjects();
+        await loadSubjectFilter();
+        await loadStats();
 
     } catch (err) {
 
@@ -116,14 +119,19 @@ async function addSubject() {
 
 function selectSubject(id) {
 
-    document.getElementById("subjectId").value = id;
+    const subjectInput =
+        document.getElementById("subjectId");
 
-    showSection("topic");
+    if (subjectInput) {
+        subjectInput.value = id;
+    }
+
+   showSection("dashboard");
 }
 
 
 // =========================
-// LOAD SUBJECT FILTER
+// LOAD SUBJECT DROPDOWNS
 // =========================
 async function loadSubjectFilter() {
 
@@ -132,34 +140,73 @@ async function loadSubjectFilter() {
         const res =
             await fetch("/api/admin/subjects");
 
-        const subjects = await res.json();
+        const subjects =
+            await res.json();
 
-        const select =
+        const filterSelect =
             document.getElementById("filterSubject");
 
-        if (!select) return;
+        const subjectSelect =
+            document.getElementById("subjectId");
 
-        select.innerHTML = `
-            <option value="">
-                All Subjects
-            </option>
-        `;
+        const editorSubject =
+            document.getElementById("editorSubject");
+
+        if (filterSelect) {
+
+            filterSelect.innerHTML = `
+                <option value="">
+                    All Subjects
+                </option>
+            `;
+        }
+
+        if (subjectSelect) {
+
+            subjectSelect.innerHTML = `
+                <option value="">
+                    Select Subject
+                </option>
+            `;
+        }
+
+        if (editorSubject) {
+
+            editorSubject.innerHTML = `
+                <option value="">
+                    Select Subject
+                </option>
+            `;
+        }
 
         subjects.forEach(sub => {
 
-            select.innerHTML += `
+            const option = `
                 <option value="${sub._id}">
                     ${escapeHTML(sub.name)}
                 </option>
             `;
+
+            if (filterSelect) {
+                filterSelect.innerHTML += option;
+            }
+
+            if (subjectSelect) {
+                subjectSelect.innerHTML += option;
+            }
+
+            if (editorSubject) {
+                editorSubject.innerHTML += option;
+            }
         });
 
     } catch (err) {
 
         console.error(err);
+
+        alert("Failed to load subjects ❌");
     }
 }
-
 
 
 // =========================
@@ -169,23 +216,19 @@ async function loadPosts() {
 
     try {
 
-        // SUBJECT FILTER
         const subjectId =
             document.getElementById("filterSubject")
                 ?.value || "";
 
-        // STATUS FILTER
         const visibility =
             document.getElementById("filterVisibility")
                 ?.value || "";
 
-        // SEARCH
         const search =
             document.getElementById("searchPost")
                 ?.value
                 .trim() || "";
 
-        // QUERY
         const query =
             new URLSearchParams({
                 subjectId,
@@ -193,16 +236,18 @@ async function loadPosts() {
                 search
             });
 
-        // FETCH POSTS
         const res =
             await fetch(
-                `/api/admin/posts?${query}`
+                `/api/admin/posts?${query.toString()}`
             );
+
+        if (!res.ok) {
+            throw new Error("Failed to load posts");
+        }
 
         const posts =
             await res.json();
 
-        // POSTS CONTAINER
         const container =
             document.getElementById("postsList");
 
@@ -210,8 +255,7 @@ async function loadPosts() {
 
         container.innerHTML = "";
 
-        // EMPTY STATE
-        if (!posts.length) {
+        if (!Array.isArray(posts) || !posts.length) {
 
             container.innerHTML = `
                 <div class="empty-posts">
@@ -222,8 +266,7 @@ async function loadPosts() {
             return;
         }
 
-        // RENDER POSTS
-        posts.forEach(post => {
+        const html = posts.map(post => {
 
             const status =
                 post.visibility === "public"
@@ -240,8 +283,7 @@ async function loadPosts() {
                     post.updatedAt || Date.now()
                 ).toLocaleString();
 
-            container.innerHTML += `
-
+            return `
                 <div class="post-card">
 
                     <div class="post-top">
@@ -293,7 +335,9 @@ async function loadPosts() {
 
                 </div>
             `;
-        });
+        }).join("");
+
+        container.innerHTML = html;
 
     } catch (err) {
 
@@ -317,7 +361,12 @@ async function loadPosts() {
 // =========================
 function editPost(id) {
 
-    document.getElementById("topicId").value = id;
+    const topicId =
+        document.getElementById("topicId");
+
+    if (topicId) {
+        topicId.value = id;
+    }
 
     showSection("block");
 
@@ -337,13 +386,18 @@ async function deletePost(id) {
 
     try {
 
-        await fetch(`/api/admin/topic/${id}`, {
-            method: "DELETE"
-        });
+        const res =
+            await fetch(`/api/admin/topic/${id}`, {
+                method: "DELETE"
+            });
 
-        loadPosts();
-        loadStats();
-        loadSubjects();
+        if (!res.ok) {
+            throw new Error("Delete failed");
+        }
+
+        await loadPosts();
+        await loadStats();
+        await loadSubjects();
 
     } catch (err) {
 
@@ -355,7 +409,7 @@ async function deletePost(id) {
 
 
 // =========================
-// SUBJECT LIST
+// LOAD SUBJECTS
 // =========================
 async function loadSubjects() {
 
@@ -364,45 +418,78 @@ async function loadSubjects() {
         const res =
             await fetch("/api/admin/subjects");
 
-        const subjects = await res.json();
+        if (!res.ok) {
+
+            throw new Error(
+                "Failed to load subjects"
+            );
+        }
+
+        const subjects =
+            await res.json();
 
         const container =
             document.getElementById("subjectList");
 
         if (!container) return;
 
-        container.innerHTML = "";
+        // EMPTY STATE
+        if (
+            !Array.isArray(subjects) ||
+            !subjects.length
+        ) {
 
-        subjects.forEach(sub => {
-
-            container.innerHTML += `
-
-                <div class="subject-node">
-
-                    <div
-                        class="subject-header"
-                        onclick="toggleTopics('${sub._id}')">
-
-                        📘 ${escapeHTML(sub.name)}
-
-                    </div>
-
-                    <div
-                        id="topics-${sub._id}"
-                        class="topic-container hidden">
-                    </div>
-
+            container.innerHTML = `
+                <div class="empty-posts">
+                    No subjects found.
                 </div>
             `;
-        });
+
+            return;
+        }
+
+        // BUILD HTML ONCE
+        const html = subjects.map(sub => `
+
+            <div class="subject-node">
+
+                <div
+                    class="subject-header"
+                    onclick="toggleTopics('${sub._id}')">
+
+                    📘 ${escapeHTML(sub.name)}
+
+                </div>
+
+                <div
+                    id="topics-${sub._id}"
+                    class="topic-container hidden">
+                </div>
+
+            </div>
+
+        `).join("");
+
+        // SINGLE DOM UPDATE
+        container.innerHTML = html;
 
     } catch (err) {
 
         console.error(err);
+
+        const container =
+            document.getElementById("subjectList");
+
+        if (container) {
+
+            container.innerHTML = `
+                <div class="empty-posts">
+                    Failed to load subjects ❌
+                </div>
+            `;
+        }
     }
 }
-
-
 // =========================
 // TOGGLE TOPICS
 // =========================
@@ -416,7 +503,6 @@ async function toggleTopics(subjectId) {
     if (!container.classList.contains("hidden")) {
 
         container.classList.add("hidden");
-
         container.innerHTML = "";
 
         return;
@@ -425,40 +511,57 @@ async function toggleTopics(subjectId) {
     try {
 
         const res =
-            await fetch(`/api/admin/topics/${subjectId}`);
+            await fetch(
+                `/api/admin/topics/${subjectId}`
+            );
 
-        const topics = await res.json();
+        if (!res.ok) {
+            throw new Error("Failed");
+        }
 
-        container.innerHTML = "";
+        const topics =
+            await res.json();
 
-        topics.forEach(topic => {
+        if (!Array.isArray(topics)) {
+            throw new Error("Invalid topics");
+        }
+
+        const html = topics.map(topic => {
 
             const badge =
                 topic.visibility === "public"
                     ? "🟢"
                     : "🟡";
 
-            container.innerHTML += `
-
+            return `
                 <div
                     class="topic-node"
                     onclick="selectTopic('${topic._id}')">
 
-                    ${badge} 📖 ${escapeHTML(topic.title)}
+                    ${badge}
+                    📖 ${escapeHTML(topic.title)}
 
                 </div>
             `;
-        });
+        }).join("");
+
+        container.innerHTML = html;
 
         container.classList.remove("hidden");
 
     } catch (err) {
 
         console.error(err);
+
+        container.innerHTML = `
+            <div class="empty-posts">
+                Failed to load topics ❌
+            </div>
+        `;
+
+        container.classList.remove("hidden");
     }
 }
-
-
 // =========================
 // CREATE TOPIC
 // =========================
@@ -466,15 +569,15 @@ async function addTopic() {
 
     const title =
         document.getElementById("topicTitle")
-            .value.trim();
+            ?.value.trim();
 
     const subjectId =
         document.getElementById("subjectId")
-            .value;
+            ?.value;
 
     const language =
         document.getElementById("topicLang")
-            .value;
+            ?.value || "en";
 
     if (!title || !subjectId) {
 
@@ -502,16 +605,16 @@ async function addTopic() {
                 })
             });
 
-        const topic = await res.json();
+        const topic =
+            await res.json();
 
         alert("Topic Created ✔");
 
-        document.getElementById("topicTitle")
-            .value = "";
+        document.getElementById("topicTitle").value = "";
 
-        loadSubjects();
-        loadPosts();
-        loadStats();
+        await loadSubjects();
+        await loadPosts();
+        await loadStats();
 
         if (topic?._id) {
 
@@ -529,7 +632,12 @@ async function addTopic() {
 
 function selectTopic(id) {
 
-    document.getElementById("topicId").value = id;
+    const topicId =
+        document.getElementById("topicId");
+
+    if (topicId) {
+        topicId.value = id;
+    }
 
     showSection("block");
 
@@ -545,71 +653,262 @@ async function loadPreview(topicId) {
     try {
 
         const res =
-            await fetch(`/api/admin/topic/${topicId}`);
+            await fetch(
+                `/api/admin/topic/${topicId}`
+            );
 
-        const topic = await res.json();
+        const topic =
+            await res.json();
 
         if (!topic) return;
 
-        // TITLE
-        const titleInput =
-            document.getElementById("topicTitle");
+        document.getElementById("topicId").value =
+            topic._id || "";
 
-        if (titleInput) {
+        const editorTitle =
+            document.getElementById("editorTitle");
 
-            titleInput.value =
+        if (editorTitle) {
+
+            editorTitle.value =
                 topic.title || "";
         }
 
-        // ✅ FIXED HTML SYSTEM
-        if (quill) {
+        const editorSubject =
+            document.getElementById("editorSubject");
 
-            const content =
-                topic.contentHTML || "";
+        if (
+            editorSubject &&
+            topic.subjectId?._id
+        ) {
 
-            quill.root.innerHTML = content;
+            editorSubject.value =
+                topic.subjectId._id;
         }
 
-        // STATUS
+        await loadTopicsForEditor(
+            topic.subjectId?._id
+        );
+
+        const editorTopic =
+            document.getElementById("editorTopic");
+
+        if (editorTopic) {
+
+            editorTopic.value =
+                topic._id;
+        }
+
+        if (quill) {
+
+            quill.root.innerHTML =
+                topic.contentHTML || "";
+        }
+
+        const previewBox =
+            document.getElementById("previewBox");
+
+        if (previewBox) {
+
+            previewBox.innerHTML =
+                topic.contentHTML || "";
+        }
+
         const badge =
             document.getElementById("statusBadge");
 
-        const btn =
+        const publishBtn =
             document.getElementById("publishBtn");
 
-        if (badge && btn) {
+        if (badge && publishBtn) {
 
             if (topic.visibility === "public") {
 
                 badge.innerText = "Published";
-
                 badge.className =
                     "badge published";
 
-                btn.innerText =
+                publishBtn.innerText =
                     "🔒 Unpublish";
 
             } else {
 
                 badge.innerText = "Draft";
-
                 badge.className =
                     "badge draft";
 
-                btn.innerText =
+                publishBtn.innerText =
                     "🚀 Publish";
             }
         }
 
+        showSection("block");
+
     } catch (err) {
 
         console.error(err);
+
+        alert("Failed to load article ❌");
     }
 }
 
 
 // =========================
-// AUTO SAVE
+// LOAD TOPICS FOR EDITOR
+// =========================
+async function loadTopicsForEditor(
+    selectedSubjectId = null
+) {
+
+    const subjectId =
+        selectedSubjectId ||
+        document.getElementById("editorSubject")
+            ?.value;
+
+    const editorTopic =
+        document.getElementById("editorTopic");
+
+    if (!editorTopic) return;
+
+    editorTopic.innerHTML = `
+        <option value="">
+            Select Article
+        </option>
+    `;
+
+    if (!subjectId) return;
+
+    try {
+
+        const res =
+            await fetch(
+                `/api/admin/topics/${subjectId}`
+            );
+
+        const topics =
+            await res.json();
+
+        topics.forEach(topic => {
+
+            editorTopic.innerHTML += `
+                <option value="${topic._id}">
+                    ${escapeHTML(topic.title)}
+                </option>
+            `;
+        });
+
+    } catch (err) {
+
+        console.error(err);
+
+        alert("Failed to load articles ❌");
+    }
+}
+
+
+// =========================
+// OPEN SELECTED TOPIC
+// =========================
+function openSelectedTopic() {
+
+    const topicId =
+        document.getElementById("editorTopic")
+            ?.value;
+
+    if (!topicId) return;
+
+    loadPreview(topicId);
+}
+
+
+// =========================
+// CREATE NEW ARTICLE
+// =========================
+async function createNewArticle() {
+
+    const subjectId =
+        document.getElementById("editorSubject")
+            ?.value;
+
+    const title =
+        document.getElementById("editorTitle")
+            ?.value
+            .trim();
+
+    if (!subjectId) {
+
+        alert("Select subject ❌");
+
+        return;
+    }
+
+    if (!title) {
+
+        alert("Enter article title ❌");
+
+        return;
+    }
+
+    try {
+
+        const res =
+            await fetch("/api/admin/topic", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                        "application/x-www-form-urlencoded"
+                },
+
+                body: new URLSearchParams({
+                    title,
+                    subjectId,
+                    language: "en"
+                })
+            });
+
+        const topic =
+            await res.json();
+
+        if (!topic?._id) {
+
+            alert("Failed to create article ❌");
+
+            return;
+        }
+
+        document.getElementById("topicId")
+            .value = topic._id;
+
+        if (quill) {
+            quill.root.innerHTML = "";
+        }
+
+        await loadTopicsForEditor(subjectId);
+
+        document.getElementById("editorTopic")
+            .value = topic._id;
+
+        await loadPreview(topic._id);
+
+        await loadPosts();
+        await loadSubjects();
+        await loadStats();
+
+        alert("Article created ✔");
+
+    } catch (err) {
+
+        console.error(err);
+
+        alert("Failed to create article ❌");
+    }
+}
+
+
+// =========================
+// AUTO SAVE SETUP
 // =========================
 function setupAutoSave() {
 
@@ -628,49 +927,103 @@ function setupAutoSave() {
         }
 
         saveTimer =
-            setTimeout(autoSaveDraft, 1000);
+            setTimeout(() => {
+                autoSaveDraft();
+            }, 1000);
     });
+
+    const titleInput =
+        document.getElementById("editorTitle");
+
+    if (titleInput) {
+
+        titleInput.addEventListener("input", () => {
+
+            clearTimeout(saveTimer);
+
+            const status =
+                document.getElementById("saveStatus");
+
+            if (status) {
+
+                status.innerText = "Saving...";
+            }
+
+            saveTimer =
+                setTimeout(() => {
+                    autoSaveDraft();
+                }, 1000);
+        });
+    }
 }
 
 
+// =========================
+// AUTO SAVE
+// =========================
 async function autoSaveDraft() {
 
     const topicId =
         document.getElementById("topicId")
-            .value;
+            ?.value;
 
-    if (!topicId) return;
+    if (!topicId || !quill) return;
 
-    const content =
+    const contentHTML =
         quill.root.innerHTML;
+
+    const title =
+        document.getElementById("editorTitle")
+            ?.value
+            .trim() || "Untitled";
 
     try {
 
-        await fetch(`/api/admin/topic/${topicId}`, {
+        const res =
+            await fetch(
+                `/api/admin/topic/${topicId}`,
+                {
+                    method: "PUT",
 
-            method: "PUT",
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
 
-            headers: {
-                "Content-Type":
-                    "application/json"
-            },
+                    body: JSON.stringify({
+                        title,
+                        contentHTML
+                    })
+                }
+            );
 
-            body: JSON.stringify({
-                contentHTML: content
-            })
-        });
+        if (!res.ok) {
+
+            throw new Error(
+                "Save request failed"
+            );
+        }
+
+        const previewBox =
+            document.getElementById("previewBox");
+
+        if (previewBox) {
+
+            previewBox.innerHTML =
+                contentHTML;
+        }
 
         const status =
             document.getElementById("saveStatus");
 
         if (status) {
 
-            const time =
-                new Date().toLocaleTimeString();
-
             status.innerText =
-                `Saved at ${time} ✔`;
+                `Saved ✔ ${new Date()
+                    .toLocaleTimeString()}`;
         }
+
+        loadPosts();
 
     } catch (err) {
 
@@ -695,7 +1048,7 @@ async function togglePublish() {
 
     const topicId =
         document.getElementById("topicId")
-            .value;
+            ?.value;
 
     if (!topicId) {
 
@@ -709,32 +1062,32 @@ async function togglePublish() {
 
     try {
 
-        if (btn.innerText.includes("Publish")) {
+        const isPublish =
+            btn.innerText.includes("Publish");
 
-            await fetch(
-                `/api/admin/topic/publish/${topicId}`,
-                {
-                    method: "POST"
-                }
-            );
+        const endpoint =
+            isPublish
+                ? `/api/admin/topic/publish/${topicId}`
+                : `/api/admin/topic/unpublish/${topicId}`;
 
-        } else {
+        const res =
+            await fetch(endpoint, {
+                method: "POST"
+            });
 
-            await fetch(
-                `/api/admin/topic/unpublish/${topicId}`,
-                {
-                    method: "POST"
-                }
-            );
+        if (!res.ok) {
+            throw new Error("Publish failed");
         }
 
-        loadPreview(topicId);
-        loadPosts();
-        loadSubjects();
+        await loadPreview(topicId);
+        await loadPosts();
+        await loadSubjects();
 
     } catch (err) {
 
         console.error(err);
+
+        alert("Action failed ❌");
     }
 }
 
@@ -749,7 +1102,8 @@ async function loadStats() {
         const res =
             await fetch("/api/admin/stats");
 
-        const data = await res.json();
+        const data =
+            await res.json();
 
         const box =
             document.getElementById("statsBox");
@@ -776,12 +1130,12 @@ async function loadStats() {
 
         animateCount(
             "subjectsCount",
-            data.subjects
+            data.subjects || 0
         );
 
         animateCount(
             "topicsCount",
-            data.topics
+            data.topics || 0
         );
 
     } catch (err) {
@@ -796,7 +1150,7 @@ function animateCount(id, target) {
     let current = 0;
 
     const step =
-        Math.ceil(target / 40);
+        Math.max(1, Math.ceil(target / 40));
 
     const interval =
         setInterval(() => {
@@ -876,78 +1230,65 @@ function logout() {
 
 
 // =========================
-// INIT
+// WINDOW INIT
 // =========================
-window.onload = () => {
+window.onload = async () => {
 
-    // QUILL
-    Quill.register(
-        "modules/imageUploader",
-        ImageUploader
-    );
+    try {
 
-    quill = new Quill("#editor", {
-
-        theme: "snow",
-
-        placeholder:
-            "Start writing...",
-
-        modules: {
-
-            toolbar: [
-                ["bold", "italic", "underline"],
-                [{ header: [1, 2, 3, false] }],
-                [{ list: "ordered" },
-                 { list: "bullet" }],
-                ["link", "image"],
-                ["clean"]
-            ],
-
-            imageUploader: {
-
-                upload: async (file) => {
-
-                    const formData =
-                        new FormData();
-
-                    formData.append(
-                        "image",
-                        file
-                    );
-
-                    const res =
-                        await fetch(
-                            "/api/upload/image",
-                            {
-                                method: "POST",
-                                body: formData
-                            }
-                        );
-
-                    const data =
-                        await res.json();
-
-                    return data.url;
-                }
-            }
+        // QUILL CHECK
+        if (
+            typeof Quill === "undefined"
+        ) {
+            throw new Error(
+                "Quill not loaded"
+            );
         }
-    });
 
-    showSection("subject");
+        // IMAGE UPLOADER
+        if (
+            typeof ImageUploader !== "undefined"
+        ) {
 
-    document.querySelector(".sidebar")
-        ?.classList.remove("active");
+            Quill.register(
+                "modules/imageUploader",
+                ImageUploader
+            );
+        }
 
-    document.querySelector(".overlay")
-        ?.classList.remove("show");
+        // QUILL INIT
+        quill = new Quill("#editor", {
+            theme: "snow",
+            placeholder: "Start writing...",
+            modules: {
+                toolbar: [
+                    ["bold", "italic", "underline"]
+                ]
+            }
+        });
 
-    loadSubjectFilter();
-    loadPosts();
-    loadSubjects();
-    loadStats();
+        // LOAD APP
+        showSection("subject");
 
-    initSidebarActiveState();
+        closeSidebar();
 
-    setupAutoSave();
+        await Promise.all([
+            loadSubjectFilter(),
+            loadPosts(),
+            loadSubjects(),
+            loadStats()
+        ]);
+
+        initSidebarActiveState();
+
+        setupAutoSave();
+
+    } catch (err) {
+
+        console.error(err);
+
+        alert(
+            "Application failed to load ❌"
+        );
+    }
 };
