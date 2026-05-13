@@ -1,709 +1,1032 @@
-<!DOCTYPE html>
-<html lang="en">
+// =========================
+// EXCEL YOU STUDENT SYSTEM
+// FULL UPGRADED VERSION
+// student.js
+// =========================
 
-<head>
 
-    <meta charset="UTF-8">
+// =========================
+// GLOBAL STATE
+// =========================
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+let allSubjects = [];
 
-    <meta
-        name="theme-color"
-        content="#07111f"
-    >
+let allTopics = [];
 
-    <title>
-        EXCEL YOU — Student Learning
-    </title>
+let activeSubjectId = null;
 
-    <link
-        rel="icon"
-        type="image/png"
-        href="/assets/logo/favicon.png"
-    >
+let activeTopicId = null;
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
 
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
+// =========================
+// ELEMENTS
+// =========================
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet"
-    >
+const subjectContainer =
+    document.getElementById(
+        "subjectContainer"
+    );
 
-    <style>
+const topicContainer =
+    document.getElementById(
+        "topicContainer"
+    );
 
-        :root {
+const topicsGrid =
+    document.getElementById(
+        "topicsGrid"
+    );
 
-            --bg: #f8fafc;
-            --card: rgba(255,255,255,0.75);
-            --text: #07111f;
-            --muted: #64748b;
-            --border: rgba(15,23,42,0.08);
-            --glass: rgba(255,255,255,0.55);
+const lessonViewer =
+    document.getElementById(
+        "lessonViewer"
+    );
 
-            --primary: #2563eb;
-            --secondary: #7c3aed;
+const lessonTitle =
+    document.getElementById(
+        "lessonTitle"
+    );
 
-        }
+const lessonContent =
+    document.getElementById(
+        "lessonContent"
+    );
 
-        [data-theme="dark"] {
+const welcomeBox =
+    document.getElementById(
+        "welcomeBox"
+    );
 
-            --bg: #07111f;
-            --card: rgba(255,255,255,0.06);
-            --text: #ffffff;
-            --muted: #94a3b8;
-            --border: rgba(255,255,255,0.08);
-            --glass: rgba(255,255,255,0.05);
+const siteLogo =
+    document.getElementById(
+        "siteLogo"
+    );
 
-            --primary: #38bdf8;
-            --secondary: #8b5cf6;
+const searchInput =
+    document.getElementById(
+        "search"
+    );
 
-        }
+const langSelect =
+    document.getElementById(
+        "lang"
+    );
 
-        * {
+const sidebar =
+    document.getElementById(
+        "sidebar"
+    );
 
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+const mobileBtn =
+    document.getElementById(
+        "mobileBtn"
+    );
 
-        }
+const themeBtn =
+    document.getElementById(
+        "themeBtn"
+    );
 
-        body {
 
-            font-family: 'Poppins', sans-serif;
+// =========================
+// MOBILE SIDEBAR
+// =========================
 
-            background: var(--bg);
+if(mobileBtn){
 
-            color: var(--text);
+    mobileBtn.addEventListener(
+        "click",
+        () => {
 
-            overflow-x: hidden;
-
-        }
-
-        .topbar {
-
-            width: 100%;
-
-            position: sticky;
-
-            top: 0;
-
-            z-index: 1000;
-
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: center;
-
-            padding: 14px 5%;
-
-            backdrop-filter: blur(18px);
-
-            background: rgba(6,11,20,0.72);
-
-            border-bottom: 1px solid var(--border);
-
-        }
-
-        .logo-img {
-
-            width: 180px;
-
-        }
-
-        .controls {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 12px;
-
-        }
-
-        .controls input,
-        .controls select {
-
-            padding: 12px 16px;
-
-            border-radius: 14px;
-
-            border: 1px solid var(--border);
-
-            background: var(--glass);
-
-            color: var(--text);
-
-            outline: none;
-
-        }
-
-        .theme-btn,
-        .mobile-btn {
-
-            width: 48px;
-            height: 48px;
-
-            border: none;
-
-            border-radius: 50%;
-
-            cursor: pointer;
-
-            background: linear-gradient(
-                135deg,
-                var(--primary),
-                var(--secondary)
+            sidebar?.classList.toggle(
+                "active"
             );
 
-            color: white;
-
-            font-size: 18px;
-
         }
+    );
 
-        .mobile-btn {
+}
 
-            display: none;
 
-        }
+// =========================
+// SAFE HTML
+// =========================
 
-        .hero {
+function escapeHTML(str = "") {
 
-            padding: 70px 8% 40px;
+    return String(str).replace(
+        /[&<>"']/g,
+        match => ({
 
-            text-align: center;
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
 
-        }
+        }[match])
+    );
 
-        .hero h1 {
+}
 
-            font-size: 60px;
 
-            margin-bottom: 18px;
+// =========================
+// FORMAT TEXT
+// =========================
 
-        }
+function shortText(
+    text = "",
+    limit = 100
+){
 
-        .hero h1 span {
+    text = String(text);
 
-            background: linear-gradient(
-                135deg,
-                #60a5fa,
-                #a855f7
-            );
+    return text.length > limit
 
-            -webkit-background-clip: text;
+        ? text.substring(0, limit) + "..."
 
-            -webkit-text-fill-color: transparent;
+        : text;
 
-        }
+}
 
-        .hero p {
 
-            color: var(--muted);
+// =========================
+// SHOW LOADER
+// =========================
 
-            max-width: 700px;
+function showLoading(container) {
 
-            margin: auto;
+    if(!container) return;
 
-            line-height: 1.8;
+    container.innerHTML = `
 
-        }
+        <div class="loading-box">
 
-        .main-layout {
+            <div class="loader"></div>
 
-            display: grid;
-
-            grid-template-columns: 320px 1fr;
-
-            gap: 24px;
-
-            padding: 0 5% 60px;
-
-        }
-
-        .sidebar {
-
-            position: sticky;
-
-            top: 100px;
-
-            height: calc(100vh - 120px);
-
-            overflow-y: auto;
-
-            background: var(--card);
-
-            border: 1px solid var(--border);
-
-            border-radius: 28px;
-
-            padding: 24px;
-
-            backdrop-filter: blur(18px);
-
-        }
-
-        .sidebar-header {
-
-            margin-bottom: 24px;
-
-        }
-
-        .subject-card,
-        .topic-card {
-
-            background: var(--glass);
-
-            border: 1px solid var(--border);
-
-            border-radius: 18px;
-
-            padding: 18px;
-
-            margin-bottom: 16px;
-
-            cursor: pointer;
-
-            transition: 0.3s;
-
-        }
-
-        .subject-card:hover,
-        .topic-card:hover {
-
-            transform: translateY(-4px);
-
-        }
-
-        .subject-card.active,
-        .topic-card.active {
-
-            border-color: #60a5fa;
-
-        }
-
-        .subject-card h3,
-        .topic-card h3 {
-
-            margin-bottom: 10px;
-
-        }
-
-        .subject-card p,
-        .topic-card p {
-
-            color: var(--muted);
-
-            line-height: 1.7;
-
-            font-size: 14px;
-
-        }
-
-        .welcome-box,
-        .topic-box,
-        .lesson-viewer {
-
-            background: var(--card);
-
-            border: 1px solid var(--border);
-
-            border-radius: 28px;
-
-            padding: 32px;
-
-            margin-bottom: 24px;
-
-            backdrop-filter: blur(18px);
-
-        }
-
-        .lesson-header {
-
-            margin-bottom: 30px;
-
-            border-bottom: 1px solid var(--border);
-
-            padding-bottom: 20px;
-
-        }
-
-        .lesson-content {
-
-            line-height: 1.9;
-
-            color: var(--muted);
-
-        }
-
-        .lesson-content h1,
-        .lesson-content h2,
-        .lesson-content h3 {
-
-            color: var(--text);
-
-            margin-top: 24px;
-            margin-bottom: 16px;
-
-        }
-
-        .lesson-content p {
-
-            margin-bottom: 18px;
-
-        }
-
-        .lesson-content img {
-
-            max-width: 100%;
-
-            border-radius: 20px;
-
-            margin: 24px 0;
-
-        }
-
-        .lesson-content iframe {
-
-            width: 100%;
-
-            min-height: 420px;
-
-            border: none;
-
-            border-radius: 20px;
-
-            margin-top: 20px;
-
-        }
-
-        .skeleton {
-
-            width: 100%;
-
-            height: 120px;
-
-            border-radius: 20px;
-
-            margin-bottom: 16px;
-
-            background: linear-gradient(
-                90deg,
-                rgba(255,255,255,0.04),
-                rgba(255,255,255,0.10),
-                rgba(255,255,255,0.04)
-            );
-
-            background-size: 300% 100%;
-
-            animation: shimmer 1.5s infinite;
-
-        }
-
-        @keyframes shimmer {
-
-            0% {
-
-                background-position: 200% 0;
-
-            }
-
-            100% {
-
-                background-position: -200% 0;
-
-            }
-
-        }
-
-        .hidden {
-
-            display: none;
-
-        }
-
-        footer {
-
-            text-align: center;
-
-            padding: 40px 20px;
-
-            color: var(--muted);
-
-            border-top: 1px solid var(--border);
-
-        }
-
-        @media(max-width:992px){
-
-            .main-layout {
-
-                grid-template-columns: 1fr;
-
-            }
-
-            .sidebar {
-
-                position: fixed;
-
-                left: -100%;
-
-                top: 90px;
-
-                width: 300px;
-
-                z-index: 999;
-
-                transition: 0.3s;
-
-            }
-
-            .sidebar.active {
-
-                left: 20px;
-
-            }
-
-            .mobile-btn {
-
-                display: block;
-
-            }
-
-        }
-
-        @media(max-width:768px){
-
-            .topbar {
-
-                flex-direction: column;
-
-                gap: 16px;
-
-            }
-
-            .controls {
-
-                width: 100%;
-
-                flex-wrap: wrap;
-
-            }
-
-            #search {
-
-                width: 100%;
-
-            }
-
-            .hero h1 {
-
-                font-size: 42px;
-
-            }
-
-        }
-
-    </style>
-
-</head>
-
-<body data-theme="dark">
-
-    <!-- TOPBAR -->
-
-    <header class="topbar">
-
-        <a href="/">
-
-            <img
-                src="/assets/logo/full-logo-white.png"
-                alt="EXCEL YOU"
-                class="logo-img"
-                id="siteLogo"
-            >
-
-        </a>
-
-        <div class="controls">
-
-            <button
-                class="mobile-btn"
-                id="mobileBtn"
-            >
-                ☰
-            </button>
-
-            <select id="lang">
-
-                <option value="en">
-                    English
-                </option>
-
-                <option value="ta">
-                    Tamil
-                </option>
-
-            </select>
-
-            <input
-                type="text"
-                id="search"
-                placeholder="Search subjects..."
-            >
-
-            <button
-                class="theme-btn"
-                id="themeBtn"
-            >
-                🌙
-            </button>
+            <p>
+                Loading...
+            </p>
 
         </div>
 
-    </header>
+    `;
 
-    <!-- HERO -->
+}
 
-    <section class="hero">
 
-        <h1>
+// =========================
+// EMPTY BOX
+// =========================
 
-            Learn Smarter With
-            <span>EXCEL YOU</span>
+function emptyBox(message) {
 
-        </h1>
+    return `
 
-        <p>
+        <div class="empty-box">
 
-            Explore modern Tamil + English
-            learning experiences with structured
-            subjects and lessons.
+            ${escapeHTML(message)}
 
-        </p>
+        </div>
 
-    </section>
+    `;
 
-    <!-- MAIN -->
+}
 
-    <main class="main-layout">
 
-        <!-- SIDEBAR -->
+// =========================
+// API FETCH
+// =========================
 
-        <aside
-            class="sidebar"
-            id="sidebar"
-        >
+async function fetchJSON(url) {
 
-            <div class="sidebar-header">
+    const res =
+        await fetch(url);
 
-                <h2>
-                    📚 Subjects
-                </h2>
+    if(!res.ok){
 
-            </div>
+        throw new Error(
+            "Request Failed"
+        );
 
-            <div id="subjectContainer">
+    }
 
-                <div class="skeleton"></div>
-                <div class="skeleton"></div>
-                <div class="skeleton"></div>
+    return await res.json();
 
-            </div>
+}
 
-        </aside>
 
-        <!-- CONTENT -->
+// =========================
+// LOAD SUBJECTS
+// =========================
 
-        <section>
+async function loadSubjects() {
 
-            <!-- WELCOME -->
+    try {
+
+        showLoading(
+            subjectContainer
+        );
+
+        const lang =
+            langSelect?.value || "en";
+
+        const subjects =
+            await fetchJSON(
+                "/api/subjects"
+            );
+
+        // FILTER LANGUAGE
+        allSubjects =
+            subjects.filter(subject =>
+
+                !subject.language ||
+
+                subject.language === lang
+
+            );
+
+        renderSubjects(
+            allSubjects
+        );
+
+        // RESET UI
+        welcomeBox?.classList.remove(
+            "hidden"
+        );
+
+        topicContainer?.classList.add(
+            "hidden"
+        );
+
+        lessonViewer?.classList.add(
+            "hidden"
+        );
+
+    } catch(err) {
+
+        console.error(
+            "LOAD SUBJECTS ERROR:",
+            err
+        );
+
+        subjectContainer.innerHTML =
+            emptyBox(
+                "❌ Failed to load subjects"
+            );
+
+    }
+
+}
+
+
+// =========================
+// RENDER SUBJECTS
+// =========================
+
+function renderSubjects(subjects) {
+
+    if(!subjectContainer) return;
+
+    subjectContainer.innerHTML = "";
+
+    if(
+        !Array.isArray(subjects) ||
+        !subjects.length
+    ){
+
+        subjectContainer.innerHTML =
+            emptyBox(
+                "No subjects found."
+            );
+
+        return;
+
+    }
+
+    subjects.forEach(subject => {
+
+        const activeClass =
+
+            activeSubjectId === subject._id
+
+            ? "active"
+
+            : "";
+
+        const progress =
+            subject.progress || 0;
+
+        const level =
+            subject.level ||
+            "Immortal Student";
+
+        const topicCount =
+            subject.topicCount || 0;
+
+        const image =
+            subject.image ||
+            "/assets/subjects/default.jpg";
+
+        subjectContainer.innerHTML += `
 
             <div
-                class="welcome-box"
-                id="welcomeBox"
+                class="subject-card ${activeClass}"
+                onclick="openSubject(
+                    '${subject._id}'
+                )"
             >
 
-                <h2>
-                    Welcome Student 👋
-                </h2>
+                <div class="subject-image-wrap">
+
+                    <img
+                        src="${escapeHTML(image)}"
+                        alt="${escapeHTML(subject.name)}"
+                        class="subject-image"
+                    >
+
+                    <div class="subject-level">
+
+                        ⚡ ${escapeHTML(level)}
+
+                    </div>
+
+                </div>
+
+                <h3>
+
+                    📘
+                    ${escapeHTML(
+                        subject.name
+                    )}
+
+                </h3>
 
                 <p>
 
-                    Select a subject to start learning.
+                    ${shortText(
+
+                        escapeHTML(
+                            subject.description ||
+                            "No description available"
+                        ),
+
+                        90
+                    )}
+
+                </p>
+
+                <div class="subject-meta">
+
+                    📚 ${topicCount} Topics
+
+                </div>
+
+                <div class="progress-area">
+
+                    <div class="progress-text">
+
+                        <span>
+                            Progress
+                        </span>
+
+                        <span>
+                            ${progress}%
+                        </span>
+
+                    </div>
+
+                    <div class="progress-bar">
+
+                        <div
+                            class="progress-fill"
+                            style="width:${progress}%"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        `;
+
+    });
+
+}
+
+
+// =========================
+// OPEN SUBJECT
+// =========================
+
+async function openSubject(subjectId) {
+
+    try {
+
+        activeSubjectId =
+            subjectId;
+
+        activeTopicId = null;
+
+        renderSubjects(
+            allSubjects
+        );
+
+        welcomeBox?.classList.add(
+            "hidden"
+        );
+
+        lessonViewer?.classList.add(
+            "hidden"
+        );
+
+        topicContainer?.classList.remove(
+            "hidden"
+        );
+
+        topicsGrid.innerHTML = "";
+
+        showLoading(
+            topicsGrid
+        );
+
+        const topics =
+            await fetchJSON(
+                `/api/topics/${subjectId}`
+            );
+
+        allTopics = topics;
+
+        renderTopics(
+            topics
+        );
+
+        // MOBILE AUTO CLOSE
+        if(window.innerWidth < 992){
+
+            sidebar?.classList.remove(
+                "active"
+            );
+
+        }
+
+    } catch(err) {
+
+        console.error(
+            "OPEN SUBJECT ERROR:",
+            err
+        );
+
+        topicsGrid.innerHTML =
+            emptyBox(
+                "❌ Failed to load topics"
+            );
+
+    }
+
+}
+
+
+// =========================
+// RENDER TOPICS
+// =========================
+
+function renderTopics(topics) {
+
+    if(!topicsGrid) return;
+
+    topicsGrid.innerHTML = "";
+
+    // SAFETY CHECK
+
+    if(
+        !Array.isArray(topics) ||
+        !topics.length
+    ){
+
+        topicsGrid.innerHTML =
+            emptyBox(
+                "No topics available."
+            );
+
+        return;
+
+    }
+
+    topics.forEach(topic => {
+
+        const activeClass =
+
+            activeTopicId === topic._id
+
+            ? "active"
+
+            : "";
+
+        // =========================
+        // TOPIC PREVIEW
+        // =========================
+
+        const preview =
+
+            topic.contentHTML
+
+            ? String(topic.contentHTML)
+                .replace(/<[^>]*>/g, "")
+
+            : topic.content
+
+            ? String(topic.content)
+                .replace(/<[^>]*>/g, "")
+
+            : Array.isArray(
+                topic.contentBlocks
+            ) &&
+              topic.contentBlocks.length
+
+            ? "Interactive lesson available."
+
+            : "No content";
+
+        // =========================
+        // TOPIC CARD
+        // =========================
+
+        topicsGrid.innerHTML += `
+
+            <div
+                class="topic-card ${activeClass}"
+                onclick="openTopic(
+                    '${topic._id}'
+                )"
+            >
+
+                <h3>
+
+                    📖
+                    ${escapeHTML(
+                        topic.title ||
+                        "Untitled Topic"
+                    )}
+
+                </h3>
+
+                <p>
+
+                    ${shortText(
+                        escapeHTML(preview),
+                        100
+                    )}
 
                 </p>
 
             </div>
 
-            <!-- TOPICS -->
+        `;
 
-            <div
-                class="topic-box hidden"
-                id="topicContainer"
-            >
+    });
 
-                <h2>
-                    📘 Topics
-                </h2>
+}
 
-                <div
-                    class="topics-grid"
-                    id="topicsGrid"
-                ></div>
+
+// =========================
+// OPEN TOPIC
+// =========================
+
+async function openTopic(topicId) {
+
+    try {
+
+        activeTopicId =
+            topicId;
+
+        renderTopics(
+            allTopics
+        );
+
+        lessonViewer?.classList.remove(
+            "hidden"
+        );
+
+        lessonTitle.innerHTML =
+            "Loading Lesson...";
+
+        lessonContent.innerHTML = `
+
+            <div class="loading-box">
+
+                <div class="loader"></div>
+
+                <p>
+                    Loading lesson...
+                </p>
 
             </div>
 
-            <!-- LESSON -->
+        `;
 
-            <div
-                class="lesson-viewer hidden"
-                id="lessonViewer"
-            >
+        const topic =
+            await fetchJSON(
+                `/api/topic/${topicId}`
+            );
 
-                <div class="lesson-header">
+        // TITLE
+        lessonTitle.innerHTML =
 
-                    <h1 id="lessonTitle">
+            escapeHTML(
+                topic.title || "Lesson"
+            );
 
-                        Lesson Title
+        // CONTENT RESET
+        lessonContent.innerHTML = "";
 
-                    </h1>
+        // =========================
+        // HTML CONTENT
+        // =========================
+
+        if(topic.contentHTML){
+
+            lessonContent.innerHTML =
+                topic.contentHTML;
+
+        }
+
+        // =========================
+        // NORMAL CONTENT
+        // =========================
+
+        else if(topic.content){
+
+            lessonContent.innerHTML = `
+
+                <div class="lesson-text">
+
+                    ${topic.content}
 
                 </div>
 
-                <div
-                    class="lesson-content"
-                    id="lessonContent"
-                ></div>
+            `;
 
-            </div>
+        }
 
-        </section>
+        // =========================
+        // BLOCK CONTENT SYSTEM
+        // =========================
 
-    </main>
+        else if(
+            Array.isArray(
+                topic.contentBlocks
+            ) &&
+            topic.contentBlocks.length
+        ){
 
-    <!-- FOOTER -->
+            topic.contentBlocks.forEach(block => {
 
-    <footer>
+                // =================
+                // HEADING
+                // =================
 
-        © 2026 EXCEL YOU —
-        Modern Tamil + English Learning Platform
+                if(block.type === "heading"){
 
-    </footer>
+                    lessonContent.innerHTML += `
 
-    <!-- STUDENT JS -->
+                        <h2>
 
-    <script src="/js/student.js"></script>
+                            ${escapeHTML(block.value)}
 
-</body>
-</html>
+                        </h2>
+
+                    `;
+
+                }
+
+                // =================
+                // TEXT
+                // =================
+
+                if(block.type === "text"){
+
+                    lessonContent.innerHTML += `
+
+                        <p>
+
+                            ${escapeHTML(block.value)}
+
+                        </p>
+
+                    `;
+
+                }
+
+                // =================
+                // IMAGE
+                // =================
+
+                if(block.type === "image"){
+
+                    lessonContent.innerHTML += `
+
+                        <img
+                            src="${escapeHTML(block.value)}"
+                            alt="Lesson Image"
+                            class="lesson-image"
+                        >
+
+                    `;
+
+                }
+
+                // =================
+                // VIDEO
+                // =================
+
+                if(block.type === "video"){
+
+                    lessonContent.innerHTML += `
+
+                        <iframe
+                            class="lesson-video"
+                            src="${escapeHTML(block.value)}"
+                            frameborder="0"
+                            allowfullscreen
+                        ></iframe>
+
+                    `;
+
+                }
+
+                // =================
+                // CODE
+                // =================
+
+                if(block.type === "code"){
+
+                    lessonContent.innerHTML += `
+
+                        <pre class="code-block">
+
+<code>${escapeHTML(block.value)}</code>
+
+                        </pre>
+
+                    `;
+
+                }
+
+                // =================
+                // QUOTE
+                // =================
+
+                if(block.type === "quote"){
+
+                    lessonContent.innerHTML += `
+
+                        <blockquote>
+
+                            ${escapeHTML(block.value)}
+
+                        </blockquote>
+
+                    `;
+
+                }
+
+            });
+
+        }
+
+        // =========================
+        // EMPTY
+        // =========================
+
+        else {
+
+            lessonContent.innerHTML =
+                emptyBox(
+                    "No lesson content available."
+                );
+
+        }
+
+        // =========================
+        // SCROLL
+        // =========================
+
+        window.scrollTo({
+
+            top:
+                lessonViewer.offsetTop - 100,
+
+            behavior: "smooth"
+
+        });
+
+    } catch(err) {
+
+        console.error(
+            "OPEN TOPIC ERROR:",
+            err
+        );
+
+        lessonContent.innerHTML =
+            emptyBox(
+                "❌ Failed to load lesson"
+            );
+
+    }
+
+}
+
+
+// =========================
+// SEARCH SUBJECTS
+// =========================
+
+function searchSubjects() {
+
+    const value =
+
+        searchInput.value
+            .toLowerCase()
+            .trim();
+
+    const filtered =
+
+        allSubjects.filter(subject =>
+
+            subject.name
+                .toLowerCase()
+                .includes(value)
+
+        );
+
+    renderSubjects(filtered);
+
+}
+
+
+// =========================
+// THEME SYSTEM
+// =========================
+
+function applyTheme(theme){
+
+    document.body.setAttribute(
+        "data-theme",
+        theme
+    );
+
+    // THEME BUTTON ICON
+    if(themeBtn){
+
+        themeBtn.innerHTML =
+
+            theme === "dark"
+
+            ? "☀️"
+
+            : "🌙";
+
+    }
+
+    // =========================
+    // LOGO CHANGE
+    // =========================
+
+    if(siteLogo){
+
+        siteLogo.src =
+
+            theme === "dark"
+
+            ? "/assets/logo/full-logo-white.png"
+
+            : "/assets/logo/full-logo.png";
+
+    }
+
+}
+
+
+// =========================
+// THEME INIT
+// =========================
+
+const savedTheme =
+
+    localStorage.getItem(
+        "theme"
+    ) || "dark";
+
+// APPLY SAVED THEME
+applyTheme(savedTheme);
+
+
+// =========================
+// THEME TOGGLE
+// =========================
+
+if(themeBtn){
+
+    themeBtn.addEventListener(
+        "click",
+        () => {
+
+            const current =
+
+                document.body.getAttribute(
+                    "data-theme"
+                );
+
+            const next =
+
+                current === "dark"
+
+                ? "light"
+
+                : "dark";
+
+            applyTheme(next);
+
+            localStorage.setItem(
+                "theme",
+                next
+            );
+
+        }
+    );
+
+}
+
+
+// =========================
+// LANGUAGE CHANGE
+// =========================
+
+if(langSelect){
+
+    langSelect.addEventListener(
+        "change",
+        loadSubjects
+    );
+
+}
+
+
+// =========================
+// SEARCH EVENT
+// =========================
+
+if(searchInput){
+
+    searchInput.addEventListener(
+        "keyup",
+        searchSubjects
+    );
+
+}
+
+
+// =========================
+// CLOSE SIDEBAR OUTSIDE CLICK
+// =========================
+
+document.addEventListener(
+    "click",
+    (e) => {
+
+        if(
+
+            window.innerWidth < 992 &&
+
+            sidebar &&
+            !sidebar.contains(e.target) &&
+
+            mobileBtn &&
+            !mobileBtn.contains(e.target)
+
+        ){
+
+            sidebar.classList.remove(
+                "active"
+            );
+
+        }
+
+    }
+);
+
+
+// =========================
+// INITIAL LOAD
+// =========================
+
+window.addEventListener(
+    "load",
+    () => {
+
+        loadSubjects();
+
+    }
+);
