@@ -1,917 +1,709 @@
-// =========================
-// EXCEL YOU STUDENT SYSTEM
-// FULL UPGRADED VERSION
-// student.js
-// =========================
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
 
-// =========================
-// GLOBAL STATE
-// =========================
+    <meta charset="UTF-8">
 
-let allSubjects = [];
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-let allTopics = [];
+    <meta
+        name="theme-color"
+        content="#07111f"
+    >
 
-let activeSubjectId = null;
+    <title>
+        EXCEL YOU — Student Learning
+    </title>
 
-let activeTopicId = null;
+    <link
+        rel="icon"
+        type="image/png"
+        href="/assets/logo/favicon.png"
+    >
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
 
-// =========================
-// ELEMENTS
-// =========================
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
 
-const subjectContainer =
-    document.getElementById(
-        "subjectContainer"
-    );
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
 
-const topicContainer =
-    document.getElementById(
-        "topicContainer"
-    );
+    <style>
 
-const topicsGrid =
-    document.getElementById(
-        "topicsGrid"
-    );
+        :root {
 
-const lessonViewer =
-    document.getElementById(
-        "lessonViewer"
-    );
+            --bg: #f8fafc;
+            --card: rgba(255,255,255,0.75);
+            --text: #07111f;
+            --muted: #64748b;
+            --border: rgba(15,23,42,0.08);
+            --glass: rgba(255,255,255,0.55);
 
-const lessonTitle =
-    document.getElementById(
-        "lessonTitle"
-    );
-
-const lessonContent =
-    document.getElementById(
-        "lessonContent"
-    );
-
-const welcomeBox =
-    document.getElementById(
-        "welcomeBox"
-    );
-const siteLogo =
-    document.getElementById(
-        "siteLogo"
-    );
-
-const searchInput =
-    document.getElementById(
-        "search"
-    );
-
-const langSelect =
-    document.getElementById(
-        "lang"
-    );
-
-const sidebar =
-    document.getElementById(
-        "sidebar"
-    );
-
-const mobileBtn =
-    document.getElementById(
-        "mobileBtn"
-    );
-
-
-// =========================
-// MOBILE SIDEBAR
-// =========================
-
-if(mobileBtn){
-
-    mobileBtn.addEventListener(
-        "click",
-        () => {
-
-            sidebar.classList.toggle(
-                "active"
-            );
+            --primary: #2563eb;
+            --secondary: #7c3aed;
 
         }
-    );
 
-}
+        [data-theme="dark"] {
 
+            --bg: #07111f;
+            --card: rgba(255,255,255,0.06);
+            --text: #ffffff;
+            --muted: #94a3b8;
+            --border: rgba(255,255,255,0.08);
+            --glass: rgba(255,255,255,0.05);
 
-// =========================
-// SAFE HTML
-// =========================
+            --primary: #38bdf8;
+            --secondary: #8b5cf6;
 
-function escapeHTML(str = "") {
+        }
 
-    return str.replace(
-        /[&<>"']/g,
-        match => ({
+        * {
 
-            "&": "&amp;",
-            "<": "&lt;",
-            ">": "&gt;",
-            '"': "&quot;",
-            "'": "&#39;"
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
 
-        }[match])
-    );
+        }
 
-}
+        body {
 
+            font-family: 'Poppins', sans-serif;
 
-// =========================
-// FORMAT TEXT
-// =========================
+            background: var(--bg);
 
-function shortText(
-    text = "",
-    limit = 100
-){
+            color: var(--text);
 
-    return text.length > limit
+            overflow-x: hidden;
 
-        ? text.substring(0, limit) + "..."
+        }
 
-        : text;
+        .topbar {
 
-}
+            width: 100%;
 
+            position: sticky;
 
-// =========================
-// SHOW LOADER
-// =========================
+            top: 0;
 
-function showLoading(container) {
+            z-index: 1000;
 
-    container.innerHTML = `
+            display: flex;
 
-        <div class="loading-box">
+            justify-content: space-between;
 
-            <div class="loader"></div>
+            align-items: center;
 
-            <p>
-                Loading...
-            </p>
+            padding: 14px 5%;
+
+            backdrop-filter: blur(18px);
+
+            background: rgba(6,11,20,0.72);
+
+            border-bottom: 1px solid var(--border);
+
+        }
+
+        .logo-img {
+
+            width: 180px;
+
+        }
+
+        .controls {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+        }
+
+        .controls input,
+        .controls select {
+
+            padding: 12px 16px;
+
+            border-radius: 14px;
+
+            border: 1px solid var(--border);
+
+            background: var(--glass);
+
+            color: var(--text);
+
+            outline: none;
+
+        }
+
+        .theme-btn,
+        .mobile-btn {
+
+            width: 48px;
+            height: 48px;
+
+            border: none;
+
+            border-radius: 50%;
+
+            cursor: pointer;
+
+            background: linear-gradient(
+                135deg,
+                var(--primary),
+                var(--secondary)
+            );
+
+            color: white;
+
+            font-size: 18px;
+
+        }
+
+        .mobile-btn {
+
+            display: none;
+
+        }
+
+        .hero {
+
+            padding: 70px 8% 40px;
+
+            text-align: center;
+
+        }
+
+        .hero h1 {
+
+            font-size: 60px;
+
+            margin-bottom: 18px;
+
+        }
+
+        .hero h1 span {
+
+            background: linear-gradient(
+                135deg,
+                #60a5fa,
+                #a855f7
+            );
+
+            -webkit-background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+
+        }
+
+        .hero p {
+
+            color: var(--muted);
+
+            max-width: 700px;
+
+            margin: auto;
+
+            line-height: 1.8;
+
+        }
+
+        .main-layout {
+
+            display: grid;
+
+            grid-template-columns: 320px 1fr;
+
+            gap: 24px;
+
+            padding: 0 5% 60px;
+
+        }
+
+        .sidebar {
+
+            position: sticky;
+
+            top: 100px;
+
+            height: calc(100vh - 120px);
+
+            overflow-y: auto;
+
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 28px;
+
+            padding: 24px;
+
+            backdrop-filter: blur(18px);
+
+        }
+
+        .sidebar-header {
+
+            margin-bottom: 24px;
+
+        }
+
+        .subject-card,
+        .topic-card {
+
+            background: var(--glass);
+
+            border: 1px solid var(--border);
+
+            border-radius: 18px;
+
+            padding: 18px;
+
+            margin-bottom: 16px;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+
+        }
+
+        .subject-card:hover,
+        .topic-card:hover {
+
+            transform: translateY(-4px);
+
+        }
+
+        .subject-card.active,
+        .topic-card.active {
+
+            border-color: #60a5fa;
+
+        }
+
+        .subject-card h3,
+        .topic-card h3 {
+
+            margin-bottom: 10px;
+
+        }
+
+        .subject-card p,
+        .topic-card p {
+
+            color: var(--muted);
+
+            line-height: 1.7;
+
+            font-size: 14px;
+
+        }
+
+        .welcome-box,
+        .topic-box,
+        .lesson-viewer {
+
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 28px;
+
+            padding: 32px;
+
+            margin-bottom: 24px;
+
+            backdrop-filter: blur(18px);
+
+        }
+
+        .lesson-header {
+
+            margin-bottom: 30px;
+
+            border-bottom: 1px solid var(--border);
+
+            padding-bottom: 20px;
+
+        }
+
+        .lesson-content {
+
+            line-height: 1.9;
+
+            color: var(--muted);
+
+        }
+
+        .lesson-content h1,
+        .lesson-content h2,
+        .lesson-content h3 {
+
+            color: var(--text);
+
+            margin-top: 24px;
+            margin-bottom: 16px;
+
+        }
+
+        .lesson-content p {
+
+            margin-bottom: 18px;
+
+        }
+
+        .lesson-content img {
+
+            max-width: 100%;
+
+            border-radius: 20px;
+
+            margin: 24px 0;
+
+        }
+
+        .lesson-content iframe {
+
+            width: 100%;
+
+            min-height: 420px;
+
+            border: none;
+
+            border-radius: 20px;
+
+            margin-top: 20px;
+
+        }
+
+        .skeleton {
+
+            width: 100%;
+
+            height: 120px;
+
+            border-radius: 20px;
+
+            margin-bottom: 16px;
+
+            background: linear-gradient(
+                90deg,
+                rgba(255,255,255,0.04),
+                rgba(255,255,255,0.10),
+                rgba(255,255,255,0.04)
+            );
+
+            background-size: 300% 100%;
+
+            animation: shimmer 1.5s infinite;
+
+        }
+
+        @keyframes shimmer {
+
+            0% {
+
+                background-position: 200% 0;
+
+            }
+
+            100% {
+
+                background-position: -200% 0;
+
+            }
+
+        }
+
+        .hidden {
+
+            display: none;
+
+        }
+
+        footer {
+
+            text-align: center;
+
+            padding: 40px 20px;
+
+            color: var(--muted);
+
+            border-top: 1px solid var(--border);
+
+        }
+
+        @media(max-width:992px){
+
+            .main-layout {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .sidebar {
+
+                position: fixed;
+
+                left: -100%;
+
+                top: 90px;
+
+                width: 300px;
+
+                z-index: 999;
+
+                transition: 0.3s;
+
+            }
+
+            .sidebar.active {
+
+                left: 20px;
+
+            }
+
+            .mobile-btn {
+
+                display: block;
+
+            }
+
+        }
+
+        @media(max-width:768px){
+
+            .topbar {
+
+                flex-direction: column;
+
+                gap: 16px;
+
+            }
+
+            .controls {
+
+                width: 100%;
+
+                flex-wrap: wrap;
+
+            }
+
+            #search {
+
+                width: 100%;
+
+            }
+
+            .hero h1 {
+
+                font-size: 42px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body data-theme="dark">
+
+    <!-- TOPBAR -->
+
+    <header class="topbar">
+
+        <a href="/">
+
+            <img
+                src="/assets/logo/full-logo-white.png"
+                alt="EXCEL YOU"
+                class="logo-img"
+                id="siteLogo"
+            >
+
+        </a>
+
+        <div class="controls">
+
+            <button
+                class="mobile-btn"
+                id="mobileBtn"
+            >
+                ☰
+            </button>
+
+            <select id="lang">
+
+                <option value="en">
+                    English
+                </option>
+
+                <option value="ta">
+                    Tamil
+                </option>
+
+            </select>
+
+            <input
+                type="text"
+                id="search"
+                placeholder="Search subjects..."
+            >
+
+            <button
+                class="theme-btn"
+                id="themeBtn"
+            >
+                🌙
+            </button>
 
         </div>
 
-    `;
+    </header>
 
-}
+    <!-- HERO -->
 
+    <section class="hero">
 
-// =========================
-// EMPTY BOX
-// =========================
+        <h1>
 
-function emptyBox(message) {
+            Learn Smarter With
+            <span>EXCEL YOU</span>
 
-    return `
+        </h1>
 
-        <div class="empty-box">
+        <p>
 
-            ${message}
+            Explore modern Tamil + English
+            learning experiences with structured
+            subjects and lessons.
 
-        </div>
+        </p>
 
-    `;
+    </section>
 
-}
+    <!-- MAIN -->
 
+    <main class="main-layout">
 
-// =========================
-// API FETCH
-// =========================
+        <!-- SIDEBAR -->
 
-async function fetchJSON(url) {
+        <aside
+            class="sidebar"
+            id="sidebar"
+        >
 
-    const res =
-        await fetch(url);
+            <div class="sidebar-header">
 
-    if(!res.ok){
+                <h2>
+                    📚 Subjects
+                </h2>
 
-        throw new Error(
-            "Request Failed"
-        );
+            </div>
 
-    }
+            <div id="subjectContainer">
 
-    return await res.json();
+                <div class="skeleton"></div>
+                <div class="skeleton"></div>
+                <div class="skeleton"></div>
 
-}
+            </div>
 
+        </aside>
 
-// =========================
-// LOAD SUBJECTS
-// =========================
+        <!-- CONTENT -->
 
-async function loadSubjects() {
+        <section>
 
-    try {
-
-        showLoading(
-            subjectContainer
-        );
-
-        const lang =
-            langSelect?.value || "en";
-
-        const subjects =
-            await fetchJSON(
-                "/api/subjects"
-            );
-
-        // FILTER LANGUAGE
-        allSubjects =
-            subjects.filter(subject =>
-
-                !subject.language ||
-
-                subject.language === lang
-
-            );
-
-        renderSubjects(allSubjects);
-
-        // RESET UI
-        welcomeBox?.classList.remove(
-            "hidden"
-        );
-
-        topicContainer?.classList.add(
-            "hidden"
-        );
-
-        lessonViewer?.classList.add(
-            "hidden"
-        );
-
-    } catch(err) {
-
-        console.error(
-            "LOAD SUBJECTS ERROR:",
-            err
-        );
-
-        subjectContainer.innerHTML =
-            emptyBox(
-                "❌ Failed to load subjects"
-            );
-
-    }
-
-}
-
-
-// =========================
-// RENDER SUBJECTS
-// =========================
-
-function renderSubjects(subjects) {
-
-    subjectContainer.innerHTML = "";
-
-    if(!subjects.length){
-
-        subjectContainer.innerHTML =
-            emptyBox(
-                "No subjects found."
-            );
-
-        return;
-
-    }
-
-    subjects.forEach(subject => {
-
-        const activeClass =
-
-            activeSubjectId === subject._id
-
-            ? "active"
-
-            : "";
-
-        subjectContainer.innerHTML += `
+            <!-- WELCOME -->
 
             <div
-                class="subject-card ${activeClass}"
-                onclick="openSubject(
-                    '${subject._id}'
-                )"
+                class="welcome-box"
+                id="welcomeBox"
             >
 
-                <h3>
-                    📘
-                    ${escapeHTML(
-                        subject.name
-                    )}
-                </h3>
+                <h2>
+                    Welcome Student 👋
+                </h2>
 
                 <p>
-                    ${shortText(
 
-                        escapeHTML(
-                            subject.description ||
-                            "No description available"
-                        ),
+                    Select a subject to start learning.
 
-                        90
-                    )}
                 </p>
 
             </div>
 
-        `;
-
-    });
-
-}
-
-
-// =========================
-// OPEN SUBJECT
-// =========================
-
-async function openSubject(subjectId) {
-
-    try {
-
-        activeSubjectId =
-            subjectId;
-
-        activeTopicId = null;
-
-        renderSubjects(
-            allSubjects
-        );
-
-        welcomeBox?.classList.add(
-            "hidden"
-        );
-
-        lessonViewer?.classList.add(
-            "hidden"
-        );
-
-        topicContainer?.classList.remove(
-            "hidden"
-        );
-
-        topicsGrid.innerHTML = "";
-
-        showLoading(
-            topicsGrid
-        );
-
-        const topics =
-            await fetchJSON(
-                `/api/topics/${subjectId}`
-            );
-
-        allTopics = topics;
-
-        renderTopics(topics);
-
-        // MOBILE AUTO CLOSE
-        if(window.innerWidth < 992){
-
-            sidebar.classList.remove(
-                "active"
-            );
-
-        }
-
-    } catch(err) {
-
-        console.error(
-            "OPEN SUBJECT ERROR:",
-            err
-        );
-
-        topicsGrid.innerHTML =
-            emptyBox(
-                "❌ Failed to load topics"
-            );
-
-    }
-
-}
-
-
-// =========================
-// RENDER TOPICS
-// =========================
-
-function renderTopics(topics) {
-
-    topicsGrid.innerHTML = "";
-
-    if(!topics.length){
-
-        topicsGrid.innerHTML =
-            emptyBox(
-                "No topics available."
-            );
-
-        return;
-
-    }
-
-    topics.forEach(topic => {
-
-        const activeClass =
-
-            activeTopicId === topic._id
-
-            ? "active"
-
-            : "";
-
-        const preview =
-
-            topic.content
-
-            ? topic.content
-                .replace(/<[^>]*>/g, "")
-
-            : "No content";
-
-        topicsGrid.innerHTML += `
+            <!-- TOPICS -->
 
             <div
-                class="topic-card ${activeClass}"
-                onclick="openTopic(
-                    '${topic._id}'
-                )"
+                class="topic-box hidden"
+                id="topicContainer"
             >
 
-                <h3>
+                <h2>
+                    📘 Topics
+                </h2>
 
-                    📖
-                    ${escapeHTML(
-                        topic.title ||
-                        "Untitled Topic"
-                    )}
-
-                </h3>
-
-                <p>
-
-                    ${shortText(
-                        escapeHTML(preview),
-                        100
-                    )}
-
-                </p>
+                <div
+                    class="topics-grid"
+                    id="topicsGrid"
+                ></div>
 
             </div>
 
-        `;
+            <!-- LESSON -->
 
-    });
+            <div
+                class="lesson-viewer hidden"
+                id="lessonViewer"
+            >
 
-}
+                <div class="lesson-header">
 
+                    <h1 id="lessonTitle">
 
-// =========================
-// OPEN TOPIC
-// =========================
+                        Lesson Title
 
-async function openTopic(topicId) {
-
-    try {
-
-        activeTopicId =
-            topicId;
-
-        renderTopics(allTopics);
-
-        lessonViewer.classList.remove(
-            "hidden"
-        );
-
-        lessonTitle.innerHTML =
-            "Loading Lesson...";
-
-        lessonContent.innerHTML = `
-
-            <div class="loading-box">
-
-                <div class="loader"></div>
-
-                <p>
-                    Loading lesson...
-                </p>
-
-            </div>
-
-        `;
-
-        const topic =
-            await fetchJSON(
-                `/api/topic/${topicId}`
-            );
-
-        // TITLE
-        lessonTitle.innerHTML =
-
-            topic.title ||
-            "Lesson";
-
-        // CONTENT RESET
-        lessonContent.innerHTML = "";
-
-        // =========================
-        // HTML CONTENT
-        // =========================
-
-        if(topic.contentHTML){
-
-            lessonContent.innerHTML =
-                topic.contentHTML;
-
-        }
-
-        // =========================
-        // NORMAL CONTENT
-        // =========================
-
-        else if(topic.content){
-
-            lessonContent.innerHTML = `
-
-                <div class="lesson-text">
-
-                    ${topic.content}
+                    </h1>
 
                 </div>
 
-            `;
+                <div
+                    class="lesson-content"
+                    id="lessonContent"
+                ></div>
 
-        }
+            </div>
 
-        // =========================
-        // BLOCK CONTENT SYSTEM
-        // =========================
+        </section>
 
-        else if(
-            topic.contentBlocks &&
-            topic.contentBlocks.length
-        ){
+    </main>
 
-            topic.contentBlocks.forEach(block => {
+    <!-- FOOTER -->
 
-                // =================
-                // HEADING
-                // =================
+    <footer>
 
-                if(block.type === "heading"){
+        © 2026 EXCEL YOU —
+        Modern Tamil + English Learning Platform
 
-                    lessonContent.innerHTML += `
+    </footer>
 
-                        <h2>
+    <!-- STUDENT JS -->
 
-                            ${block.value}
+    <script src="/js/student.js"></script>
 
-                        </h2>
-
-                    `;
-
-                }
-
-                // =================
-                // TEXT
-                // =================
-
-                if(block.type === "text"){
-
-                    lessonContent.innerHTML += `
-
-                        <p>
-
-                            ${block.value}
-
-                        </p>
-
-                    `;
-
-                }
-
-                // =================
-                // IMAGE
-                // =================
-
-                if(block.type === "image"){
-
-                    lessonContent.innerHTML += `
-
-                        <img
-                            src="${block.value}"
-                            alt="Lesson Image"
-                            class="lesson-image"
-                        >
-
-                    `;
-
-                }
-
-                // =================
-                // VIDEO
-                // =================
-
-                if(block.type === "video"){
-
-                    lessonContent.innerHTML += `
-
-                        <iframe
-                            class="lesson-video"
-                            src="${block.value}"
-                            frameborder="0"
-                            allowfullscreen
-                        ></iframe>
-
-                    `;
-
-                }
-
-                // =================
-                // CODE
-                // =================
-
-                if(block.type === "code"){
-
-                    lessonContent.innerHTML += `
-
-                        <pre class="code-block">
-
-<code>${escapeHTML(block.value)}</code>
-
-                        </pre>
-
-                    `;
-
-                }
-
-                // =================
-                // QUOTE
-                // =================
-
-                if(block.type === "quote"){
-
-                    lessonContent.innerHTML += `
-
-                        <blockquote>
-
-                            ${block.value}
-
-                        </blockquote>
-
-                    `;
-
-                }
-
-            });
-
-        }
-
-        // =========================
-        // EMPTY
-        // =========================
-
-        else {
-
-            lessonContent.innerHTML =
-                emptyBox(
-                    "No lesson content available."
-                );
-
-        }
-
-        // =========================
-        // SCROLL
-        // =========================
-
-        window.scrollTo({
-
-            top:
-                lessonViewer.offsetTop - 100,
-
-            behavior: "smooth"
-
-        });
-
-    } catch(err) {
-
-        console.error(
-            "OPEN TOPIC ERROR:",
-            err
-        );
-
-        lessonContent.innerHTML =
-            emptyBox(
-                "❌ Failed to load lesson"
-            );
-
-    }
-
-}
-
-
-// =========================
-// SEARCH SUBJECTS
-// =========================
-
-function searchSubjects() {
-
-    const value =
-
-        searchInput.value
-            .toLowerCase()
-            .trim();
-
-    const filtered =
-
-        allSubjects.filter(subject =>
-
-            subject.name
-                .toLowerCase()
-                .includes(value)
-
-        );
-
-    renderSubjects(filtered);
-
-}
-
-
-// =========================
-// THEME SYSTEM
-// =========================
-
-const themeBtn =
-    document.getElementById(
-        "themeBtn"
-    );
-
-function applyTheme(theme){
-
-    document.body.setAttribute(
-        "data-theme",
-        theme
-    );
-
-    // THEME BUTTON ICON
-    if(themeBtn){
-
-        themeBtn.innerHTML =
-
-            theme === "dark"
-
-            ? "☀️"
-
-            : "🌙";
-
-    }
-
-    // =========================
-    // LOGO CHANGE
-    // =========================
-
-    if(siteLogo){
-
-        siteLogo.src =
-
-            theme === "dark"
-
-            ? "/assets/logo/full-logo-white.png"
-
-            : "/assets/logo/full-logo.png";
-
-    }
-
-}
-
-// =========================
-// THEME INIT
-// =========================
-
-const savedTheme =
-
-    localStorage.getItem(
-        "theme"
-    ) || "dark";
-
-// APPLY SAVED THEME
-applyTheme(savedTheme);
-
-
-// =========================
-// THEME TOGGLE
-// =========================
-
-if(themeBtn){
-
-    themeBtn.addEventListener(
-        "click",
-        () => {
-
-            const current =
-
-                document.body.getAttribute(
-                    "data-theme"
-                );
-
-            const next =
-
-                current === "dark"
-
-                ? "light"
-
-                : "dark";
-
-            applyTheme(next);
-
-            localStorage.setItem(
-                "theme",
-                next
-            );
-
-        }
-    );
-
-}
-
-// =========================
-// LANGUAGE CHANGE
-// =========================
-
-if(langSelect){
-
-    langSelect.addEventListener(
-        "change",
-        loadSubjects
-    );
-
-}
-
-
-// =========================
-// SEARCH EVENT
-// =========================
-
-if(searchInput){
-
-    searchInput.addEventListener(
-        "keyup",
-        searchSubjects
-    );
-
-}
-
-
-// =========================
-// CLOSE SIDEBAR OUTSIDE CLICK
-// =========================
-
-document.addEventListener(
-    "click",
-    (e) => {
-
-        if(
-
-            window.innerWidth < 992 &&
-
-            !sidebar.contains(e.target) &&
-
-            !mobileBtn.contains(e.target)
-
-        ){
-
-            sidebar.classList.remove(
-                "active"
-            );
-
-        }
-
-    }
-);
-
-
-// =========================
-// INITIAL LOAD
-// =========================
-
-window.addEventListener(
-    "load",
-    () => {
-
-        loadSubjects();
-
-    }
-);
+</body>
+</html>
