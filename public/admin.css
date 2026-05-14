@@ -968,6 +968,19 @@ button:active {
     color: var(--muted);
 }
 
+.ql-toolbar.ql-snow {
+
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 6px;
+
+    background: #f8fafc;
+}
+
+.ql-formats {
+    margin-right: 8px !important;
+}
 /* =========================
    PREVIEW BOX
 ========================= */
@@ -2417,4 +2430,52 @@ body::selection {
         rgba(99,102,241,0.35);
 
     color: white;
+}
+
+/* =========================
+   QUILL TOOLBAR FIX
+========================= */
+
+.ql-toolbar.ql-snow {
+
+    display: flex !important;
+    flex-wrap: wrap !important;
+
+    background: #f8fafc !important;
+
+    border-radius: 18px 18px 0 0;
+
+    overflow: visible !important;
+}
+
+.ql-toolbar .ql-formats {
+
+    display: flex !important;
+    align-items: center;
+    gap: 4px;
+
+    margin-right: 10px !important;
+}
+
+.ql-toolbar button,
+.ql-toolbar select {
+
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.ql-picker {
+
+    color: black !important;
+}
+
+.ql-snow .ql-stroke {
+
+    stroke: #111827 !important;
+}
+
+.ql-snow .ql-fill {
+
+    fill: #111827 !important;
 }
