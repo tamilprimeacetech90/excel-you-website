@@ -978,4 +978,308 @@ svg{
         min-height:300px;
     }
 }
+```## FINAL FIXES TO ADD AT THE END OF admin.css
+
+```css
+/* =========================================
+   FINAL UI POLISH
+========================================= */
+
+/* Better Content Width */
+.content{
+    max-width: 1600px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Prevent Card Stretch */
+.section,
+.post-card,
+.chart-card,
+.stat-card,
+.action-card{
+    width: 100%;
+}
+
+/* Cleaner Hover */
+.section:hover,
+.post-card:hover,
+.chart-card:hover,
+.stat-card:hover,
+.action-card:hover{
+    transform: translateY(-2px);
+}
+
+/* Reduce Excess Blur */
+.section,
+.post-card,
+.chart-card,
+.stat-card,
+.action-card{
+    backdrop-filter: blur(14px);
+}
+
+/* Better Text Rendering */
+body{
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+/* Fix Sidebar on Desktop */
+@media (min-width: 769px){
+
+    .sidebar{
+        left: 0;
+    }
+
+    .main{
+        margin-left: 280px;
+    }
+}
+
+/* Fix Sidebar Mobile Overlay */
+.overlay{
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.55);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    visibility: hidden;
+    transition: .3s ease;
+    z-index: 900;
+}
+
+.overlay.show{
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Cleaner Table */
+table{
+    border-spacing: 0;
+}
+
+/* Better Inputs */
+input,
+textarea,
+select{
+    line-height: 1.5;
+}
+
+/* Remove Ugly Mobile Full Width Buttons */
+@media (max-width:768px){
+
+    button{
+        width: auto;
+    }
+
+    .post-actions button,
+    .editor-actions button{
+        width: 100%;
+    }
+}
+
+/* Better Quill Toolbar Spacing */
+.ql-toolbar.ql-snow{
+    align-items: center;
+}
+
+/* Fix Quill Dropdown Width */
+.ql-picker{
+    min-width: 90px;
+}
+
+/* Better Scrollbar */
+::-webkit-scrollbar-thumb{
+    background: rgba(148,163,184,.5);
+}
+
+/* Prevent Layout Shift */
+img{
+    height: auto;
+}
+
+/* Smoother Hover */
+button,
+.section,
+.post-card,
+.chart-card,
+.stat-card,
+.action-card{
+    will-change: transform;
+}
+
+/* Remove Excess Glow */
+.app-btn:hover{
+    box-shadow:
+        0 8px 20px rgba(99,102,241,.22);
+}
+
+/* Better Mobile Padding */
+@media (max-width:768px){
+
+    .content{
+        padding: 12px;
+    }
+
+    .section{
+        padding: 16px;
+    }
+
+    .topbar{
+        padding: 10px 14px;
+    }
+}
 ```
+```css
+/* =========================================
+   FINAL UI POLISH
+========================================= */
+
+/* Better Content Width */
+.content{
+    max-width: 1600px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Prevent Card Stretch */
+.section,
+.post-card,
+.chart-card,
+.stat-card,
+.action-card{
+    width: 100%;
+}
+
+/* Cleaner Hover */
+.section:hover,
+.post-card:hover,
+.chart-card:hover,
+.stat-card:hover,
+.action-card:hover{
+    transform: translateY(-2px);
+}
+
+/* Reduce Excess Blur */
+.section,
+.post-card,
+.chart-card,
+.stat-card,
+.action-card{
+    backdrop-filter: blur(14px);
+}
+
+/* Better Text Rendering */
+body{
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+/* Fix Sidebar on Desktop */
+@media (min-width: 769px){
+
+    .sidebar{
+        left: 0;
+    }
+
+    .main{
+        margin-left: 280px;
+    }
+}
+
+/* Fix Sidebar Mobile Overlay */
+.overlay{
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.55);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    visibility: hidden;
+    transition: .3s ease;
+    z-index: 900;
+}
+
+.overlay.show{
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Cleaner Table */
+table{
+    border-spacing: 0;
+}
+
+/* Better Inputs */
+input,
+textarea,
+select{
+    line-height: 1.5;
+}
+
+/* Remove Ugly Mobile Full Width Buttons */
+@media (max-width:768px){
+
+    button{
+        width: auto;
+    }
+
+    .post-actions button,
+    .editor-actions button{
+        width: 100%;
+    }
+}
+
+/* Better Quill Toolbar Spacing */
+.ql-toolbar.ql-snow{
+    align-items: center;
+}
+
+/* Fix Quill Dropdown Width */
+.ql-picker{
+    min-width: 90px;
+}
+
+/* Better Scrollbar */
+::-webkit-scrollbar-thumb{
+    background: rgba(148,163,184,.5);
+}
+
+/* Prevent Layout Shift */
+img{
+    height: auto;
+}
+
+/* Smoother Hover */
+button,
+.section,
+.post-card,
+.chart-card,
+.stat-card,
+.action-card{
+    will-change: transform;
+}
+
+/* Remove Excess Glow */
+.app-btn:hover{
+    box-shadow:
+        0 8px 20px rgba(99,102,241,.22);
+}
+
+/* Better Mobile Padding */
+@media (max-width:768px){
+
+    .content{
+        padding: 12px;
+    }
+
+    .section{
+        padding: 16px;
+    }
+
+    .topbar{
+        padding: 10px 14px;
+    }
+}
+```
+
