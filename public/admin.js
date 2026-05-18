@@ -4,15 +4,151 @@
 let quill;
 let saveTimer;
 
+let isSaving = false;
+let hasUnsavedChanges = false;
+
 const AUTO_SAVE_DELAY = 2000;
 
 const elements = {};
+
+// =========================
+// QUILL CUSTOM ICONS
+// =========================
+const icons = Quill.import("ui/icons");
+
+icons["undo"] = `
+<svg viewBox="0 0 18 18">
+    <polygon
+        class="ql-fill ql-stroke"
+        points="6 10 4 12 2 10 6 10">
+    </polygon>
+
+    <path
+        class="ql-stroke"
+        d="M4,12 C4,7 6,5 10,5 C12,5 14,6 15,8">
+    </path>
+</svg>
+`;
+
+icons["redo"] = `
+<svg viewBox="0 0 18 18">
+    <polygon
+        class="ql-fill ql-stroke"
+        points="12 10 14 12 16 10 12 10">
+    </polygon>
+
+    <path
+        class="ql-stroke"
+        d="M14,12 C14,7 12,5 8,5 C6,5 4,6 3,8">
+    </path>
+</svg>
+`;
+
+
+// =========================
+// CUSTOM FONTS
+// =========================
+const Font = Quill.import("formats/font");
+
+Font.whitelist = [
+    "sans-serif",
+    "serif",
+    "monospace",
+    "arial",
+    "times-new-roman",
+    "courier-new",
+    "georgia",
+    "tahoma",
+    "verdana"
+];
+
+Quill.register(Font, true);
+
+
+// =========================
+// TOOLBAR OPTIONS
+// =========================
+const toolbarOptions = [
+
+    ["undo", "redo"],
+
+    [{ font: Font.whitelist }],
+
+    [{
+        size: [
+            "small",
+            false,
+            "large",
+            "huge"
+        ]
+    }],
+
+    [{
+        header: [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            false
+        ]
+    }],
+
+    [
+        "bold",
+        "italic",
+        "underline",
+        "strike"
+    ],
+
+    [
+        { color: [] },
+        { background: [] }
+    ],
+
+    [
+        { align: [] }
+    ],
+
+    [
+        { list: "ordered" },
+        { list: "bullet" }
+    ],
+
+    [
+        { indent: "-1" },
+        { indent: "+1" }
+    ],
+
+    [
+        "blockquote",
+        "code-block"
+    ],
+
+    [
+        "link",
+        "image",
+        "video"
+    ],
+
+    ["clean"]
+];
 
 
 // =========================
 // INIT ELEMENTS
 // =========================
 function initElements() {
+
+    elements.sidebar =
+        document.getElementById("sidebar");
+
+    elements.overlay =
+        document.getElementById("overlay");
+
+    elements.menuBtn =
+        document.querySelector(".menu-btn");
 
     elements.postsList =
         document.getElementById("postsList");
@@ -32,12 +168,6 @@ function initElements() {
     elements.editorTitle =
         document.getElementById("editorTitle");
 
-    elements.editorSubject =
-        document.getElementById("editorSubject");
-
-    elements.editorTopic =
-        document.getElementById("editorTopic");
-
     elements.publishBtn =
         document.getElementById("publishBtn");
 
@@ -46,6 +176,9 @@ function initElements() {
 
     elements.saveStatus =
         document.getElementById("saveStatus");
+
+    elements.imageUpload =
+        document.getElementById("imageUpload");
 }
 
 
@@ -54,21 +187,25 @@ function initElements() {
 // =========================
 async function api(url, options = {}) {
 
-    const res =
+    const response =
         await fetch(url, options);
 
     let data = null;
 
     try {
-        data = await res.json();
+
+        data = await response.json();
+
     } catch {
+
         data = null;
     }
 
-    if (!res.ok) {
+    if (!response.ok) {
 
         throw new Error(
-            data?.message || "Request failed"
+            data?.message ||
+            "Request Failed"
         );
     }
 
@@ -77,26 +214,31 @@ async function api(url, options = {}) {
 
 
 // =========================
-// SAFE HTML
+// ESCAPE HTML
 // =========================
 function escapeHTML(str = "") {
 
-    return String(str).replace(/[&<>"']/g, m => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
-    }[m]));
+    return String(str).replace(
+        /[&<>"']/g,
+        match => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        }[match])
+    );
 }
 
 
 // =========================
-// SAFE RENDER
+// SAFE HTML RENDER
 // =========================
 function renderHTML(html = "") {
 
-    if (typeof DOMPurify !== "undefined") {
+    if (
+        typeof DOMPurify !== "undefined"
+    ) {
 
         return DOMPurify.sanitize(html);
     }
@@ -106,730 +248,252 @@ function renderHTML(html = "") {
 
 
 // =========================
-// SECTION NAVIGATION
+// SIDEBAR TOGGLE
 // =========================
-function showSection(section) {
+function setupSidebar() {
 
-    [
-        "dashboard",
-        "subject",
-        "topic",
-        "posts",
-        "block"
-    ].forEach(sec => {
-
-        document
-            .getElementById(sec + "Section")
-            ?.classList.add("hidden");
-    });
-
-    document
-        .getElementById(section + "Section")
-        ?.classList.remove("hidden");
-}
-
-
-// =========================
-// SUBJECT
-// =========================
-async function addSubject() {
-
-    const name =
-        document.getElementById("subjectName")
-            ?.value.trim();
-
-    const description =
-        document.getElementById("subjectDesc")
-            ?.value.trim();
-
-    const language =
-        document.getElementById("subjectLang")
-            ?.value || "en";
-
-    if (!name) {
-
-        alert("Subject name required ❌");
-
+    if (
+        !elements.sidebar ||
+        !elements.menuBtn ||
+        !elements.overlay
+    ) {
         return;
     }
 
-    try {
+    elements.menuBtn.addEventListener(
+        "click",
+        () => {
 
-        await api("/api/admin/subject", {
-
-            method: "POST",
-
-            headers: {
-                "Content-Type":
-                    "application/x-www-form-urlencoded"
-            },
-
-            body: new URLSearchParams({
-                name,
-                description,
-                language
-            })
-        });
-
-        alert("Subject Created ✔");
-
-        document.getElementById("subjectName").value = "";
-        document.getElementById("subjectDesc").value = "";
-
-        await Promise.all([
-            loadSubjects(),
-            loadSubjectFilter(),
-            loadStats()
-        ]);
-
-    } catch (err) {
-
-        console.error(err);
-
-        alert(err.message);
-    }
-}
-
-
-function selectSubject(id) {
-
-    const subjectInput =
-        document.getElementById("subjectId");
-
-    if (subjectInput) {
-        subjectInput.value = id;
-    }
-
-    showSection("topic");
-}
-
-
-// =========================
-// LOAD SUBJECT FILTERS
-// =========================
-async function loadSubjectFilter() {
-
-    try {
-
-        const subjects =
-            await api("/api/admin/subjects");
-
-        const filterSelect =
-            document.getElementById("filterSubject");
-
-        const subjectSelect =
-            document.getElementById("subjectId");
-
-        const editorSubject =
-            document.getElementById("editorSubject");
-
-        const defaultHTML = `
-            <option value="">
-                Select Subject
-            </option>
-        `;
-
-        if (filterSelect) {
-
-            filterSelect.innerHTML = `
-                <option value="">
-                    All Subjects
-                </option>
-            `;
-        }
-
-        if (subjectSelect) {
-            subjectSelect.innerHTML = defaultHTML;
-        }
-
-        if (editorSubject) {
-            editorSubject.innerHTML = defaultHTML;
-        }
-
-        let optionsHTML = "";
-
-        subjects.forEach(sub => {
-
-            optionsHTML += `
-                <option value="${sub._id}">
-                    ${escapeHTML(sub.name)}
-                </option>
-            `;
-        });
-
-        if (filterSelect) {
-            filterSelect.innerHTML += optionsHTML;
-        }
-
-        if (subjectSelect) {
-            subjectSelect.innerHTML += optionsHTML;
-        }
-
-        if (editorSubject) {
-            editorSubject.innerHTML += optionsHTML;
-        }
-
-    } catch (err) {
-
-        console.error(err);
-
-        alert("Failed to load subjects ❌");
-    }
-}
-
-
-// =========================
-// LOAD POSTS
-// =========================
-async function loadPosts() {
-
-    try {
-
-        if (elements.postsList) {
-
-            elements.postsList.innerHTML =
-                `<div class="empty-posts">Loading...</div>`;
-        }
-
-        const subjectId =
-            document.getElementById("filterSubject")
-                ?.value || "";
-
-        const visibility =
-            document.getElementById("filterVisibility")
-                ?.value || "";
-
-        const search =
-            document.getElementById("searchPost")
-                ?.value.trim() || "";
-
-        const query =
-            new URLSearchParams({
-                subjectId,
-                visibility,
-                search
-            });
-
-        const posts =
-            await api(
-                `/api/admin/posts?${query.toString()}`
+            elements.sidebar.classList.toggle(
+                "active"
             );
 
-        if (!elements.postsList) return;
-
-        if (!Array.isArray(posts) || !posts.length) {
-
-            elements.postsList.innerHTML = `
-                <div class="empty-posts">
-                    No posts found.
-                </div>
-            `;
-
-            return;
-        }
-
-        const html = posts.map(post => {
-
-            const isPublic =
-                post.visibility === "public";
-
-            return `
-                <div class="post-card">
-
-                    <div class="post-top">
-
-                        <div class="post-info">
-
-                            <div class="post-title">
-                                ${escapeHTML(
-                                    post.title || "Untitled"
-                                )}
-                            </div>
-
-                            <div class="post-subject">
-                                📘 ${escapeHTML(
-                                    post.subjectId?.name || "Unknown"
-                                )}
-                            </div>
-
-                            <div class="post-date">
-                                Updated:
-                                ${new Date(
-                                    post.updatedAt || Date.now()
-                                ).toLocaleString()}
-                            </div>
-
-                        </div>
-
-                        <span class="badge ${isPublic ? "published" : "draft"}">
-                            ${isPublic ? "Published" : "Draft"}
-                        </span>
-
-                    </div>
-
-                    <div class="post-actions">
-
-                        <button
-                            class="edit-btn"
-                            onclick="editPost('${post._id}')"
-                        >
-                            ✏️ Edit
-                        </button>
-
-                        <button
-                            class="delete-btn"
-                            onclick="deletePost('${post._id}')"
-                        >
-                            🗑 Delete
-                        </button>
-
-                    </div>
-
-                </div>
-            `;
-        }).join("");
-
-        elements.postsList.innerHTML = html;
-
-    } catch (err) {
-
-        console.error(err);
-
-        if (elements.postsList) {
-
-            elements.postsList.innerHTML = `
-                <div class="empty-posts">
-                    Failed to load posts ❌
-                </div>
-            `;
-        }
-    }
-}
-
-
-// =========================
-// EDIT POST
-// =========================
-function editPost(id) {
-
-    if (elements.topicId) {
-        elements.topicId.value = id;
-    }
-
-    showSection("block");
-
-    loadPreview(id);
-}
-
-
-// =========================
-// DELETE POST
-// =========================
-async function deletePost(id) {
-
-    if (!confirm("Delete this post?")) return;
-
-    try {
-
-        await api(`/api/admin/topic/${id}`, {
-            method: "DELETE"
-        });
-
-        await Promise.all([
-            loadPosts(),
-            loadStats(),
-            loadSubjects()
-        ]);
-
-    } catch (err) {
-
-        console.error(err);
-
-        alert(err.message);
-    }
-}
-
-
-// =========================
-// LOAD SUBJECTS
-// =========================
-async function loadSubjects() {
-
-    try {
-
-        if (elements.subjectList) {
-
-            elements.subjectList.innerHTML =
-                `<div class="empty-posts">Loading...</div>`;
-        }
-
-        const subjects =
-            await api("/api/admin/subjects");
-
-        if (!elements.subjectList) return;
-
-        if (!Array.isArray(subjects) || !subjects.length) {
-
-            elements.subjectList.innerHTML = `
-                <div class="empty-posts">
-                    No subjects found.
-                </div>
-            `;
-
-            return;
-        }
-
-        const html = subjects.map(sub => `
-
-            <div class="subject-node">
-
-                <div
-                    class="subject-header"
-                    onclick="toggleTopics('${sub._id}')">
-
-                    📘 ${escapeHTML(sub.name)}
-
-                </div>
-
-                <div
-                    id="topics-${sub._id}"
-                    class="topic-container hidden">
-                </div>
-
-            </div>
-
-        `).join("");
-
-        elements.subjectList.innerHTML = html;
-
-    } catch (err) {
-
-        console.error(err);
-
-        if (elements.subjectList) {
-
-            elements.subjectList.innerHTML = `
-                <div class="empty-posts">
-                    Failed to load subjects ❌
-                </div>
-            `;
-        }
-    }
-}
-
-
-// =========================
-// TOGGLE TOPICS
-// =========================
-async function toggleTopics(subjectId) {
-
-    const container =
-        document.getElementById(`topics-${subjectId}`);
-
-    if (!container) return;
-
-    if (!container.classList.contains("hidden")) {
-
-        container.classList.add("hidden");
-        container.innerHTML = "";
-
-        return;
-    }
-
-    try {
-
-        container.innerHTML =
-            `<div class="empty-posts">Loading...</div>`;
-
-        const topics =
-            await api(
-                `/api/admin/topics/${subjectId}`
+            elements.overlay.classList.toggle(
+                "show"
             );
+        }
+    );
 
-        const html = topics.map(topic => `
-
-            <div
-                class="topic-node"
-                onclick="selectTopic('${topic._id}')">
-
-                ${topic.visibility === "public" ? "🟢" : "🟡"}
-
-                📖 ${escapeHTML(topic.title)}
-
-            </div>
-
-        `).join("");
-
-        container.innerHTML = html;
-
-        container.classList.remove("hidden");
-
-    } catch (err) {
-
-        console.error(err);
-
-        container.innerHTML = `
-            <div class="empty-posts">
-                Failed to load topics ❌
-            </div>
-        `;
-
-        container.classList.remove("hidden");
-    }
+    elements.overlay.addEventListener(
+        "click",
+        closeSidebar
+    );
 }
 
 
-// =========================
-// CREATE TOPIC
-// =========================
-async function addTopic() {
+function closeSidebar() {
 
-    const title =
-        document.getElementById("topicTitle")
-            ?.value.trim();
+    elements.sidebar?.classList.remove(
+        "active"
+    );
 
-    const subjectId =
-        document.getElementById("subjectId")
-            ?.value;
-
-    const language =
-        document.getElementById("topicLang")
-            ?.value || "en";
-
-    if (!title || !subjectId) {
-
-        alert("Title & Subject required ❌");
-
-        return;
-    }
-
-    try {
-
-        const topic =
-            await api("/api/admin/topic", {
-
-                method: "POST",
-
-                headers: {
-                    "Content-Type":
-                        "application/x-www-form-urlencoded"
-                },
-
-                body: new URLSearchParams({
-                    title,
-                    subjectId,
-                    language
-                })
-            });
-
-        alert("Topic Created ✔");
-
-        document.getElementById("topicTitle").value = "";
-
-        await Promise.all([
-            loadSubjects(),
-            loadPosts(),
-            loadStats()
-        ]);
-
-        if (topic?._id) {
-
-            selectTopic(topic._id);
-        }
-
-    } catch (err) {
-
-        console.error(err);
-
-        alert(err.message);
-    }
+    elements.overlay?.classList.remove(
+        "show"
+    );
 }
 
-
 // =========================
-// SELECT TOPIC
+// MOBILE AUTO CLOSE SIDEBAR
 // =========================
-function selectTopic(id) {
+function setupResponsiveSidebar() {
 
-    if (elements.topicId) {
-        elements.topicId.value = id;
-    }
-
-    showSection("block");
-
-    loadPreview(id);
-}
-
-
-// =========================
-// LOAD PREVIEW
-// =========================
-async function loadPreview(topicId) {
-
-    try {
-
-        const topic =
-            await api(
-                `/api/admin/topic/${topicId}`
-            );
-
-        if (!topic || !topic._id) {
-
-            throw new Error("Invalid topic");
-        }
-
-        if (elements.topicId) {
-            elements.topicId.value = topic._id;
-        }
-
-        if (elements.editorTitle) {
-
-            elements.editorTitle.value =
-                topic.title || "";
-        }
-
-        if (
-            elements.editorSubject &&
-            topic.subjectId?._id
-        ) {
-
-            elements.editorSubject.value =
-                topic.subjectId._id;
-        }
-
-        await loadTopicsForEditor(
-            topic.subjectId?._id
+    const menuButtons =
+        document.querySelectorAll(
+            ".sidebar button"
         );
 
-        if (elements.editorTopic) {
+    menuButtons.forEach(button => {
 
-            elements.editorTopic.value =
-                topic._id;
-        }
+        button.addEventListener(
+            "click",
+            () => {
 
-        if (quill) {
+                if (
+                    window.innerWidth <= 768
+                ) {
 
-            quill.root.innerHTML =
-                topic.contentHTML || "";
-        }
+                    closeSidebar();
+                }
+            }
+        );
+    });
+}
+// =========================
+// SAVE STATUS
+// =========================
+function setSaveStatus(text) {
 
-        if (elements.previewBox) {
+    if (!elements.saveStatus) return;
 
-            elements.previewBox.innerHTML =
-                renderHTML(
-                    topic.contentHTML || ""
-                );
-        }
+    elements.saveStatus.innerText = text;
+}
 
-        if (
-            elements.statusBadge &&
-            elements.publishBtn
-        ) {
 
-            if (topic.visibility === "public") {
+// =========================
+// LIVE PREVIEW
+// =========================
+function updatePreview() {
 
-                elements.statusBadge.innerText =
-                    "Published";
+    if (
+        !quill ||
+        !elements.previewBox
+    ) {
+        return;
+    }
 
-                elements.statusBadge.className =
-                    "badge published";
+    elements.previewBox.innerHTML =
+        renderHTML(
+            quill.root.innerHTML
+        );
+}
 
-                elements.publishBtn.innerText =
-                    "🔒 Unpublish";
 
-                elements.publishBtn.dataset.mode =
-                    "unpublish";
+// =========================
+// INIT EDITOR
+// =========================
+function initEditor() {
 
-            } else {
+    const editor =
+        document.getElementById("editor");
 
-                elements.statusBadge.innerText =
-                    "Draft";
+    if (!editor) {
 
-                elements.statusBadge.className =
-                    "badge draft";
+        console.error(
+            "Editor element not found"
+        );
 
-                elements.publishBtn.innerText =
-                    "🚀 Publish";
+        return;
+    }
 
-                elements.publishBtn.dataset.mode =
-                    "publish";
+    quill = new Quill("#editor", {
+
+        theme: "snow",
+
+        placeholder:
+            "Write your article here...",
+
+        modules: {
+
+            toolbar: {
+
+                container:
+                    toolbarOptions,
+
+                handlers: {
+
+                    undo: function () {
+
+                        quill.history.undo();
+                    },
+
+                    redo: function () {
+
+                        quill.history.redo();
+                    }
+                }
+            },
+
+            history: {
+
+                delay: 1000,
+
+                maxStack: 500,
+
+                userOnly: true
+            },
+
+            imageUploader: {
+
+                upload: async file => {
+
+                    try {
+
+                        // =========================
+                        // FILE TYPE CHECK
+                        // =========================
+                        if (
+                            !file.type.startsWith(
+                                "image/"
+                            )
+                        ) {
+
+                            alert(
+                                "Only image files allowed"
+                            );
+
+                            return "";
+                        }
+
+                        // =========================
+                        // 5MB LIMIT
+                        // =========================
+                        if (
+                            file.size >
+                            5 * 1024 * 1024
+                        ) {
+
+                            alert(
+                                "Image too large (Max 5MB)"
+                            );
+
+                            return "";
+                        }
+
+                        const formData =
+                            new FormData();
+
+                        formData.append(
+                            "image",
+                            file
+                        );
+
+                        const response =
+                            await fetch(
+                                "/api/upload",
+                                {
+                                    method: "POST",
+                                    body: formData
+                                }
+                            );
+
+                        if (!response.ok) {
+
+                            throw new Error(
+                                "Upload failed"
+                            );
+                        }
+
+                        const data =
+                            await response.json();
+
+                        if (!data.url) {
+
+                            throw new Error(
+                                "Invalid image URL"
+                            );
+                        }
+
+                        return data.url;
+
+                    } catch (err) {
+
+                        console.error(err);
+
+                        alert(
+                            "Image upload failed ❌"
+                        );
+
+                        return "";
+                    }
+                }
             }
         }
+    });
 
-        showSection("block");
-
-    } catch (err) {
-
-        console.error(err);
-
-        alert(err.message);
-    }
+    console.log(
+        "Quill editor initialized ✔"
+    );
 }
-
-
-// =========================
-// LOAD TOPICS FOR EDITOR
-// =========================
-async function loadTopicsForEditor(
-    selectedSubjectId = null
-) {
-
-    const subjectId =
-        selectedSubjectId ||
-        elements.editorSubject?.value;
-
-    if (!elements.editorTopic) return;
-
-    elements.editorTopic.innerHTML = `
-        <option value="">
-            Select Article
-        </option>
-    `;
-
-    if (!subjectId) return;
-
-    try {
-
-        const topics =
-            await api(
-                `/api/admin/topics/${subjectId}`
-            );
-
-        let html = "";
-
-        topics.forEach(topic => {
-
-            html += `
-                <option value="${topic._id}">
-                    ${escapeHTML(topic.title)}
-                </option>
-            `;
-        });
-
-        elements.editorTopic.innerHTML += html;
-
-    } catch (err) {
-
-        console.error(err);
-
-        alert(err.message);
-    }
-}
-
-
-// =========================
-// OPEN SELECTED TOPIC
-// =========================
-function openSelectedTopic() {
-
-    const topicId =
-        elements.editorTopic?.value;
-
-    if (!topicId) return;
-
-    loadPreview(topicId);
-}
-
 
 // =========================
 // AUTO SAVE
@@ -838,34 +502,39 @@ function setupAutoSave() {
 
     if (!quill) return;
 
-    quill.on("text-change", () => {
+    quill.on(
+        "text-change",
+        () => {
 
-        clearTimeout(saveTimer);
+            hasUnsavedChanges = true;
 
-        if (elements.saveStatus) {
-            elements.saveStatus.innerText = "Saving...";
-        }
+            clearTimeout(saveTimer);
 
-        saveTimer =
-            setTimeout(
+            setSaveStatus(
+                "Saving..."
+            );
+
+            updatePreview();
+
+            saveTimer = setTimeout(
                 autoSaveDraft,
                 AUTO_SAVE_DELAY
             );
-    });
+        }
+    );
 
-    if (elements.editorTitle) {
-
-        elements.editorTitle.addEventListener(
+    elements.editorTitle
+        ?.addEventListener(
             "input",
             () => {
 
+                hasUnsavedChanges = true;
+
                 clearTimeout(saveTimer);
 
-                if (elements.saveStatus) {
-
-                    elements.saveStatus.innerText =
-                        "Saving...";
-                }
+                setSaveStatus(
+                    "Saving..."
+                );
 
                 saveTimer =
                     setTimeout(
@@ -874,29 +543,71 @@ function setupAutoSave() {
                     );
             }
         );
-    }
 }
-
 
 // =========================
 // SAVE DRAFT
 // =========================
-async function autoSaveDraft() {
+async function autoSaveDraft(retryCount = 0) {
+
+    // Prevent duplicate save requests
+    if (isSaving) {
+        return false;
+    }
+
+    if (
+        !quill ||
+        !elements.topicId
+    ) {
+        return false;
+    }
 
     const topicId =
-        elements.topicId?.value;
+        elements.topicId.value;
 
-    if (!topicId || !quill) return;
+    if (!topicId) {
+        return false;
+    }
 
-    const contentHTML =
-        quill.root.innerHTML;
+    // =========================
+    // OFFLINE CHECK
+    // =========================
+    if (!navigator.onLine) {
 
-    const title =
-        elements.editorTitle?.value.trim()
-        || "Untitled";
+        saveLocalBackup();
+
+        setSaveStatus(
+            "Offline ⚠ Changes stored locally"
+        );
+
+        return false;
+    }
 
     try {
 
+        isSaving = true;
+
+        setSaveStatus(
+            "Saving..."
+        );
+
+        // =========================
+        // PREPARE PAYLOAD
+        // =========================
+        const payload = {
+
+            title:
+                elements.editorTitle
+                    ?.value
+                    ?.trim() || "",
+
+            contentHTML:
+                quill.root.innerHTML
+        };
+
+        // =========================
+        // API REQUEST
+        // =========================
         await api(
             `/api/admin/topic/${topicId}`,
             {
@@ -907,212 +618,444 @@ async function autoSaveDraft() {
                         "application/json"
                 },
 
-                body: JSON.stringify({
-                    title,
-                    contentHTML
-                })
+                body: JSON.stringify(
+                    payload
+                )
             }
         );
 
-        if (elements.previewBox) {
+        // =========================
+        // SAVE SUCCESS
+        // =========================
+        hasUnsavedChanges = false;
 
-            elements.previewBox.innerHTML =
-                renderHTML(contentHTML);
-        }
+        updatePreview();
 
-        if (elements.saveStatus) {
+        // Remove local backup after success
+        localStorage.removeItem(
+            "editorBackup"
+        );
 
-            elements.saveStatus.innerText =
-                `Saved ✔ ${new Date()
-                    .toLocaleTimeString()}`;
-        }
+        setSaveStatus(
+            `Saved ✔ ${new Date()
+                .toLocaleTimeString()}`
+        );
 
-        loadPosts().catch(console.error);
+        return true;
 
     } catch (err) {
 
-        console.error(err);
+        console.error(
+            "Save failed:",
+            err
+        );
 
-        if (elements.saveStatus) {
+        saveLocalBackup();
 
-            elements.saveStatus.innerText =
-                "Save failed ❌";
+        // =========================
+        // RETRY SYSTEM
+        // =========================
+        if (
+            navigator.onLine &&
+            retryCount < 3
+        ) {
+
+            setSaveStatus(
+                `Retrying... (${retryCount + 1}/3)`
+            );
+
+            // Wait before retry
+            await new Promise(resolve =>
+                setTimeout(resolve, 2000)
+            );
+
+            isSaving = false;
+
+            return await autoSaveDraft(
+                retryCount + 1
+            );
         }
+
+        setSaveStatus(
+            "Save failed ❌"
+        );
+
+        return false;
+
+    } finally {
+
+        isSaving = false;
     }
 }
 
+// =========================
+// PUBLISH POST
+// =========================
+async function publishPost() {
 
-// =========================
-// TOGGLE PUBLISH
-// =========================
-async function togglePublish() {
+    if (
+        !quill ||
+        !elements.topicId
+    ) {
+        return;
+    }
 
     const topicId =
-        elements.topicId?.value;
+        elements.topicId.value;
+
+    const title =
+        elements.editorTitle
+            ?.value
+            ?.trim();
+
+    const content =
+        quill.getText().trim();
 
     if (!topicId) {
 
-        alert("No topic selected ❌");
+        alert(
+            "Topic ID missing"
+        );
+
+        return;
+    }
+
+    if (!title) {
+
+        alert(
+            "Title is required"
+        );
+
+        return;
+    }
+
+    if (!content) {
+
+        alert(
+            "Content cannot be empty"
+        );
+
+        return;
+    }
+
+    // =========================
+    // OFFLINE CHECK
+    // =========================
+    if (!navigator.onLine) {
+
+        alert(
+            "Cannot publish while offline ⚠"
+        );
 
         return;
     }
 
     try {
 
-        const isPublish =
-            elements.publishBtn?.dataset.mode
-                === "publish";
+        elements.publishBtn.disabled =
+            true;
 
-        const endpoint =
-            isPublish
-                ? `/api/admin/topic/publish/${topicId}`
-                : `/api/admin/topic/unpublish/${topicId}`;
+        elements.publishBtn.innerText =
+            "Saving...";
 
-        await api(endpoint, {
-            method: "POST"
-        });
+        // Save before publish
+        const saved =
+            await autoSaveDraft();
 
-        await Promise.all([
-            loadPreview(topicId),
-            loadPosts(),
-            loadSubjects()
-        ]);
+        if (!saved) {
+
+            throw new Error(
+                "Save failed before publish"
+            );
+        }
+
+        elements.publishBtn.innerText =
+            "Publishing...";
+
+        await api(
+            `/api/admin/topic/${topicId}/publish`,
+            {
+                method: "POST"
+            }
+        );
+
+        hasUnsavedChanges = false;
+
+        if (
+            elements.statusBadge
+        ) {
+
+            elements.statusBadge.innerText =
+                "Published";
+        }
+
+        setSaveStatus(
+            "Published ✔"
+        );
+
+        alert(
+            "Post published ✔"
+        );
 
     } catch (err) {
 
         console.error(err);
 
-        alert(err.message);
+        alert(
+            "Publish failed ❌"
+        );
+
+    } finally {
+
+        elements.publishBtn.disabled =
+            false;
+
+        elements.publishBtn.innerText =
+            "Publish";
     }
+}
+
+// =========================
+// IMAGE INPUT PREVIEW
+// =========================
+function setupImagePreview() {
+
+    if (
+        !elements.imageUpload ||
+        !elements.previewBox
+    ) {
+        return;
+    }
+
+    elements.imageUpload.addEventListener(
+        "change",
+        event => {
+
+            const file =
+                event.target.files?.[0];
+
+            if (!file) return;
+
+            if (
+                !file.type.startsWith(
+                    "image/"
+                )
+            ) {
+
+                alert(
+                    "Invalid image file"
+                );
+
+                return;
+            }
+
+            const reader =
+                new FileReader();
+
+            reader.onload =
+                e => {
+
+                    elements.previewBox.innerHTML += `
+                        <img
+                            src="${e.target.result}"
+                            alt="Preview"
+                            style="
+                                margin-top:20px;
+                                border-radius:16px;
+                            "
+                        />
+                    `;
+                };
+
+            reader.readAsDataURL(
+                file
+            );
+        }
+    );
 }
 
 
 // =========================
-// DASHBOARD
+// SHORTCUTS
 // =========================
-async function loadStats() {
+function setupKeyboardShortcuts() {
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            // CTRL + S
+            if (
+                (
+                    event.ctrlKey ||
+                    event.metaKey
+                ) &&
+                event.key.toLowerCase() ===
+                    "s"
+            ) {
+
+                event.preventDefault();
+
+                autoSaveDraft();
+            }
+        }
+    );
+}
+
+
+
+// =========================
+// NETWORK STATUS
+// =========================
+function setupNetworkStatus() {
+
+    window.addEventListener(
+        "offline",
+        () => {
+
+            setSaveStatus(
+                "Offline ⚠"
+            );
+        }
+    );
+
+    window.addEventListener(
+        "online",
+        () => {
+
+            setSaveStatus(
+                "Back Online ✔"
+            );
+
+            if (
+                hasUnsavedChanges
+            ) {
+
+                autoSaveDraft();
+            }
+        }
+    );
+}
+
+
+// =========================
+// LOCAL BACKUP
+// =========================
+function saveLocalBackup() {
+
+    if (!quill) return;
+
+    const backup = {
+
+        title:
+            elements.editorTitle
+                ?.value || "",
+
+        content:
+            quill.root.innerHTML,
+
+        time:
+            Date.now()
+    };
+
+    localStorage.setItem(
+        "editorBackup",
+        JSON.stringify(backup)
+    );
+}
+
+
+
+// =========================
+// RESTORE BACKUP
+// =========================
+function restoreLocalBackup() {
+
+    const backup =
+        localStorage.getItem(
+            "editorBackup"
+        );
+
+    if (!backup) return;
 
     try {
 
-        const data =
-            await api("/api/admin/stats");
+        const parsed =
+            JSON.parse(backup);
 
-        if (!elements.statsBox) return;
+        if (
+            elements.editorTitle
+        ) {
 
-        elements.statsBox.innerHTML = `
-            <div class="stats-grid">
+            elements.editorTitle.value =
+                parsed.title || "";
+        }
 
-                <div class="stat-card">
-                    <div class="icon">📘</div>
-                    <h3>Subjects</h3>
-                    <h1 id="subjectsCount">0</h1>
-                </div>
+        if (
+            quill &&
+            parsed.content
+        ) {
 
-                <div class="stat-card">
-                    <div class="icon">📖</div>
-                    <h3>Topics</h3>
-                    <h1 id="topicsCount">0</h1>
-                </div>
+            // Safer restore
+            quill.clipboard.dangerouslyPasteHTML(
+                parsed.content
+            );
+        }
 
-            </div>
-        `;
+        updatePreview();
 
-        animateCount(
-            "subjectsCount",
-            data.subjects || 0
+        setSaveStatus(
+            "Backup restored ✔"
         );
 
-        animateCount(
-            "topicsCount",
-            data.topics || 0
+        console.log(
+            "Backup restored ✔"
         );
 
     } catch (err) {
 
-        console.error(err);
+        console.error(
+            "Backup restore failed",
+            err
+        );
     }
 }
+// =========================
+// AUTO LOCAL BACKUP
+// =========================
+function setupLocalBackup() {
 
+    if (!quill) return;
 
-function animateCount(id, target) {
+    quill.on(
+        "text-change",
+        saveLocalBackup
+    );
 
-    let current = 0;
-
-    const step =
-        Math.max(1, Math.ceil(target / 40));
-
-    const interval =
-        setInterval(() => {
-
-            current += step;
-
-            if (current >= target) {
-
-                current = target;
-
-                clearInterval(interval);
-            }
-
-            document.getElementById(id)
-                .innerText = current;
-
-        }, 20);
+    elements.editorTitle
+        ?.addEventListener(
+            "input",
+            saveLocalBackup
+        );
 }
 
 
 // =========================
-// SIDEBAR
+// BEFORE CLOSE WARNING
 // =========================
-function toggleSidebar() {
+window.addEventListener(
+    "beforeunload",
+    event => {
 
-    document.querySelector(".sidebar")
-        ?.classList.toggle("active");
+        if (!hasUnsavedChanges) {
+            return;
+        }
 
-    document.querySelector(".overlay")
-        ?.classList.toggle("show");
-}
+        event.preventDefault();
 
-
-function closeSidebar() {
-
-    document.querySelector(".sidebar")
-        ?.classList.remove("active");
-
-    document.querySelector(".overlay")
-        ?.classList.remove("show");
-}
-
-
-// =========================
-// SIDEBAR ACTIVE
-// =========================
-function initSidebarActiveState() {
-
-    document.querySelectorAll(".sidebar button")
-        .forEach(btn => {
-
-            btn.addEventListener("click", () => {
-
-                document.querySelectorAll(
-                    ".sidebar button"
-                ).forEach(b =>
-                    b.classList.remove("active")
-                );
-
-                btn.classList.add("active");
-            });
-        });
-}
-
-
-// =========================
-// LOGOUT
-// =========================
-function logout() {
-
-    window.location.href = "/logout";
-}
-
+        event.returnValue = "";
+    }
+);
 
 // =========================
 // WINDOW INIT
@@ -1123,168 +1066,32 @@ window.onload = async () => {
 
         initElements();
 
-        if (typeof Quill === "undefined") {
+        initEditor();
 
-            throw new Error("Quill not loaded");
-        }
-
-        if (
-            typeof ImageUploader !== "undefined"
-        ) {
-
-            Quill.register(
-                "modules/imageUploader",
-                ImageUploader
-            );
-        }
-
-        quill = new Quill("#editor", {
-
-            theme: "snow",
-
-            placeholder:
-                "Write your article content here...",
-
-            modules: {
-
-                toolbar: [
-
-                    [{ font: [] }],
-
-                    [{
-                        size: [
-                            "small",
-                            false,
-                            "large",
-                            "huge"
-                        ]
-                    }],
-
-                    [{
-                        header: [
-                            1,
-                            2,
-                            3,
-                            4,
-                            5,
-                            6,
-                            false
-                        ]
-                    }],
-
-                    [
-                        "bold",
-                        "italic",
-                        "underline",
-                        "strike"
-                    ],
-
-                    [
-                        { color: [] },
-                        { background: [] }
-                    ],
-
-                    [
-                        { script: "sub" },
-                        { script: "super" }
-                    ],
-
-                    [
-                        { list: "ordered" },
-                        { list: "bullet" }
-                    ],
-
-                    [
-                        { indent: "-1" },
-                        { indent: "+1" }
-                    ],
-
-                    [{ direction: "rtl" }],
-
-                    [{ align: [] }],
-
-                    [
-                        "blockquote",
-                        "code-block"
-                    ],
-
-                    [
-                        "link",
-                        "image",
-                        "video",
-                        "formula"
-                    ],
-
-                    ["clean"]
-                ],
-
-                ...(typeof ImageUploader !== "undefined" && {
-
-                    imageUploader: {
-
-                        upload: async file => {
-
-                            try {
-
-                                const formData =
-                                    new FormData();
-
-                                formData.append(
-                                    "image",
-                                    file
-                                );
-
-                                const data =
-                                    await api(
-                                        "/api/upload",
-                                        {
-                                            method: "POST",
-                                            body: formData
-                                        }
-                                    );
-
-                                if (!data?.url) {
-
-                                    throw new Error(
-                                        "Invalid image URL"
-                                    );
-                                }
-
-                                return data.url;
-
-                            } catch (err) {
-
-                                console.error(err);
-
-                                alert(
-                                    "Image upload failed ❌"
-                                );
-
-                                return "";
-                            }
-                        }
-                    }
-                })
-            }
-        });
-
-        showSection("subject");
-
-        closeSidebar();
-
-        await Promise.all([
-            loadSubjectFilter(),
-            loadPosts(),
-            loadSubjects(),
-            loadStats()
-        ]);
-
-        initSidebarActiveState();
+        restoreLocalBackup();
 
         setupAutoSave();
 
+        setupSidebar();
+
+        setupResponsiveSidebar();
+
+        setupImagePreview();
+
+        setupKeyboardShortcuts();
+
+        setupLocalBackup();
+
+        setupNetworkStatus();
+
+        elements.publishBtn
+            ?.addEventListener(
+                "click",
+                publishPost
+            );
+
         console.log(
-            "Admin panel loaded successfully ✔"
+            "Admin loaded ✔"
         );
 
     } catch (err) {
@@ -1292,7 +1099,8 @@ window.onload = async () => {
         console.error(err);
 
         alert(
-            "Application failed to load ❌"
+            "Admin failed to load ❌"
         );
     }
 };
+
