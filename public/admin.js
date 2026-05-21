@@ -213,23 +213,6 @@ async function api(url, options = {}) {
 }
 
 
-// =========================
-// ESCAPE HTML
-// =========================
-function escapeHTML(str = "") {
-
-    return String(str).replace(
-        /[&<>"']/g,
-        match => ({
-            "&": "&amp;",
-            "<": "&lt;",
-            ">": "&gt;",
-            '"': "&quot;",
-            "'": "&#39;"
-        }[match])
-    );
-}
-
 
 // =========================
 // SAFE HTML RENDER
@@ -351,6 +334,13 @@ function updatePreview() {
 // =========================
 // INIT EDITOR
 // =========================
+
+Quill.register(
+    "modules/imageUploader",
+    ImageUploader
+);
+
+
 function initEditor() {
 
     const editor =
@@ -855,7 +845,7 @@ function setupImagePreview() {
             reader.onload =
                 e => {
 
-                    elements.previewBox.innerHTML += `
+                    elements.previewBox.innerHTML = `
                         <img
                             src="${e.target.result}"
                             alt="Preview"
@@ -997,9 +987,8 @@ function restoreLocalBackup() {
         ) {
 
             // Safer restore
-            quill.clipboard.dangerouslyPasteHTML(
-                parsed.content
-            );
+           quill.root.innerHTML =
+    renderHTML(parsed.content);
         }
 
         updatePreview();
@@ -1060,7 +1049,9 @@ window.addEventListener(
 // =========================
 // WINDOW INIT
 // =========================
-window.onload = async () => {
+document.addEventListener(
+    "DOMContentLoaded",
+    async () => {
 
     try {
 
@@ -1102,5 +1093,5 @@ window.onload = async () => {
             "Admin failed to load ❌"
         );
     }
-};
+});
 

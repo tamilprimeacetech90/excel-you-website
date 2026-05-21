@@ -137,7 +137,9 @@ body{
 
     font-size:15px;
 
-    transition:.25s ease;
+   transition:
+    background .25s ease,
+    color .25s ease;
 }
 
 .sidebar button:hover{
@@ -550,7 +552,9 @@ td{
 
     visibility:hidden;
 
-    transition:.3s ease;
+    transition:
+        opacity .3s ease,
+        visibility .3s ease;
 
     z-index:900;
 }
@@ -572,72 +576,45 @@ td{
 
 img{
     max-width:100%;
+    height:auto;
+    display:block;
 }
 
-```css
 /* =========================================================
-   MOBILE
+   SCROLLBAR
 ========================================================= */
 
-@media (max-width:768px){
-
-    .sidebar{
-
-        left:-260px;
-
-        transition:.3s ease;
-    }
-
-    .sidebar.active{
-        left:0;
-    }
-
-    .main{
-        margin-left:0;
-    }
-
-    .menu-btn{
-        display:flex;
-    }
-
-    .content{
-        padding:14px;
-    }
-
-    .topbar{
-        padding:0 14px;
-    }
-
-    .section{
-        padding:18px;
-    }
-
-    .editor-grid,
-    .form-grid{
-        grid-template-columns:1fr;
-    }
-
-    .top-logout{
-        display:none;
-    }
-}
-```
-
-/* =========================================
-   SIDEBAR FINAL FIX
-========================================= */
-
-/* MOBILE DEFAULT */
-.sidebar{
-    left:-280px;
+::-webkit-scrollbar{
+    width:10px;
 }
 
-/* OPEN */
+::-webkit-scrollbar-track{
+    background:#0f172a;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#334155;
+    border-radius:999px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background:#475569;
+}
+
+/* =========================================================
+   SIDEBAR STATES
+========================================================= */
+
+/* OPEN SIDEBAR */
 .sidebar.active{
     left:0;
 }
 
-/* DESKTOP */
+
+/* =========================================================
+   DESKTOP
+========================================================= */
+
 @media (min-width:769px){
 
     .sidebar{
@@ -645,7 +622,7 @@ img{
     }
 
     .main{
-        margin-left:280px;
+        margin-left:260px;
     }
 
     .menu-btn{
@@ -657,15 +634,50 @@ img{
     }
 }
 
-/* MOBILE */
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
 @media (max-width:768px){
+
+    .sidebar{
+
+       left:-260px;
+
+       z-index:1000;
+
+       transition:left .3s ease;
+    }
+   .sidebar.active{
+      left:0;
+   }
+    /* MAIN */
 
     .main{
         margin-left:0;
     }
 
+    .content{
+        padding:14px;
+    }
+
+    /* TOPBAR */
+
+    .topbar{
+        padding:0 14px;
+    }
+
+    .top-logout{
+        display:none;
+    }
+
+    /* MENU BUTTON */
+
     .menu-btn{
+
         display:flex;
+
         align-items:center;
         justify-content:center;
 
@@ -686,27 +698,45 @@ img{
         font-size:20px;
     }
 
+    /* OVERLAY */
+
     .overlay{
+
         position:fixed;
+
         inset:0;
-      background:rgba(0,0,0,.5);
+
+        background:
+            rgba(0,0,0,.5);
 
         opacity:0;
+
         visibility:hidden;
 
-        transition:.3s ease;
+        transition:
+            opacity .3s ease,
+            visibility .3s ease;
 
         z-index:900;
     }
 
     .overlay.show{
+
         opacity:1;
+
         visibility:visible;
     }
 
-    .sidebar{
-        z-index:1000;
+    /* SECTION */
+
+    .section{
+        padding:18px;
+    }
+
+    /* GRID */
+
+    .editor-grid,
+    .form-grid{
+        grid-template-columns:1fr;
     }
 }
-```
-
