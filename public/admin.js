@@ -24,76 +24,89 @@ if (typeof Quill === "undefined") {
     console.error("Quill failed to load");
 
     alert("Quill Editor not loaded");
+
+} else {
+
+    // =========================
+    // QUILL ICONS
+    // =========================
+
+    const icons = Quill.import("ui/icons");
+
+    icons["undo"] = `
+    <svg viewBox="0 0 18 18">
+        <polygon
+            class="ql-fill ql-stroke"
+            points="6 10 4 12 2 10 6 10">
+        </polygon>
+
+        <path
+            class="ql-stroke"
+            d="M4,12 C4,7 6,5 10,5 C12,5 14,6 15,8">
+        </path>
+    </svg>
+    `;
+
+    icons["redo"] = `
+    <svg viewBox="0 0 18 18">
+        <polygon
+            class="ql-fill ql-stroke"
+            points="12 10 14 12 16 10 12 10">
+        </polygon>
+
+        <path
+            class="ql-stroke"
+            d="M14,12 C14,7 12,5 8,5 C6,5 4,6 3,8">
+        </path>
+    </svg>
+    `;
+
+    // =========================
+    // CUSTOM FONTS
+    // =========================
+
+    const Font = Quill.import("formats/font");
+
+    Font.whitelist = [
+        "sans-serif",
+        "serif",
+        "monospace",
+        "arial",
+        "times-new-roman",
+        "courier-new",
+        "georgia",
+        "tahoma",
+        "verdana"
+    ];
+
+    Quill.register(Font, true);
+
+    // =========================
+    // IMAGE RESIZE
+    // =========================
+
+    if (window.ImageResize) {
+
+        Quill.register(
+            "modules/imageResize",
+            window.ImageResize
+        );
+    }
+
+    // =========================
+    // IMAGE UPLOADER
+    // =========================
+
+    if (typeof ImageUploader !== "undefined") {
+
+        Quill.register(
+            "modules/imageUploader",
+            ImageUploader
+        );
+    }
 }
 
 
-// =========================
-// QUILL ICONS
-// =========================
-
-const icons = Quill.import("ui/icons");
-
-icons["undo"] = `
-<svg viewBox="0 0 18 18">
-    <polygon
-        class="ql-fill ql-stroke"
-        points="6 10 4 12 2 10 6 10">
-    </polygon>
-
-    <path
-        class="ql-stroke"
-        d="M4,12 C4,7 6,5 10,5 C12,5 14,6 15,8">
-    </path>
-</svg>
-`;
-
-icons["redo"] = `
-<svg viewBox="0 0 18 18">
-    <polygon
-        class="ql-fill ql-stroke"
-        points="12 10 14 12 16 10 12 10">
-    </polygon>
-
-    <path
-        class="ql-stroke"
-        d="M14,12 C14,7 12,5 8,5 C6,5 4,6 3,8">
-    </path>
-</svg>
-`;
-
-
-// =========================
-// CUSTOM FONTS
-// =========================
-
-const Font = Quill.import("formats/font");
-
-Font.whitelist = [
-    "sans-serif",
-    "serif",
-    "monospace",
-    "arial",
-    "times-new-roman",
-    "courier-new",
-    "georgia",
-    "tahoma",
-    "verdana"
-];
-
-Quill.register(Font, true);
-
-
-// =========================
-// IMAGE UPLOADER
-// =========================
-
-if (typeof ImageUploader !== "undefined") {
-
-    Quill.register(
-        "modules/imageUploader",
-        ImageUploader
-    );
-}
 
 
 // =========================

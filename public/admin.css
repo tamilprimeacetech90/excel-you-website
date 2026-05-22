@@ -621,7 +621,11 @@ select:focus{
     margin-top:20px;
 
     border:1px solid var(--border);
+
+    box-shadow:var(--shadow);
 }
+
+/* TOOLBAR */
 
 .ql-toolbar.ql-snow{
 
@@ -634,10 +638,13 @@ select:focus{
     padding:12px !important;
 
     display:flex;
+
     flex-wrap:wrap;
 
     gap:8px;
 }
+
+/* CONTAINER */
 
 .ql-container.ql-snow{
 
@@ -650,6 +657,8 @@ select:focus{
     background:var(--card);
 }
 
+/* EDITOR */
+
 .ql-editor{
 
     color:var(--text);
@@ -659,9 +668,12 @@ select:focus{
     line-height:1.8;
 }
 
+/* BUTTONS */
+
 .ql-toolbar button{
 
     width:32px !important;
+
     height:32px !important;
 
     border-radius:8px !important;
@@ -670,26 +682,36 @@ select:focus{
 }
 
 .ql-toolbar button:hover{
+
     background:var(--bg2) !important;
 }
 
 .ql-toolbar button.ql-active{
+
     background:#dbeafe !important;
 }
 
 body.dark-theme .ql-toolbar button.ql-active{
+
     background:#475569 !important;
 }
 
+/* ICON COLORS */
+
 .ql-snow .ql-stroke{
+
     stroke:var(--text) !important;
 }
 
 .ql-snow .ql-fill{
+
     fill:var(--text) !important;
 }
 
+/* PICKERS */
+
 .ql-picker{
+
     color:var(--text) !important;
 }
 
@@ -709,6 +731,151 @@ body.dark-theme .ql-toolbar button.ql-active{
     color:var(--text) !important;
 
     border-radius:10px;
+}
+
+/* =========================================================
+   IMAGE FIX
+========================================================= */
+
+.ql-editor img{
+
+    max-width:100%;
+
+    height:auto !important;
+
+    cursor:pointer;
+
+    border-radius:12px;
+
+    display:block;
+
+    margin:14px auto;
+}
+
+/* =========================================================
+   IMAGE RESIZE MODULE FIX
+========================================================= */
+
+.ql-image-resize-overlay{
+
+    border:2px solid var(--primary) !important;
+}
+
+/* RESIZE HANDLES */
+
+.ql-image-resize-handle{
+
+    background:var(--primary) !important;
+
+    border:2px solid white !important;
+
+    width:14px !important;
+
+    height:14px !important;
+
+    border-radius:50% !important;
+}
+
+/* SIZE DISPLAY */
+
+.ql-image-resize-display{
+
+    background:var(--primary) !important;
+
+    border:none !important;
+
+    color:white !important;
+
+    border-radius:8px !important;
+
+    padding:4px 8px !important;
+
+    font-size:12px !important;
+}
+
+/* TOOLBAR */
+
+.ql-image-resize-toolbar{
+
+    background:var(--card) !important;
+
+    border:1px solid var(--border) !important;
+
+    border-radius:12px !important;
+
+    padding:6px !important;
+}
+
+/* =========================================================
+   VIDEO
+========================================================= */
+
+.ql-video{
+
+    width:100%;
+
+    min-height:400px;
+
+    border-radius:14px;
+
+    margin-top:15px;
+}
+
+/* =========================================================
+   DARK THEME FIX
+========================================================= */
+
+body.dark-theme #editor{
+
+    background:#111827;
+
+    border-color:#334155;
+}
+
+body.dark-theme .ql-toolbar.ql-snow{
+
+    background:#1e293b !important;
+
+    border-bottom:1px solid #334155 !important;
+}
+
+body.dark-theme .ql-container.ql-snow{
+
+    background:#111827;
+}
+
+body.dark-theme .ql-editor{
+
+    color:#f8fafc;
+}
+
+body.dark-theme .ql-picker-options{
+
+    background:#1e293b !important;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:768px){
+
+    .ql-toolbar.ql-snow{
+
+        gap:5px;
+    }
+
+    .ql-toolbar button{
+
+        width:28px !important;
+
+        height:28px !important;
+    }
+
+    .ql-editor{
+
+        min-height:300px;
+    }
 }
 
 /* =========================================================
