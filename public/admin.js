@@ -16,19 +16,13 @@ const elements = {};
 
 
 // =========================
-// SAFE QUILL CHECK
+// SAFE QUILL INIT
 // =========================
 
-if (typeof Quill === "undefined") {
-
-    console.error("Quill failed to load");
-
-    alert("Quill Editor not loaded");
-
-} else {
+if (typeof Quill !== "undefined") {
 
     // =========================
-    // QUILL ICONS
+    // ICONS
     // =========================
 
     const icons = Quill.import("ui/icons");
@@ -62,7 +56,7 @@ if (typeof Quill === "undefined") {
     `;
 
     // =========================
-    // CUSTOM FONTS
+    // FONTS
     // =========================
 
     const Font = Quill.import("formats/font");
@@ -97,30 +91,22 @@ if (typeof Quill === "undefined") {
     // IMAGE UPLOADER
     // =========================
 
-    if (typeof ImageUploader !== "undefined") {
+    if (
+        typeof ImageUploader !== "undefined"
+    ) {
 
         Quill.register(
             "modules/imageUploader",
             ImageUploader
         );
     }
-}
 
+} else {
 
-
-
-// =========================
-// IMAGE RESIZE
-// =========================
-
-if (window.ImageResize) {
-
-    Quill.register(
-        "modules/imageResize",
-        window.ImageResize
+    console.error(
+        "Quill failed to load"
     );
 }
-
 
 // =========================
 // INIT ELEMENTS
