@@ -1,10 +1,13 @@
 // =========================
 // GLOBAL
 // =========================
+
 let quill = null;
+
 let saveTimer = null;
 
 let isSaving = false;
+
 let hasUnsavedChanges = false;
 
 const AUTO_SAVE_DELAY = 2000;
@@ -15,134 +18,101 @@ const elements = {};
 // =========================
 // SAFE QUILL CHECK
 // =========================
+
 if (typeof Quill === "undefined") {
 
     console.error("Quill failed to load");
 
     alert("Quill Editor not loaded");
-
-} else {
-
-    // =========================
-    // QUILL ICONS
-    // =========================
-    const icons = Quill.import("ui/icons");
-
-    icons["undo"] = `
-    <svg viewBox="0 0 18 18">
-        <polygon
-            class="ql-fill ql-stroke"
-            points="6 10 4 12 2 10 6 10">
-        </polygon>
-
-        <path
-            class="ql-stroke"
-            d="M4,12 C4,7 6,5 10,5 C12,5 14,6 15,8">
-        </path>
-    </svg>
-    `;
-
-    icons["redo"] = `
-    <svg viewBox="0 0 18 18">
-        <polygon
-            class="ql-fill ql-stroke"
-            points="12 10 14 12 16 10 12 10">
-        </polygon>
-
-        <path
-            class="ql-stroke"
-            d="M14,12 C14,7 12,5 8,5 C6,5 4,6 3,8">
-        </path>
-    </svg>
-    `;
-
-    // =========================
-    // CUSTOM FONTS
-    // =========================
-    const Font = Quill.import("formats/font");
-
-    Font.whitelist = [
-        "sans-serif",
-        "serif",
-        "monospace",
-        "arial",
-        "times-new-roman",
-        "courier-new",
-        "georgia",
-        "tahoma",
-        "verdana"
-    ];
-
-    Quill.register(Font, true);
-
-    // =========================
-    // IMAGE UPLOADER
-    // =========================
-    if (typeof ImageUploader !== "undefined") {
-
-        Quill.register(
-            "modules/imageUploader",
-            ImageUploader
-        );
-    }
 }
 
 
 // =========================
-// TOOLBAR
+// QUILL ICONS
 // =========================
-const toolbarOptions = [
 
-    ["undo", "redo"],
+const icons = Quill.import("ui/icons");
 
-    [{ font: [] }],
+icons["undo"] = `
+<svg viewBox="0 0 18 18">
+    <polygon
+        class="ql-fill ql-stroke"
+        points="6 10 4 12 2 10 6 10">
+    </polygon>
 
-    [{
-        size: [
-            "small",
-            false,
-            "large",
-            "huge"
-        ]
-    }],
+    <path
+        class="ql-stroke"
+        d="M4,12 C4,7 6,5 10,5 C12,5 14,6 15,8">
+    </path>
+</svg>
+`;
 
-    [{
-        header: [
-            1,
-            2,
-            3,
-            false
-        ]
-    }],
+icons["redo"] = `
+<svg viewBox="0 0 18 18">
+    <polygon
+        class="ql-fill ql-stroke"
+        points="12 10 14 12 16 10 12 10">
+    </polygon>
 
-    [
-        "bold",
-        "italic",
-        "underline"
-    ],
+    <path
+        class="ql-stroke"
+        d="M14,12 C14,7 12,5 8,5 C6,5 4,6 3,8">
+    </path>
+</svg>
+`;
 
-    [
-        { color: [] },
-        { background: [] }
-    ],
 
-    [
-        { list: "ordered" },
-        { list: "bullet" }
-    ],
+// =========================
+// CUSTOM FONTS
+// =========================
 
-    [
-        "link",
-        "image"
-    ],
+const Font = Quill.import("formats/font");
 
-    ["clean"]
+Font.whitelist = [
+    "sans-serif",
+    "serif",
+    "monospace",
+    "arial",
+    "times-new-roman",
+    "courier-new",
+    "georgia",
+    "tahoma",
+    "verdana"
 ];
+
+Quill.register(Font, true);
+
+
+// =========================
+// IMAGE UPLOADER
+// =========================
+
+if (typeof ImageUploader !== "undefined") {
+
+    Quill.register(
+        "modules/imageUploader",
+        ImageUploader
+    );
+}
+
+
+// =========================
+// IMAGE RESIZE
+// =========================
+
+if (window.ImageResize) {
+
+    Quill.register(
+        "modules/imageResize",
+        window.ImageResize
+    );
+}
 
 
 // =========================
 // INIT ELEMENTS
 // =========================
+
 function initElements() {
 
     elements.sidebar =
@@ -183,12 +153,16 @@ function initElements() {
 
     elements.imageUpload =
         document.getElementById("imageUpload");
+
+    elements.themeToggle =
+        document.getElementById("themeToggle");
 }
 
 
 // =========================
 // SAFE HTML
 // =========================
+
 function renderHTML(html = "") {
 
     if (typeof DOMPurify !== "undefined") {
@@ -203,6 +177,7 @@ function renderHTML(html = "") {
 // =========================
 // SIDEBAR
 // =========================
+
 function toggleSidebar() {
 
     elements.sidebar?.classList.toggle("active");
@@ -219,27 +194,22 @@ function closeSidebar() {
 
 function setupSidebar() {
 
-    if (elements.menuBtn) {
+    elements.menuBtn?.addEventListener(
+        "click",
+        toggleSidebar
+    );
 
-        elements.menuBtn.addEventListener(
-            "click",
-            toggleSidebar
-        );
-    }
-
-    if (elements.overlay) {
-
-        elements.overlay.addEventListener(
-            "click",
-            closeSidebar
-        );
-    }
+    elements.overlay?.addEventListener(
+        "click",
+        closeSidebar
+    );
 }
 
 
 // =========================
 // SECTION SWITCH
 // =========================
+
 function showSection(section) {
 
     const sections = {
@@ -262,16 +232,10 @@ function showSection(section) {
 
     Object.values(sections).forEach(sec => {
 
-        if (sec) {
-
-            sec.classList.add("hidden");
-        }
+        sec?.classList.add("hidden");
     });
 
-    if (sections[section]) {
-
-        sections[section].classList.remove("hidden");
-    }
+    sections[section]?.classList.remove("hidden");
 
     closeSidebar();
 }
@@ -280,20 +244,18 @@ function showSection(section) {
 // =========================
 // INIT EDITOR
 // =========================
+
 function initEditor() {
-
-    if (typeof Quill === "undefined") {
-
-        console.error("Quill missing");
-        return;
-    }
 
     const editor =
         document.getElementById("editor");
 
     if (!editor) {
 
-        console.error("Editor not found");
+        console.error(
+            "Editor element not found"
+        );
+
         return;
     }
 
@@ -306,32 +268,247 @@ function initEditor() {
 
         modules: {
 
-            toolbar: toolbarOptions,
+            toolbar: {
+
+                container: [
+
+                    ["undo", "redo"],
+
+                    [
+                        {
+                            font: [
+                                "sans-serif",
+                                "serif",
+                                "monospace",
+                                "arial",
+                                "times-new-roman",
+                                "courier-new",
+                                "georgia",
+                                "tahoma",
+                                "verdana"
+                            ]
+                        }
+                    ],
+
+                    [
+                        {
+                            size: [
+                                "small",
+                                false,
+                                "large",
+                                "huge"
+                            ]
+                        }
+                    ],
+
+                    [
+                        {
+                            header: [
+                                1,
+                                2,
+                                3,
+                                4,
+                                5,
+                                6,
+                                false
+                            ]
+                        }
+                    ],
+
+                    [
+                        "bold",
+                        "italic",
+                        "underline",
+                        "strike"
+                    ],
+
+                    [
+                        { color: [] },
+                        { background: [] }
+                    ],
+
+                    [
+                        { align: [] }
+                    ],
+
+                    [
+                        { list: "ordered" },
+                        { list: "bullet" }
+                    ],
+
+                    [
+                        { indent: "-1" },
+                        { indent: "+1" }
+                    ],
+
+                    [
+                        "blockquote",
+                        "code-block"
+                    ],
+
+                    [
+                        "link",
+                        "image",
+                        "video"
+                    ],
+
+                    ["clean"]
+                ],
+
+                handlers: {
+
+                    undo() {
+
+                        quill.history.undo();
+                    },
+
+                    redo() {
+
+                        quill.history.redo();
+                    },
+
+                    video() {
+
+                        const url = prompt(
+                            "Paste YouTube Video URL"
+                        );
+
+                        if (!url) return;
+
+                        const range =
+                            quill.getSelection(true);
+
+                        quill.insertEmbed(
+                            range ? range.index : 0,
+                            "video",
+                            url
+                        );
+                    }
+                }
+            },
 
             history: {
 
                 delay: 1000,
+
                 maxStack: 500,
+
                 userOnly: true
+            },
+
+            imageResize: {
+
+                parchment:
+                    Quill.import("parchment"),
+
+                modules: [
+                    "Resize",
+                    "DisplaySize",
+                    "Toolbar"
+                ]
+            },
+
+            imageUploader: {
+
+                upload: async file => {
+
+                    try {
+
+                        if (
+                            !file.type.startsWith(
+                                "image/"
+                            )
+                        ) {
+
+                            alert(
+                                "Only image files allowed"
+                            );
+
+                            return "";
+                        }
+
+                        if (
+                            file.size >
+                            5 * 1024 * 1024
+                        ) {
+
+                            alert(
+                                "Max image size 5MB"
+                            );
+
+                            return "";
+                        }
+
+                        const formData =
+                            new FormData();
+
+                        formData.append(
+                            "image",
+                            file
+                        );
+
+                        const response =
+                            await fetch(
+                                "/api/upload",
+                                {
+                                    method: "POST",
+                                    body: formData
+                                }
+                            );
+
+                        if (!response.ok) {
+
+                            throw new Error(
+                                "Upload failed"
+                            );
+                        }
+
+                        const data =
+                            await response.json();
+
+                        return data.url;
+
+                    } catch (err) {
+
+                        console.error(err);
+
+                        alert(
+                            "Image upload failed ❌"
+                        );
+
+                        return "";
+                    }
+                }
             }
         }
     });
+
+    // =========================
+    // LIVE PREVIEW
+    // =========================
 
     quill.on(
         "text-change",
         () => {
 
             updatePreview();
+
+            hasUnsavedChanges = true;
+
+            startAutoSave();
         }
     );
 
-    console.log("Editor initialized");
+    console.log(
+        "Advanced Quill editor initialized ✔"
+    );
 }
 
 
 // =========================
 // PREVIEW
 // =========================
+
 function updatePreview() {
 
     if (
@@ -349,8 +526,94 @@ function updatePreview() {
 
 
 // =========================
+// AUTO SAVE
+// =========================
+
+function startAutoSave() {
+
+    clearTimeout(saveTimer);
+
+    saveTimer = setTimeout(
+        saveDraft,
+        AUTO_SAVE_DELAY
+    );
+}
+
+function saveDraft() {
+
+    if (isSaving || !hasUnsavedChanges) {
+        return;
+    }
+
+    isSaving = true;
+
+    elements.saveStatus.textContent =
+        "Saving...";
+
+    setTimeout(() => {
+
+        isSaving = false;
+
+        hasUnsavedChanges = false;
+
+        elements.saveStatus.textContent =
+            "Saved ✔";
+
+    }, 1000);
+}
+
+
+// =========================
+// THEME
+// =========================
+
+function setupTheme() {
+
+    const savedTheme =
+        localStorage.getItem("adminTheme");
+
+    if (savedTheme === "dark") {
+
+        document.body.classList.add(
+            "dark-theme"
+        );
+
+        if (elements.themeToggle) {
+
+            elements.themeToggle.innerHTML =
+                "☀️";
+        }
+    }
+
+    elements.themeToggle?.addEventListener(
+        "click",
+        () => {
+
+            document.body.classList.toggle(
+                "dark-theme"
+            );
+
+            const dark =
+                document.body.classList.contains(
+                    "dark-theme"
+                );
+
+            elements.themeToggle.innerHTML =
+                dark ? "☀️" : "🌙";
+
+            localStorage.setItem(
+                "adminTheme",
+                dark ? "dark" : "light"
+            );
+        }
+    );
+}
+
+
+// =========================
 // PLACEHOLDER FUNCTIONS
 // =========================
+
 function addSubject() {
 
     alert("Add Subject Working ✔");
@@ -390,6 +653,7 @@ function logout() {
 // =========================
 // INIT
 // =========================
+
 document.addEventListener(
     "DOMContentLoaded",
     () => {
@@ -400,9 +664,13 @@ document.addEventListener(
 
             setupSidebar();
 
+            setupTheme();
+
             initEditor();
 
             showSection("dashboard");
+
+            updatePreview();
 
             console.log("Admin loaded ✔");
 
@@ -416,4 +684,3 @@ document.addEventListener(
         }
     }
 );
-
