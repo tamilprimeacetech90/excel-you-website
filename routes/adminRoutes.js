@@ -20,7 +20,7 @@ function isAdmin(req, res, next) {
 // =========================
 router.get("/", isAdmin, (req, res) => {
     res.sendFile(
-        path.join(__dirname, "../public/admin.html")
+        path.join(__dirname, "../public/admin/admindashboard.html")
     );
 });
 
