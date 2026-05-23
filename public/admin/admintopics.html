@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        EXCEL YOU • Admin Topics
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/admin/css/admintopics.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    >
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        class="sidebar"
+        id="sidebar"
+    >
+
+        <div>
+
+            <!-- LOGO -->
+
+            <div class="logo">
+
+                <div class="logo-circle">
+                    E
+                </div>
+
+                <div class="logo-text">
+
+                    <h2>
+                        EXCEL YOU
+                    </h2>
+
+                    <p>
+                        Admin Panel
+                    </p>
+                </div>
+            </div>
+
+            <!-- MENU -->
+
+            <nav class="sidebar-menu">
+
+                <a href="/admin/admin.html">
+
+                    <i class="fas fa-chart-pie"></i>
+
+                    Dashboard
+                </a>
+
+                <a href="/admin/adminsubjects.html">
+
+                    <i class="fas fa-book"></i>
+
+                    Subjects
+                </a>
+
+                <a
+                    href="/admin/admintopics.html"
+                    class="active"
+                >
+
+                    <i class="fas fa-layer-group"></i>
+
+                    Topics
+                </a>
+
+                <a href="/admin/adminarticles.html">
+
+                    <i class="fas fa-newspaper"></i>
+
+                    Articles
+                </a>
+
+                <a href="/admin/admineditor.html">
+
+                    <i class="fas fa-pen"></i>
+
+                    Editor
+                </a>
+
+            </nav>
+
+        </div>
+
+        <!-- FOOTER -->
+
+        <div class="sidebar-footer">
+
+            <button
+                class="theme-btn"
+                id="themeToggle"
+            >
+                🌙 Dark
+            </button>
+
+            <button
+                class="logout-btn"
+                onclick="logout()"
+            >
+
+                <i class="fas fa-right-from-bracket"></i>
+
+                Logout
+            </button>
+
+        </div>
+
+    </aside>
+
+    <!-- =====================================================
+         MOBILE OVERLAY
+    ====================================================== -->
+
+    <div
+        class="overlay"
+        id="overlay"
+    ></div>
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="main">
+
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button
+                    class="menu-btn"
+                    id="mobileToggle"
+                >
+                    ☰
+                </button>
+
+                <div class="page-info">
+
+                    <h1>
+                        Topics
+                    </h1>
+
+                    <p>
+                        Create and manage article topics
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- PROFILE -->
+
+            <div class="admin-profile">
+
+                <div class="admin-avatar">
+                    A
+                </div>
+
+                <div class="admin-details">
+
+                    <h4>
+                        Admin
+                    </h4>
+
+                    <p>
+                        EXCEL YOU
+                    </p>
+
+                </div>
+
+            </div>
+
+        </header>
+
+        <!-- =================================================
+             CONTENT
+        ================================================== -->
+
+        <section class="content">
+
+            <!-- =============================================
+                 CREATE TOPIC
+            ============================================== -->
+
+            <div class="dashboard-card">
+
+                <div class="card-title">
+
+                    <h3>
+                        Create New Topic
+                    </h3>
+
+                </div>
+
+                <form id="topicForm">
+
+                    <input
+                        type="text"
+                        id="topicName"
+                        placeholder="Topic Name"
+                        required
+                    >
+
+                    <input
+                        type="text"
+                        id="topicSlug"
+                        placeholder="Topic Slug"
+                        required
+                    >
+
+                    <select
+                        id="topicSubject"
+                        required
+                    >
+
+                        <option value="">
+                            Select Subject
+                        </option>
+
+                    </select>
+
+                    <button
+                        type="submit"
+                        class="quick-btn"
+                    >
+
+                        <i class="fas fa-plus"></i>
+
+                        Create Topic
+
+                    </button>
+
+                </form>
+
+            </div>
+
+            <!-- =============================================
+                 TOPICS LIST
+            ============================================== -->
+
+            <div
+                class="dashboard-card"
+                style="margin-top:28px;"
+            >
+
+                <div class="card-title">
+
+                    <h3>
+                        Existing Topics
+                    </h3>
+
+                </div>
+
+                <div
+                    class="article-list"
+                    id="topicsList"
+                >
+
+                    <!-- TOPIC ITEMS -->
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script src="/admin/js/admintopics.js"></script>
+
+</body>
+</html>
