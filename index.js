@@ -269,7 +269,7 @@ app.post("/login", async (req, res) => {
             );
 
             return res.redirect(
-                "/api/admin"
+                "/api/admindashboard"
             );
 
         });
