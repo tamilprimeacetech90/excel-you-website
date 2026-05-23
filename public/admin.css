@@ -1,287 +1,940 @@
 /* =========================================================
-   ADMIN PANEL CSS - OPTIMIZED FOR MODERN EDITOR
+   EXCEL YOU ADMIN PANEL
+   FULL PROFESSIONAL GLASSMORPHISM VERSION
 ========================================================= */
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 /* =========================================================
    ROOT VARIABLES
 ========================================================= */
+
 :root{
-    --bg:#f5f7ff;
-    --bg2:#eef2ff;
-    --card:#ffffff;
+
+    --bg:#eef2ff;
+    --bg2:#dbeafe;
+
+    --card:rgba(255,255,255,.75);
+
+    --sidebar:rgba(255,255,255,.82);
+
+    --topbar:rgba(255,255,255,.72);
+
+    --border:rgba(255,255,255,.45);
+
     --primary:#6366f1;
     --primary2:#4f46e5;
-    --border:#dbeafe;
+
     --text:#111827;
     --muted:#64748b;
+
     --danger:#ef4444;
-    --sidebar:#ffffff;
-    --topbar:#ffffff;
-    --input:#ffffff;
-    --shadow: 0 4px 20px rgba(99,102,241,.08);
-    --radius:18px;
+
+    --shadow:
+        0 10px 40px rgba(99,102,241,.12);
+
+    --glass:
+        blur(18px);
+
+    --radius:22px;
 }
+
 
 /* =========================================================
    DARK THEME
 ========================================================= */
+
 body.dark-theme{
-    --bg:#111827;
-    --bg2:#1e293b;
-    --card:#1f2937;
+
+    --bg:#0f172a;
+    --bg2:#111827;
+
+    --card:rgba(30,41,59,.72);
+
+    --sidebar:rgba(15,23,42,.88);
+
+    --topbar:rgba(17,24,39,.78);
+
+    --border:rgba(255,255,255,.08);
+
     --primary:#818cf8;
     --primary2:#6366f1;
-    --border:#334155;
+
     --text:#f8fafc;
     --muted:#94a3b8;
-    --sidebar:#172033;
-    --topbar:#1e293b;
-    --input:#0f172a;
-    --shadow: 0 4px 25px rgba(99,102,241,.15);
+
+    --shadow:
+        0 10px 45px rgba(0,0,0,.35);
 }
 
+
 /* =========================================================
-   RESET & BASE
+   RESET
 ========================================================= */
+
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
 }
-html{ scroll-behavior:smooth; }
-body{
-    font-family:'Inter',sans-serif;
-    background: linear-gradient(135deg, var(--bg), var(--bg2));
-    color:var(--text);
-    min-height:100vh;
-    overflow-x:hidden;
-    transition: background .3s ease, color .3s ease;
+
+html{
+    scroll-behavior:smooth;
 }
+
+body{
+
+    font-family:'Inter',sans-serif;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--bg),
+            var(--bg2)
+        );
+
+    color:var(--text);
+
+    min-height:100vh;
+
+    overflow-x:hidden;
+
+    transition:
+        background .35s ease,
+        color .35s ease;
+}
+
+img{
+    max-width:100%;
+    display:block;
+}
+
+.hidden{
+    display:none !important;
+}
+
 
 /* =========================================================
    SCROLLBAR
 ========================================================= */
-::-webkit-scrollbar{ width:10px; height:10px; }
-::-webkit-scrollbar-track{ background:var(--bg2); border-radius:999px; }
-::-webkit-scrollbar-thumb{
-    background: linear-gradient(180deg, var(--primary), var(--primary2));
-    border-radius:999px;
-    border:2px solid var(--bg2);
-}
-::-webkit-scrollbar-thumb:hover{ background: linear-gradient(180deg, var(--primary2), var(--primary)); }
 
-/* =========================================================
-   UTILITIES
-========================================================= */
-.hidden{ display:none !important; }
-img{ max-width:100%; height:auto; display:block; }
+::-webkit-scrollbar{
+    width:10px;
+}
+
+::-webkit-scrollbar-track{
+    background:transparent;
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:
+        linear-gradient(
+            180deg,
+            var(--primary),
+            var(--primary2)
+        );
+
+    border-radius:999px;
+}
+
 
 /* =========================================================
    LAYOUT
 ========================================================= */
-.container{ display:flex; min-height:100vh; }
-.main{ flex:1; margin-left:260px; display:flex; flex-direction:column; }
+
+.container{
+    display:flex;
+    min-height:100vh;
+}
+
+.main{
+
+    flex:1;
+
+    margin-left:280px;
+
+    display:flex;
+    flex-direction:column;
+}
+
 
 /* =========================================================
-   SIDEBAR & TOPBAR (unchanged - keeping your original)
+   SIDEBAR
 ========================================================= */
+
 .sidebar{
-    width:260px;
-    background:var(--sidebar);
-    border-right:1px solid var(--border);
+
     position:fixed;
-    top:0; left:0; height:100vh;
-    padding:22px;
+
+    top:0;
+    left:0;
+
+    width:280px;
+
+    height:100vh;
+
+    padding:24px;
+
+    background:var(--sidebar);
+
+    backdrop-filter:var(--glass);
+
+    -webkit-backdrop-filter:var(--glass);
+
+    border-right:1px solid var(--border);
+
+    box-shadow:var(--shadow);
+
+    z-index:1000;
+
     display:flex;
     flex-direction:column;
     justify-content:space-between;
-    z-index:1000;
-    box-shadow:var(--shadow);
-}
-.sidebar.active{ left:0; }
 
-.sidebar-menu button{
-    width:100%;
-    border:none;
-    background:transparent;
-    color:var(--text);
-    padding:14px 16px;
-    border-radius:14px;
-    text-align:left;
-    cursor:pointer;
-    font-size:15px;
-    transition:all .25s ease;
+    transition:
+        background .3s ease,
+        left .3s ease;
 }
-.sidebar-menu button:hover{
-    background: linear-gradient(135deg, var(--primary), var(--primary2));
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.sidebar-header{
+    margin-bottom:30px;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo img{
+    width:48px;
+    height:48px;
+    object-fit:contain;
+}
+
+.logo-text{
+
+    font-size:22px;
+
+    font-weight:800;
+
+    letter-spacing:.5px;
+}
+
+
+/* =========================================================
+   SIDEBAR MENU
+========================================================= */
+
+.sidebar-menu{
+
+    display:flex;
+    flex-direction:column;
+
+    gap:10px;
+}
+
+.menu-item{
+
+    width:100%;
+
+    border:none;
+
+    background:transparent;
+
+    color:var(--text);
+
+    padding:15px 18px;
+
+    border-radius:16px;
+
+    text-align:left;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    transition:
+        all .25s ease;
+}
+
+.menu-item:hover{
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--primary2)
+        );
+
     color:white;
+
     transform:translateX(3px);
 }
 
-.topbar{
-    height:70px;
-    background:var(--topbar);
-    border-bottom:1px solid var(--border);
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 24px;
-    position:sticky;
-    top:0;
-    z-index:100;
-    box-shadow:var(--shadow);
+.menu-item.active{
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--primary2)
+        );
+
+    color:white;
 }
+
 
 /* =========================================================
-   EDITOR SECTION - MODERN DESIGN
+   LOGOUT
 ========================================================= */
-.editor-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:20px;
+
+.logout-btn{
+
+    width:100%;
+
+    border:none;
+
+    background:
+        rgba(239,68,68,.12);
+
+    color:#fca5a5;
+
+    padding:14px;
+
+    border-radius:16px;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+    transition:.25s;
 }
 
-.flex-editor{
+.logout-btn:hover{
+    transform:translateY(-2px);
+}
+
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.topbar{
+
+    position:sticky;
+
+    top:0;
+
+    z-index:100;
+
+    height:72px;
+
     display:flex;
-    height:calc(100vh - 180px);
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:20px;
-    overflow:hidden;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 24px;
+
+    background:var(--topbar);
+
+    backdrop-filter:var(--glass);
+
+    border-bottom:1px solid var(--border);
+
     box-shadow:var(--shadow);
 }
 
-/* Main Editor Area */
-.editor-main{
-    flex:1;
-    display:flex;
-    flex-direction:column;
+.page-title{
+
+    font-size:22px;
+
+    font-weight:700;
 }
 
-.editor-title-input{
-    padding:20px 24px;
-    font-size:28px;
-    font-weight:600;
-    border:none;
-    background:transparent;
-    border-bottom:1px solid var(--border);
-    outline:none;
-    width:100%;
-}
+.topbar-right{
 
-.editor-toolbar{
-    background:var(--card);
-    border-bottom:1px solid var(--border);
-    padding:12px 16px;
     display:flex;
     align-items:center;
-    flex-wrap:wrap;
-    gap:6px;
+    gap:12px;
 }
 
-.toolbar-btn{
-    padding:8px 12px;
-    border:none;
-    background:transparent;
-    border-radius:8px;
-    cursor:pointer;
-    transition:all .2s ease;
-    color:var(--text);
-}
-.toolbar-btn:hover{
-    background:var(--bg2);
-}
-
-.editor-content{
-    flex:1;
-    padding:28px;
-    overflow:auto;
-    font-size:17px;
-    line-height:1.75;
-    background:var(--card);
-    outline:none;
-    border:none;
-}
-
-/* Right Sidebar */
-.editor-sidebar{
-    width:380px;
-    border-left:1px solid var(--border);
-    background:var(--bg2);
-    padding:24px;
-    overflow:auto;
-}
 
 /* =========================================================
    BUTTONS
 ========================================================= */
-.primary-btn, #publishBtn{
-    padding:12px 24px;
+
+.primary-btn,
+.publish-btn,
+.preview-btn,
+.draft-btn,
+.icon-btn{
+
     border:none;
+
+    padding:12px 18px;
+
     border-radius:14px;
-    background: linear-gradient(135deg, var(--primary), var(--primary2));
-    color:white;
-    font-weight:600;
+
     cursor:pointer;
-    transition:all .2s ease;
+
+    font-weight:600;
+
+    transition:all .25s ease;
 }
-.primary-btn:hover, #publishBtn:hover{
+
+.publish-btn,
+.primary-btn{
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--primary2)
+        );
+
+    color:white;
+}
+
+.publish-btn:hover,
+.primary-btn:hover{
+
     transform:translateY(-2px);
-    box-shadow:0 10px 20px rgba(99,102,241,.3);
+
+    box-shadow:
+        0 10px 25px rgba(99,102,241,.28);
 }
 
-/* =========================================================
-   DARK THEME FIXES
-========================================================= */
-body.dark-theme .editor-toolbar,
-body.dark-theme .editor-content{
+.preview-btn,
+.draft-btn,
+.icon-btn{
+
     background:var(--card);
-}
-body.dark-theme .editor-sidebar{
-    background:#1e293b;
+
+    color:var(--text);
+
+    border:1px solid var(--border);
+
+    backdrop-filter:var(--glass);
 }
 
+.icon-btn{
+
+    width:46px;
+    height:46px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:18px;
+}
+
+
 /* =========================================================
-   MOBILE RESPONSIVE
+   CONTENT
 ========================================================= */
-@media(max-width:768px){
-    .main{ margin-left:0; }
-    .sidebar{ left:-260px; }
-    .menu-btn{ display:flex; }
-    
-    .flex-editor{
-        flex-direction:column;
+
+.content{
+    padding:24px;
+}
+
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.section{
+
+    background:var(--card);
+
+    border:1px solid var(--border);
+
+    border-radius:var(--radius);
+
+    backdrop-filter:var(--glass);
+
+    box-shadow:var(--shadow);
+
+    overflow:hidden;
+}
+
+
+/* =========================================================
+   BLOGGER ACTION BAR
+========================================================= */
+
+.blogger-action-bar{
+
+    padding:20px 24px;
+
+    display:flex;
+    align-items:center;
+    gap:18px;
+
+    border-bottom:1px solid var(--border);
+}
+
+.blogger-post-title{
+
+    flex:1;
+
+    border:none;
+
+    background:transparent;
+
+    color:var(--text);
+
+    font-size:30px;
+
+    font-weight:700;
+
+    outline:none;
+}
+
+.blogger-actions{
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+
+/* =========================================================
+   EDITOR LAYOUT
+========================================================= */
+
+.editor-layout{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr 340px;
+
+    min-height:calc(100vh - 220px);
+}
+
+
+/* =========================================================
+   EDITOR MAIN
+========================================================= */
+
+.editor-main{
+
+    display:flex;
+    flex-direction:column;
+}
+
+
+/* =========================================================
+   TOOLBAR
+========================================================= */
+
+.blogger-toolbar{
+
+    position:sticky;
+
+    top:72px;
+
+    z-index:50;
+
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+
+    gap:8px;
+
+    padding:14px 18px;
+
+    background:var(--card);
+
+    backdrop-filter:var(--glass);
+
+    border-bottom:1px solid var(--border);
+}
+
+.blogger-toolbar button{
+
+    width:40px;
+    height:40px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:transparent;
+
+    color:var(--text);
+
+    cursor:pointer;
+
+    transition:.22s;
+}
+
+.blogger-toolbar button:hover{
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--primary2)
+        );
+
+    color:white;
+}
+
+.divider{
+
+    width:1px;
+    height:24px;
+
+    background:var(--border);
+
+    margin:0 4px;
+}
+
+
+/* =========================================================
+   EDITOR
+========================================================= */
+
+.blogger-content-area{
+
+    flex:1;
+
+    padding:32px;
+
+    min-height:700px;
+
+    outline:none;
+
+    font-size:18px;
+
+    line-height:1.9;
+
+    color:var(--text);
+}
+
+.blogger-content-area:focus{
+    outline:none;
+}
+
+.blogger-content-area img{
+
+    max-width:100%;
+
+    border-radius:18px;
+
+    margin:18px auto;
+}
+
+.blogger-content-area iframe{
+
+    width:100%;
+
+    min-height:420px;
+
+    border:none;
+
+    border-radius:18px;
+
+    margin-top:20px;
+}
+
+.blogger-content-area blockquote{
+
+    border-left:4px solid var(--primary);
+
+    padding-left:18px;
+
+    margin:20px 0;
+
+    color:var(--muted);
+}
+
+.blogger-content-area pre{
+
+    background:rgba(0,0,0,.08);
+
+    padding:18px;
+
+    border-radius:16px;
+
+    overflow:auto;
+}
+
+
+/* =========================================================
+   RIGHT SIDEBAR
+========================================================= */
+
+.blogger-right-sidebar{
+
+    border-left:1px solid var(--border);
+
+    padding:24px;
+
+    background:rgba(255,255,255,.28);
+
+    backdrop-filter:blur(20px);
+}
+
+body.dark-theme .blogger-right-sidebar{
+
+    background:rgba(15,23,42,.4);
+}
+
+.blogger-right-sidebar h3{
+
+    margin-bottom:20px;
+
+    font-size:18px;
+}
+
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+.setting-item{
+    margin-bottom:22px;
+}
+
+.setting-item label{
+
+    display:block;
+
+    margin-bottom:10px;
+
+    font-size:14px;
+
+    color:var(--muted);
+
+    font-weight:600;
+}
+
+.blogger-select,
+.setting-item input{
+
+    width:100%;
+
+    padding:14px 16px;
+
+    border-radius:14px;
+
+    border:1px solid var(--border);
+
+    background:var(--card);
+
+    color:var(--text);
+
+    outline:none;
+}
+
+
+/* =========================================================
+   FEATURED IMAGE
+========================================================= */
+
+.featured-image-box{
+
+    border:2px dashed var(--border);
+
+    border-radius:18px;
+
+    padding:35px 20px;
+
+    text-align:center;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    background:rgba(255,255,255,.2);
+}
+
+.featured-image-box:hover{
+
+    border-color:var(--primary);
+
+    transform:translateY(-2px);
+}
+
+.featured-image-box i{
+
+    margin-bottom:12px;
+
+    color:var(--primary);
+}
+
+
+/* =========================================================
+   DASHBOARD CARDS
+========================================================= */
+
+.stats-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(auto-fit,minmax(240px,1fr));
+
+    gap:20px;
+}
+
+.stat-card{
+
+    padding:24px;
+
+    border-radius:22px;
+
+    background:var(--card);
+
+    border:1px solid var(--border);
+
+    backdrop-filter:var(--glass);
+
+    box-shadow:var(--shadow);
+
+    transition:.25s;
+}
+
+.stat-card:hover{
+
+    transform:translateY(-4px);
+}
+
+
+/* =========================================================
+   OVERLAY
+========================================================= */
+
+.overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.45);
+
+    opacity:0;
+
+    visibility:hidden;
+
+    z-index:900;
+
+    transition:.3s;
+}
+
+.overlay.show{
+
+    opacity:1;
+
+    visibility:visible;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+.menu-btn{
+    display:none;
+}
+
+@media(max-width:992px){
+
+    .editor-layout{
+        grid-template-columns:1fr;
     }
-    .editor-sidebar{
-        width:100%;
+
+    .blogger-right-sidebar{
+
         border-left:none;
+
         border-top:1px solid var(--border);
     }
 }
 
-/* =========================================================
-   OTHER SECTIONS (Dashboard, Subjects, etc.)
-========================================================= */
-.section{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:20px;
-    padding:24px;
-    margin-bottom:24px;
-    box-shadow:var(--shadow);
-}
+@media(max-width:768px){
 
-.content{ padding:24px; }
+    .sidebar{
+        left:-280px;
+    }
 
-/* Form elements */
-input, select{
-    width:100%;
-    padding:14px 16px;
-    background:var(--input);
-    border:1px solid var(--border);
-    border-radius:14px;
-    color:var(--text);
-    margin-bottom:16px;
+    .sidebar.active{
+        left:0;
+    }
+
+    .main{
+        margin-left:0;
+    }
+
+    .menu-btn{
+
+        display:flex;
+
+        align-items:center;
+        justify-content:center;
+
+        width:44px;
+        height:44px;
+
+        border:none;
+
+        border-radius:14px;
+
+        background:
+            linear-gradient(
+                135deg,
+                var(--primary),
+                var(--primary2)
+            );
+
+        color:white;
+
+        cursor:pointer;
+    }
+
+    .topbar{
+        padding:0 14px;
+    }
+
+    .content{
+        padding:14px;
+    }
+
+    .blogger-post-title{
+        font-size:24px;
+    }
+
+    .blogger-content-area{
+        padding:22px;
+        font-size:16px;
+    }
+
+    .blogger-action-bar{
+
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .blogger-actions{
+        width:100%;
+    }
+
+    .publish-btn,
+    .draft-btn{
+        flex:1;
+    }
 }
