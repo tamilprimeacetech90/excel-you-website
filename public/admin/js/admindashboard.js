@@ -256,6 +256,32 @@ if(mobileToggle){
     );
 }
 
+// =========================
+// LOGOUT
+// =========================
+
+function logout() {
+
+    const confirmLogout =
+        confirm(
+            "Are you sure you want to logout?"
+        );
+
+    if (!confirmLogout) {
+        return;
+    }
+
+    // clear local storage if needed
+    localStorage.removeItem(
+        "adminTheme"
+    );
+
+    // redirect login page
+    window.location.href =
+        "/login.html";
+}
+
+
 /* =========================================================
    INIT
 ========================================================= */
