@@ -10,69 +10,120 @@ const body =
 document.body;
 
 const themeToggle =
-document.getElementById("themeToggle");
+document.getElementById(
+    "themeToggle"
+);
 
 const sidebar =
-document.getElementById("sidebar");
+document.getElementById(
+    "sidebar"
+);
 
 const mobileToggle =
-document.getElementById("mobileToggle");
+document.getElementById(
+    "mobileToggle"
+);
 
 const searchInput =
-document.querySelector(".search-box input");
+document.querySelector(
+    ".search-box input"
+);
 
 const cards =
-document.querySelectorAll(".card");
+document.querySelectorAll(
+    ".card"
+);
 
 const articles =
-document.querySelectorAll(".article");
+document.querySelectorAll(
+    ".article"
+);
+
+const siteLogo =
+document.getElementById(
+    "siteLogo"
+);
 
 /* =========================================================
    THEME SYSTEM
 ========================================================= */
 
-function loadTheme(){
+function applyTheme(theme){
 
-    const savedTheme =
-    localStorage.getItem("excelyou-admin-theme");
+    if(theme === "dark"){
 
-    if(savedTheme === "dark"){
-
-        body.classList.add("dark-theme");
+        body.classList.add(
+            "dark-theme"
+        );
 
         if(themeToggle){
 
-            themeToggle.innerHTML = "☀️";
+            themeToggle.innerHTML =
+            "☀️";
         }
-    }
-    else{
 
-        body.classList.remove("dark-theme");
+        // DARK LOGO
+
+        if(siteLogo){
+
+            siteLogo.src =
+            "/assets/full-logo-white.png";
+        }
+
+    } else {
+
+        body.classList.remove(
+            "dark-theme"
+        );
 
         if(themeToggle){
 
-            themeToggle.innerHTML = "🌙";
+            themeToggle.innerHTML =
+            "🌙";
+        }
+
+        // LIGHT LOGO
+
+        if(siteLogo){
+
+            siteLogo.src =
+            "/assets/full-logo.png";
         }
     }
 }
 
+function loadTheme(){
+
+    const savedTheme =
+    localStorage.getItem(
+        "excelyou-admin-theme"
+    );
+
+    applyTheme(
+        savedTheme || "light"
+    );
+}
+
 function toggleTheme(){
 
-    body.classList.toggle("dark-theme");
-
     const darkMode =
-    body.classList.contains("dark-theme");
+    body.classList.contains(
+        "dark-theme"
+    );
+
+    const newTheme =
+    darkMode
+    ? "light"
+    : "dark";
+
+    applyTheme(
+        newTheme
+    );
 
     localStorage.setItem(
         "excelyou-admin-theme",
-        darkMode ? "dark" : "light"
+        newTheme
     );
-
-    if(themeToggle){
-
-        themeToggle.innerHTML =
-        darkMode ? "☀️" : "🌙";
-    }
 }
 
 /* =========================================================
@@ -81,13 +132,52 @@ function toggleTheme(){
 
 function toggleSidebar(){
 
-    sidebar.classList.toggle("active");
+    if(!sidebar) return;
+
+    sidebar.classList.toggle(
+        "active"
+    );
 }
 
 function closeSidebar(){
 
-    sidebar.classList.remove("active");
+    if(!sidebar) return;
+
+    sidebar.classList.remove(
+        "active"
+    );
 }
+
+/* =========================================================
+   CLOSE SIDEBAR OUTSIDE CLICK
+========================================================= */
+
+document.addEventListener(
+    "click",
+    (e) => {
+
+        if(
+
+            window.innerWidth <= 900 &&
+
+            sidebar &&
+
+            !sidebar.contains(
+                e.target
+            ) &&
+
+            mobileToggle &&
+
+            !mobileToggle.contains(
+                e.target
+            )
+
+        ){
+
+            closeSidebar();
+        }
+    }
+);
 
 /* =========================================================
    SEARCH FILTER
@@ -95,7 +185,10 @@ function closeSidebar(){
 
 function setupSearch(){
 
-    if(!searchInput) return;
+    if(
+        !searchInput ||
+        !articles.length
+    ) return;
 
     searchInput.addEventListener(
         "input",
@@ -109,13 +202,17 @@ function setupSearch(){
                 const text =
                 article.innerText.toLowerCase();
 
-                if(text.includes(value)){
+                if(
+                    text.includes(value)
+                ){
 
-                    article.style.display = "flex";
-                }
-                else{
+                    article.style.display =
+                    "flex";
 
-                    article.style.display = "none";
+                } else {
+
+                    article.style.display =
+                    "none";
                 }
             });
         }
@@ -127,6 +224,8 @@ function setupSearch(){
 ========================================================= */
 
 function setupCardEffects(){
+
+    if(!cards.length) return;
 
     cards.forEach(card => {
 
@@ -161,6 +260,8 @@ function setupMenuActive(){
         ".sidebar-menu a"
     );
 
+    if(!menuLinks.length) return;
+
     menuLinks.forEach(link => {
 
         link.addEventListener(
@@ -178,7 +279,9 @@ function setupMenuActive(){
                     "active"
                 );
 
-                if(window.innerWidth <= 900){
+                if(
+                    window.innerWidth <= 900
+                ){
 
                     closeSidebar();
                 }
@@ -198,25 +301,29 @@ function pageAnimation(){
         ".card, .section"
     );
 
-    sections.forEach((item,index) => {
+    if(!sections.length) return;
 
-        item.style.opacity = "0";
+    sections.forEach(
+        (item,index) => {
 
-        item.style.transform =
-        "translateY(25px)";
-
-        setTimeout(() => {
-
-            item.style.transition =
-            ".45s ease";
-
-            item.style.opacity = "1";
+            item.style.opacity = "0";
 
             item.style.transform =
-            "translateY(0px)";
+            "translateY(25px)";
 
-        },index * 120);
-    });
+            setTimeout(() => {
+
+                item.style.transition =
+                ".45s ease";
+
+                item.style.opacity = "1";
+
+                item.style.transform =
+                "translateY(0px)";
+
+            },index * 120);
+        }
+    );
 }
 
 /* =========================================================
@@ -227,7 +334,10 @@ window.addEventListener(
     "resize",
     () => {
 
-        if(window.innerWidth > 900){
+        if(
+            window.innerWidth > 900 &&
+            sidebar
+        ){
 
             sidebar.classList.remove(
                 "active"
@@ -235,6 +345,35 @@ window.addEventListener(
         }
     }
 );
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+function logout(){
+
+    const confirmLogout =
+    confirm(
+        "Are you sure you want to logout?"
+    );
+
+    if(!confirmLogout){
+        return;
+    }
+
+    // clear admin storage
+
+    localStorage.removeItem(
+        "adminToken"
+    );
+
+    sessionStorage.clear();
+
+    // redirect
+
+    window.location.href =
+    "/login.html";
+}
 
 /* =========================================================
    EVENTS
@@ -256,52 +395,28 @@ if(mobileToggle){
     );
 }
 
-// =========================
-// LOGOUT
-// =========================
-
-function logout() {
-
-    const confirmLogout =
-        confirm(
-            "Are you sure you want to logout?"
-        );
-
-    if (!confirmLogout) {
-        return;
-    }
-
-    // clear local storage if needed
-    localStorage.removeItem(
-        "adminTheme"
-    );
-
-    // redirect login page
-    window.location.href =
-        "/login.html";
-}
-
-
 /* =========================================================
    INIT
 ========================================================= */
 
+function init(){
+
+    loadTheme();
+
+    setupSearch();
+
+    setupCardEffects();
+
+    setupMenuActive();
+
+    pageAnimation();
+
+    console.log(
+        "EXCEL YOU Dashboard Loaded ✔"
+    );
+}
+
 document.addEventListener(
     "DOMContentLoaded",
-    () => {
-
-        loadTheme();
-
-        setupSearch();
-
-        setupCardEffects();
-
-        setupMenuActive();
-
-        pageAnimation();
-
-        console.log(
-            "EXCEL YOU Dashboard Loaded ✔"
-        );
-    }
+    init
 );
