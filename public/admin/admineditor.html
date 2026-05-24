@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    />
+
+    <title>EXCEL YOU - Editor</title>
+
+    <!-- CSS -->
+    <link
+        rel="stylesheet"
+        href="/assets/admin/css/admineditor.css"
+    />
+
+    <!-- FONT AWESOME -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    />
+
+    <!-- GOOGLE FONT -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    />
+</head>
+
+<body>
+
+<!-- =========================================================
+SIDEBAR
+========================================================= -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-top">
+
+        <div class="logo-box">
+
+            <div class="logo-circle">
+                E
+            </div>
+
+            <div>
+                <h2>EXCEL YOU</h2>
+                <p>Admin Panel</p>
+            </div>
+
+        </div>
+
+        <nav class="sidebar-menu">
+
+            <a href="/admin/admindashboard.html">
+                <i class="fas fa-chart-line"></i>
+                Dashboard
+            </a>
+
+            <a href="/admin/adminsubjects.html">
+                <i class="fas fa-book"></i>
+                Subjects
+            </a>
+
+            <a href="/admin/admintopics.html">
+                <i class="fas fa-folder-open"></i>
+                Topics
+            </a>
+
+            <a href="/admin/adminarticles.html">
+                <i class="fas fa-newspaper"></i>
+                Articles
+            </a>
+
+            <a
+                href="/admin/admineditor.html"
+                class="active"
+            >
+                <i class="fas fa-pen"></i>
+                Editor
+            </a>
+
+        </nav>
+
+    </div>
+
+    <div class="sidebar-bottom">
+
+        <button id="themeToggle">
+            🌙 Dark Mode
+        </button>
+
+        <button class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i>
+            Logout
+        </button>
+
+    </div>
+
+</aside>
+
+<!-- =========================================================
+OVERLAY
+========================================================= -->
+
+<div
+    class="overlay"
+    id="overlay"
+></div>
+
+<!-- =========================================================
+MAIN
+========================================================= -->
+
+<main class="main">
+
+    <!-- =====================================================
+    TOPBAR
+    ===================================================== -->
+
+    <header class="topbar">
+
+        <button
+            class="menu-btn"
+            id="menuBtn"
+        >
+            ☰
+        </button>
+
+        <div class="topbar-left">
+
+            <h1>
+                Article Editor
+            </h1>
+
+            <p>
+                Create and manage articles
+            </p>
+
+        </div>
+
+        <div class="topbar-right">
+
+            <button class="preview-btn">
+                <i class="fas fa-eye"></i>
+                Preview
+            </button>
+
+            <button class="publish-btn">
+                <i class="fas fa-paper-plane"></i>
+                Publish
+            </button>
+
+        </div>
+
+    </header>
+
+    <!-- =====================================================
+    CONTENT
+    ===================================================== -->
+
+    <section class="editor-layout">
+
+        <!-- =================================================
+        LEFT SIDE
+        ================================================= -->
+
+        <div class="editor-main">
+
+            <!-- TITLE -->
+
+            <input
+                type="text"
+                class="editor-title"
+                placeholder="Enter article title..."
+            />
+
+            <!-- TOOLBAR -->
+
+            <div class="editor-toolbar">
+
+                <button>
+                    <i class="fas fa-bold"></i>
+                </button>
+
+                <button>
+                    <i class="fas fa-italic"></i>
+                </button>
+
+                <button>
+                    <i class="fas fa-underline"></i>
+                </button>
+
+                <button>
+                    <i class="fas fa-strikethrough"></i>
+                </button>
+
+                <div class="divider"></div>
+
+                <button>
+                    <i class="fas fa-list-ul"></i>
+                </button>
+
+                <button>
+                    <i class="fas fa-list-ol"></i>
+                </button>
+
+                <button>
+                    <i class="fas fa-align-left"></i>
+                </button>
+
+                <button>
+                    <i class="fas fa-align-center"></i>
+                </button>
+
+                <button>
+                    <i class="fas fa-align-right"></i>
+                </button>
+
+                <div class="divider"></div>
+
+                <button>
+                    <i class="fas fa-image"></i>
+                </button>
+
+                <button>
+                    <i class="fas fa-video"></i>
+                </button>
+
+                <button>
+                    <i class="fas fa-link"></i>
+                </button>
+
+                <div class="divider"></div>
+
+                <button class="html-btn">
+                    HTML
+                </button>
+
+            </div>
+
+            <!-- EDITOR -->
+
+            <div
+                class="editor-area"
+                contenteditable="true"
+            >
+
+                <h2>
+                    Welcome to EXCEL YOU
+                </h2>
+
+                <p>
+                    Start writing your article...
+                </p>
+
+                <br>
+
+                <img
+                    src="https://picsum.photos/900/400"
+                    alt="cover"
+                >
+
+                <br>
+
+                <p>
+                    This is your custom editor page.
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- =================================================
+        RIGHT SETTINGS PANEL
+        ================================================= -->
+
+        <aside class="editor-sidebar">
+
+            <h3>
+                Post Settings
+            </h3>
+
+            <!-- SUBJECT -->
+
+            <div class="setting-box">
+
+                <label>
+                    Subject
+                </label>
+
+                <select>
+
+                    <option>
+                        Computer Science
+                    </option>
+
+                    <option>
+                        Physics
+                    </option>
+
+                    <option>
+                        Chemistry
+                    </option>
+
+                </select>
+
+            </div>
+
+            <!-- TOPIC -->
+
+            <div class="setting-box">
+
+                <label>
+                    Topic
+                </label>
+
+                <select>
+
+                    <option>
+                        Arrays
+                    </option>
+
+                    <option>
+                        Loops
+                    </option>
+
+                    <option>
+                        Functions
+                    </option>
+
+                </select>
+
+            </div>
+
+            <!-- LABELS -->
+
+            <div class="setting-box">
+
+                <label>
+                    Labels
+                </label>
+
+                <textarea
+                    placeholder="javascript, arrays, tutorial"
+                ></textarea>
+
+            </div>
+
+            <!-- PERMALINK -->
+
+            <div class="setting-box">
+
+                <label>
+                    Permalink
+                </label>
+
+                <input
+                    type="text"
+                    placeholder="article-link"
+                />
+
+            </div>
+
+            <!-- FEATURED IMAGE -->
+
+            <div class="setting-box">
+
+                <label>
+                    Featured Image
+                </label>
+
+                <div class="upload-box">
+
+                    <i class="fas fa-cloud-upload-alt"></i>
+
+                    <p>
+                        Upload Image
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- SAVE BUTTON -->
+
+            <button class="save-btn">
+
+                <i class="fas fa-save"></i>
+
+                Save Draft
+
+            </button>
+
+        </aside>
+
+    </section>
+
+</main>
+
+<!-- =========================================================
+JS
+========================================================= -->
+
+<script src="/assets/admin/js/admineditor.js"></script>
+
+</body>
+</html>
