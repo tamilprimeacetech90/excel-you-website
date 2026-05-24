@@ -1,988 +1,368 @@
 /* =========================================================
-   EXCEL YOU - ADMIN EDITOR JS
+   EXCEL YOU - ADMIN EDITOR (FIXED VERSION)
 ========================================================= */
-
 
 // =========================================================
 // ELEMENTS
 // =========================================================
 
-const body =
-document.body;
+const body = document.body;
 
-const themeToggle =
-document.getElementById(
-    "themeToggle"
-);
+const themeToggle = document.getElementById("themeToggle");
+const mobileToggle = document.getElementById("mobileToggle");
+const sidebar = document.getElementById("sidebar");
 
-const mobileToggle =
-document.getElementById(
-    "mobileToggle"
-);
+const siteLogo = document.getElementById("siteLogo");
 
-const sidebar =
-document.getElementById(
-    "sidebar"
-);
+const editor = document.getElementById("editor");
+const articleTitle = document.getElementById("articleTitle");
+const saveStatus = document.getElementById("saveStatus");
 
-const siteLogo =
-document.getElementById(
-    "siteLogo"
-);
-
-const editor =
-document.getElementById(
-    "editor"
-);
-
-const articleTitle =
-document.getElementById(
-    "articleTitle"
-);
-
-const saveStatus =
-document.getElementById(
-    "saveStatus"
-);
+const thumbnailInput = document.getElementById("thumbnailInput");
+const thumbnailPreview = document.getElementById("thumbnailPreview");
+const uploadBox = document.querySelector(".upload-box");
 
 // =========================================================
 // THEME
 // =========================================================
 
-function applyTheme(theme){
+function applyTheme(theme) {
+    if (theme === "dark") {
+        body.classList.add("dark-theme");
+        themeToggle.innerHTML = "☀️";
 
-    if(theme === "dark"){
-
-        body.classList.add(
-            "dark-theme"
-        );
-
-        themeToggle.innerHTML =
-            "☀️";
-
-        if(siteLogo){
-
-            siteLogo.src =
-            "/assets/full-logo-white.png";
+        if (siteLogo) {
+            siteLogo.src = "/assets/full-logo-white.png";
         }
-
     } else {
+        body.classList.remove("dark-theme");
+        themeToggle.innerHTML = "🌙";
 
-        body.classList.remove(
-            "dark-theme"
-        );
-
-        themeToggle.innerHTML =
-            "🌙";
-
-        if(siteLogo){
-
-            siteLogo.src =
-            "/assets/full-logo.png";
+        if (siteLogo) {
+            siteLogo.src = "/assets/full-logo.png";
         }
     }
 }
 
-const savedTheme =
-localStorage.getItem(
-    "theme"
-);
+const savedTheme = localStorage.getItem("theme") || "light";
+applyTheme(savedTheme);
 
-applyTheme(
-    savedTheme || "light"
-);
+themeToggle.addEventListener("click", () => {
+    const isDark = body.classList.contains("dark-theme");
+    const newTheme = isDark ? "light" : "dark";
 
-themeToggle.addEventListener(
-    "click",
-    () => {
-
-        const isDark =
-        body.classList.contains(
-            "dark-theme"
-        );
-
-        const newTheme =
-        isDark
-        ? "light"
-        : "dark";
-
-        applyTheme(
-            newTheme
-        );
-
-        localStorage.setItem(
-            "theme",
-            newTheme
-        );
-    }
-);
+    applyTheme(newTheme);
+    localStorage.setItem("theme", newTheme);
+});
 
 // =========================================================
 // MOBILE SIDEBAR
 // =========================================================
 
-mobileToggle.addEventListener(
-    "click",
-    () => {
+mobileToggle.addEventListener("click", () => {
+    sidebar.classList.toggle("active");
+});
 
-        sidebar.classList.toggle(
-            "active"
-        );
+document.addEventListener("click", (e) => {
+    if (
+        window.innerWidth <= 900 &&
+        !sidebar.contains(e.target) &&
+        !mobileToggle.contains(e.target)
+    ) {
+        sidebar.classList.remove("active");
     }
-);
+});
 
 // =========================================================
-// CLOSE SIDEBAR
+// TEXT FORMATTING
 // =========================================================
 
-document.addEventListener(
-    "click",
-    (e) => {
-
-        if(
-
-            window.innerWidth <= 900 &&
-
-            !sidebar.contains(
-                e.target
-            ) &&
-
-            !mobileToggle.contains(
-                e.target
-            )
-
-        ){
-
-            sidebar.classList.remove(
-                "active"
-            );
-        }
-    }
-);
-
-// =========================================================
-// FORMAT TEXT
-// =========================================================
-
-function formatText(command){
-
-    document.execCommand(
-        command,
-        false,
-        null
-    );
-
+function formatText(command) {
+    document.execCommand(command, false, null);
     editor.focus();
 }
 
-// =========================================================
-// UNDO
-// =========================================================
-
-function undoEditor(){
-
-    document.execCommand(
-        "undo",
-        false,
-        null
-    );
-
+function undoEditor() {
+    document.execCommand("undo", false, null);
     editor.focus();
 }
 
-// =========================================================
-// REDO
-// =========================================================
-
-function redoEditor(){
-
-    document.execCommand(
-        "redo",
-        false,
-        null
-    );
-
+function redoEditor() {
+    document.execCommand("redo", false, null);
     editor.focus();
 }
 
+function insertLink() {
+    const url = prompt("Enter URL");
+    if (!url) return;
 
-// =========================================================
-// INSERT LINK
-// =========================================================
-
-function insertLink(){
-
-    const url =
-    prompt(
-        "Enter URL"
-    );
-
-    if(!url) return;
-
-    document.execCommand(
-        "createLink",
-        false,
-        url
-    );
+    document.execCommand("createLink", false, url);
 }
 
 // =========================================================
-// IMAGE UPLOAD FROM LOCAL FILE
-// =========================================================
-
-function insertImage(){
-
-    const input =
-    document.createElement(
-        "input"
-    );
-
-    input.type = "file";
-
-    input.accept =
-    "image/*";
-
-    input.click();
-
-    input.onchange = () => {
-
-        const file =
-        input.files[0];
-
-        if(!file) return;
-
-        const reader =
-        new FileReader();
-
-        reader.onload = (e) => {
-
-            const imageHTML = `
-
-                <img
-                src="${e.target.result}"
-                class="editor-image"
-                alt="Uploaded Image">
-
-            `;
-
-            editor.innerHTML +=
-            imageHTML;
-
-            saveStatus.innerText =
-            "Image inserted ✔";
-        };
-
-        reader.readAsDataURL(
-            file
-        );
-    };
-}
-
-// =========================================================
-// REAL IMAGE CROP SYSTEM
+// IMAGE CROP SYSTEM (SINGLE CLEAN VERSION)
 // =========================================================
 
 let cropper = null;
 
-function insertImage(){
-
-    const input =
-    document.createElement(
-        "input"
-    );
-
+function insertImage() {
+    const input = document.createElement("input");
     input.type = "file";
-
-    input.accept =
-    "image/*";
-
+    input.accept = "image/*";
     input.click();
 
     input.onchange = () => {
+        const file = input.files[0];
+        if (!file) return;
 
-        const file =
-        input.files[0];
-
-        if(!file) return;
-
-        const reader =
-        new FileReader();
+        const reader = new FileReader();
 
         reader.onload = (e) => {
+            const cropModal = document.getElementById("cropModal");
+            const cropImage = document.getElementById("cropImage");
 
-            const cropModal =
-            document.getElementById(
-                "cropModal"
-            );
+            cropImage.src = e.target.result;
+            cropModal.classList.remove("hidden");
 
-            const cropImage =
-            document.getElementById(
-                "cropImage"
-            );
+            if (cropper) cropper.destroy();
 
-            cropImage.src =
-            e.target.result;
-
-            cropModal.classList.remove(
-                "hidden"
-            );
-
-            // destroy old cropper
-
-            if(cropper){
-
-                cropper.destroy();
-            }
-
-            // create cropper
-
-            cropper =
-            new Cropper(
-                cropImage,
-                {
-
-                    aspectRatio: NaN,
-
-                    viewMode:1,
-
-                    dragMode:"move",
-
-                    responsive:true,
-
-                    autoCropArea:1,
-
-                    background:false,
-
-                    zoomable:true,
-
-                    scalable:true,
-
-                    rotatable:true
-                }
-            );
+            cropper = new Cropper(cropImage, {
+                aspectRatio: NaN,
+                viewMode: 1,
+                dragMode: "move",
+                autoCropArea: 1,
+                background: false,
+                responsive: true,
+                zoomable: true,
+                scalable: true,
+                rotatable: true
+            });
         };
 
-        reader.readAsDataURL(
-            file
-        );
+        reader.readAsDataURL(file);
     };
 }
 
-// =========================================================
-// CLOSE CROP
-// =========================================================
+function closeCropModal() {
+    document.getElementById("cropModal").classList.add("hidden");
 
-function closeCropModal(){
-
-    document.getElementById(
-        "cropModal"
-    ).classList.add(
-        "hidden"
-    );
-
-    if(cropper){
-
+    if (cropper) {
         cropper.destroy();
-
         cropper = null;
     }
 }
 
-// =========================================================
-// APPLY CROP
-// =========================================================
+function applyCrop() {
+    if (!cropper) return;
 
-function applyCrop(){
-
-    if(!cropper) return;
-
-    const canvas =
-    cropper.getCroppedCanvas({
-
-        maxWidth:2000,
-
-        maxHeight:2000,
-
-        imageSmoothingEnabled:true,
-
-        imageSmoothingQuality:"high"
+    const canvas = cropper.getCroppedCanvas({
+        maxWidth: 2000,
+        maxHeight: 2000,
+        imageSmoothingEnabled: true,
+        imageSmoothingQuality: "high"
     });
 
-    const croppedImage =
-    canvas.toDataURL(
-        "image/png"
-    );
+    const img = canvas.toDataURL("image/png");
 
-    const imageHTML = `
-
-        <img
-        src="${croppedImage}"
-        class="editor-image resizable-image"
-        contenteditable="false"
-        alt="Uploaded Image">
-
+    const html = `
+        <div class="media-block" contenteditable="false">
+            <img src="${img}" class="editor-image resizable-image" alt="image">
+        </div>
     `;
 
-    editor.innerHTML +=
-    imageHTML;
-
-    saveStatus.innerText =
-    "Image inserted ✔";
+    editor.insertAdjacentHTML("beforeend", html);
 
     closeCropModal();
+    saveStatus.innerText = "Image inserted ✔";
 }
 
 // =========================================================
-// YOUTUBE VIDEO EMBED
+// VIDEO INSERT (SINGLE FIXED VERSION)
 // =========================================================
 
-function insertVideo(){
-
-    const url =
-    prompt(
-        "Paste YouTube URL"
-    );
-
-    if(!url) return;
+function insertVideo() {
+    const url = prompt("Paste YouTube URL");
+    if (!url) return;
 
     let videoId = "";
 
-    // youtube.com/watch?v=
-
-    if(
-        url.includes(
-            "watch?v="
-        )
-    ){
-
-        videoId =
-        url.split(
-            "watch?v="
-        )[1];
-
-        if(videoId.includes("&")){
-
-            videoId =
-            videoId.split("&")[0];
+    if (url.includes("watch?v=")) {
+        videoId = url.split("watch?v=")[1];
+        if (videoId.includes("&")) {
+            videoId = videoId.split("&")[0];
         }
+    } else if (url.includes("youtu.be/")) {
+        videoId = url.split("youtu.be/")[1];
     }
 
-    // youtu.be/
-
-    else if(
-        url.includes(
-            "youtu.be/"
-        )
-    ){
-
-        videoId =
-        url.split(
-            "youtu.be/"
-        )[1];
-    }
-
-    if(!videoId){
-
-        alert(
-            "Invalid YouTube URL"
-        );
-
+    if (!videoId) {
+        alert("Invalid YouTube URL");
         return;
     }
 
-    const embedURL =
-    `https://www.youtube.com/embed/${videoId}`;
+    const embed = `https://www.youtube.com/embed/${videoId}`;
 
-    const iframe = `
-
-        <div class="video-wrapper">
-
-            <iframe
-            width="100%"
-            height="500"
-            src="${embedURL}"
-            frameborder="0"
-            allowfullscreen>
-            </iframe>
-
+    const html = `
+        <div class="media-block video-wrapper" contenteditable="false">
+            <iframe width="100%" height="500"
+                src="${embed}"
+                frameborder="0"
+                allowfullscreen></iframe>
         </div>
-
     `;
 
-    editor.innerHTML +=
-    iframe;
-
-    saveStatus.innerText =
-    "Video inserted ✔";
+    editor.insertAdjacentHTML("beforeend", html);
+    saveStatus.innerText = "Video inserted ✔";
 }
 
 // =========================================================
-// DRAGGABLE VIDEOS + IMAGES
+// DRAG SYSTEM (EVENT DELEGATION - FIXED)
 // =========================================================
 
 let draggedElement = null;
 
-// =========================================================
-// ENABLE DRAGGING
-// =========================================================
+editor.addEventListener("dragstart", (e) => {
+    const el = e.target.closest("img, .video-wrapper");
+    if (!el) return;
 
-function enableMediaDragging(){
+    draggedElement = el;
+    el.classList.add("dragging");
+});
 
-    const mediaElements =
-    editor.querySelectorAll(
-        "img, .video-wrapper"
-    );
+editor.addEventListener("dragend", (e) => {
+    const el = e.target.closest("img, .video-wrapper");
+    if (!el) return;
 
-    mediaElements.forEach((element) => {
+    el.classList.remove("dragging");
+});
 
-        element.setAttribute(
-            "draggable",
-            true
-        );
+editor.addEventListener("dragover", (e) => {
+    e.preventDefault();
+});
 
-        // drag start
+editor.addEventListener("drop", (e) => {
+    e.preventDefault();
+    if (!draggedElement) return;
 
-        element.addEventListener(
-            "dragstart",
-            (e) => {
+    const target = e.target.closest("img, .video-wrapper, #editor");
 
-                draggedElement =
-                element;
-
-                element.classList.add(
-                    "dragging"
-                );
-            }
-        );
-
-        // drag end
-
-        element.addEventListener(
-            "dragend",
-            () => {
-
-                element.classList.remove(
-                    "dragging"
-                );
-            }
-        );
-    });
-}
-
-// =========================================================
-// ALLOW DROP
-// =========================================================
-
-editor.addEventListener(
-    "dragover",
-    (e) => {
-
-        e.preventDefault();
-    }
-);
-
-// =========================================================
-// DROP MEDIA
-// =========================================================
-
-editor.addEventListener(
-    "drop",
-    (e) => {
-
-        e.preventDefault();
-
-        if(!draggedElement) return;
-
-        const target =
-        e.target;
-
-        // prevent dropping inside itself
-
-        if(
-            target === draggedElement
-        ){
-            return;
-        }
-
-        // insert after target
-
-        if(
-
-            target &&
-            target !== editor
-
-        ){
-
-            target.after(
-                draggedElement
-            );
-
-        } else {
-
-            editor.appendChild(
-                draggedElement
-            );
-        }
-
-        saveStatus.innerText =
-        "Media repositioned ✔";
-    }
-);
-
-// =========================================================
-// UPDATE INSERT IMAGE
-// =========================================================
-
-function applyCrop(){
-
-    if(!cropper) return;
-
-    const canvas =
-    cropper.getCroppedCanvas({
-
-        maxWidth:2000,
-
-        maxHeight:2000,
-
-        imageSmoothingEnabled:true,
-
-        imageSmoothingQuality:"high"
-    });
-
-    const croppedImage =
-    canvas.toDataURL(
-        "image/png"
-    );
-
-    const imageHTML = `
-
-        <img
-        src="${croppedImage}"
-        class="editor-image resizable-image"
-        contenteditable="false"
-        alt="Uploaded Image">
-
-    `;
-
-    editor.innerHTML +=
-    imageHTML;
-
-    closeCropModal();
-
-    enableMediaDragging();
-
-    saveStatus.innerText =
-    "Image inserted ✔";
-}
-
-// =========================================================
-// UPDATE VIDEO INSERT
-// =========================================================
-
-function insertVideo(){
-
-    const url =
-    prompt(
-        "Paste YouTube URL"
-    );
-
-    if(!url) return;
-
-    let videoId = "";
-
-    if(
-        url.includes(
-            "watch?v="
-        )
-    ){
-
-        videoId =
-        url.split(
-            "watch?v="
-        )[1];
-
-        if(videoId.includes("&")){
-
-            videoId =
-            videoId.split("&")[0];
-        }
-
-    } else if(
-        url.includes(
-            "youtu.be/"
-        )
-    ){
-
-        videoId =
-        url.split(
-            "youtu.be/"
-        )[1];
+    if (!target || target === editor) {
+        editor.appendChild(draggedElement);
+    } else {
+        target.after(draggedElement);
     }
 
-    if(!videoId){
-
-        alert(
-            "Invalid YouTube URL"
-        );
-
-        return;
-    }
-
-    const embedURL =
-    `https://www.youtube.com/embed/${videoId}`;
-
-    const iframe = `
-
-        <div
-        class="video-wrapper"
-        contenteditable="false">
-
-            <iframe
-            width="100%"
-            height="500"
-            src="${embedURL}"
-            frameborder="0"
-            allowfullscreen>
-            </iframe>
-
-        </div>
-
-    `;
-
-    editor.innerHTML +=
-    iframe;
-
-    enableMediaDragging();
-
-    saveStatus.innerText =
-    "Video inserted ✔";
-}
+    saveStatus.innerText = "Media repositioned ✔";
+});
 
 // =========================================================
 // THUMBNAIL UPLOAD
 // =========================================================
 
-const thumbnailInput =
-document.getElementById(
-    "thumbnailInput"
-);
+uploadBox.addEventListener("click", () => {
+    thumbnailInput.click();
+});
 
-const thumbnailPreview =
-document.getElementById(
-    "thumbnailPreview"
-);
+thumbnailInput.addEventListener("change", () => {
+    const file = thumbnailInput.files[0];
+    if (!file) return;
 
-const uploadBox =
-document.querySelector(
-    ".upload-box"
-);
-
-// =========================================================
-// OPEN FILE PICKER
-// =========================================================
-
-uploadBox.addEventListener(
-    "click",
-    () => {
-
-        thumbnailInput.click();
+    if (!file.type.startsWith("image/")) {
+        alert("Please upload an image file");
+        return;
     }
-);
 
-// =========================================================
-// THUMBNAIL CHANGE
-// =========================================================
+    const reader = new FileReader();
 
-thumbnailInput.addEventListener(
-    "change",
-    () => {
+    reader.onload = (e) => {
+        thumbnailPreview.innerHTML = `
+            <img src="${e.target.result}" alt="thumbnail">
+        `;
 
-        const file =
-        thumbnailInput.files[0];
+        saveStatus.innerText = "Thumbnail uploaded ✔";
+    };
 
-        if(!file) return;
-
-        // image validation
-
-        if(
-            !file.type.startsWith(
-                "image/"
-            )
-        ){
-
-            alert(
-                "Please upload an image file"
-            );
-
-            return;
-        }
-
-        const reader =
-        new FileReader();
-
-        reader.onload = (e) => {
-
-            thumbnailPreview.innerHTML = `
-
-                <img
-                src="${e.target.result}"
-                alt="Thumbnail Preview">
-
-            `;
-
-            saveStatus.innerText =
-            "Thumbnail uploaded ✔";
-        };
-
-        reader.readAsDataURL(
-            file
-        );
-    }
-);
-
+    reader.readAsDataURL(file);
+});
 
 // =========================================================
 // HTML MODE
 // =========================================================
 
 let htmlMode = false;
+let savedHTML = "";
 
-function toggleHTMLMode(){
-
-    if(!htmlMode){
-
-        editor.textContent =
-        editor.innerHTML;
-
+function toggleHTMLMode() {
+    if (!htmlMode) {
+        savedHTML = editor.innerHTML;
+        editor.textContent = savedHTML;
         htmlMode = true;
-
-        saveStatus.innerText =
-        "HTML mode enabled";
-
+        saveStatus.innerText = "HTML mode enabled";
     } else {
-
-        editor.innerHTML =
-        editor.textContent;
-
+        editor.innerHTML = editor.textContent;
         htmlMode = false;
-
-        saveStatus.innerText =
-        "Visual mode enabled";
+        saveStatus.innerText = "Visual mode enabled";
     }
 }
 
 // =========================================================
-// AUTO SAVE
+// AUTO SAVE (LOCAL DRAFT)
 // =========================================================
 
 let saveTimer;
 
-function autoSave(){
+function autoSave() {
+    clearTimeout(saveTimer);
 
-    clearTimeout(
-        saveTimer
-    );
+    saveStatus.innerText = "Saving...";
 
-    saveStatus.innerText =
-    "Saving...";
+    saveTimer = setTimeout(() => {
+        localStorage.setItem("draft", editor.innerHTML);
+        localStorage.setItem("title", articleTitle.value);
 
-    saveTimer =
-    setTimeout(() => {
-
-        saveStatus.innerText =
-        "Draft saved ✔";
-
-    }, 1000);
+        saveStatus.innerText = "Draft saved ✔";
+    }, 800);
 }
 
+editor.addEventListener("input", autoSave);
+articleTitle.addEventListener("input", autoSave);
+
 // =========================================================
-// LISTENERS
+// KEYBOARD SHORTCUTS
 // =========================================================
 
-editor.addEventListener(
-    "input",
-    autoSave
-);
+document.addEventListener("keydown", (e) => {
+    if (e.ctrlKey && e.key === "s") {
+        e.preventDefault();
+        saveStatus.innerText = "Draft saved ✔";
+    }
 
-articleTitle.addEventListener(
-    "input",
-    autoSave
-);
+    if (e.key === "Tab") {
+        e.preventDefault();
+        document.execCommand("insertHTML", false, "&nbsp;&nbsp;&nbsp;&nbsp;");
+    }
+});
 
 // =========================================================
 // LOGOUT
 // =========================================================
 
-function logout(){
+function logout() {
+    const ok = confirm("Are you sure you want to logout?");
+    if (!ok) return;
 
-    const confirmLogout =
-    confirm(
-        "Are you sure you want to logout?"
-    );
-
-    if(!confirmLogout){
-        return;
-    }
-
-    localStorage.removeItem(
-        "adminToken"
-    );
-
+    localStorage.removeItem("adminToken");
     sessionStorage.clear();
 
-    window.location.href =
-    "/login.html";
+    window.location.href = "/login.html";
 }
-
-// =========================================================
-// SHORTCUTS
-// =========================================================
-
-document.addEventListener(
-    "keydown",
-    (e) => {
-
-        // CTRL + S
-
-        if(
-            e.ctrlKey &&
-            e.key === "s"
-        ){
-
-            e.preventDefault();
-
-            saveStatus.innerText =
-            "Draft saved ✔";
-        }
-
-        // TAB
-
-        if(
-            e.key === "Tab"
-        ){
-
-            document.execCommand(
-                "insertHTML",
-                false,
-                "&nbsp;&nbsp;&nbsp;&nbsp;"
-            );
-
-            e.preventDefault();
-        }
-    }
-);
 
 // =========================================================
 // INIT
 // =========================================================
 
-function init(){
-
-enableMediaDragging();
-
-    console.log(
-        "Editor initialized ✔"
-    );
+function init() {
+    console.log("Editor initialized ✔");
 }
 
 init();
