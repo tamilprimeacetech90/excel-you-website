@@ -5,87 +5,60 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 /* =========================================================
-   ROOT
+   ROOT (UPGRADED CMS TOKENS)
 ========================================================= */
 
 :root{
 
-    --bg:
-    linear-gradient(
-        135deg,
-        #eef2ff,
-        #f8fafc
-    );
-
-    --card:
-    rgba(255,255,255,.72);
-
-    --border:
-    rgba(255,255,255,.35);
+    --bg: linear-gradient(135deg,#eef2ff,#f8fafc);
+    --card: rgba(255,255,255,.72);
+    --border: rgba(255,255,255,.35);
 
     --text:#111827;
-
     --muted:#64748b;
 
     --primary:#6366f1;
-
     --primary2:#4f46e5;
 
-    --shadow:
-    0 8px 30px rgba(99,102,241,.12);
+    --shadow: 0 10px 35px rgba(99,102,241,.12);
 
-    --sidebar:
-    rgba(255,255,255,.72);
+    --sidebar: rgba(255,255,255,.72);
+    --topbar: rgba(255,255,255,.72);
 
-    --topbar:
-    rgba(255,255,255,.72);
-
-    --hover:
-    rgba(99,102,241,.12);
+    --hover: rgba(99,102,241,.12);
 
     --editor-bg:#ffffff;
+
+    --block-shadow: 0 10px 25px rgba(0,0,0,.08);
 }
 
 /* =========================================================
-   DARK THEME
+   DARK THEME (IMPROVED CONTRAST)
 ========================================================= */
 
 body.dark-theme{
 
-    --bg:
-    linear-gradient(
-        135deg,
-        #0f172a,
-        #111827
-    );
+    --bg: linear-gradient(135deg,#0f172a,#111827);
 
-    --card:
-    rgba(30,41,59,.62);
-
-    --border:
-    rgba(255,255,255,.08);
+    --card: rgba(30,41,59,.72);
+    --border: rgba(255,255,255,.08);
 
     --text:#f8fafc;
-
     --muted:#94a3b8;
 
     --primary:#8b5cf6;
-
     --primary2:#6366f1;
 
-    --shadow:
-    0 8px 30px rgba(0,0,0,.35);
+    --shadow: 0 10px 35px rgba(0,0,0,.45);
 
-    --sidebar:
-    rgba(15,23,42,.72);
+    --sidebar: rgba(15,23,42,.75);
+    --topbar: rgba(15,23,42,.75);
 
-    --topbar:
-    rgba(15,23,42,.72);
+    --hover: rgba(255,255,255,.08);
 
-    --hover:
-    rgba(255,255,255,.08);
+    --editor-bg:#0b1220;
 
-    --editor-bg:#1e293b;
+    --block-shadow: 0 10px 25px rgba(0,0,0,.5);
 }
 
 /* =========================================================
@@ -99,15 +72,10 @@ body.dark-theme{
 }
 
 body{
-
     font-family:'Inter',sans-serif;
-
     background:var(--bg);
-
     color:var(--text);
-
     min-height:100vh;
-
     overflow-x:hidden;
 }
 
@@ -115,19 +83,10 @@ body{
    SCROLLBAR
 ========================================================= */
 
-::-webkit-scrollbar{
-    width:10px;
-}
+::-webkit-scrollbar{width:10px;}
 
 ::-webkit-scrollbar-thumb{
-
-    background:
-    linear-gradient(
-        180deg,
-        var(--primary),
-        var(--primary2)
-    );
-
+    background:linear-gradient(180deg,var(--primary),var(--primary2));
     border-radius:999px;
 }
 
@@ -135,29 +94,20 @@ body{
    LAYOUT
 ========================================================= */
 
-.container{
-    display:flex;
-}
+.container{display:flex;}
 
 /* =========================================================
-   SIDEBAR
+   SIDEBAR (UNCHANGED STYLE + SMOOTHER)
 ========================================================= */
 
 .sidebar{
-
     width:270px;
-
     height:100vh;
-
     position:fixed;
-
-    left:0;
-    top:0;
+    left:0; top:0;
 
     background:var(--sidebar);
-
     backdrop-filter:blur(20px);
-
     border-right:1px solid var(--border);
 
     padding:24px;
@@ -167,32 +117,22 @@ body{
     justify-content:space-between;
 
     z-index:1000;
+
+    transition:.3s ease;
 }
 
-.logo{
+.logo{margin-bottom:40px;}
 
-    margin-bottom:40px;
-}
-
-.logo-image{
-
-    width:190px;
-
-    object-fit:contain;
-}
+.logo-image{width:190px;object-fit:contain;}
 
 .sidebar-menu{
-
     display:flex;
     flex-direction:column;
-
     gap:10px;
 }
 
 .sidebar-menu a{
-
     text-decoration:none;
-
     color:var(--text);
 
     display:flex;
@@ -200,36 +140,19 @@ body{
     gap:14px;
 
     padding:14px 16px;
-
     border-radius:16px;
 
     transition:.25s ease;
 }
 
 .sidebar-menu a:hover{
-
     background:var(--hover);
-
     transform:translateX(3px);
 }
 
 .sidebar-menu .active{
-
-    background:
-    linear-gradient(
-        135deg,
-        var(--primary),
-        var(--primary2)
-    );
-
+    background:linear-gradient(135deg,var(--primary),var(--primary2));
     color:white;
-}
-
-.logout-btn{
-
-    background:rgba(15,23,42,.08);
-
-    color:var(--text) !important;
 }
 
 /* =========================================================
@@ -237,9 +160,7 @@ body{
 ========================================================= */
 
 .main{
-
     flex:1;
-
     margin-left:270px;
 }
 
@@ -248,9 +169,7 @@ body{
 ========================================================= */
 
 .topbar{
-
     height:80px;
-
     display:flex;
     align-items:center;
     justify-content:space-between;
@@ -258,241 +177,40 @@ body{
     padding:0 30px;
 
     position:sticky;
-
     top:0;
 
     z-index:999;
 
     background:var(--topbar);
-
     backdrop-filter:blur(20px);
 
     border-bottom:1px solid var(--border);
-}
-
-.topbar-left{
-
-    display:flex;
-    align-items:center;
-
-    gap:18px;
-}
-
-.topbar-left h1{
-
-    font-size:28px;
-}
-
-.topbar-left p{
-
-    color:var(--muted);
-
-    font-size:14px;
-}
-
-.theme-toggle{
-
-    width:50px;
-    height:50px;
-
-    border:none;
-
-    border-radius:16px;
-
-    cursor:pointer;
-
-    color:white;
-
-    font-size:18px;
-
-    background:
-    linear-gradient(
-        135deg,
-        var(--primary),
-        var(--primary2)
-    );
-}
-
-.mobile-toggle{
-
-    display:none;
 }
 
 /* =========================================================
    CONTENT
 ========================================================= */
 
-.content{
-
-    padding:30px;
-}
+.content{padding:30px;}
 
 /* =========================================================
-   BREADCRUMB
-========================================================= */
-
-.editor-breadcrumb{
-
-    display:flex;
-    align-items:center;
-
-    gap:12px;
-
-    margin-bottom:26px;
-
-    color:var(--muted);
-
-    font-size:14px;
-}
-
-.editor-breadcrumb .active{
-
-    color:var(--primary);
-
-    font-weight:600;
-}
-
-/* =========================================================
-   HEADER
+   EDITOR HEADER
 ========================================================= */
 
 .editor-header{
-
     display:flex;
     justify-content:space-between;
-    align-items:flex-start;
-
-    margin-bottom:28px;
-
     gap:20px;
-}
-
-.editor-title-wrap{
-
-    flex:1;
+    margin-bottom:28px;
 }
 
 .editor-title{
-
-    width:100%;
-
-    border:none;
-
-    background:transparent;
-
-    outline:none;
-
-    color:var(--text);
-
     font-size:42px;
-
-    font-weight:700;
-
-    margin-bottom:10px;
-}
-
-.editor-title::placeholder{
-
-    color:var(--muted);
-}
-
-.editor-meta{
-
-    display:flex;
-    align-items:center;
-
-    gap:18px;
-
-    color:var(--muted);
-
-    font-size:14px;
-}
-
-.editor-actions{
-
-    display:flex;
-
-    gap:14px;
-}
-
-.draft-btn,
-.publish-btn{
-
+    font-weight:800;
     border:none;
-
-    padding:14px 24px;
-
-    border-radius:16px;
-
-    cursor:pointer;
-
-    font-weight:600;
-
-    display:flex;
-    align-items:center;
-    gap:10px;
-
-    transition:.25s ease;
-}
-
-.draft-btn{
-
-    background:var(--card);
-
+    background:transparent;
     color:var(--text);
-
-    border:1px solid var(--border);
-}
-
-.publish-btn{
-
-    background:
-    linear-gradient(
-        135deg,
-        var(--primary),
-        var(--primary2)
-    );
-
-    color:white;
-}
-
-.publish-btn:hover,
-.draft-btn:hover{
-
-    transform:translateY(-2px);
-}
-
-/* =========================================================
-   LAYOUT
-========================================================= */
-
-.editor-layout{
-
-    display:grid;
-
-    grid-template-columns:
-    1fr 360px;
-
-    gap:26px;
-}
-
-/* =========================================================
-   EDITOR MAIN
-========================================================= */
-
-.editor-main{
-
-    background:var(--card);
-
-    border:1px solid var(--border);
-
-    border-radius:28px;
-
-    overflow:hidden;
-
-    backdrop-filter:blur(18px);
-
-    box-shadow:var(--shadow);
+    outline:none;
 }
 
 /* =========================================================
@@ -500,463 +218,208 @@ body{
 ========================================================= */
 
 .toolbar{
-
     display:flex;
-    align-items:center;
     flex-wrap:wrap;
-
     gap:10px;
 
-    padding:18px 20px;
+    padding:16px 18px;
 
     border-bottom:1px solid var(--border);
 
-    background:rgba(255,255,255,.08);
+    background:rgba(255,255,255,.05);
 }
 
 .toolbar button{
-
-    border:none;
-
-    background:transparent;
-
     width:42px;
     height:42px;
 
+    border:none;
     border-radius:12px;
 
     cursor:pointer;
 
+    background:transparent;
     color:var(--text);
-
-    font-size:16px;
 
     transition:.2s ease;
 }
 
 .toolbar button:hover{
-
     background:var(--hover);
-}
-
-.toolbar-divider{
-
-    width:1px;
-    height:28px;
-
-    background:var(--border);
-
-    margin:0 4px;
+    transform:translateY(-2px);
 }
 
 /* =========================================================
-   EDITOR WRAPPER
+   EDITOR WRAPPER (IMPORTANT FIX)
 ========================================================= */
 
 .editor-wrapper{
-
-    padding:34px;
+    padding:30px;
 }
 
 /* =========================================================
-   EDITOR AREA
+   EDITOR AREA (BLOCK READY)
 ========================================================= */
 
 .editor-area{
-
     min-height:900px;
 
     background:var(--editor-bg);
+    border-radius:26px;
 
-    border-radius:24px;
-
-    padding:70px;
+    padding:60px;
 
     outline:none;
 
     line-height:1.9;
-
     font-size:18px;
 
-    box-shadow:
-    0 8px 30px rgba(0,0,0,.05);
-}
-
-.editor-area h1{
-
-    font-size:42px;
-
-    margin-bottom:24px;
-}
-
-.editor-area h2{
-
-    font-size:30px;
-
-    margin-top:40px;
-
-    margin-bottom:20px;
-}
-
-.editor-area p{
-
-    margin-bottom:20px;
-
-    color:var(--text);
-}
-
-.editor-image{
-
-    width:100%;
-
-    border-radius:24px;
-
-    margin:30px 0;
-}
-
-/* =========================================================
-   SIDEBAR
-========================================================= */
-
-.editor-sidebar{
-
-    display:flex;
-    flex-direction:column;
-
-    gap:24px;
-}
-
-.sidebar-card{
-
-    background:var(--card);
-
-    border:1px solid var(--border);
-
-    border-radius:26px;
-
-    padding:24px;
-
-    backdrop-filter:blur(18px);
-
     box-shadow:var(--shadow);
-}
-
-/* =========================================================
-   CARD TITLE
-========================================================= */
-
-.card-title{
-
-    display:flex;
-    align-items:center;
-
-    gap:12px;
-
-    margin-bottom:24px;
-}
-
-.card-title i{
-
-    color:var(--primary);
-
-    font-size:20px;
-}
-
-.card-title h3{
-
-    font-size:20px;
-}
-
-/* =========================================================
-   FORMS
-========================================================= */
-
-.form-group{
-
-    margin-bottom:22px;
-}
-
-.form-group label{
-
-    display:block;
-
-    margin-bottom:10px;
-
-    font-weight:600;
-
-    font-size:14px;
-}
-
-.form-group input,
-.form-group select{
-
-    width:100%;
-
-    border:1px solid var(--border);
-
-    background:rgba(255,255,255,.08);
-
-    padding:14px 16px;
-
-    border-radius:14px;
-
-    outline:none;
-
-    color:var(--text);
-
-    font-size:15px;
-}
-
-/* =========================================================
-   EXTRA EDITOR FEATURES
-========================================================= */
-
-/* =========================================================
-   VIDEO EMBED
-========================================================= */
-
-.video-wrapper{
-
-    margin:30px 0;
-
-    border-radius:24px;
-
-    overflow:hidden;
-
-    background:#000;
-
-    box-shadow:
-    0 8px 30px rgba(0,0,0,.15);
-}
-
-.video-wrapper iframe{
-
-    width:100%;
-
-    border:none;
-
-    display:block;
-}
-
-/* =========================================================
-   IMAGE STYLING
-========================================================= */
-
-.editor-image{
-
-    width:100%;
-
-    max-width:100%;
-
-    border-radius:24px;
-
-    margin:30px 0;
-
-    object-fit:cover;
-
-    box-shadow:
-    0 8px 24px rgba(0,0,0,.12);
-}
-
-/* =========================================================
-   UPLOAD BOX HOVER
-========================================================= */
-
-.upload-box{
-
-    position:relative;
-
-    overflow:hidden;
-}
-
-.upload-box::before{
-
-    content:"";
-
-    position:absolute;
-
-    inset:0;
-
-    background:
-    linear-gradient(
-        135deg,
-        rgba(99,102,241,.08),
-        rgba(79,70,229,.08)
-    );
-
-    opacity:0;
-
-    transition:.3s ease;
-}
-
-.upload-box:hover::before{
-
-    opacity:1;
-}
-
-/* =========================================================
-   TOOLBAR ACTIVE EFFECT
-========================================================= */
-
-.toolbar button:active{
-
-    transform:scale(.95);
-}
-
-/* =========================================================
-   LINKS INSIDE EDITOR
-========================================================= */
-
-.editor-area a{
-
-    color:var(--primary);
-
-    text-decoration:none;
-
-    font-weight:600;
-}
-
-.editor-area a:hover{
-
-    text-decoration:underline;
-}
-
-/* =========================================================
-   PLACEHOLDER FIX
-========================================================= */
-
-.editor-area:empty:before{
-
-    content:"Start writing your article...";
-
-    color:var(--muted);
-
-    pointer-events:none;
-}
-
-/* =========================================================
-   CUSTOM INPUT FOCUS
-========================================================= */
-
-.form-group input:focus,
-.form-group select:focus{
-
-    border-color:var(--primary);
-
-    box-shadow:
-    0 0 0 4px rgba(99,102,241,.12);
-}
-
-/* =========================================================
-   SAVE STATUS
-========================================================= */
-
-#saveStatus{
-
-    color:var(--primary);
-
-    font-weight:600;
-}
-
-/* =========================================================
-   EDITOR TRANSITIONS
-========================================================= */
-
-.editor-area,
-.sidebar-card,
-.toolbar button,
-.upload-box,
-.publish-btn,
-.draft-btn{
 
     transition:.25s ease;
 }
 
 /* =========================================================
-   DARK MODE VIDEO
+   HEADINGS
 ========================================================= */
 
-body.dark-theme .video-wrapper{
+.editor-area h1{
+    font-size:42px;
+    margin-bottom:20px;
+}
 
-    box-shadow:
-    0 8px 24px rgba(0,0,0,.45);
+.editor-area h2{
+    font-size:30px;
+    margin-top:40px;
 }
 
 /* =========================================================
-   MOBILE VIDEO
+   PARAGRAPH
 ========================================================= */
 
-@media(max-width:768px){
-
-    .video-wrapper iframe{
-
-        height:240px;
-    }
-
-    .editor-image{
-
-        border-radius:18px;
-    }
+.editor-area p{
+    margin-bottom:18px;
 }
 
+/* =========================================================
+   IMAGE (UPGRADED BLOCK STYLE)
+========================================================= */
+
+.editor-image{
+    width:100%;
+    border-radius:20px;
+    margin:24px 0;
+
+    box-shadow:var(--block-shadow);
+
+    transition:.2s ease;
+}
+
+/* SELECTED MEDIA */
+.selected-media{
+    outline:3px solid var(--primary);
+    border-radius:18px;
+}
+
+/* DRAGGING STATE */
+.dragging{
+    opacity:.5;
+    transform:scale(.98);
+}
+
+/* =========================================================
+   VIDEO BLOCK
+========================================================= */
+
+.video-wrapper{
+    margin:28px 0;
+    border-radius:20px;
+    overflow:hidden;
+
+    box-shadow:var(--block-shadow);
+}
+
+.video-wrapper iframe{
+    width:100%;
+    height:420px;
+    border:none;
+}
+
+/* =========================================================
+   BLOCK ANIMATION (NEW UX)
+========================================================= */
+
+.media-block{
+    margin:24px 0;
+    transition:.2s ease;
+}
+
+/* =========================================================
+   SIDEBAR CARDS
+========================================================= */
+
+.sidebar-card{
+    background:var(--card);
+    border:1px solid var(--border);
+
+    padding:24px;
+    border-radius:22px;
+
+    box-shadow:var(--shadow);
+}
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
+input, select{
+    width:100%;
+    padding:14px;
+
+    border-radius:12px;
+
+    border:1px solid var(--border);
+
+    background:transparent;
+    color:var(--text);
+}
 
 /* =========================================================
    THUMBNAIL
 ========================================================= */
 
 .thumbnail-preview{
-
-    width:100%;
-
     height:180px;
-
-    border-radius:20px;
-
+    border-radius:18px;
     overflow:hidden;
 
-    margin-bottom:18px;
+    background:rgba(255,255,255,.05);
 }
 
 .thumbnail-preview img{
-
     width:100%;
     height:100%;
-
     object-fit:cover;
 }
 
+/* =========================================================
+   UPLOAD BOX
+========================================================= */
+
 .upload-box{
-
     border:2px dashed var(--border);
-
+    padding:24px;
     border-radius:18px;
-
-    padding:30px;
 
     text-align:center;
 
     cursor:pointer;
 
-    transition:.25s ease;
+    transition:.2s ease;
 }
 
 .upload-box:hover{
-
     background:var(--hover);
-}
-
-.upload-box i{
-
-    font-size:34px;
-
-    color:var(--primary);
-
-    margin-bottom:12px;
-}
-
-.upload-box p{
-
-    color:var(--muted);
 }
 
 /* =========================================================
@@ -964,25 +427,13 @@ body.dark-theme .video-wrapper{
 ========================================================= */
 
 @media(max-width:1100px){
-
-    .editor-layout{
-
-        grid-template-columns:1fr;
-    }
-
-    .editor-sidebar{
-
-        width:100%;
-    }
+    .editor-layout{grid-template-columns:1fr;}
 }
 
 @media(max-width:900px){
 
     .sidebar{
-
         left:-270px;
-
-        transition:.3s ease;
     }
 
     .sidebar.active{
@@ -993,54 +444,11 @@ body.dark-theme .video-wrapper{
         margin-left:0;
     }
 
-    .mobile-toggle{
-
-        display:flex;
-
-        width:46px;
-        height:46px;
-
-        border:none;
-
-        border-radius:14px;
-
-        align-items:center;
-        justify-content:center;
-
-        background:
-        linear-gradient(
-            135deg,
-            var(--primary),
-            var(--primary2)
-        );
-
-        color:white;
-
-        font-size:18px;
-    }
-
-    .content{
-
-        padding:18px;
-    }
-
-    .editor-header{
-
-        flex-direction:column;
+    .editor-area{
+        padding:24px;
     }
 
     .editor-title{
-
-        font-size:34px;
-    }
-
-    .editor-wrapper{
-
-        padding:16px;
-    }
-
-    .editor-area{
-
-        padding:28px;
+        font-size:32px;
     }
 }

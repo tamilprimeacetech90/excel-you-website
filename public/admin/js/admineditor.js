@@ -1,5 +1,5 @@
 /* =========================================================
-   EXCEL YOU - ADMIN EDITOR (FIXED VERSION)
+   EXCEL YOU - ADMIN EDITOR (PRODUCTION BLOCK SYSTEM)
 ========================================================= */
 
 // =========================================================
@@ -27,20 +27,15 @@ const uploadBox = document.querySelector(".upload-box");
 // =========================================================
 
 function applyTheme(theme) {
-    if (theme === "dark") {
-        body.classList.add("dark-theme");
-        themeToggle.innerHTML = "☀️";
+    const isDark = theme === "dark";
 
-        if (siteLogo) {
-            siteLogo.src = "/assets/full-logo-white.png";
-        }
-    } else {
-        body.classList.remove("dark-theme");
-        themeToggle.innerHTML = "🌙";
+    body.classList.toggle("dark-theme", isDark);
+    themeToggle.innerHTML = isDark ? "☀️" : "🌙";
 
-        if (siteLogo) {
-            siteLogo.src = "/assets/full-logo.png";
-        }
+    if (siteLogo) {
+        siteLogo.src = isDark
+            ? "/assets/full-logo-white.png"
+            : "/assets/full-logo.png";
     }
 }
 
@@ -48,15 +43,13 @@ const savedTheme = localStorage.getItem("theme") || "light";
 applyTheme(savedTheme);
 
 themeToggle.addEventListener("click", () => {
-    const isDark = body.classList.contains("dark-theme");
-    const newTheme = isDark ? "light" : "dark";
-
+    const newTheme = body.classList.contains("dark-theme") ? "light" : "dark";
     applyTheme(newTheme);
     localStorage.setItem("theme", newTheme);
 });
 
 // =========================================================
-// MOBILE SIDEBAR
+// SIDEBAR
 // =========================================================
 
 mobileToggle.addEventListener("click", () => {
@@ -74,7 +67,7 @@ document.addEventListener("click", (e) => {
 });
 
 // =========================================================
-// TEXT FORMATTING
+// BASIC TEXT COMMANDS
 // =========================================================
 
 function formatText(command) {
@@ -100,42 +93,113 @@ function insertLink() {
 }
 
 // =========================================================
-// IMAGE CROP SYSTEM (SINGLE CLEAN VERSION)
+// BLOCK SYSTEM CORE
+// =========================================================
+
+let selectedBlock = null;
+let draggedBlock = null;
+
+// ALL MEDIA MUST BE BLOCK
+function createBlock(html, type = "media") {
+    const wrapper = document.createElement("div");
+    wrapper.className = "media-block";
+    wrapper.setAttribute("contenteditable", "false");
+    wrapper.setAttribute("data-type", type);
+
+    wrapper.innerHTML = html;
+
+    bindBlock(wrapper);
+    return wrapper;
+}
+
+// =========================================================
+// BLOCK BINDING
+// =========================================================
+
+function bindBlock(block) {
+
+    block.addEventListener("click", (e) => {
+        e.stopPropagation();
+        selectBlock(block);
+    });
+
+    block.setAttribute("draggable", true);
+
+    block.addEventListener("dragstart", () => {
+        draggedBlock = block;
+        block.classList.add("dragging");
+    });
+
+    block.addEventListener("dragend", () => {
+        block.classList.remove("dragging");
+        draggedBlock = null;
+    });
+}
+
+// =========================================================
+// SELECT BLOCK
+// =========================================================
+
+function selectBlock(block) {
+
+    document.querySelectorAll(".selected-media")
+        .forEach(el => el.classList.remove("selected-media"));
+
+    selectedBlock = block;
+    block.classList.add("selected-media");
+}
+
+// clear selection
+editor.addEventListener("click", () => {
+    document.querySelectorAll(".selected-media")
+        .forEach(el => el.classList.remove("selected-media"));
+
+    selectedBlock = null;
+});
+
+// DELETE BLOCK
+document.addEventListener("keydown", (e) => {
+    if (e.key === "Delete" && selectedBlock) {
+        selectedBlock.remove();
+        selectedBlock = null;
+        saveStatus.innerText = "Block deleted ✔";
+    }
+});
+
+// =========================================================
+// IMAGE INSERT (CROP + BLOCK)
 // =========================================================
 
 let cropper = null;
 
 function insertImage() {
+
     const input = document.createElement("input");
     input.type = "file";
     input.accept = "image/*";
     input.click();
 
     input.onchange = () => {
+
         const file = input.files[0];
         if (!file) return;
 
         const reader = new FileReader();
 
         reader.onload = (e) => {
-            const cropModal = document.getElementById("cropModal");
-            const cropImage = document.getElementById("cropImage");
 
-            cropImage.src = e.target.result;
-            cropModal.classList.remove("hidden");
+            const modal = document.getElementById("cropModal");
+            const img = document.getElementById("cropImage");
+
+            img.src = e.target.result;
+            modal.classList.remove("hidden");
 
             if (cropper) cropper.destroy();
 
-            cropper = new Cropper(cropImage, {
+            cropper = new Cropper(img, {
                 aspectRatio: NaN,
                 viewMode: 1,
-                dragMode: "move",
-                autoCropArea: 1,
-                background: false,
-                responsive: true,
-                zoomable: true,
-                scalable: true,
-                rotatable: true
+                autoCropArea: 1
             });
         };
 
@@ -143,140 +207,109 @@ function insertImage() {
     };
 }
 
-function closeCropModal() {
-    document.getElementById("cropModal").classList.add("hidden");
-
-    if (cropper) {
-        cropper.destroy();
-        cropper = null;
-    }
-}
-
 function applyCrop() {
     if (!cropper) return;
 
-    const canvas = cropper.getCroppedCanvas({
-        maxWidth: 2000,
-        maxHeight: 2000,
-        imageSmoothingEnabled: true,
-        imageSmoothingQuality: "high"
-    });
+    const canvas = cropper.getCroppedCanvas();
+    const src = canvas.toDataURL("image/png");
 
-    const img = canvas.toDataURL("image/png");
+    const block = createBlock(`
+        <img src="${src}" class="editor-image">
+    `);
 
-    const html = `
-        <div class="media-block" contenteditable="false">
-            <img src="${img}" class="editor-image resizable-image" alt="image">
-        </div>
-    `;
+    editor.appendChild(block);
 
-    editor.insertAdjacentHTML("beforeend", html);
+    cropper.destroy();
+    cropper = null;
 
-    closeCropModal();
-    saveStatus.innerText = "Image inserted ✔";
+    document.getElementById("cropModal").classList.add("hidden");
+
+    saveStatus.innerText = "Image added ✔";
 }
 
 // =========================================================
-// VIDEO INSERT (SINGLE FIXED VERSION)
+// VIDEO INSERT
 // =========================================================
 
 function insertVideo() {
+
     const url = prompt("Paste YouTube URL");
     if (!url) return;
 
-    let videoId = "";
+    let id = "";
 
     if (url.includes("watch?v=")) {
-        videoId = url.split("watch?v=")[1];
-        if (videoId.includes("&")) {
-            videoId = videoId.split("&")[0];
-        }
+        id = url.split("watch?v=")[1].split("&")[0];
     } else if (url.includes("youtu.be/")) {
-        videoId = url.split("youtu.be/")[1];
+        id = url.split("youtu.be/")[1];
     }
 
-    if (!videoId) {
-        alert("Invalid YouTube URL");
-        return;
-    }
+    if (!id) return alert("Invalid YouTube URL");
 
-    const embed = `https://www.youtube.com/embed/${videoId}`;
+    const block = createBlock(`
+        <iframe width="100%" height="420"
+        src="https://www.youtube.com/embed/${id}"
+        frameborder="0" allowfullscreen></iframe>
+    `);
 
-    const html = `
-        <div class="media-block video-wrapper" contenteditable="false">
-            <iframe width="100%" height="500"
-                src="${embed}"
-                frameborder="0"
-                allowfullscreen></iframe>
-        </div>
-    `;
+    editor.appendChild(block);
 
-    editor.insertAdjacentHTML("beforeend", html);
-    saveStatus.innerText = "Video inserted ✔";
+    saveStatus.innerText = "Video added ✔";
 }
 
 // =========================================================
-// DRAG SYSTEM (EVENT DELEGATION - FIXED)
+// DRAG SORT SYSTEM (MODERN)
 // =========================================================
-
-let draggedElement = null;
-
-editor.addEventListener("dragstart", (e) => {
-    const el = e.target.closest("img, .video-wrapper");
-    if (!el) return;
-
-    draggedElement = el;
-    el.classList.add("dragging");
-});
-
-editor.addEventListener("dragend", (e) => {
-    const el = e.target.closest("img, .video-wrapper");
-    if (!el) return;
-
-    el.classList.remove("dragging");
-});
 
 editor.addEventListener("dragover", (e) => {
     e.preventDefault();
-});
 
-editor.addEventListener("drop", (e) => {
-    e.preventDefault();
-    if (!draggedElement) return;
+    const after = getAfterElement(editor, e.clientY);
+    const dragging = document.querySelector(".dragging");
 
-    const target = e.target.closest("img, .video-wrapper, #editor");
+    if (!dragging) return;
 
-    if (!target || target === editor) {
-        editor.appendChild(draggedElement);
+    if (!after) {
+        editor.appendChild(dragging);
     } else {
-        target.after(draggedElement);
+        editor.insertBefore(dragging, after);
     }
-
-    saveStatus.innerText = "Media repositioned ✔";
 });
 
+function getAfterElement(container, y) {
+
+    const blocks = [...container.querySelectorAll(".media-block:not(.dragging)")];
+
+    return blocks.reduce((closest, child) => {
+
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2;
+
+        if (offset < 0 && offset > closest.offset) {
+            return { offset, element: child };
+        }
+
+        return closest;
+
+    }, { offset: Number.NEGATIVE_INFINITY }).element;
+}
+
 // =========================================================
-// THUMBNAIL UPLOAD
+// THUMBNAIL
 // =========================================================
 
-uploadBox.addEventListener("click", () => {
-    thumbnailInput.click();
-});
+uploadBox.addEventListener("click", () => thumbnailInput.click());
 
 thumbnailInput.addEventListener("change", () => {
+
     const file = thumbnailInput.files[0];
     if (!file) return;
-
-    if (!file.type.startsWith("image/")) {
-        alert("Please upload an image file");
-        return;
-    }
 
     const reader = new FileReader();
 
     reader.onload = (e) => {
         thumbnailPreview.innerHTML = `
-            <img src="${e.target.result}" alt="thumbnail">
+            <img src="${e.target.result}">
         `;
 
         saveStatus.innerText = "Thumbnail uploaded ✔";
@@ -290,37 +323,39 @@ thumbnailInput.addEventListener("change", () => {
 // =========================================================
 
 let htmlMode = false;
-let savedHTML = "";
+let backupHTML = "";
 
 function toggleHTMLMode() {
+
     if (!htmlMode) {
-        savedHTML = editor.innerHTML;
-        editor.textContent = savedHTML;
+        backupHTML = editor.innerHTML;
+        editor.textContent = backupHTML;
         htmlMode = true;
-        saveStatus.innerText = "HTML mode enabled";
     } else {
         editor.innerHTML = editor.textContent;
         htmlMode = false;
-        saveStatus.innerText = "Visual mode enabled";
     }
 }
 
 // =========================================================
-// AUTO SAVE (LOCAL DRAFT)
+// AUTO SAVE
 // =========================================================
 
-let saveTimer;
+let timer;
 
 function autoSave() {
-    clearTimeout(saveTimer);
+
+    clearTimeout(timer);
 
     saveStatus.innerText = "Saving...";
 
-    saveTimer = setTimeout(() => {
+    timer = setTimeout(() => {
+
         localStorage.setItem("draft", editor.innerHTML);
         localStorage.setItem("title", articleTitle.value);
 
         saveStatus.innerText = "Draft saved ✔";
+
     }, 800);
 }
 
@@ -328,41 +363,11 @@ editor.addEventListener("input", autoSave);
 articleTitle.addEventListener("input", autoSave);
 
 // =========================================================
-// KEYBOARD SHORTCUTS
-// =========================================================
-
-document.addEventListener("keydown", (e) => {
-    if (e.ctrlKey && e.key === "s") {
-        e.preventDefault();
-        saveStatus.innerText = "Draft saved ✔";
-    }
-
-    if (e.key === "Tab") {
-        e.preventDefault();
-        document.execCommand("insertHTML", false, "&nbsp;&nbsp;&nbsp;&nbsp;");
-    }
-});
-
-// =========================================================
-// LOGOUT
-// =========================================================
-
-function logout() {
-    const ok = confirm("Are you sure you want to logout?");
-    if (!ok) return;
-
-    localStorage.removeItem("adminToken");
-    sessionStorage.clear();
-
-    window.location.href = "/login.html";
-}
-
-// =========================================================
 // INIT
 // =========================================================
 
 function init() {
-    console.log("Editor initialized ✔");
+    console.log("BLOCK EDITOR READY ✔");
 }
 
 init();
