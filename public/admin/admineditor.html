@@ -18,6 +18,11 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
 <link rel="stylesheet"
 href="/admin/css/admineditor.css">
 
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
+
+
 </head>
 
 <body>
@@ -494,39 +499,48 @@ href="/admin/css/admineditor.css">
 
                     </div>
 
-                    <!-- THUMBNAIL -->
+             <!-- THUMBNAIL -->
 
-                    <div class="sidebar-card">
+            <div class="sidebar-card">
 
-                        <div class="card-title">
+                 <div class="card-title">
 
-                            <i class="fas fa-image"></i>
+                 <i class="fas fa-image"></i>
 
-                            <h3>
-                                Featured Image
-                            </h3>
+                <h3>
+                  Featured Image
+                </h3>
 
-                        </div>
+           </div>
 
-                        <div class="thumbnail-preview">
+           <!-- PREVIEW -->
 
-                            <img
-                            src="https://picsum.photos/500/300"
-                            alt="thumbnail">
+            <div
+            id="thumbnailPreview"
+             class="thumbnail-preview">
 
-                        </div>
+            </div>
 
-                        <div class="upload-box">
+            <!-- UPLOAD -->
 
-                            <i class="fas fa-cloud-arrow-up"></i>
+             <div class="upload-box">
 
-                            <p>
-                                Upload Thumbnail
-                            </p>
+              <input
+              type="file"
+             id="thumbnailInput"
+              accept="image/*"
+               hidden>
 
-                        </div>
+            <i class="fas fa-image"></i>
+ 
+              <p>
+                Upload Thumbnail
+             </p>
 
-                    </div>
+           </div>
+
+           </div>
+
 
                     <!-- SEO -->
 
@@ -577,6 +591,8 @@ href="/admin/css/admineditor.css">
     </main>
 
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
 
 <script src="/admin/js/admineditor.js"></script>
 </body>
