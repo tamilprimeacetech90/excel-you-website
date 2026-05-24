@@ -708,6 +708,199 @@ body{
 }
 
 /* =========================================================
+   EXTRA EDITOR FEATURES
+========================================================= */
+
+/* =========================================================
+   VIDEO EMBED
+========================================================= */
+
+.video-wrapper{
+
+    margin:30px 0;
+
+    border-radius:24px;
+
+    overflow:hidden;
+
+    background:#000;
+
+    box-shadow:
+    0 8px 30px rgba(0,0,0,.15);
+}
+
+.video-wrapper iframe{
+
+    width:100%;
+
+    border:none;
+
+    display:block;
+}
+
+/* =========================================================
+   IMAGE STYLING
+========================================================= */
+
+.editor-image{
+
+    width:100%;
+
+    max-width:100%;
+
+    border-radius:24px;
+
+    margin:30px 0;
+
+    object-fit:cover;
+
+    box-shadow:
+    0 8px 24px rgba(0,0,0,.12);
+}
+
+/* =========================================================
+   UPLOAD BOX HOVER
+========================================================= */
+
+.upload-box{
+
+    position:relative;
+
+    overflow:hidden;
+}
+
+.upload-box::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(99,102,241,.08),
+        rgba(79,70,229,.08)
+    );
+
+    opacity:0;
+
+    transition:.3s ease;
+}
+
+.upload-box:hover::before{
+
+    opacity:1;
+}
+
+/* =========================================================
+   TOOLBAR ACTIVE EFFECT
+========================================================= */
+
+.toolbar button:active{
+
+    transform:scale(.95);
+}
+
+/* =========================================================
+   LINKS INSIDE EDITOR
+========================================================= */
+
+.editor-area a{
+
+    color:var(--primary);
+
+    text-decoration:none;
+
+    font-weight:600;
+}
+
+.editor-area a:hover{
+
+    text-decoration:underline;
+}
+
+/* =========================================================
+   PLACEHOLDER FIX
+========================================================= */
+
+.editor-area:empty:before{
+
+    content:"Start writing your article...";
+
+    color:var(--muted);
+
+    pointer-events:none;
+}
+
+/* =========================================================
+   CUSTOM INPUT FOCUS
+========================================================= */
+
+.form-group input:focus,
+.form-group select:focus{
+
+    border-color:var(--primary);
+
+    box-shadow:
+    0 0 0 4px rgba(99,102,241,.12);
+}
+
+/* =========================================================
+   SAVE STATUS
+========================================================= */
+
+#saveStatus{
+
+    color:var(--primary);
+
+    font-weight:600;
+}
+
+/* =========================================================
+   EDITOR TRANSITIONS
+========================================================= */
+
+.editor-area,
+.sidebar-card,
+.toolbar button,
+.upload-box,
+.publish-btn,
+.draft-btn{
+
+    transition:.25s ease;
+}
+
+/* =========================================================
+   DARK MODE VIDEO
+========================================================= */
+
+body.dark-theme .video-wrapper{
+
+    box-shadow:
+    0 8px 24px rgba(0,0,0,.45);
+}
+
+/* =========================================================
+   MOBILE VIDEO
+========================================================= */
+
+@media(max-width:768px){
+
+    .video-wrapper iframe{
+
+        height:240px;
+    }
+
+    .editor-image{
+
+        border-radius:18px;
+    }
+}
+
+
+/* =========================================================
    THUMBNAIL
 ========================================================= */
 

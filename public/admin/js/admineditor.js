@@ -1,6 +1,8 @@
 /* =========================================================
    EXCEL YOU - ADMIN EDITOR JS
 ========================================================= */
+
+
 // =========================================================
 // ELEMENTS
 // =========================================================
@@ -81,8 +83,6 @@ function applyTheme(theme){
     }
 }
 
-// Load saved theme
-
 const savedTheme =
 localStorage.getItem(
     "theme"
@@ -91,8 +91,6 @@ localStorage.getItem(
 applyTheme(
     savedTheme || "light"
 );
-
-// Toggle theme
 
 themeToggle.addEventListener(
     "click",
@@ -134,7 +132,7 @@ mobileToggle.addEventListener(
 );
 
 // =========================================================
-// CLOSE SIDEBAR MOBILE
+// CLOSE SIDEBAR
 // =========================================================
 
 document.addEventListener(
@@ -163,7 +161,7 @@ document.addEventListener(
 );
 
 // =========================================================
-// EDITOR COMMANDS
+// FORMAT TEXT
 // =========================================================
 
 function formatText(command){
@@ -176,6 +174,37 @@ function formatText(command){
 
     editor.focus();
 }
+
+// =========================================================
+// UNDO
+// =========================================================
+
+function undoEditor(){
+
+    document.execCommand(
+        "undo",
+        false,
+        null
+    );
+
+    editor.focus();
+}
+
+// =========================================================
+// REDO
+// =========================================================
+
+function redoEditor(){
+
+    document.execCommand(
+        "redo",
+        false,
+        null
+    );
+
+    editor.focus();
+}
+
 
 // =========================================================
 // INSERT LINK
@@ -198,37 +227,117 @@ function insertLink(){
 }
 
 // =========================================================
-// INSERT IMAGE
+// IMAGE UPLOAD FROM LOCAL FILE
 // =========================================================
 
 function insertImage(){
 
-    const url =
-    prompt(
-        "Enter image URL"
+    const input =
+    document.createElement(
+        "input"
     );
 
-    if(!url) return;
+    input.type = "file";
 
-    document.execCommand(
-        "insertImage",
-        false,
-        url
-    );
+    input.accept =
+    "image/*";
+
+    input.click();
+
+    input.onchange = () => {
+
+        const file =
+        input.files[0];
+
+        if(!file) return;
+
+        const reader =
+        new FileReader();
+
+        reader.onload = (e) => {
+
+            const imageHTML = `
+
+                <img
+                src="${e.target.result}"
+                class="editor-image"
+                alt="Uploaded Image">
+
+            `;
+
+            editor.innerHTML +=
+            imageHTML;
+
+            saveStatus.innerText =
+            "Image inserted ✔";
+        };
+
+        reader.readAsDataURL(
+            file
+        );
+    };
 }
 
 // =========================================================
-// INSERT VIDEO
+// YOUTUBE VIDEO EMBED
 // =========================================================
 
 function insertVideo(){
 
     const url =
     prompt(
-        "Paste YouTube embed URL"
+        "Paste YouTube URL"
     );
 
     if(!url) return;
+
+    let videoId = "";
+
+    // youtube.com/watch?v=
+
+    if(
+        url.includes(
+            "watch?v="
+        )
+    ){
+
+        videoId =
+        url.split(
+            "watch?v="
+        )[1];
+
+        if(videoId.includes("&")){
+
+            videoId =
+            videoId.split("&")[0];
+        }
+    }
+
+    // youtu.be/
+
+    else if(
+        url.includes(
+            "youtu.be/"
+        )
+    ){
+
+        videoId =
+        url.split(
+            "youtu.be/"
+        )[1];
+    }
+
+    if(!videoId){
+
+        alert(
+            "Invalid YouTube URL"
+        );
+
+        return;
+    }
+
+    const embedURL =
+    `https://www.youtube.com/embed/${videoId}`;
 
     const iframe = `
 
@@ -237,7 +346,7 @@ function insertVideo(){
             <iframe
             width="100%"
             height="500"
-            src="${url}"
+            src="${embedURL}"
             frameborder="0"
             allowfullscreen>
             </iframe>
@@ -246,7 +355,11 @@ function insertVideo(){
 
     `;
 
-    editor.innerHTML += iframe;
+    editor.innerHTML +=
+    iframe;
+
+    saveStatus.innerText =
+    "Video inserted ✔";
 }
 
 // =========================================================
@@ -280,7 +393,7 @@ function toggleHTMLMode(){
 }
 
 // =========================================================
-// AUTO SAVE DEMO
+// AUTO SAVE
 // =========================================================
 
 let saveTimer;
@@ -304,7 +417,7 @@ function autoSave(){
 }
 
 // =========================================================
-// EDITOR LISTENERS
+// LISTENERS
 // =========================================================
 
 editor.addEventListener(
@@ -332,15 +445,11 @@ function logout(){
         return;
     }
 
-    // remove auth tokens if needed
-
     localStorage.removeItem(
         "adminToken"
     );
 
     sessionStorage.clear();
-
-    // redirect
 
     window.location.href =
     "/login.html";
@@ -367,7 +476,7 @@ document.addEventListener(
             "Draft saved ✔";
         }
 
-        // TAB support
+        // TAB
 
         if(
             e.key === "Tab"
