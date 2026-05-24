@@ -1,9 +1,12 @@
 /* =========================================================
    EXCEL YOU - ADMIN EDITOR JS
 ========================================================= */
-/* =========================================================
-   ELEMENTS
-========================================================= */
+// =========================================================
+// ELEMENTS
+// =========================================================
+
+const body =
+document.body;
 
 const themeToggle =
 document.getElementById(
@@ -35,87 +38,90 @@ document.getElementById(
     "articleTitle"
 );
 
-/* =========================================================
-   THEME SYSTEM
-========================================================= */
+const saveStatus =
+document.getElementById(
+    "saveStatus"
+);
 
-function loadTheme(){
+// =========================================================
+// THEME
+// =========================================================
 
-    const savedTheme =
-    localStorage.getItem(
-        "theme"
-    );
+function applyTheme(theme){
 
-    if(savedTheme === "dark"){
+    if(theme === "dark"){
 
-        document.body.classList.add(
+        body.classList.add(
             "dark-theme"
         );
 
         themeToggle.innerHTML =
-        "☀️";
+            "☀️";
 
-        siteLogo.src =
-        "/assets/full-logo-white.png";
+        if(siteLogo){
 
-    }else{
+            siteLogo.src =
+            "/assets/full-logo-white.png";
+        }
 
-        document.body.classList.remove(
+    } else {
+
+        body.classList.remove(
             "dark-theme"
         );
 
         themeToggle.innerHTML =
-        "🌙";
+            "🌙";
 
-        siteLogo.src =
-        "/assets/full-logo.png";
+        if(siteLogo){
+
+            siteLogo.src =
+            "/assets/full-logo.png";
+        }
     }
 }
 
-/* =========================================================
-   TOGGLE THEME
-========================================================= */
+// Load saved theme
+
+const savedTheme =
+localStorage.getItem(
+    "theme"
+);
+
+applyTheme(
+    savedTheme || "light"
+);
+
+// Toggle theme
 
 themeToggle.addEventListener(
     "click",
     () => {
 
-        document.body.classList.toggle(
+        const isDark =
+        body.classList.contains(
             "dark-theme"
         );
 
-        const dark =
-        document.body.classList.contains(
-            "dark-theme"
+        const newTheme =
+        isDark
+        ? "light"
+        : "dark";
+
+        applyTheme(
+            newTheme
         );
-
-        if(dark){
-
-            themeToggle.innerHTML =
-            "☀️";
-
-            siteLogo.src =
-            "/assets/full-logo-white.png";
-
-        }else{
-
-            themeToggle.innerHTML =
-            "🌙";
-
-            siteLogo.src =
-            "/assets/full-logo.png";
-        }
 
         localStorage.setItem(
             "theme",
-            dark ? "dark" : "light"
+            newTheme
         );
     }
 );
 
-/* =========================================================
-   MOBILE SIDEBAR
-========================================================= */
+// =========================================================
+// MOBILE SIDEBAR
+// =========================================================
 
 mobileToggle.addEventListener(
     "click",
@@ -127,72 +133,125 @@ mobileToggle.addEventListener(
     }
 );
 
-/* =========================================================
-   LOGOUT
-========================================================= */
+// =========================================================
+// CLOSE SIDEBAR MOBILE
+// =========================================================
 
-function logout(){
+document.addEventListener(
+    "click",
+    (e) => {
 
-    const confirmLogout =
-    confirm(
-        "Logout from admin panel?"
-    );
+        if(
 
-    if(!confirmLogout){
-        return;
+            window.innerWidth <= 900 &&
+
+            !sidebar.contains(
+                e.target
+            ) &&
+
+            !mobileToggle.contains(
+                e.target
+            )
+
+        ){
+
+            sidebar.classList.remove(
+                "active"
+            );
+        }
     }
+);
 
-    localStorage.clear();
+// =========================================================
+// EDITOR COMMANDS
+// =========================================================
 
-    window.location.href =
-    "/login.html";
-}
-
-/* =========================================================
-   TOOLBAR FUNCTIONS
-========================================================= */
-
-function formatText(command, value = null){
+function formatText(command){
 
     document.execCommand(
         command,
         false,
-        value
+        null
     );
 
     editor.focus();
 }
 
-/* =========================================================
-   TOOLBAR BUTTON EVENTS
-========================================================= */
+// =========================================================
+// INSERT LINK
+// =========================================================
 
-document.querySelectorAll(
-    ".toolbar button"
-).forEach(button => {
+function insertLink(){
 
-    button.addEventListener(
-        "click",
-        () => {
-
-            const icon =
-            button.innerText.trim();
-
-            switch(icon){
-
-                case "HTML":
-
-                    toggleHTMLMode();
-
-                    break;
-            }
-        }
+    const url =
+    prompt(
+        "Enter URL"
     );
-});
 
-/* =========================================================
-   HTML MODE
-========================================================= */
+    if(!url) return;
+
+    document.execCommand(
+        "createLink",
+        false,
+        url
+    );
+}
+
+// =========================================================
+// INSERT IMAGE
+// =========================================================
+
+function insertImage(){
+
+    const url =
+    prompt(
+        "Enter image URL"
+    );
+
+    if(!url) return;
+
+    document.execCommand(
+        "insertImage",
+        false,
+        url
+    );
+}
+
+// =========================================================
+// INSERT VIDEO
+// =========================================================
+
+function insertVideo(){
+
+    const url =
+    prompt(
+        "Paste YouTube embed URL"
+    );
+
+    if(!url) return;
+
+    const iframe = `
+
+        <div class="video-wrapper">
+
+            <iframe
+            width="100%"
+            height="500"
+            src="${url}"
+            frameborder="0"
+            allowfullscreen>
+            </iframe>
+
+        </div>
+
+    `;
+
+    editor.innerHTML += iframe;
+}
+
+// =========================================================
+// HTML MODE
+// =========================================================
 
 let htmlMode = false;
 
@@ -200,41 +259,53 @@ function toggleHTMLMode(){
 
     if(!htmlMode){
 
-        editor.innerText =
+        editor.textContent =
         editor.innerHTML;
 
         htmlMode = true;
 
-    }else{
+        saveStatus.innerText =
+        "HTML mode enabled";
+
+    } else {
 
         editor.innerHTML =
-        editor.innerText;
+        editor.textContent;
 
         htmlMode = false;
+
+        saveStatus.innerText =
+        "Visual mode enabled";
     }
 }
 
-/* =========================================================
-   AUTO SAVE
-========================================================= */
+// =========================================================
+// AUTO SAVE DEMO
+// =========================================================
 
 let saveTimer;
 
 function autoSave(){
 
-    clearTimeout(saveTimer);
-
-    saveTimer = setTimeout(
-        () => {
-
-            console.log(
-                "Draft auto-saved"
-            );
-
-        },
-        2000
+    clearTimeout(
+        saveTimer
     );
+
+    saveStatus.innerText =
+    "Saving...";
+
+    saveTimer =
+    setTimeout(() => {
+
+        saveStatus.innerText =
+        "Draft saved ✔";
+
+    }, 1000);
 }
+
+// =========================================================
+// EDITOR LISTENERS
+// =========================================================
 
 editor.addEventListener(
     "input",
@@ -246,58 +317,82 @@ articleTitle.addEventListener(
     autoSave
 );
 
-/* =========================================================
-   KEYBOARD SHORTCUTS
-========================================================= */
+// =========================================================
+// LOGOUT
+// =========================================================
+
+function logout(){
+
+    const confirmLogout =
+    confirm(
+        "Are you sure you want to logout?"
+    );
+
+    if(!confirmLogout){
+        return;
+    }
+
+    // remove auth tokens if needed
+
+    localStorage.removeItem(
+        "adminToken"
+    );
+
+    sessionStorage.clear();
+
+    // redirect
+
+    window.location.href =
+    "/login.html";
+}
+
+// =========================================================
+// SHORTCUTS
+// =========================================================
 
 document.addEventListener(
     "keydown",
     (e) => {
 
-        // CTRL + B
+        // CTRL + S
 
         if(
             e.ctrlKey &&
-            e.key === "b"
+            e.key === "s"
         ){
 
             e.preventDefault();
 
-            formatText("bold");
+            saveStatus.innerText =
+            "Draft saved ✔";
         }
 
-        // CTRL + I
+        // TAB support
 
         if(
-            e.ctrlKey &&
-            e.key === "i"
+            e.key === "Tab"
         ){
 
-            e.preventDefault();
-
-            formatText("italic");
-        }
-
-        // CTRL + U
-
-        if(
-            e.ctrlKey &&
-            e.key === "u"
-        ){
+            document.execCommand(
+                "insertHTML",
+                false,
+                "&nbsp;&nbsp;&nbsp;&nbsp;"
+            );
 
             e.preventDefault();
-
-            formatText("underline");
         }
     }
 );
 
-/* =========================================================
-   INIT
-========================================================= */
+// =========================================================
+// INIT
+// =========================================================
 
-loadTheme();
+function init(){
 
-console.log(
-    "EXCEL YOU Editor Loaded"
-);
+    console.log(
+        "Editor initialized ✔"
+    );
+}
+
+init();

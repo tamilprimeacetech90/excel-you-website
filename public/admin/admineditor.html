@@ -4,6 +4,7 @@
 <head>
 
 <meta charset="UTF-8">
+
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0">
 
@@ -49,29 +50,54 @@ href="/css/admineditor.css">
             <div class="sidebar-menu">
 
                 <a href="/admin/admindashboard.html">
+
                     <i class="fas fa-chart-pie"></i>
-                    <span>Dashboard</span>
+
+                    <span>
+                        Dashboard
+                    </span>
+
                 </a>
 
                 <a href="/admin/adminsubjects.html">
+
                     <i class="fas fa-book"></i>
-                    <span>Subjects</span>
+
+                    <span>
+                        Subjects
+                    </span>
+
                 </a>
 
                 <a href="/admin/admintopics.html">
+
                     <i class="fas fa-layer-group"></i>
-                    <span>Topics</span>
+
+                    <span>
+                        Topics
+                    </span>
+
                 </a>
 
                 <a href="/admin/adminarticles.html">
+
                     <i class="fas fa-newspaper"></i>
-                    <span>Articles</span>
+
+                    <span>
+                        Articles
+                    </span>
+
                 </a>
 
                 <a href="/admin/admineditor.html"
                 class="active">
+
                     <i class="fas fa-pen"></i>
-                    <span>Editor</span>
+
+                    <span>
+                        Editor
+                    </span>
+
                 </a>
 
             </div>
@@ -89,7 +115,9 @@ href="/css/admineditor.css">
 
                 <i class="fas fa-right-from-bracket"></i>
 
-                <span>Logout</span>
+                <span>
+                    Logout
+                </span>
 
             </a>
 
@@ -121,7 +149,9 @@ href="/css/admineditor.css">
 
                 <div>
 
-                    <h1>Article Editor</h1>
+                    <h1>
+                        Article Editor
+                    </h1>
 
                     <p>
                         Create and manage articles
@@ -152,7 +182,31 @@ href="/css/admineditor.css">
         <div class="content">
 
             <!-- =============================================
-               EDITOR HEADER
+               BREADCRUMB
+            ============================================== -->
+
+            <div class="editor-breadcrumb">
+
+                <span>
+                    Dashboard
+                </span>
+
+                <i class="fas fa-angle-right"></i>
+
+                <span>
+                    Articles
+                </span>
+
+                <i class="fas fa-angle-right"></i>
+
+                <span class="active">
+                    Editor
+                </span>
+
+            </div>
+
+            <!-- =============================================
+               HEADER
             ============================================== -->
 
             <div class="editor-header">
@@ -165,6 +219,22 @@ href="/css/admineditor.css">
                     placeholder="Write article title..."
                     class="editor-title">
 
+                    <div class="editor-meta">
+
+                        <span id="saveStatus">
+
+                            Draft not saved
+
+                        </span>
+
+                        <span>
+
+                            Last edited just now
+
+                        </span>
+
+                    </div>
+
                 </div>
 
                 <div class="editor-actions">
@@ -172,12 +242,16 @@ href="/css/admineditor.css">
                     <button
                     class="draft-btn">
 
+                        <i class="fas fa-floppy-disk"></i>
+
                         Save Draft
 
                     </button>
 
                     <button
                     class="publish-btn">
+
+                        <i class="fas fa-paper-plane"></i>
 
                         Publish
 
@@ -188,13 +262,13 @@ href="/css/admineditor.css">
             </div>
 
             <!-- =============================================
-               EDITOR LAYOUT
+               MAIN EDITOR LAYOUT
             ============================================== -->
 
             <div class="editor-layout">
 
                 <!-- =========================================
-                   LEFT EDITOR
+                   LEFT SIDE
                 ========================================== -->
 
                 <div class="editor-main">
@@ -203,92 +277,152 @@ href="/css/admineditor.css">
 
                     <div class="toolbar">
 
-                        <button>
+                        <button onclick="formatText('bold')">
+
                             <i class="fas fa-bold"></i>
+
                         </button>
 
-                        <button>
+                        <button onclick="formatText('italic')">
+
                             <i class="fas fa-italic"></i>
+
                         </button>
 
-                        <button>
+                        <button onclick="formatText('underline')">
+
                             <i class="fas fa-underline"></i>
+
                         </button>
 
-                        <button>
+                        <button onclick="formatText('strikeThrough')">
+
                             <i class="fas fa-strikethrough"></i>
+
                         </button>
 
                         <div class="toolbar-divider"></div>
 
-                        <button>
-                            <i class="fas fa-heading"></i>
-                        </button>
+                        <button onclick="formatText('insertUnorderedList')">
 
-                        <button>
                             <i class="fas fa-list-ul"></i>
+
                         </button>
 
-                        <button>
+                        <button onclick="formatText('insertOrderedList')">
+
                             <i class="fas fa-list-ol"></i>
+
                         </button>
 
-                        <button>
-                            <i class="fas fa-quote-left"></i>
+                        <button onclick="formatText('justifyLeft')">
+
+                            <i class="fas fa-align-left"></i>
+
+                        </button>
+
+                        <button onclick="formatText('justifyCenter')">
+
+                            <i class="fas fa-align-center"></i>
+
+                        </button>
+
+                        <button onclick="formatText('justifyRight')">
+
+                            <i class="fas fa-align-right"></i>
+
                         </button>
 
                         <div class="toolbar-divider"></div>
 
-                        <button>
+                        <button onclick="insertLink()">
+
                             <i class="fas fa-link"></i>
+
                         </button>
 
-                        <button>
+                        <button onclick="insertImage()">
+
                             <i class="fas fa-image"></i>
+
                         </button>
 
-                        <button>
+                        <button onclick="insertVideo()">
+
                             <i class="fas fa-video"></i>
+
                         </button>
 
                         <div class="toolbar-divider"></div>
 
-                        <button>
+                        <button onclick="toggleHTMLMode()">
+
                             HTML
+
                         </button>
 
                     </div>
 
-                    <!-- EDITOR -->
+                    <!-- =====================================
+                         EDITOR WRAPPER
+                    ====================================== -->
 
-                    <div
-                    id="editor"
-                    class="editor-area"
-                    contenteditable="true">
+                    <div class="editor-wrapper">
 
-                        <h2>
-                            Welcome to EXCEL YOU
-                        </h2>
+                        <div
+                        id="editor"
+                        class="editor-area"
+                        contenteditable="true">
 
-                        <p>
-                            Start writing your article...
-                        </p>
+                            <h1>
+                                Introduction to JavaScript Arrays
+                            </h1>
+
+                            <p>
+                                JavaScript arrays are used to store multiple values inside a single variable.
+                            </p>
+
+                            <p>
+                                Arrays are one of the most important data structures in JavaScript.
+                            </p>
+
+                            <img
+                            src="https://picsum.photos/1200/500"
+                            class="editor-image">
+
+                            <h2>
+                                Why Arrays Matter
+                            </h2>
+
+                            <p>
+                                Arrays allow developers to organize, loop, filter, map, and manage collections of data efficiently.
+                            </p>
+
+                        </div>
 
                     </div>
 
                 </div>
 
                 <!-- =========================================
-                   RIGHT SETTINGS PANEL
+                   RIGHT SIDEBAR
                 ========================================== -->
 
                 <div class="editor-sidebar">
 
+                    <!-- SETTINGS -->
+
                     <div class="sidebar-card">
 
-                        <h3>
-                            Article Settings
-                        </h3>
+                        <div class="card-title">
+
+                            <i class="fas fa-sliders"></i>
+
+                            <h3>
+                                Article Settings
+                            </h3>
+
+                        </div>
 
                         <!-- SUBJECT -->
 
@@ -348,27 +482,55 @@ href="/css/admineditor.css">
 
                         </div>
 
-                        <!-- THUMBNAIL -->
+                    </div>
 
-                        <div class="form-group">
+                    <!-- THUMBNAIL -->
 
-                            <label>
+                    <div class="sidebar-card">
+
+                        <div class="card-title">
+
+                            <i class="fas fa-image"></i>
+
+                            <h3>
                                 Featured Image
-                            </label>
-
-                            <div class="upload-box">
-
-                                <i class="fas fa-image"></i>
-
-                                <p>
-                                    Upload Thumbnail
-                                </p>
-
-                            </div>
+                            </h3>
 
                         </div>
 
-                        <!-- TAGS -->
+                        <div class="thumbnail-preview">
+
+                            <img
+                            src="https://picsum.photos/500/300"
+                            alt="thumbnail">
+
+                        </div>
+
+                        <div class="upload-box">
+
+                            <i class="fas fa-cloud-arrow-up"></i>
+
+                            <p>
+                                Upload Thumbnail
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <!-- SEO -->
+
+                    <div class="sidebar-card">
+
+                        <div class="card-title">
+
+                            <i class="fas fa-globe"></i>
+
+                            <h3>
+                                SEO Settings
+                            </h3>
+
+                        </div>
 
                         <div class="form-group">
 
@@ -381,8 +543,6 @@ href="/css/admineditor.css">
                             placeholder="JavaScript, HTML">
 
                         </div>
-
-                        <!-- SLUG -->
 
                         <div class="form-group">
 
@@ -411,4 +571,5 @@ href="/css/admineditor.css">
 <script src="/js/admineditor.js"></script>
 
 </body>
+
 </html>
