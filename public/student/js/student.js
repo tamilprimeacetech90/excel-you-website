@@ -1,6 +1,5 @@
 // =========================
 // EXCEL YOU STUDENT SYSTEM
-// FULL UPGRADED VERSION
 // student.js
 // =========================
 
@@ -21,6 +20,9 @@ let activeTopicId = null;
 // =========================
 // ELEMENTS
 // =========================
+
+const body =
+    document.body;
 
 const subjectContainer =
     document.getElementById(
@@ -98,7 +100,7 @@ if(mobileBtn){
         "click",
         () => {
 
-            sidebar?.classList.toggle(
+            sidebar.classList.toggle(
                 "active"
             );
 
@@ -131,7 +133,7 @@ function escapeHTML(str = "") {
 
 
 // =========================
-// FORMAT TEXT
+// SHORT TEXT
 // =========================
 
 function shortText(
@@ -151,7 +153,7 @@ function shortText(
 
 
 // =========================
-// SHOW LOADER
+// LOADING UI
 // =========================
 
 function showLoading(container) {
@@ -160,12 +162,29 @@ function showLoading(container) {
 
     container.innerHTML = `
 
-        <div class="loading-box">
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
 
-            <div class="loader"></div>
+    `;
+
+}
+
+
+// =========================
+// EMPTY UI
+// =========================
+
+function emptyBox(message) {
+
+    return `
+
+        <div class="welcome-box">
 
             <p>
-                Loading...
+
+                ${escapeHTML(message)}
+
             </p>
 
         </div>
@@ -176,26 +195,7 @@ function showLoading(container) {
 
 
 // =========================
-// EMPTY BOX
-// =========================
-
-function emptyBox(message) {
-
-    return `
-
-        <div class="empty-box">
-
-            ${escapeHTML(message)}
-
-        </div>
-
-    `;
-
-}
-
-
-// =========================
-// API FETCH
+// FETCH JSON
 // =========================
 
 async function fetchJSON(url) {
@@ -236,7 +236,8 @@ async function loadSubjects() {
                 "/api/subjects"
             );
 
-        // FILTER LANGUAGE
+        // LANGUAGE FILTER
+
         allSubjects =
             subjects.filter(subject =>
 
@@ -250,7 +251,8 @@ async function loadSubjects() {
             allSubjects
         );
 
-        // RESET UI
+        // RESET VIEW
+
         welcomeBox?.classList.remove(
             "hidden"
         );
@@ -314,20 +316,6 @@ function renderSubjects(subjects) {
 
             : "";
 
-        const progress =
-            subject.progress || 0;
-
-        const level =
-            subject.level ||
-            "Immortal Student";
-
-        const topicCount =
-            subject.topicCount || 0;
-
-        const image =
-            subject.image ||
-            "/assets/subjects/default.jpg";
-
         subjectContainer.innerHTML += `
 
             <div
@@ -336,22 +324,6 @@ function renderSubjects(subjects) {
                     '${subject._id}'
                 )"
             >
-
-                <div class="subject-image-wrap">
-
-                    <img
-                        src="${escapeHTML(image)}"
-                        alt="${escapeHTML(subject.name)}"
-                        class="subject-image"
-                    >
-
-                    <div class="subject-level">
-
-                        ⚡ ${escapeHTML(level)}
-
-                    </div>
-
-                </div>
 
                 <h3>
 
@@ -367,45 +339,17 @@ function renderSubjects(subjects) {
                     ${shortText(
 
                         escapeHTML(
+
                             subject.description ||
+
                             "No description available"
+
                         ),
 
                         90
                     )}
 
                 </p>
-
-                <div class="subject-meta">
-
-                    📚 ${topicCount} Topics
-
-                </div>
-
-                <div class="progress-area">
-
-                    <div class="progress-text">
-
-                        <span>
-                            Progress
-                        </span>
-
-                        <span>
-                            ${progress}%
-                        </span>
-
-                    </div>
-
-                    <div class="progress-bar">
-
-                        <div
-                            class="progress-fill"
-                            style="width:${progress}%"
-                        ></div>
-
-                    </div>
-
-                </div>
 
             </div>
 
@@ -433,19 +377,23 @@ async function openSubject(subjectId) {
             allSubjects
         );
 
+        // HIDE WELCOME
+
         welcomeBox?.classList.add(
             "hidden"
         );
 
-        lessonViewer?.classList.add(
-            "hidden"
-        );
+        // SHOW TOPIC AREA
 
         topicContainer?.classList.remove(
             "hidden"
         );
 
-        topicsGrid.innerHTML = "";
+        // HIDE LESSON
+
+        lessonViewer?.classList.add(
+            "hidden"
+        );
 
         showLoading(
             topicsGrid
@@ -463,9 +411,10 @@ async function openSubject(subjectId) {
         );
 
         // MOBILE AUTO CLOSE
+
         if(window.innerWidth < 992){
 
-            sidebar?.classList.remove(
+            sidebar.classList.remove(
                 "active"
             );
 
@@ -498,8 +447,6 @@ function renderTopics(topics) {
 
     topicsGrid.innerHTML = "";
 
-    // SAFETY CHECK
-
     if(
         !Array.isArray(topics) ||
         !topics.length
@@ -524,10 +471,6 @@ function renderTopics(topics) {
 
             : "";
 
-        // =========================
-        // TOPIC PREVIEW
-        // =========================
-
         const preview =
 
             topic.contentHTML
@@ -540,18 +483,7 @@ function renderTopics(topics) {
             ? String(topic.content)
                 .replace(/<[^>]*>/g, "")
 
-            : Array.isArray(
-                topic.contentBlocks
-            ) &&
-              topic.contentBlocks.length
-
-            ? "Interactive lesson available."
-
-            : "No content";
-
-        // =========================
-        // TOPIC CARD
-        // =========================
+            : "Interactive lesson available.";
 
         topicsGrid.innerHTML += `
 
@@ -605,6 +537,8 @@ async function openTopic(topicId) {
             allTopics
         );
 
+        // SHOW LESSON
+
         lessonViewer?.classList.remove(
             "hidden"
         );
@@ -614,15 +548,8 @@ async function openTopic(topicId) {
 
         lessonContent.innerHTML = `
 
-            <div class="loading-box">
-
-                <div class="loader"></div>
-
-                <p>
-                    Loading lesson...
-                </p>
-
-            </div>
+            <div class="skeleton"></div>
+            <div class="skeleton"></div>
 
         `;
 
@@ -632,13 +559,15 @@ async function openTopic(topicId) {
             );
 
         // TITLE
+
         lessonTitle.innerHTML =
 
             escapeHTML(
                 topic.title || "Lesson"
             );
 
-        // CONTENT RESET
+        // RESET CONTENT
+
         lessonContent.innerHTML = "";
 
         // =========================
@@ -671,7 +600,7 @@ async function openTopic(topicId) {
         }
 
         // =========================
-        // BLOCK CONTENT SYSTEM
+        // BLOCK CONTENT
         // =========================
 
         else if(
@@ -683,9 +612,7 @@ async function openTopic(topicId) {
 
             topic.contentBlocks.forEach(block => {
 
-                // =================
                 // HEADING
-                // =================
 
                 if(block.type === "heading"){
 
@@ -701,9 +628,7 @@ async function openTopic(topicId) {
 
                 }
 
-                // =================
                 // TEXT
-                // =================
 
                 if(block.type === "text"){
 
@@ -719,9 +644,7 @@ async function openTopic(topicId) {
 
                 }
 
-                // =================
                 // IMAGE
-                // =================
 
                 if(block.type === "image"){
 
@@ -730,23 +653,19 @@ async function openTopic(topicId) {
                         <img
                             src="${escapeHTML(block.value)}"
                             alt="Lesson Image"
-                            class="lesson-image"
                         >
 
                     `;
 
                 }
 
-                // =================
                 // VIDEO
-                // =================
 
                 if(block.type === "video"){
 
                     lessonContent.innerHTML += `
 
                         <iframe
-                            class="lesson-video"
                             src="${escapeHTML(block.value)}"
                             frameborder="0"
                             allowfullscreen
@@ -756,27 +675,23 @@ async function openTopic(topicId) {
 
                 }
 
-                // =================
                 // CODE
-                // =================
 
                 if(block.type === "code"){
 
                     lessonContent.innerHTML += `
 
-                        <pre class="code-block">
+<pre>
 
 <code>${escapeHTML(block.value)}</code>
 
-                        </pre>
+</pre>
 
                     `;
 
                 }
 
-                // =================
                 // QUOTE
-                // =================
 
                 if(block.type === "quote"){
 
@@ -797,7 +712,7 @@ async function openTopic(topicId) {
         }
 
         // =========================
-        // EMPTY
+        // EMPTY CONTENT
         // =========================
 
         else {
@@ -867,17 +782,18 @@ function searchSubjects() {
 
 
 // =========================
-// THEME SYSTEM
+// APPLY THEME
 // =========================
 
 function applyTheme(theme){
 
-    document.body.setAttribute(
+    body.setAttribute(
         "data-theme",
         theme
     );
 
-    // THEME BUTTON ICON
+    // BUTTON ICON
+
     if(themeBtn){
 
         themeBtn.innerHTML =
@@ -890,9 +806,7 @@ function applyTheme(theme){
 
     }
 
-    // =========================
-    // LOGO CHANGE
-    // =========================
+    // LOGO
 
     if(siteLogo){
 
@@ -919,7 +833,6 @@ const savedTheme =
         "theme"
     ) || "dark";
 
-// APPLY SAVED THEME
 applyTheme(savedTheme);
 
 
@@ -935,7 +848,7 @@ if(themeBtn){
 
             const current =
 
-                document.body.getAttribute(
+                body.getAttribute(
                     "data-theme"
                 );
 
@@ -961,20 +874,6 @@ if(themeBtn){
 
 
 // =========================
-// LANGUAGE CHANGE
-// =========================
-
-if(langSelect){
-
-    langSelect.addEventListener(
-        "change",
-        loadSubjects
-    );
-
-}
-
-
-// =========================
 // SEARCH EVENT
 // =========================
 
@@ -989,7 +888,148 @@ if(searchInput){
 
 
 // =========================
-// CLOSE SIDEBAR OUTSIDE CLICK
+// LANGUAGE CHANGE
+// =========================
+
+if(langSelect){
+
+    langSelect.addEventListener(
+        "change",
+        loadSubjects
+    );
+
+}
+
+// =========================
+// STUDENT LOGIN UI
+// =========================
+
+function updateStudentNavbar(){
+
+    // GET STUDENT
+
+    const studentData =
+        localStorage.getItem(
+            "student"
+        );
+
+    // NAV BUTTONS
+
+    const loginBtn =
+        document.querySelector(
+            'a[href="/studentlogin.html"]'
+        );
+
+    const signupBtn =
+        document.querySelector(
+            'a[href="/studentsignup.html"]'
+        );
+
+    const profileBtn =
+        document.querySelector(
+            'a[href="/profile.html"]'
+        );
+
+    // IF NOT LOGGED IN
+
+    if(!studentData){
+
+        return;
+
+    }
+
+    // PARSE DATA
+
+    const student =
+        JSON.parse(studentData);
+
+    // REMOVE LOGIN/SIGNUP
+
+    if(loginBtn){
+
+        loginBtn.remove();
+
+    }
+
+    if(signupBtn){
+
+        signupBtn.remove();
+
+    }
+
+    // CREATE XP BADGE
+
+    const controls =
+        document.querySelector(
+            ".controls"
+        );
+
+    const badge =
+        document.createElement(
+            "div"
+        );
+
+    badge.className =
+        "xp-badge";
+
+    badge.innerHTML = `
+
+        ⚡ Lv.${student.level || 1}
+        ${student.rank || "Scholar"}
+
+    `;
+
+    // INSERT BEFORE PROFILE
+
+    if(profileBtn){
+
+        controls.insertBefore(
+            badge,
+            profileBtn
+        );
+
+    }
+
+    // LOGOUT BUTTON
+
+    const logoutBtn =
+        document.createElement(
+            "button"
+        );
+
+    logoutBtn.className =
+        "logout-btn";
+
+    logoutBtn.innerHTML =
+        "Logout";
+
+    logoutBtn.addEventListener(
+        "click",
+        () => {
+
+            localStorage.removeItem(
+                "student"
+            );
+
+            window.location.reload();
+
+        }
+    );
+
+    controls.appendChild(
+        logoutBtn
+    );
+
+}
+
+
+// =========================
+// INIT
+// =========================
+
+updateStudentNavbar();
+// =========================
+// CLOSE SIDEBAR
 // =========================
 
 document.addEventListener(
@@ -1027,6 +1067,12 @@ window.addEventListener(
     () => {
 
         loadSubjects();
+
+        // =====================
+        // UPDATE LOGIN NAVBAR
+        // =====================
+
+        updateStudentNavbar();
 
     }
 );

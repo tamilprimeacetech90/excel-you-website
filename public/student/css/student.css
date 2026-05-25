@@ -1,61 +1,42 @@
 /* =========================
-   GOOGLE FONT
+   EXCEL YOU STUDENT CSS
+   student.css
 ========================= */
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
-
 /* =========================
-   THEME SYSTEM
+   THEME
 ========================= */
 
 :root {
 
-    /* LIGHT MODE */
     --bg: #f8fafc;
-    --card: rgba(255,255,255,0.78);
+    --card: rgba(255,255,255,0.75);
+    --text: #07111f;
+    --muted: #64748b;
+    --border: rgba(15,23,42,0.08);
     --glass: rgba(255,255,255,0.55);
 
-    --text: #0f172a;
-    --text-muted: #64748b;
-
-    --border:
-        rgba(15,23,42,0.08);
-
-    --primary: #38bdf8;
-    --accent: #2563eb;
-
-    --shadow:
-        0 10px 35px rgba(15,23,42,0.08);
-
-    --radius: 24px;
+    --primary: #2563eb;
+    --secondary: #7c3aed;
 
 }
 
 [data-theme="dark"] {
 
-    /* DARK MODE */
     --bg: #07111f;
     --card: rgba(255,255,255,0.06);
+    --text: #ffffff;
+    --muted: #94a3b8;
+    --border: rgba(255,255,255,0.08);
     --glass: rgba(255,255,255,0.05);
 
-    --text: #ffffff;
-    --text-muted: #94a3b8;
-
-    --border:
-        rgba(255,255,255,0.08);
-
     --primary: #38bdf8;
-    --accent: #8b5cf6;
-
-    --shadow:
-        0 10px 40px rgba(0,0,0,0.4);
+    --secondary: #8b5cf6;
 
 }
 
-
 /* =========================
-   GLOBAL RESET
+   RESET
 ========================= */
 
 * {
@@ -74,8 +55,6 @@ html {
 
 body {
 
-    margin: 0;
-
     font-family: 'Poppins', sans-serif;
 
     background: var(--bg);
@@ -84,26 +63,36 @@ body {
 
     overflow-x: hidden;
 
-    transition:
-        background 0.3s ease,
-        color 0.3s ease;
+    transition: 0.3s ease;
 
 }
 
+a {
+
+    text-decoration: none;
+
+    color: inherit;
+
+}
+
+img {
+
+    display: block;
+
+    max-width: 100%;
+
+}
 
 /* =========================
-   BACKGROUND GLOW
+   GLOW BACKGROUND
 ========================= */
 
-body::before,
-body::after {
-
-    content: "";
+.bg-glow {
 
     position: fixed;
 
-    width: 450px;
-    height: 450px;
+    width: 500px;
+    height: 500px;
 
     border-radius: 50%;
 
@@ -115,51 +104,35 @@ body::after {
 
 }
 
-body::before {
+.glow1 {
+
+    background: #2563eb;
 
     top: -120px;
     left: -120px;
 
-    background: #2563eb;
-
 }
 
-body::after {
+.glow2 {
+
+    background: #7c3aed;
 
     right: -120px;
     bottom: -120px;
 
-    background: #7c3aed;
-
 }
 
-
 /* =========================
-   LINKS
+   TOPBAR
 ========================= */
 
-a {
-
-    text-decoration: none;
-
-    color: inherit;
-
-}
-
-
-/* =========================
-   NAVBAR
-========================= */
-
-.navbar {
+.topbar {
 
     width: 100%;
 
-    position: fixed;
+    position: sticky;
 
     top: 0;
-
-    left: 0;
 
     z-index: 1000;
 
@@ -169,22 +142,15 @@ a {
 
     align-items: center;
 
-    padding: 16px 5%;
-
-    background:
-        rgba(6,11,20,0.72);
+    padding: 14px 5%;
 
     backdrop-filter: blur(18px);
 
-    border-bottom:
-        1px solid var(--border);
+    background: rgba(6,11,20,0.72);
+
+    border-bottom: 1px solid var(--border);
 
 }
-
-
-/* =========================
-   LOGO
-========================= */
 
 .logo-wrap {
 
@@ -196,76 +162,121 @@ a {
 
 .logo-img {
 
-    height:
-        clamp(44px,5vw,62px);
-
-    width: auto;
+    width: clamp(140px,18vw,220px);
 
     object-fit: contain;
 
 }
 
-
-/* =========================
-   NAVIGATION LINKS
-========================= */
-
-.links {
+.controls {
 
     display: flex;
 
     align-items: center;
 
-    gap: 18px;
-
-    flex-wrap: wrap;
+    gap: 12px;
 
 }
 
-.links a {
+.controls input,
+.controls select {
 
-    color: var(--text-muted);
+    border: 1px solid var(--border);
 
-    font-size: 15px;
+    background: var(--glass);
 
-    font-weight: 500;
+    color: var(--text);
+
+    padding: 12px 16px;
+
+    border-radius: 14px;
+
+    outline: none;
+
+    backdrop-filter: blur(14px);
+
+}
+
+#search {
+
+    width: 240px;
+
+}
+
+.theme-btn,
+.mobile-btn {
+
+    width: 48px;
+    height: 48px;
+
+    border-radius: 50%;
+
+    border: none;
+
+    cursor: pointer;
+
+    color: white;
+
+    font-size: 18px;
+
+    background: linear-gradient(
+        135deg,
+        var(--primary),
+        var(--secondary)
+    );
 
     transition: 0.3s ease;
 
-    position: relative;
+}
+
+.theme-btn:hover,
+.mobile-btn:hover {
+
+    transform: scale(1.08);
 
 }
 
-.links a:hover {
+.mobile-btn {
 
-    color: var(--primary);
-
-    text-shadow:
-        0 0 10px rgba(56,189,248,0.5);
+    display: none;
 
 }
 
+.student-login-btn {
+
+    padding: 12px 22px;
+
+    border-radius: 14px;
+
+    background: linear-gradient(
+        135deg,
+        var(--primary),
+        var(--secondary)
+    );
+
+    color: white;
+
+    font-weight: 600;
+
+    transition: 0.3s ease;
+
+}
+
+.student-login-btn:hover {
+
+    transform: translateY(-2px);
+
+}
 
 /* =========================
-   HERO SECTION
+   HERO
 ========================= */
 
 .hero {
 
-    min-height: 90vh;
-
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: center;
-
-    align-items: center;
+    padding: 70px 8% 40px;
 
     text-align: center;
-
-    padding:
-        140px 20px 80px;
 
 }
 
@@ -279,38 +290,31 @@ a {
 
     background: var(--glass);
 
-    border:
-        1px solid var(--border);
+    border: 1px solid var(--border);
 
-    color: var(--text-muted);
+    margin-bottom: 24px;
 
-    margin-bottom: 28px;
-
-    backdrop-filter: blur(18px);
+    color: var(--muted);
 
 }
 
 .hero h1 {
 
-    font-size:
-        clamp(42px,7vw,78px);
+    font-size: clamp(42px,6vw,68px);
 
     line-height: 1.1;
 
-    margin-bottom: 24px;
-
-    max-width: 1000px;
+    margin-bottom: 20px;
 
 }
 
 .hero h1 span {
 
-    background:
-        linear-gradient(
-            135deg,
-            #60a5fa,
-            #a855f7
-        );
+    background: linear-gradient(
+        135deg,
+        #60a5fa,
+        #a855f7
+    );
 
     -webkit-background-clip: text;
 
@@ -322,257 +326,500 @@ a {
 
     max-width: 760px;
 
+    margin: auto;
+
+    color: var(--muted);
+
+    line-height: 1.8;
+
     font-size: 18px;
 
-    line-height: 1.9;
-
-    color: var(--text-muted);
-
 }
-
 
 /* =========================
-   BUTTONS
+   MAIN LAYOUT
 ========================= */
 
-button,
-.btn {
+.main-layout {
 
-    border: none;
+    display: grid;
 
-    cursor: pointer;
+    grid-template-columns: 320px 1fr;
 
-    border-radius: 14px;
+    gap: 24px;
 
-    transition: 0.3s ease;
-
-}
-
-button:hover,
-.btn:hover {
-
-    transform: translateY(-3px);
+    padding: 0 5% 60px;
 
 }
-
 
 /* =========================
-   PRIMARY BUTTON
+   SIDEBAR
 ========================= */
 
-.primary-btn {
+.sidebar {
 
-    padding: 14px 26px;
+    position: sticky;
 
-    background:
-        linear-gradient(
-            135deg,
-            var(--primary),
-            var(--accent)
-        );
+    top: 100px;
 
-    color: white;
+    height: calc(100vh - 120px);
 
-    font-weight: 600;
+    overflow-y: auto;
 
-    box-shadow:
-        0 8px 24px rgba(37,99,235,0.25);
+    background: var(--card);
+
+    border: 1px solid var(--border);
+
+    border-radius: 28px;
+
+    padding: 24px;
+
+    backdrop-filter: blur(18px);
 
 }
 
+.sidebar::-webkit-scrollbar {
+
+    width: 6px;
+
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+
+    background: rgba(255,255,255,0.12);
+
+    border-radius: 20px;
+
+}
+
+.sidebar-header {
+
+    margin-top: 28px;
+    margin-bottom: 20px;
+
+}
 
 /* =========================
-   SECTION
+   STUDENT CTA
 ========================= */
 
-.section {
+.student-cta {
 
-    padding: 90px 5%;
+    background: var(--glass);
 
-}
+    border: 1px solid var(--border);
 
-.section-title {
+    border-radius: 24px;
+
+    padding: 20px;
 
     text-align: center;
 
-    margin-bottom: 60px;
-
 }
 
-.section-title h2 {
+.anime-character {
 
-    font-size:
-        clamp(34px,5vw,54px);
+    width: 160px;
+
+    margin: auto;
 
     margin-bottom: 18px;
 
 }
 
-.section-title p {
+.student-cta h3 {
 
-    color: var(--text-muted);
+    margin-bottom: 14px;
 
-    max-width: 700px;
+    line-height: 1.4;
 
-    margin: auto;
+}
+
+.student-cta p {
+
+    color: var(--muted);
+
+    margin-bottom: 12px;
+
+}
+
+.student-cta ul {
+
+    list-style: none;
+
+    text-align: left;
+
+    margin-bottom: 20px;
+
+}
+
+.student-cta ul li {
+
+    margin-bottom: 10px;
+
+    color: var(--muted);
+
+}
+
+.cta-btn {
+
+    display: inline-block;
+
+    width: 100%;
+
+    padding: 14px;
+
+    border-radius: 16px;
+
+    background: linear-gradient(
+        135deg,
+        var(--primary),
+        var(--secondary)
+    );
+
+    color: white;
+
+    font-weight: 600;
+
+    transition: 0.3s ease;
+
+}
+
+.cta-btn:hover {
+
+    transform: translateY(-3px);
+
+}
+
+/* =========================
+   SUBJECT CARD
+========================= */
+
+.subject-card {
+
+    background: var(--glass);
+
+    border: 1px solid var(--border);
+
+    padding: 18px;
+
+    border-radius: 20px;
+
+    margin-bottom: 18px;
+
+    cursor: pointer;
+
+    transition: 0.3s ease;
+
+}
+
+.subject-card:hover {
+
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 0 20px rgba(96,165,250,0.15);
+
+}
+
+.subject-card.active {
+
+    border-color: #60a5fa;
+
+}
+
+.subject-card h3 {
+
+    margin-bottom: 10px;
+
+}
+
+.subject-card p {
+
+    color: var(--muted);
+
+    line-height: 1.7;
+
+    font-size: 14px;
+
+}
+
+/* =========================
+   CONTENT AREA
+========================= */
+
+.content-area {
+
+    min-height: 700px;
+
+}
+
+.welcome-box,
+.topic-box,
+.lesson-viewer {
+
+    background: var(--card);
+
+    border: 1px solid var(--border);
+
+    border-radius: 28px;
+
+    padding: 32px;
+
+    margin-bottom: 24px;
+
+    backdrop-filter: blur(18px);
+
+}
+
+.welcome-box h2 {
+
+    margin-bottom: 14px;
+
+    font-size: 32px;
+
+}
+
+.welcome-box p {
+
+    color: var(--muted);
 
     line-height: 1.8;
 
 }
 
-
 /* =========================
-   CARD GRID
+   TOPICS
 ========================= */
 
-.cards {
+.topics-grid {
 
     display: grid;
 
     grid-template-columns:
-        repeat(auto-fit,minmax(280px,1fr));
+        repeat(auto-fit,minmax(240px,1fr));
 
-    gap: 24px;
+    gap: 18px;
 
 }
 
+.topic-card {
 
-/* =========================
-   CARD
-========================= */
+    background: var(--glass);
 
-.card {
+    border: 1px solid var(--border);
 
-    background: var(--card);
+    border-radius: 20px;
 
-    border:
-        1px solid var(--border);
+    padding: 20px;
 
-    border-radius: var(--radius);
-
-    padding: 28px;
-
-    backdrop-filter: blur(18px);
+    cursor: pointer;
 
     transition: 0.3s ease;
 
-    box-shadow: var(--shadow);
+}
+
+.topic-card:hover {
+
+    transform: translateY(-4px);
 
 }
 
-.card:hover {
+.topic-card.active {
 
-    transform:
-        translateY(-8px);
-
-    border-color:
-        rgba(96,165,250,0.35);
-
-    box-shadow:
-        0 20px 50px rgba(96,165,250,0.12);
+    border-color: #60a5fa;
 
 }
 
-.card h3 {
+.topic-card h3 {
 
-    margin-bottom: 14px;
-
-    font-size: 22px;
+    margin-bottom: 10px;
 
 }
 
-.card p {
+.topic-card p {
 
-    color: var(--text-muted);
+    color: var(--muted);
 
-    line-height: 1.8;
+    line-height: 1.7;
+
+    font-size: 14px;
 
 }
-
 
 /* =========================
-   PROFILE IMAGE
+   LESSON
 ========================= */
 
-.profile {
+.lesson-header {
 
-    width: 160px;
-    height: 160px;
+    margin-bottom: 30px;
 
-    border-radius: 50%;
+    border-bottom: 1px solid var(--border);
 
-    border:
-        4px solid var(--primary);
-
-    object-fit: cover;
-
-    margin-bottom: 24px;
-
-    box-shadow:
-        0 10px 30px rgba(56,189,248,0.25);
+    padding-bottom: 20px;
 
 }
 
+.lesson-header h1 {
+
+    font-size: clamp(30px,5vw,50px);
+
+    line-height: 1.2;
+
+}
+
+.lesson-content {
+
+    line-height: 1.9;
+
+    color: var(--muted);
+
+    font-size: 17px;
+
+}
+
+.lesson-content h1,
+.lesson-content h2,
+.lesson-content h3 {
+
+    color: var(--text);
+
+    margin-top: 28px;
+    margin-bottom: 16px;
+
+}
+
+.lesson-content p {
+
+    margin-bottom: 18px;
+
+}
+
+.lesson-content img {
+
+    border-radius: 20px;
+
+    margin: 24px auto;
+
+    border: 1px solid var(--border);
+
+}
+
+.lesson-content iframe {
+
+    width: 100%;
+
+    min-height: 420px;
+
+    border: none;
+
+    border-radius: 20px;
+
+    margin-top: 24px;
+
+}
+
+/* =========================
+   REFERENCES
+========================= */
+
+.references-section {
+
+    margin-top: 50px;
+
+    padding-top: 30px;
+
+    border-top: 1px solid var(--border);
+
+}
+
+.references-section h3 {
+
+    margin-bottom: 18px;
+
+}
+
+.references-section ul {
+
+    padding-left: 20px;
+
+    color: var(--muted);
+
+}
+
+.references-section li {
+
+    margin-bottom: 10px;
+
+}
+
+/* =========================
+   ARTICLE END
+========================= */
+
+.article-end-line {
+
+    width: 100%;
+
+    height: 1px;
+
+    background: var(--border);
+
+    margin: 40px 0;
+
+}
+
+/* =========================
+   ADSENSE
+========================= */
+
+.adsense-box {
+
+    width: 100%;
+
+    min-height: 120px;
+
+    border-radius: 20px;
+
+    border: 1px dashed var(--border);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: var(--muted);
+
+    background: var(--glass);
+
+}
 
 /* =========================
    LOADER
-========================= */
-
-.loader {
-
-    width: 60px;
-    height: 60px;
-
-    margin: 40px auto;
-
-    border-radius: 50%;
-
-    border:
-        5px solid rgba(255,255,255,0.08);
-
-    border-top:
-        5px solid #60a5fa;
-
-    animation:
-        spin 1s linear infinite;
-
-}
-
-@keyframes spin {
-
-    100% {
-
-        transform: rotate(360deg);
-
-    }
-
-}
-
-
-/* =========================
-   SKELETON
 ========================= */
 
 .skeleton {
 
     width: 100%;
 
-    height: 140px;
+    height: 120px;
 
-    border-radius: 22px;
+    border-radius: 20px;
 
-    background:
-        linear-gradient(
-            90deg,
-            rgba(255,255,255,0.03),
-            rgba(255,255,255,0.10),
-            rgba(255,255,255,0.03)
-        );
+    margin-bottom: 16px;
+
+    background: linear-gradient(
+        90deg,
+        rgba(255,255,255,0.04),
+        rgba(255,255,255,0.10),
+        rgba(255,255,255,0.04)
+    );
 
     background-size: 300% 100%;
 
-    animation:
-        shimmer 1.6s infinite;
+    animation: shimmer 1.5s infinite;
 
 }
 
@@ -592,102 +839,167 @@ button:hover,
 
 }
 
-
 /* =========================
-   FOOTER
+   UTILITIES
 ========================= */
+
+.hidden {
+
+    display: none;
+
+}
 
 footer {
 
-    padding: 50px 20px;
-
     text-align: center;
 
-    color: var(--text-muted);
+    padding: 40px 20px;
 
-    border-top:
-        1px solid var(--border);
+    color: var(--muted);
 
-    margin-top: 80px;
+    border-top: 1px solid var(--border);
 
 }
-
 
 /* =========================
-   MOBILE RESPONSIVE
+   MOBILE
 ========================= */
 
-@media (max-width: 992px) {
+@media(max-width:992px){
 
-    .navbar {
-
-        padding: 16px 20px;
-
-    }
-
-    .hero {
-
-        padding:
-            130px 20px 60px;
-
-    }
-
-}
-
-@media (max-width: 768px) {
-
-    .navbar {
-
-        flex-direction: column;
-
-        gap: 16px;
-
-        text-align: center;
-
-    }
-
-    .links {
-
-        justify-content: center;
-
-        gap: 12px;
-
-    }
-
-    .hero h1 {
-
-        font-size: 42px;
-
-    }
-
-    .hero p {
-
-        font-size: 16px;
-
-    }
-
-    .section {
-
-        padding: 70px 20px;
-
-    }
-
-    .cards {
+    .main-layout {
 
         grid-template-columns: 1fr;
 
     }
 
-    .card {
+    .sidebar {
+
+        position: fixed;
+
+        left: -100%;
+
+        top: 90px;
+
+        width: 300px;
+
+        z-index: 999;
+
+        transition: 0.3s ease;
+
+    }
+
+    .sidebar.active {
+
+        left: 20px;
+
+    }
+
+    .mobile-btn {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .topbar {
+
+        flex-direction: column;
+
+        gap: 18px;
+
+        padding: 18px;
+
+    }
+
+    .controls {
+
+        width: 100%;
+
+        flex-wrap: wrap;
+
+        justify-content: center;
+
+    }
+
+    #search {
+
+        width: 100%;
+
+    }
+
+    .hero {
+
+        padding: 50px 20px 30px;
+
+    }
+
+    .main-layout {
+
+        padding: 0 20px 50px;
+
+    }
+
+    .welcome-box,
+    .topic-box,
+    .lesson-viewer {
 
         padding: 24px;
 
     }
 
-    .logo-img {
+    .lesson-content iframe {
 
-        height: 50px;
+        min-height: 240px;
 
     }
+
+}
+/* =========================
+   NAV BUTTONS
+========================= */
+
+.nav-btn {
+
+    padding: 12px 20px;
+
+    border-radius: 14px;
+
+    text-decoration: none;
+
+    color: white;
+
+    font-weight: 600;
+
+    background: rgba(255,255,255,0.08);
+
+    border: 1px solid rgba(255,255,255,0.10);
+
+    transition: 0.3s;
+
+}
+
+.nav-btn:hover {
+
+    transform: translateY(-2px);
+
+    background: rgba(255,255,255,0.14);
+
+}
+
+.signup-btn-nav {
+
+    background: linear-gradient(
+        135deg,
+        var(--primary),
+        var(--secondary)
+    );
 
 }
