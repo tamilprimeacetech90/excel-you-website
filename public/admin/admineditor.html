@@ -4,20 +4,24 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>EXCEL YOU - Editor</title>
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+EXCEL YOU - Editor
+</title>
 
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
-<link rel="stylesheet" href="/admin/css/admineditor.css">
-
 <link rel="stylesheet"
+href="/admin/css/admineditor.css">
+
+<link
+rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 
-<!-- CKEDITOR 5 -->
-<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
 
 </head>
 
@@ -25,232 +29,572 @@ href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 
 <div class="container">
 
-<!-- ================= SIDEBAR (UNCHANGED) ================= -->
-<aside class="sidebar" id="sidebar">
+    <!-- =====================================================
+       SIDEBAR
+    ====================================================== -->
 
-    <div>
-
-        <div class="logo">
-            <img id="siteLogo" src="/assets/full-logo.png" class="logo-image">
-        </div>
-
-        <div class="sidebar-menu">
-            <a href="/admin/admindashboard.html"><i class="fas fa-chart-pie"></i><span>Dashboard</span></a>
-            <a href="/admin/adminsubjects.html"><i class="fas fa-book"></i><span>Subjects</span></a>
-            <a href="/admin/admintopics.html"><i class="fas fa-layer-group"></i><span>Topics</span></a>
-            <a href="/admin/adminarticles.html"><i class="fas fa-newspaper"></i><span>Articles</span></a>
-            <a href="/admin/admineditor.html" class="active"><i class="fas fa-pen"></i><span>Editor</span></a>
-        </div>
-
-    </div>
-
-    <div class="sidebar-menu">
-        <a href="#" onclick="logout()" class="logout-btn">
-            <i class="fas fa-right-from-bracket"></i><span>Logout</span>
-        </a>
-    </div>
-
-</aside>
-
-<!-- ================= MAIN ================= -->
-<main class="main">
-
-<!-- TOPBAR -->
-<div class="topbar">
-
-    <div class="topbar-left">
-        <button class="mobile-toggle" id="mobileToggle">☰</button>
+    <aside class="sidebar"
+    id="sidebar">
 
         <div>
-            <h1>Article Editor</h1>
-            <p>Create and manage articles</p>
+
+            <!-- LOGO -->
+
+            <div class="logo">
+
+                <img
+                id="siteLogo"
+                src="/assets/full-logo.png"
+                alt="EXCEL YOU"
+                class="logo-image">
+
+            </div>
+
+            <!-- MENU -->
+
+            <div class="sidebar-menu">
+
+                <a href="/admin/admindashboard.html">
+
+                    <i class="fas fa-chart-pie"></i>
+
+                    <span>
+                        Dashboard
+                    </span>
+
+                </a>
+
+                <a href="/admin/adminsubjects.html">
+
+                    <i class="fas fa-book"></i>
+
+                    <span>
+                        Subjects
+                    </span>
+
+                </a>
+
+                <a href="/admin/admintopics.html">
+
+                    <i class="fas fa-layer-group"></i>
+
+                    <span>
+                        Topics
+                    </span>
+
+                </a>
+
+                <a href="/admin/adminarticles.html">
+
+                    <i class="fas fa-newspaper"></i>
+
+                    <span>
+                        Articles
+                    </span>
+
+                </a>
+
+                <a href="/admin/admineditor.html"
+                class="active">
+
+                    <i class="fas fa-pen"></i>
+
+                    <span>
+                        Editor
+                    </span>
+
+                </a>
+
+            </div>
+
         </div>
-    </div>
 
-    <div class="topbar-right">
-        <button class="theme-toggle" id="themeToggle">🌙</button>
-    </div>
+        <!-- LOGOUT -->
 
-</div>
+        <div class="sidebar-menu">
 
-<!-- CONTENT -->
-<div class="content">
+            <a
+            href="#"
+            class="logout-btn"
+            onclick="logout()">
 
-<!-- HEADER -->
-<div class="editor-header">
+                <i class="fas fa-right-from-bracket"></i>
 
-    <div class="editor-title-wrap">
+                <span>
+                    Logout
+                </span>
 
-        <input type="text" id="articleTitle"
-        placeholder="Write article title..."
-        class="editor-title">
+            </a>
 
-        <div class="editor-meta">
-            <span id="saveStatus">Draft not saved</span>
-            <span>Last edited just now</span>
         </div>
 
-    </div>
+    </aside>
 
-    <div class="editor-actions">
+    <!-- =====================================================
+       MAIN
+    ====================================================== -->
 
-        <button onclick="saveDraft()" class="draft-btn">
-            <i class="fas fa-floppy-disk"></i> Save Draft
-        </button>
+    <main class="main">
 
-        <button onclick="publishArticle()" class="publish-btn">
-            <i class="fas fa-paper-plane"></i> Publish
-        </button>
+        <!-- =================================================
+           TOPBAR
+        ================================================== -->
 
-    </div>
+        <div class="topbar">
 
-</div>
+            <div class="topbar-left">
 
-<!-- ================= EDITOR TOOLBAR (YOUR UI) ================= -->
-<div class="toolbar">
+                <button
+                class="mobile-toggle"
+                id="mobileToggle">
 
-    <button onclick="editor.execute('undo')"><i class="fas fa-undo"></i></button>
-    <button onclick="editor.execute('redo')"><i class="fas fa-redo"></i></button>
+                    ☰
 
-    <div class="toolbar-divider"></div>
+                </button>
 
-    <button onclick="editor.execute('bold')"><i class="fas fa-bold"></i></button>
-    <button onclick="editor.execute('italic')"><i class="fas fa-italic"></i></button>
-    <button onclick="editor.execute('underline')"><i class="fas fa-underline"></i></button>
-    <button onclick="editor.execute('strikethrough')"><i class="fas fa-strikethrough"></i></button>
+                <div>
 
-    <div class="toolbar-divider"></div>
+                    <h1>
+                        Article Editor
+                    </h1>
 
-    <button onclick="editor.execute('bulletedList')"><i class="fas fa-list-ul"></i></button>
-    <button onclick="editor.execute('numberedList')"><i class="fas fa-list-ol"></i></button>
+                    <p>
+                        Create and manage articles
+                    </p>
 
-    <div class="toolbar-divider"></div>
+                </div>
 
-    <button onclick="insertLink()"><i class="fas fa-link"></i></button>
-    <button onclick="insertImage()"><i class="fas fa-image"></i></button>
-    <button onclick="insertVideo()"><i class="fas fa-video"></i></button>
+            </div>
 
-</div>
+            <div class="topbar-right">
 
-<!-- ================= EDITOR AREA ================= -->
-<div class="editor-wrapper">
+                <button
+                class="theme-toggle"
+                id="themeToggle">
 
-    <div id="editor"></div>
+                    🌙
 
-</div>
+                </button>
 
-<!-- RIGHT SIDEBAR (UNCHANGED) -->
-<div class="editor-sidebar">
+            </div>
 
-    <div class="sidebar-card">
-        <h3>Article Settings</h3>
+        </div>
 
-        <select><option>Subject</option></select>
-        <select><option>Topic</option></select>
-        <select><option>Draft</option></select>
-    </div>
+        <!-- =================================================
+           CONTENT
+        ================================================== -->
 
-    <div class="sidebar-card">
-        <h3>Featured Image</h3>
-        <div id="thumbnailPreview"></div>
+        <div class="content">
 
-        <div class="upload-box">
-            <input type="file" id="thumbnailInput" hidden>
+            <!-- =============================================
+               BREADCRUMB
+            ============================================== -->
+
+            <div class="editor-breadcrumb">
+
+                <span>
+                    Dashboard
+                </span>
+
+                <i class="fas fa-angle-right"></i>
+
+                <span>
+                    Articles
+                </span>
+
+                <i class="fas fa-angle-right"></i>
+
+                <span class="active">
+                    Editor
+                </span>
+
+            </div>
+
+            <!-- =============================================
+               HEADER
+            ============================================== -->
+
+            <div class="editor-header">
+
+                <div class="editor-title-wrap">
+
+                    <input
+                    type="text"
+                    id="articleTitle"
+                    placeholder="Write article title..."
+                    class="editor-title">
+
+                    <div class="editor-meta">
+
+                        <span id="saveStatus">
+
+                            Draft not saved
+
+                        </span>
+
+                        <span>
+
+                            Last edited just now
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="editor-actions">
+
+                    <button
+                    class="draft-btn">
+
+                        <i class="fas fa-floppy-disk"></i>
+
+                        Save Draft
+
+                    </button>
+
+                    <button
+                    class="publish-btn">
+
+                        <i class="fas fa-paper-plane"></i>
+
+                        Publish
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- =============================================
+               MAIN EDITOR LAYOUT
+            ============================================== -->
+
+            <div class="editor-layout">
+
+                <!-- =========================================
+                   LEFT SIDE
+                ========================================== -->
+
+                <div class="editor-main">
+
+                    <!-- TOOLBAR -->
+
+                    <div class="toolbar">
+
+                        <button onclick="undoEditor()">
+                              <i class="fas fa-undo"></i>
+                        </button>
+
+                        <button onclick="redoEditor()">
+                             <i class="fas fa-redo"></i>
+                        </button>
+
+                        <div class="toolbar-divider"></div>
+
+                        <button onclick="formatText('bold')">
+
+                            <i class="fas fa-bold"></i>
+
+                        </button>
+
+                        <button onclick="formatText('italic')">
+
+                            <i class="fas fa-italic"></i>
+
+                        </button>
+
+                        <button onclick="formatText('underline')">
+
+                            <i class="fas fa-underline"></i>
+
+                        </button>
+
+                        <button onclick="formatText('strikeThrough')">
+
+                            <i class="fas fa-strikethrough"></i>
+
+                        </button>
+
+                        <div class="toolbar-divider"></div>
+
+                        <button onclick="formatText('insertUnorderedList')">
+
+                            <i class="fas fa-list-ul"></i>
+
+                        </button>
+
+                        <button onclick="formatText('insertOrderedList')">
+
+                            <i class="fas fa-list-ol"></i>
+
+                        </button>
+
+                        <button onclick="formatText('justifyLeft')">
+
+                            <i class="fas fa-align-left"></i>
+
+                        </button>
+
+                        <button onclick="formatText('justifyCenter')">
+
+                            <i class="fas fa-align-center"></i>
+
+                        </button>
+
+                        <button onclick="formatText('justifyRight')">
+
+                            <i class="fas fa-align-right"></i>
+
+                        </button>
+
+                        <div class="toolbar-divider"></div>
+
+                        <button onclick="insertLink()">
+
+                            <i class="fas fa-link"></i>
+
+                        </button>
+
+                        <button onclick="insertImage()">
+
+                            <i class="fas fa-image"></i>
+
+                        </button>
+
+                        <button onclick="insertVideo()">
+
+                            <i class="fas fa-video"></i>
+
+                        </button>
+
+                        <div class="toolbar-divider"></div>
+
+                        <button onclick="toggleHTMLMode()">
+
+                            HTML
+
+                        </button>
+
+                    </div>
+
+                    <!-- =====================================
+                         EDITOR WRAPPER
+                    ====================================== -->
+
+                    <div class="editor-wrapper">
+
+                        <div
+                        id="editor"
+                        class="editor-area"
+                        contenteditable="true">
+
+                            <h1>
+                                Introduction to JavaScript Arrays
+                            </h1>
+
+                            <p>
+                                JavaScript arrays are used to store multiple values inside a single variable.
+                            </p>
+
+                            <p>
+                                Arrays are one of the most important data structures in JavaScript.
+                            </p>
+
+                            <img
+                            src="https://picsum.photos/1200/500"
+                            class="editor-image">
+
+                            <h2>
+                                Why Arrays Matter
+                            </h2>
+
+                            <p>
+                                Arrays allow developers to organize, loop, filter, map, and manage collections of data efficiently.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- =========================================
+                   RIGHT SIDEBAR
+                ========================================== -->
+
+                <div class="editor-sidebar">
+
+                    <!-- SETTINGS -->
+
+                    <div class="sidebar-card">
+
+                        <div class="card-title">
+
+                            <i class="fas fa-sliders"></i>
+
+                            <h3>
+                                Article Settings
+                            </h3>
+
+                        </div>
+
+                        <!-- SUBJECT -->
+
+                        <div class="form-group">
+
+                            <label>
+                                Subject
+                            </label>
+
+                            <select>
+
+                                <option>
+                                    Select Subject
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <!-- TOPIC -->
+
+                        <div class="form-group">
+
+                            <label>
+                                Topic
+                            </label>
+
+                            <select>
+
+                                <option>
+                                    Select Topic
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <!-- STATUS -->
+
+                        <div class="form-group">
+
+                            <label>
+                                Status
+                            </label>
+
+                            <select>
+
+                                <option>
+                                    Draft
+                                </option>
+
+                                <option>
+                                    Published
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+             <!-- THUMBNAIL -->
+
+            <div class="sidebar-card">
+
+                 <div class="card-title">
+
+                 <i class="fas fa-image"></i>
+
+                <h3>
+                  Featured Image
+                </h3>
+
+           </div>
+
+           <!-- PREVIEW -->
+
+            <div
+            id="thumbnailPreview"
+             class="thumbnail-preview">
+
+            </div>
+
+            <!-- UPLOAD -->
+
+             <div class="upload-box">
+
+              <input
+              type="file"
+             id="thumbnailInput"
+              accept="image/*"
+               hidden>
+
             <i class="fas fa-image"></i>
-            <p>Upload Thumbnail</p>
+ 
+              <p>
+                Upload Thumbnail
+             </p>
+
+           </div>
+
+           </div>
+
+
+                    <!-- SEO -->
+
+                    <div class="sidebar-card">
+
+                        <div class="card-title">
+
+                            <i class="fas fa-globe"></i>
+
+                            <h3>
+                                SEO Settings
+                            </h3>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label>
+                                Tags
+                            </label>
+
+                            <input
+                            type="text"
+                            placeholder="JavaScript, HTML">
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label>
+                                URL Slug
+                            </label>
+
+                            <input
+                            type="text"
+                            placeholder="javascript-arrays">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
-    </div>
 
-    <div class="sidebar-card">
-        <h3>SEO Settings</h3>
-        <input placeholder="Tags">
-        <input placeholder="URL Slug">
-    </div>
+    </main>
 
 </div>
 
-</div>
-</main>
-</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
 
-<!-- ================= SCRIPT ================= -->
-<script>
-
-let editor;
-
-// INIT CKEDITOR
-ClassicEditor
-.create(document.querySelector("#editor"), {
-    toolbar: []
-})
-.then(ed => {
-    editor = ed;
-})
-.catch(err => console.error(err));
-
-/* ================= LINK ================= */
-function insertLink() {
-    const url = prompt("Enter URL");
-    if (!url) return;
-    editor.execute("link", url);
-}
-
-/* ================= IMAGE ================= */
-function insertImage() {
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = "image/*";
-    input.click();
-
-    input.onchange = () => {
-        const file = input.files[0];
-        const reader = new FileReader();
-
-        reader.onload = e => {
-            editor.execute("insertImage", {
-                source: e.target.result
-            });
-        };
-
-        reader.readAsDataURL(file);
-    };
-}
-
-/* ================= VIDEO ================= */
-function insertVideo() {
-    const url = prompt("YouTube URL");
-    if (!url) return;
-
-    let id = url.includes("watch?v=")
-        ? url.split("watch?v=")[1].split("&")[0]
-        : url.split("youtu.be/")[1];
-
-    const embed = `https://www.youtube.com/embed/${id}`;
-
-    editor.setData(
-        editor.getData() +
-        `<figure class="media"><oembed url="${embed}"></oembed></figure>`
-    );
-}
-
-/* ================= SAVE ================= */
-function saveDraft() {
-    localStorage.setItem("draft", editor.getData());
-    document.getElementById("saveStatus").innerText = "Draft saved ✔";
-}
-
-function publishArticle() {
-    console.log(editor.getData());
-    document.getElementById("saveStatus").innerText = "Published ✔";
-}
-
-/* ================= LOGOUT ================= */
-function logout() {
-    localStorage.clear();
-    window.location.href = "/login.html";
-}
-
-</script>
-
+<script src="/admin/js/admineditor.js"></script>
 </body>
+
 </html>
