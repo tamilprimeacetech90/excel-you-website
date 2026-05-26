@@ -137,11 +137,21 @@ function renderSubjects(subjects){
 
         // IMAGE
 
-        const image =
+     let image =
+    "/assets/subjects/DATAMINING.png";
 
-            subject.image ||
 
-            "/assets/default-subject.jpg";
+// SUBJECT IMAGES
+
+if(
+    subject.name ===
+    "Data Mining and Data Warehouse Architecture"
+){
+
+    image =
+    "/assets/subjects/DATAMINING.png";
+
+}
 
         // HTML
 
