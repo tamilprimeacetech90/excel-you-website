@@ -1,472 +1,772 @@
 /* =========================================================
-   EXCEL YOU - ADMIN EDITOR (FIXED VERSION)
+   EXCEL YOU ADMIN EDITOR
 ========================================================= */
 
-// =========================================================
-// ELEMENTS
-// =========================================================
-
-const body = document.body;
-
-const themeToggle = document.getElementById("themeToggle");
-const mobileToggle = document.getElementById("mobileToggle");
-const sidebar = document.getElementById("sidebar");
-
-const siteLogo = document.getElementById("siteLogo");
-
-const editor = document.getElementById("editor");
-const articleTitle = document.getElementById("articleTitle");
-const saveStatus = document.getElementById("saveStatus");
-
-const thumbnailInput = document.getElementById("thumbnailInput");
-const thumbnailPreview = document.getElementById("thumbnailPreview");
-const uploadBox = document.querySelector(".upload-box");
-
-// =========================================================
-// THEME
-// =========================================================
-
-function applyTheme(theme) {
-    if (theme === "dark") {
-        body.classList.add("dark-theme");
-        themeToggle.innerHTML = "☀️";
-
-        if (siteLogo) {
-            siteLogo.src = "/assets/full-logo-white.png";
-        }
-    } else {
-        body.classList.remove("dark-theme");
-        themeToggle.innerHTML = "🌙";
-
-        if (siteLogo) {
-            siteLogo.src = "/assets/full-logo.png";
-        }
-    }
-}
-
-const savedTheme = localStorage.getItem("theme") || "light";
-applyTheme(savedTheme);
-
-themeToggle.addEventListener("click", () => {
-    const isDark = body.classList.contains("dark-theme");
-    const newTheme = isDark ? "light" : "dark";
-
-    applyTheme(newTheme);
-    localStorage.setItem("theme", newTheme);
-});
-
-// =========================================================
-// MOBILE SIDEBAR
-// =========================================================
-
-mobileToggle.addEventListener("click", () => {
-    sidebar.classList.toggle("active");
-});
-
-document.addEventListener("click", (e) => {
-    if (
-        window.innerWidth <= 900 &&
-        !sidebar.contains(e.target) &&
-        !mobileToggle.contains(e.target)
-    ) {
-        sidebar.classList.remove("active");
-    }
-});
-
-// =========================================================
-// TEXT FORMATTING
-// =========================================================
-
-function formatText(command) {
-    document.execCommand(command, false, null);
-    editor.focus();
-}
-
-function undoEditor() {
-    document.execCommand("undo", false, null);
-    editor.focus();
-}
-
-function redoEditor() {
-    document.execCommand("redo", false, null);
-    editor.focus();
-}
-
-function insertLink() {
-    const url = prompt("Enter URL");
-    if (!url) return;
-
-    document.execCommand("createLink", false, url);
-}
-
-// =========================================================
-// IMAGE CROP SYSTEM (SINGLE CLEAN VERSION)
-// =========================================================
-
-let cropper = null;
-
-function insertImage() {
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = "image/*";
-    input.click();
-
-    input.onchange = () => {
-        const file = input.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-
-        reader.onload = (e) => {
-            const cropModal = document.getElementById("cropModal");
-            const cropImage = document.getElementById("cropImage");
-
-            cropImage.src = e.target.result;
-            cropModal.classList.remove("hidden");
-
-            if (cropper) cropper.destroy();
-
-            cropper = new Cropper(cropImage, {
-                aspectRatio: NaN,
-                viewMode: 1,
-                dragMode: "move",
-                autoCropArea: 1,
-                background: false,
-                responsive: true,
-                zoomable: true,
-                scalable: true,
-                rotatable: true
-            });
-        };
-
-        reader.readAsDataURL(file);
-    };
-}
-
-function closeCropModal() {
-    document.getElementById("cropModal").classList.add("hidden");
-
-    if (cropper) {
-        cropper.destroy();
-        cropper = null;
-    }
-}
-
-function applyCrop() {
-    if (!cropper) return;
-
-    const canvas = cropper.getCroppedCanvas({
-        maxWidth: 2000,
-        maxHeight: 2000,
-        imageSmoothingEnabled: true,
-        imageSmoothingQuality: "high"
-    });
-
-    const img = canvas.toDataURL("image/png");
-
-    const html = `
-        <div class="media-block" contenteditable="false">
-            <img src="${img}" class="editor-image resizable-image" alt="image">
-        </div>
-    `;
-
-    editor.insertAdjacentHTML("beforeend", html);
-    enhanceInsertedMedia();
-    closeCropModal();
-    saveStatus.innerText = "Image inserted ✔";
-}
-
-// =========================================================
-// VIDEO INSERT (SINGLE FIXED VERSION)
-// =========================================================
-
-function insertVideo() {
-    const url = prompt("Paste YouTube URL");
-    if (!url) return;
-
-    let videoId = "";
-
-    if (url.includes("watch?v=")) {
-        videoId = url.split("watch?v=")[1];
-        if (videoId.includes("&")) {
-            videoId = videoId.split("&")[0];
-        }
-    } else if (url.includes("youtu.be/")) {
-        videoId = url.split("youtu.be/")[1];
-    }
-
-    if (!videoId) {
-        alert("Invalid YouTube URL");
-        return;
-    }
-
-    const embed = `https://www.youtube.com/embed/${videoId}`;
-
-    const html = `
-        <div class="media-block video-wrapper" contenteditable="false">
-            <iframe width="100%" height="500"
-                src="${embed}"
-                frameborder="0"
-                allowfullscreen></iframe>
-        </div>
-    `;
-
-    editor.insertAdjacentHTML("beforeend", html);
-    enhanceInsertedMedia();
-    saveStatus.innerText = "Video inserted ✔";
-}
 
 /* =========================================================
-   EXCEL YOU - UPGRADED MEDIA SYSTEM (FIXED + STABLE)
+   GLOBAL
 ========================================================= */
 
-// =========================================================
-// STATE
-// =========================================================
+let editor = null;
 
-let selectedMedia = null;
-let dragged = null;
+let isHTMLMode = false;
 
-// =========================================================
-// MEDIA BINDING (IMPORTANT CORE)
-// =========================================================
+let currentTheme = "light";
 
-function bindMedia(el) {
+let autoSaveTimer = null;
 
-    el.addEventListener("click", (e) => {
-        e.stopPropagation();
-        selectMedia(el);
-    });
+const AUTO_SAVE_DELAY = 2000;
 
-    el.setAttribute("draggable", true);
 
-    el.addEventListener("dragstart", () => {
-        dragged = el;
-        el.classList.add("dragging");
-    });
+/* =========================================================
+   DOM
+========================================================= */
 
-    el.addEventListener("dragend", () => {
-        el.classList.remove("dragging");
-        dragged = null;
-    });
+const elements = {
+
+    editor:
+        document.getElementById(
+            "editor"
+        ),
+
+    articleTitle:
+        document.getElementById(
+            "articleTitle"
+        ),
+
+    saveStatus:
+        document.getElementById(
+            "saveStatus"
+        ),
+
+    saveDraftBtn:
+        document.getElementById(
+            "saveDraftBtn"
+        ),
+
+    publishBtn:
+        document.getElementById(
+            "publishBtn"
+        ),
+
+    themeToggle:
+        document.getElementById(
+            "themeToggle"
+        ),
+
+    mobileToggle:
+        document.getElementById(
+            "mobileToggle"
+        ),
+
+    sidebar:
+        document.getElementById(
+            "sidebar"
+        ),
+
+    thumbnailInput:
+        document.getElementById(
+            "thumbnailInput"
+        ),
+
+    thumbnailPreview:
+        document.getElementById(
+            "thumbnailPreview"
+        ),
+
+    thumbnailUploadBox:
+        document.getElementById(
+            "thumbnailUploadBox"
+        )
+};
+
+
+/* =========================================================
+   INIT
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    initEditor
+);
+
+function initEditor(){
+
+    setupTheme();
+
+    setupToolbar();
+
+    setupEditor();
+
+    setupAutosave();
+
+    setupThumbnailUpload();
+
+    setupSidebar();
+
+    setupKeyboardShortcuts();
+
+    setupPublish();
+
+    restoreDraft();
+
+    setSaveStatus(
+        "Ready ✔"
+    );
+
+    console.log(
+        "EDITOR INITIALIZED ✔"
+    );
 }
 
-// =========================================================
-// IMAGE WRAPPER FIX (PATCH YOUR insertImage RESULT)
-// =========================================================
 
-// CALL THIS AFTER YOU INSERT IMAGE BLOCK
-function enhanceInsertedMedia() {
+/* =========================================================
+   THEME
+========================================================= */
 
-    document.querySelectorAll(".media-block").forEach(el => {
-        if (!el.dataset.bound) {
-            bindMedia(el);
-            el.dataset.bound = "true";
+function setupTheme(){
+
+    const savedTheme =
+        localStorage.getItem(
+            "editor-theme"
+        );
+
+    if(savedTheme){
+
+        currentTheme = savedTheme;
+    }
+
+    applyTheme();
+
+    elements.themeToggle
+    ?.addEventListener(
+        "click",
+        toggleTheme
+    );
+}
+
+function toggleTheme(){
+
+    currentTheme =
+        currentTheme === "dark"
+        ? "light"
+        : "dark";
+
+    applyTheme();
+
+    localStorage.setItem(
+        "editor-theme",
+        currentTheme
+    );
+}
+
+function applyTheme(){
+
+    document.body.classList.toggle(
+        "dark-theme",
+        currentTheme === "dark"
+    );
+
+    elements.themeToggle.innerHTML =
+        currentTheme === "dark"
+        ? "☀️"
+        : "🌙";
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+function setupSidebar(){
+
+    elements.mobileToggle
+    ?.addEventListener(
+        "click",
+        () => {
+
+            elements.sidebar.classList.toggle(
+                "active"
+            );
         }
+    );
+}
+
+
+/* =========================================================
+   TOOLBAR
+========================================================= */
+
+function setupToolbar(){
+
+    document
+    .querySelectorAll(
+        ".editor-toolbar button"
+    )
+    .forEach(button => {
+
+        button.addEventListener(
+            "mousedown",
+            e => e.preventDefault()
+        );
     });
 }
 
-// =========================================================
-// VIDEO WRAPPER FIX (PATCH YOUR insertVideo RESULT)
-// =========================================================
 
-// same enhancer applies to videos too
+/* =========================================================
+   EDITOR
+========================================================= */
 
-// =========================================================
-// MEDIA SELECTION SYSTEM
-// =========================================================
+function setupEditor(){
 
-function selectMedia(el) {
+    editor = elements.editor;
 
-    document.querySelectorAll(".selected-media")
-        .forEach(e => e.classList.remove("selected-media"));
-
-    selectedMedia = el;
-    el.classList.add("selected-media");
-}
-
-// clear selection when clicking editor
-editor.addEventListener("click", () => {
-    document.querySelectorAll(".selected-media")
-        .forEach(e => e.classList.remove("selected-media"));
-
-    selectedMedia = null;
-});
-
-// =========================================================
-// DELETE MEDIA (FIXED)
-// =========================================================
-
-document.addEventListener("keydown", (e) => {
-
-    if (e.key === "Delete" && selectedMedia) {
-        selectedMedia.remove();
-        selectedMedia = null;
-       saveStatus.innerText = "Media deleted ✔";
-    }
-});
-
-// =========================================================
-// DRAG SORT SYSTEM (STABLE + NO BUGS)
-// =========================================================
-
-editor.addEventListener("dragover", (e) => {
-    e.preventDefault();
-
-    const afterElement = getDragAfterElement(editor, e.clientY);
-    const dragging = document.querySelector(".dragging");
-
-    if (!dragging) return;
-
-    if (!afterElement) {
-        editor.appendChild(dragging);
-    } else {
-        editor.insertBefore(dragging, afterElement);
-    }
-});
-
-// =========================================================
-// DRAG POSITION CALCULATION
-// =========================================================
-
-function getDragAfterElement(container, y) {
-
-    const elements = [
-        ...container.querySelectorAll(".media-block:not(.dragging)")
-    ];
-
-    return elements.reduce((closest, child) => {
-
-        const box = child.getBoundingClientRect();
-        const offset = y - box.top - box.height / 2;
-
-        if (offset < 0 && offset > closest.offset) {
-            return { offset, element: child };
-        }
-
-        return closest;
-
-    }, { offset: Number.NEGATIVE_INFINITY }).element;
-}
-
-// =========================================================
-// SAFE STATUS UPDATE
-// =========================================================
-
-function updateStatus(msg) {
-    if (typeof saveStatus !== "undefined" && saveStatus) {
-        saveStatus.innerText = msg;
-    }
-}
-
-// =========================================================
-// THUMBNAIL UPLOAD
-// =========================================================
-
-uploadBox.addEventListener("click", () => {
-    thumbnailInput.click();
-});
-
-thumbnailInput.addEventListener("change", () => {
-    const file = thumbnailInput.files[0];
-    if (!file) return;
-
-    if (!file.type.startsWith("image/")) {
-        alert("Please upload an image file");
+    if(!editor){
         return;
     }
 
-    const reader = new FileReader();
+    editor.addEventListener(
+        "input",
+        handleEditorInput
+    );
 
-    reader.onload = (e) => {
-        thumbnailPreview.innerHTML = `
-            <img src="${e.target.result}" alt="thumbnail">
-        `;
+    editor.addEventListener(
+        "paste",
+        handlePaste
+    );
 
-        saveStatus.innerText = "Thumbnail uploaded ✔";
+    editor.addEventListener(
+        "dragover",
+        handleDragOver
+    );
+
+    editor.addEventListener(
+        "drop",
+        handleDrop
+    );
+}
+
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+function handleEditorInput(){
+
+    setSaveStatus(
+        "Unsaved changes..."
+    );
+
+    scheduleAutosave();
+}
+
+
+/* =========================================================
+   AUTOSAVE
+========================================================= */
+
+function setupAutosave(){
+
+    elements.articleTitle
+    ?.addEventListener(
+        "input",
+        scheduleAutosave
+    );
+
+    elements.saveDraftBtn
+    ?.addEventListener(
+        "click",
+        saveDraft
+    );
+}
+
+function scheduleAutosave(){
+
+    clearTimeout(
+        autoSaveTimer
+    );
+
+    autoSaveTimer =
+        setTimeout(
+            saveDraft,
+            AUTO_SAVE_DELAY
+        );
+}
+
+async function saveDraft(){
+
+    try{
+
+        setSaveStatus(
+            "Saving..."
+        );
+
+        const payload = {
+
+            title:
+                elements.articleTitle.value,
+
+            content:
+                editor.innerHTML,
+
+            updatedAt:
+                new Date().toISOString()
+        };
+
+        localStorage.setItem(
+            "editor-draft",
+            JSON.stringify(payload)
+        );
+
+        setSaveStatus(
+            `Saved ✔ ${new Date()
+                .toLocaleTimeString()}`
+        );
+
+        console.log(
+            "DRAFT SAVED ✔"
+        );
+
+    }catch(err){
+
+        console.error(err);
+
+        setSaveStatus(
+            "Save failed ❌"
+        );
+    }
+}
+
+function restoreDraft(){
+
+    const saved =
+        localStorage.getItem(
+            "editor-draft"
+        );
+
+    if(!saved){
+        return;
+    }
+
+    try{
+
+        const data =
+            JSON.parse(saved);
+
+        if(data.title){
+
+            elements.articleTitle.value =
+                data.title;
+        }
+
+        if(data.content){
+
+            editor.innerHTML =
+                data.content;
+        }
+
+        setSaveStatus(
+            "Draft restored ✔"
+        );
+
+    }catch(err){
+
+        console.error(err);
+    }
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+function setSaveStatus(text){
+
+    if(elements.saveStatus){
+
+        elements.saveStatus.innerText =
+            text;
+    }
+}
+
+
+/* =========================================================
+   PUBLISH
+========================================================= */
+
+function setupPublish(){
+
+    elements.publishBtn
+    ?.addEventListener(
+        "click",
+        publishArticle
+    );
+}
+
+async function publishArticle(){
+
+    try{
+
+        elements.publishBtn.disabled =
+            true;
+
+        elements.publishBtn.innerHTML =
+            `
+            <i class="fas fa-spinner fa-spin"></i>
+            Publishing...
+            `;
+
+        await saveDraft();
+
+        await fakePublishAPI();
+
+        setSaveStatus(
+            "Published ✔"
+        );
+
+        alert(
+            "Article published successfully ✔"
+        );
+
+    }catch(err){
+
+        console.error(err);
+
+        alert(
+            "Publish failed ❌"
+        );
+
+    }finally{
+
+        elements.publishBtn.disabled =
+            false;
+
+        elements.publishBtn.innerHTML =
+            `
+            <i class="fas fa-paper-plane"></i>
+            Publish
+            `;
+    }
+}
+
+async function fakePublishAPI(){
+
+    return new Promise(resolve => {
+
+        setTimeout(
+            resolve,
+            1500
+        );
+    });
+}
+
+
+/* =========================================================
+   TEXT FORMAT
+========================================================= */
+
+function formatText(command){
+
+    document.execCommand(
+        command,
+        false,
+        null
+    );
+
+    editor.focus();
+}
+
+
+/* =========================================================
+   UNDO / REDO
+========================================================= */
+
+function undoEditor(){
+
+    document.execCommand(
+        "undo"
+    );
+}
+
+function redoEditor(){
+
+    document.execCommand(
+        "redo"
+    );
+}
+
+
+/* =========================================================
+   LINK
+========================================================= */
+
+function insertLink(){
+
+    const url =
+        prompt(
+            "Enter URL"
+        );
+
+    if(!url){
+        return;
+    }
+
+    document.execCommand(
+        "createLink",
+        false,
+        url
+    );
+}
+
+
+/* =========================================================
+   IMAGE
+========================================================= */
+
+function insertImage(){
+
+    const url =
+        prompt(
+            "Enter image URL"
+        );
+
+    if(!url){
+        return;
+    }
+
+    document.execCommand(
+        "insertImage",
+        false,
+        url
+    );
+}
+
+
+/* =========================================================
+   VIDEO
+========================================================= */
+
+function insertVideo(){
+
+    const url =
+        prompt(
+            "Paste YouTube Embed URL"
+        );
+
+    if(!url){
+        return;
+    }
+
+    const iframe = `
+    <div class="video-block">
+        <iframe
+        src="${url}"
+        frameborder="0"
+        allowfullscreen>
+        </iframe>
+    </div>
+    `;
+
+    insertHTML(iframe);
+}
+
+
+/* =========================================================
+   HTML MODE
+========================================================= */
+
+function toggleHTMLMode(){
+
+    isHTMLMode = !isHTMLMode;
+
+    if(isHTMLMode){
+
+        editor.textContent =
+            editor.innerHTML;
+
+        editor.setAttribute(
+            "contenteditable",
+            "false"
+        );
+
+    }else{
+
+        editor.innerHTML =
+            editor.textContent;
+
+        editor.setAttribute(
+            "contenteditable",
+            "true"
+        );
+    }
+}
+
+
+/* =========================================================
+   INSERT HTML
+========================================================= */
+
+function insertHTML(html){
+
+    document.execCommand(
+        "insertHTML",
+        false,
+        html
+    );
+}
+
+
+/* =========================================================
+   THUMBNAIL
+========================================================= */
+
+function setupThumbnailUpload(){
+
+    elements.thumbnailUploadBox
+    ?.addEventListener(
+        "click",
+        () => {
+
+            elements.thumbnailInput.click();
+        }
+    );
+
+    elements.thumbnailInput
+    ?.addEventListener(
+        "change",
+        handleThumbnail
+    );
+}
+
+function handleThumbnail(e){
+
+    const file =
+        e.target.files[0];
+
+    if(!file){
+        return;
+    }
+
+    const reader =
+        new FileReader();
+
+    reader.onload = function(ev){
+
+        elements.thumbnailPreview.innerHTML =
+            `
+            <img
+            src="${ev.target.result}">
+            `;
     };
 
     reader.readAsDataURL(file);
-});
+}
 
-// =========================================================
-// HTML MODE
-// =========================================================
 
-let htmlMode = false;
-let savedHTML = "";
+/* =========================================================
+   PASTE
+========================================================= */
 
-function toggleHTMLMode() {
-    if (!htmlMode) {
-        savedHTML = editor.innerHTML;
-        editor.textContent = savedHTML;
-        htmlMode = true;
-        saveStatus.innerText = "HTML mode enabled";
-    } else {
-        editor.innerHTML = editor.textContent;
-        htmlMode = false;
-        saveStatus.innerText = "Visual mode enabled";
+function handlePaste(e){
+
+    console.log(
+        "PASTE DETECTED"
+    );
+}
+
+
+/* =========================================================
+   DRAG
+========================================================= */
+
+function handleDragOver(e){
+
+    e.preventDefault();
+}
+
+
+/* =========================================================
+   DROP
+========================================================= */
+
+function handleDrop(e){
+
+    e.preventDefault();
+
+    console.log(
+        "DROP DETECTED"
+    );
+}
+
+
+/* =========================================================
+   SHORTCUTS
+========================================================= */
+
+function setupKeyboardShortcuts(){
+
+    document.addEventListener(
+        "keydown",
+        e => {
+
+            // SAVE
+
+            if(
+                (e.ctrlKey || e.metaKey)
+                &&
+                e.key === "s"
+            ){
+
+                e.preventDefault();
+
+                saveDraft();
+            }
+
+            // BOLD
+
+            if(
+                (e.ctrlKey || e.metaKey)
+                &&
+                e.key === "b"
+            ){
+
+                e.preventDefault();
+
+                formatText("bold");
+            }
+
+            // ITALIC
+
+            if(
+                (e.ctrlKey || e.metaKey)
+                &&
+                e.key === "i"
+            ){
+
+                e.preventDefault();
+
+                formatText("italic");
+            }
+        }
+    );
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+function logout(){
+
+    const confirmLogout =
+        confirm(
+            "Logout?"
+        );
+
+    if(!confirmLogout){
+        return;
     }
+
+    window.location.href =
+        "/admin/login.html";
 }
-
-// =========================================================
-// AUTO SAVE (LOCAL DRAFT)
-// =========================================================
-
-let saveTimer;
-
-function autoSave() {
-    clearTimeout(saveTimer);
-
-    saveStatus.innerText = "Saving...";
-
-    saveTimer = setTimeout(() => {
-        localStorage.setItem("draft", editor.innerHTML);
-        localStorage.setItem("title", articleTitle.value);
-
-        saveStatus.innerText = "Draft saved ✔";
-    }, 800);
-}
-
-editor.addEventListener("input", autoSave);
-articleTitle.addEventListener("input", autoSave);
-
-// =========================================================
-// KEYBOARD SHORTCUTS
-// =========================================================
-
-document.addEventListener("keydown", (e) => {
-    if (e.ctrlKey && e.key === "s") {
-        e.preventDefault();
-        saveStatus.innerText = "Draft saved ✔";
-    }
-
-    if (e.key === "Tab") {
-        e.preventDefault();
-        document.execCommand("insertHTML", false, "&nbsp;&nbsp;&nbsp;&nbsp;");
-    }
-});
-
-// =========================================================
-// LOGOUT
-// =========================================================
-
-function logout() {
-    const ok = confirm("Are you sure you want to logout?");
-    if (!ok) return;
-
-    localStorage.removeItem("adminToken");
-    sessionStorage.clear();
-
-    window.location.href = "/login.html";
-}
-
-// =========================================================
-// INIT
-// =========================================================
-
-function init() {
-    console.log("Editor initialized ✔");
-}
-
-init();

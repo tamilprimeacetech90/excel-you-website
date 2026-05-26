@@ -5,23 +5,65 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
+<meta
+name="viewport"
 content="width=device-width, initial-scale=1.0">
 
 <title>
-EXCEL YOU - Editor
+EXCEL YOU - Admin Editor
 </title>
 
-<link rel="stylesheet"
+<!-- =======================================================
+FONTAWESOME
+======================================================= -->
+
+<link
+rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
-<link rel="stylesheet"
-href="/admin/css/admineditor.css">
+<!-- =======================================================
+CROPPER
+======================================================= -->
 
 <link
 rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 
+<!-- =======================================================
+BASE ADMIN CSS
+======================================================= -->
+
+<link
+rel="stylesheet"
+href="/admin/css/admineditor.css">
+
+<!-- =======================================================
+EDITOR SYSTEM CSS
+======================================================= -->
+
+<link
+rel="stylesheet"
+href="/admin/css/editor/editor.css">
+
+<link
+rel="stylesheet"
+href="/admin/css/editor/editor-toolbar.css">
+
+<link
+rel="stylesheet"
+href="/admin/css/editor/editor-blocks.css">
+
+<link
+rel="stylesheet"
+href="/admin/css/editor/editor-media.css">
+
+<link
+rel="stylesheet"
+href="/admin/css/editor/editor-ui.css">
+
+<link
+rel="stylesheet"
+href="/admin/css/editor/editor-responsive.css">
 
 </head>
 
@@ -29,11 +71,12 @@ href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 
 <div class="container">
 
-    <!-- =====================================================
+    <!-- ===================================================
        SIDEBAR
-    ====================================================== -->
+    ==================================================== -->
 
-    <aside class="sidebar"
+    <aside
+    class="sidebar"
     id="sidebar">
 
         <div>
@@ -94,7 +137,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 
                 </a>
 
-                <a href="/admin/admineditor.html"
+                <a
+                href="/admin/admineditor.html"
                 class="active">
 
                     <i class="fas fa-pen"></i>
@@ -130,9 +174,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 
     </aside>
 
-    <!-- =====================================================
+    <!-- ===================================================
        MAIN
-    ====================================================== -->
+    ==================================================== -->
 
     <main class="main">
 
@@ -245,7 +289,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
                 <div class="editor-actions">
 
                     <button
-                    class="draft-btn">
+                    type="button"
+                    class="draft-btn"
+                    id="saveDraftBtn">
 
                         <i class="fas fa-floppy-disk"></i>
 
@@ -254,7 +300,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
                     </button>
 
                     <button
-                    class="publish-btn">
+                    type="button"
+                    class="publish-btn"
+                    id="publishBtn">
 
                         <i class="fas fa-paper-plane"></i>
 
@@ -267,7 +315,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
             </div>
 
             <!-- =============================================
-               MAIN EDITOR LAYOUT
+               MAIN LAYOUT
             ============================================== -->
 
             <div class="editor-layout">
@@ -278,103 +326,177 @@ href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 
                 <div class="editor-main">
 
-                    <!-- TOOLBAR -->
+                    <!-- =====================================
+                         MODERN TOOLBAR
+                    ====================================== -->
 
-                    <div class="toolbar">
+                    <div class="editor-toolbar">
 
-                        <button onclick="undoEditor()">
-                              <i class="fas fa-undo"></i>
-                        </button>
+                        <!-- HISTORY -->
 
-                        <button onclick="redoEditor()">
-                             <i class="fas fa-redo"></i>
-                        </button>
+                        <div class="toolbar-group">
 
-                        <div class="toolbar-divider"></div>
+                            <button
+                            type="button"
+                            onclick="undoEditor()">
 
-                        <button onclick="formatText('bold')">
+                                <i class="fas fa-undo"></i>
 
-                            <i class="fas fa-bold"></i>
+                            </button>
 
-                        </button>
+                            <button
+                            type="button"
+                            onclick="redoEditor()">
 
-                        <button onclick="formatText('italic')">
+                                <i class="fas fa-redo"></i>
 
-                            <i class="fas fa-italic"></i>
+                            </button>
 
-                        </button>
-
-                        <button onclick="formatText('underline')">
-
-                            <i class="fas fa-underline"></i>
-
-                        </button>
-
-                        <button onclick="formatText('strikeThrough')">
-
-                            <i class="fas fa-strikethrough"></i>
-
-                        </button>
+                        </div>
 
                         <div class="toolbar-divider"></div>
 
-                        <button onclick="formatText('insertUnorderedList')">
+                        <!-- TEXT -->
 
-                            <i class="fas fa-list-ul"></i>
+                        <div class="toolbar-group">
 
-                        </button>
+                            <button
+                            type="button"
+                            onclick="formatText('bold')">
 
-                        <button onclick="formatText('insertOrderedList')">
+                                <i class="fas fa-bold"></i>
 
-                            <i class="fas fa-list-ol"></i>
+                            </button>
 
-                        </button>
+                            <button
+                            type="button"
+                            onclick="formatText('italic')">
 
-                        <button onclick="formatText('justifyLeft')">
+                                <i class="fas fa-italic"></i>
 
-                            <i class="fas fa-align-left"></i>
+                            </button>
 
-                        </button>
+                            <button
+                            type="button"
+                            onclick="formatText('underline')">
 
-                        <button onclick="formatText('justifyCenter')">
+                                <i class="fas fa-underline"></i>
 
-                            <i class="fas fa-align-center"></i>
+                            </button>
 
-                        </button>
+                            <button
+                            type="button"
+                            onclick="formatText('strikeThrough')">
 
-                        <button onclick="formatText('justifyRight')">
+                                <i class="fas fa-strikethrough"></i>
 
-                            <i class="fas fa-align-right"></i>
+                            </button>
 
-                        </button>
-
-                        <div class="toolbar-divider"></div>
-
-                        <button onclick="insertLink()">
-
-                            <i class="fas fa-link"></i>
-
-                        </button>
-
-                        <button onclick="insertImage()">
-
-                            <i class="fas fa-image"></i>
-
-                        </button>
-
-                        <button onclick="insertVideo()">
-
-                            <i class="fas fa-video"></i>
-
-                        </button>
+                        </div>
 
                         <div class="toolbar-divider"></div>
 
-                        <button onclick="toggleHTMLMode()">
+                        <!-- LISTS -->
 
-                            HTML
+                        <div class="toolbar-group">
 
-                        </button>
+                            <button
+                            type="button"
+                            onclick="formatText('insertUnorderedList')">
+
+                                <i class="fas fa-list-ul"></i>
+
+                            </button>
+
+                            <button
+                            type="button"
+                            onclick="formatText('insertOrderedList')">
+
+                                <i class="fas fa-list-ol"></i>
+
+                            </button>
+
+                        </div>
+
+                        <div class="toolbar-divider"></div>
+
+                        <!-- ALIGN -->
+
+                        <div class="toolbar-group">
+
+                            <button
+                            type="button"
+                            onclick="formatText('justifyLeft')">
+
+                                <i class="fas fa-align-left"></i>
+
+                            </button>
+
+                            <button
+                            type="button"
+                            onclick="formatText('justifyCenter')">
+
+                                <i class="fas fa-align-center"></i>
+
+                            </button>
+
+                            <button
+                            type="button"
+                            onclick="formatText('justifyRight')">
+
+                                <i class="fas fa-align-right"></i>
+
+                            </button>
+
+                        </div>
+
+                        <div class="toolbar-divider"></div>
+
+                        <!-- MEDIA -->
+
+                        <div class="toolbar-group">
+
+                            <button
+                            type="button"
+                            onclick="insertLink()">
+
+                                <i class="fas fa-link"></i>
+
+                            </button>
+
+                            <button
+                            type="button"
+                            onclick="insertImage()">
+
+                                <i class="fas fa-image"></i>
+
+                            </button>
+
+                            <button
+                            type="button"
+                            onclick="insertVideo()">
+
+                                <i class="fas fa-video"></i>
+
+                            </button>
+
+                        </div>
+
+                        <div class="toolbar-divider"></div>
+
+                        <!-- HTML -->
+
+                        <div class="toolbar-group">
+
+                            <button
+                            type="button"
+                            onclick="toggleHTMLMode()">
+
+                                HTML
+
+                            </button>
+
+                        </div>
 
                     </div>
 
@@ -386,8 +508,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 
                         <div
                         id="editor"
-                        class="editor-area"
-                        contenteditable="true">
+                        class="excel-editor"
+                        contenteditable="true"
+                        data-placeholder="Start writing amazing content...">
 
                             <h1>
                                 Introduction to JavaScript Arrays
@@ -447,7 +570,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
                                 Subject
                             </label>
 
-                            <select>
+                            <select id="subjectSelect">
 
                                 <option>
                                     Select Subject
@@ -465,7 +588,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
                                 Topic
                             </label>
 
-                            <select>
+                            <select id="topicSelect">
 
                                 <option>
                                     Select Topic
@@ -483,7 +606,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
                                 Status
                             </label>
 
-                            <select>
+                            <select id="statusSelect">
 
                                 <option>
                                     Draft
@@ -499,48 +622,49 @@ href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 
                     </div>
 
-             <!-- THUMBNAIL -->
+                    <!-- THUMBNAIL -->
 
-            <div class="sidebar-card">
+                    <div class="sidebar-card">
 
-                 <div class="card-title">
+                        <div class="card-title">
 
-                 <i class="fas fa-image"></i>
+                            <i class="fas fa-image"></i>
 
-                <h3>
-                  Featured Image
-                </h3>
+                            <h3>
+                                Featured Image
+                            </h3>
 
-           </div>
+                        </div>
 
-           <!-- PREVIEW -->
+                        <!-- PREVIEW -->
 
-            <div
-            id="thumbnailPreview"
-             class="thumbnail-preview">
+                        <div
+                        id="thumbnailPreview"
+                        class="thumbnail-preview">
 
-            </div>
+                        </div>
 
-            <!-- UPLOAD -->
+                        <!-- UPLOAD -->
 
-             <div class="upload-box">
+                        <div
+                        class="upload-box"
+                        id="thumbnailUploadBox">
 
-              <input
-              type="file"
-             id="thumbnailInput"
-              accept="image/*"
-               hidden>
+                            <input
+                            type="file"
+                            id="thumbnailInput"
+                            accept="image/*"
+                            hidden>
 
-            <i class="fas fa-image"></i>
- 
-              <p>
-                Upload Thumbnail
-             </p>
+                            <i class="fas fa-image"></i>
 
-           </div>
+                            <p>
+                                Upload Thumbnail
+                            </p>
 
-           </div>
+                        </div>
 
+                    </div>
 
                     <!-- SEO -->
 
@@ -564,6 +688,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 
                             <input
                             type="text"
+                            id="seoTags"
                             placeholder="JavaScript, HTML">
 
                         </div>
@@ -576,6 +701,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 
                             <input
                             type="text"
+                            id="seoSlug"
                             placeholder="javascript-arrays">
 
                         </div>
@@ -592,9 +718,117 @@ href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 
 </div>
 
+<!-- =======================================================
+CROPPER
+======================================================= -->
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
 
-<script src="/admin/js/admineditor.js"></script>
-</body>
+<!-- =======================================================
+UTILS
+======================================================= -->
 
+<script src="/admin/js/editor/utils/constants.js"></script>
+
+<script src="/admin/js/editor/utils/debounce.js"></script>
+
+<script src="/admin/js/editor/utils/dom-utils.js"></script>
+
+<!-- =======================================================
+CORE
+======================================================= -->
+
+<script src="/admin/js/editor/core/history-manager.js"></script>
+
+<script src="/admin/js/editor/core/selection-manager.js"></script>
+
+<script src="/admin/js/editor/core/block-manager.js"></script>
+
+<script src="/admin/js/editor/core/block-engine.js"></script>
+
+<script src="/admin/js/editor/core/editor-core.js"></script>
+
+<!-- =======================================================
+BLOCKS
+======================================================= -->
+
+<script src="/admin/js/editor/blocks/paragraph-block.js"></script>
+
+<script src="/admin/js/editor/blocks/heading-block.js"></script>
+
+<script src="/admin/js/editor/blocks/image-block.js"></script>
+
+<script src="/admin/js/editor/blocks/video-block.js"></script>
+
+<script src="/admin/js/editor/blocks/code-block.js"></script>
+
+<script src="/admin/js/editor/blocks/file-block.js"></script>
+
+<!-- =======================================================
+MEDIA
+======================================================= -->
+
+<script src="/admin/js/editor/media/image-upload.js"></script>
+
+<script src="/admin/js/editor/media/image-resize.js"></script>
+
+<script src="/admin/js/editor/media/image-crop.js"></script>
+
+<script src="/admin/js/editor/media/video-embed.js"></script>
+
+<script src="/admin/js/editor/media/file-upload.js"></script>
+
+<script src="/admin/js/editor/media/media-library.js"></script>
+
+<script src="/admin/js/editor/media/drag-drop.js"></script>
+
+<!-- =======================================================
+TOOLBAR
+======================================================= -->
+
+<script src="/admin/js/editor/toolbar/text-format.js"></script>
+
+<script src="/admin/js/editor/toolbar/shortcut-manager.js"></script>
+
+<script src="/admin/js/editor/toolbar/toolbar-manager.js"></script>
+
+<!-- =======================================================
+AUTOSAVE
+======================================================= -->
+
+<script src="/admin/js/editor/autosave/backup-manager.js"></script>
+
+<script src="/admin/js/editor/autosave/autosave.js"></script>
+
+<!-- =======================================================
+PUBLISH
+======================================================= -->
+
+<script src="/admin/js/editor/publish/seo-manager.js"></script>
+
+<script src="/admin/js/editor/publish/publish-manager.js"></script>
+
+<!-- =======================================================
+UI
+======================================================= -->
+
+<script src="/admin/js/editor/ui/notifications.js"></script>
+
+<script src="/admin/js/editor/ui/modals.js"></script>
+
+<script src="/admin/js/editor/ui/floating-toolbar.js"></script>
+
+<!-- =======================================================
+PREVIEW
+======================================================= -->
+
+<script src="/admin/js/editor/live-preview.js"></script>
+
+<!-- =======================================================
+INIT
+======================================================= -->
+
+<script src="/admin/js/editor/editor-init.js"></script>
+
+</body>
 </html>

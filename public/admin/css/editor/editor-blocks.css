@@ -1,0 +1,686 @@
+/* =========================================================
+   EXCEL YOU BLOCKS CSS
+========================================================= */
+
+/* =========================================================
+   EDITOR AREA
+========================================================= */
+
+.excel-editor {
+
+    width: 100%;
+
+    min-height: 700px;
+
+    padding: 30px;
+
+    border-radius: 28px;
+
+    background:
+    rgba(255,255,255,.7);
+
+    backdrop-filter: blur(20px);
+
+    border:
+    1px solid
+    rgba(255,255,255,.25);
+
+    box-shadow:
+    0 10px 40px
+    rgba(99,102,241,.08);
+
+    outline: none;
+
+    transition: .25s ease;
+}
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+body.dark-theme .excel-editor {
+
+    background:
+    rgba(15,23,42,.72);
+
+    border:
+    1px solid
+    rgba(255,255,255,.06);
+
+    box-shadow:
+    0 10px 40px
+    rgba(0,0,0,.35);
+}
+
+/* =========================================================
+   BLOCK BASE
+========================================================= */
+
+.editor-block {
+
+    position: relative;
+
+    margin: 16px 0;
+
+    padding: 6px 0;
+
+    transition: .2s ease;
+
+    border-radius: 14px;
+}
+
+/* =========================================================
+   BLOCK HOVER
+========================================================= */
+
+.editor-block:hover {
+
+    background:
+    rgba(99,102,241,.04);
+}
+
+/* =========================================================
+   SELECTED BLOCK
+========================================================= */
+
+.editor-block.selected {
+
+    background:
+    rgba(99,102,241,.08);
+
+    box-shadow:
+    0 0 0 2px
+    rgba(99,102,241,.18);
+}
+
+/* =========================================================
+   DRAG HANDLE
+========================================================= */
+
+.block-drag-handle {
+
+    position: absolute;
+
+    left: -32px;
+
+    top: 50%;
+
+    transform:
+    translateY(-50%);
+
+    width: 22px;
+    height: 22px;
+
+    border-radius: 8px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background:
+    rgba(99,102,241,.12);
+
+    color:
+    #6366f1;
+
+    cursor: grab;
+
+    opacity: 0;
+
+    transition: .2s ease;
+
+    font-size: 13px;
+}
+
+/* =========================================================
+   SHOW DRAG HANDLE
+========================================================= */
+
+.editor-block:hover
+.block-drag-handle {
+
+    opacity: 1;
+}
+
+/* =========================================================
+   DRAGGING
+========================================================= */
+
+.editor-block.dragging {
+
+    opacity: .45;
+
+    transform:
+    scale(.98);
+
+    transition: none;
+}
+
+/* =========================================================
+   DROP INDICATOR
+========================================================= */
+
+.drop-indicator {
+
+    width: 100%;
+
+    height: 3px;
+
+    border-radius: 999px;
+
+    background:
+    linear-gradient(
+        90deg,
+        #6366f1,
+        #8b5cf6
+    );
+
+    margin: 12px 0;
+}
+
+/* =========================================================
+   PARAGRAPH
+========================================================= */
+
+.paragraph-block {
+
+    font-size: 17px;
+
+    line-height: 1.9;
+
+    color: inherit;
+
+    word-break: break-word;
+}
+
+/* =========================================================
+   HEADINGS
+========================================================= */
+
+.heading-block {
+
+    font-weight: 800;
+
+    line-height: 1.25;
+
+    margin-top: 26px;
+    margin-bottom: 18px;
+}
+
+.heading-block.h1 {
+
+    font-size: 42px;
+}
+
+.heading-block.h2 {
+
+    font-size: 34px;
+}
+
+.heading-block.h3 {
+
+    font-size: 28px;
+}
+
+.heading-block.h4 {
+
+    font-size: 24px;
+}
+
+/* =========================================================
+   LISTS
+========================================================= */
+
+.editor-block ul,
+.editor-block ol {
+
+    padding-left: 32px;
+
+    margin: 14px 0;
+}
+
+.editor-block li {
+
+    margin-bottom: 10px;
+
+    line-height: 1.8;
+}
+
+/* =========================================================
+   BLOCKQUOTE
+========================================================= */
+
+blockquote {
+
+    position: relative;
+
+    margin: 28px 0;
+
+    padding: 20px 26px;
+
+    border-left:
+    4px solid #6366f1;
+
+    background:
+    rgba(99,102,241,.06);
+
+    border-radius: 16px;
+
+    font-size: 18px;
+
+    line-height: 1.8;
+
+    font-style: italic;
+}
+
+/* =========================================================
+   CODE BLOCK
+========================================================= */
+
+.code-block {
+
+    position: relative;
+
+    margin: 24px 0;
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    background:
+    #0f172a;
+
+    color:
+    #e2e8f0;
+
+    font-family:
+    "Fira Code",
+    monospace;
+}
+
+/* =========================================================
+   CODE HEADER
+========================================================= */
+
+.code-header {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 14px 18px;
+
+    background:
+    rgba(255,255,255,.05);
+
+    border-bottom:
+    1px solid
+    rgba(255,255,255,.06);
+}
+
+.code-language {
+
+    font-size: 13px;
+
+    color:
+    #94a3b8;
+
+    text-transform: uppercase;
+}
+
+/* =========================================================
+   CODE CONTENT
+========================================================= */
+
+.code-content {
+
+    padding: 22px;
+
+    overflow-x: auto;
+
+    white-space: pre-wrap;
+
+    line-height: 1.8;
+
+    font-size: 15px;
+}
+
+/* =========================================================
+   INLINE CODE
+========================================================= */
+
+code {
+
+    padding: 2px 8px;
+
+    border-radius: 8px;
+
+    background:
+    rgba(99,102,241,.12);
+
+    color:
+    #6366f1;
+
+    font-size: .95em;
+}
+
+/* =========================================================
+   PLACEHOLDER
+========================================================= */
+
+.editor-placeholder {
+
+    color:
+    #94a3b8;
+
+    pointer-events: none;
+
+    user-select: none;
+}
+
+/* =========================================================
+   EMPTY BLOCK
+========================================================= */
+
+.editor-block:empty::before {
+
+    content:
+    attr(data-placeholder);
+
+    color:
+    #94a3b8;
+
+    pointer-events: none;
+}
+
+/* =========================================================
+   SELECTION
+========================================================= */
+
+::selection {
+
+    background:
+    rgba(99,102,241,.25);
+}
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.editor-block table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+    margin: 24px 0;
+
+    overflow: hidden;
+
+    border-radius: 16px;
+}
+
+.editor-block th {
+
+    background:
+    rgba(99,102,241,.12);
+
+    padding: 14px;
+
+    text-align: left;
+
+    font-weight: 700;
+}
+
+.editor-block td {
+
+    padding: 14px;
+
+    border-top:
+    1px solid
+    rgba(148,163,184,.12);
+}
+
+/* =========================================================
+   CHECKLIST
+========================================================= */
+
+.checklist-item {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 12px;
+
+    margin-bottom: 12px;
+}
+
+.checklist-item input {
+
+    margin-top: 5px;
+
+    width: 18px;
+    height: 18px;
+}
+
+/* =========================================================
+   EMBED BLOCK
+========================================================= */
+
+.embed-block {
+
+    position: relative;
+
+    width: 100%;
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    margin: 26px 0;
+}
+
+/* =========================================================
+   DIVIDER
+========================================================= */
+
+.editor-divider {
+
+    width: 100%;
+
+    height: 1px;
+
+    background:
+    rgba(148,163,184,.18);
+
+    margin: 36px 0;
+}
+
+/* =========================================================
+   BLOCK ACTIONS
+========================================================= */
+
+.block-actions {
+
+    position: absolute;
+
+    right: -52px;
+
+    top: 50%;
+
+    transform:
+    translateY(-50%);
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+    opacity: 0;
+
+    transition: .2s ease;
+}
+
+/* =========================================================
+   SHOW ACTIONS
+========================================================= */
+
+.editor-block:hover
+.block-actions {
+
+    opacity: 1;
+}
+
+/* =========================================================
+   ACTION BUTTON
+========================================================= */
+
+.block-actions button {
+
+    width: 34px;
+    height: 34px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    background:
+    rgba(15,23,42,.82);
+
+    color: white;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    transition: .2s ease;
+}
+
+.block-actions button:hover {
+
+    transform: scale(1.08);
+
+    background:
+    #6366f1;
+}
+
+/* =========================================================
+   BLOCK MENU
+========================================================= */
+
+.block-menu {
+
+    position: absolute;
+
+    top: 100%;
+    left: 0;
+
+    min-width: 240px;
+
+    background:
+    rgba(255,255,255,.94);
+
+    backdrop-filter: blur(18px);
+
+    border-radius: 18px;
+
+    padding: 10px;
+
+    border:
+    1px solid
+    rgba(255,255,255,.18);
+
+    box-shadow:
+    0 12px 30px
+    rgba(0,0,0,.08);
+
+    z-index: 9999;
+}
+
+body.dark-theme
+.block-menu {
+
+    background:
+    rgba(15,23,42,.94);
+
+    border:
+    1px solid
+    rgba(255,255,255,.06);
+}
+
+/* =========================================================
+   BLOCK MENU ITEM
+========================================================= */
+
+.block-menu-item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 12px 14px;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    transition: .2s ease;
+}
+
+.block-menu-item:hover {
+
+    background:
+    rgba(99,102,241,.08);
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:768px){
+
+    .excel-editor {
+
+        padding: 20px;
+
+        border-radius: 20px;
+    }
+
+    .heading-block.h1 {
+
+        font-size: 34px;
+    }
+
+    .heading-block.h2 {
+
+        font-size: 28px;
+    }
+
+    .heading-block.h3 {
+
+        font-size: 24px;
+    }
+
+    .block-actions {
+
+        opacity: 1;
+
+        right: 0;
+    }
+
+    .block-drag-handle {
+
+        opacity: 1;
+
+        left: -24px;
+    }
+}
