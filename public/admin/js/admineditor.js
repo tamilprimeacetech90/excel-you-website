@@ -770,3 +770,29 @@ function logout(){
     window.location.href =
         "/admin/login.html";
 }
+
+/* =========================================================
+   GLOBAL TOOLBAR EXPORTS
+========================================================= */
+
+window.formatText =
+    formatText;
+
+window.undoEditor =
+    undoEditor;
+
+window.redoEditor =
+    redoEditor;
+
+window.insertLink =
+    insertLink;
+
+window.insertImage =
+    insertImage;
+
+window.insertVideo =
+    insertVideo;
+
+window.toggleHTMLMode =
+    toggleHTMLMode;
+
