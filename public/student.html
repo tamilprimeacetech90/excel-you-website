@@ -20,6 +20,7 @@
     </title>
 
     <!-- FAVICON -->
+
     <link
         rel="icon"
         type="image/png"
@@ -27,6 +28,7 @@
     >
 
     <!-- GOOGLE FONT -->
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
     <link
@@ -41,6 +43,7 @@
     >
 
     <!-- CSS -->
+
     <link
         rel="stylesheet"
         href="/student/css/student.css"
@@ -51,7 +54,7 @@
 <body data-theme="dark">
 
     <!-- =========================
-         GLOW BACKGROUND
+         BACKGROUND GLOW
     ========================= -->
 
     <div class="bg-glow glow1"></div>
@@ -79,109 +82,84 @@
 
         </a>
 
-        <!-- CONTROLS -->
+        <!-- TOPBAR RIGHT -->
 
-   <div class="controls">
+        <div class="topbar-right">
 
-    <!-- MOBILE SIDEBAR BUTTON -->
+            <!-- SEARCH -->
 
-    <button
-        class="mobile-btn"
-        id="mobileBtn"
-    >
-        ☰
-    </button>
+            <div class="top-search">
 
-    <!-- SEARCH -->
+                <input
+                    type="text"
+                    id="search"
+                    placeholder="Search subjects..."
+                >
 
-    <input
-        type="text"
-        id="search"
-        placeholder="Search subjects..."
-    >
+            </div>
 
-    <!-- LANGUAGE -->
+            <!-- LANGUAGE -->
 
-    <select id="lang">
+            <select id="lang">
 
-        <option value="en">
-            English
-        </option>
+                <option value="en">
+                    English
+                </option>
 
-        <option value="ta">
-            Tamil
-        </option>
+                <option value="ta">
+                    Tamil
+                </option>
 
-    </select>
+            </select>
 
-    <!-- LOGIN -->
+            <!-- LOGIN -->
 
-    <a
-        href="/studentlogin.html"
-        class="nav-btn"
-    >
-        Login
-    </a>
+            <a
+                href="/studentlogin.html"
+                class="nav-btn"
+            >
+                Login
+            </a>
 
-    <!-- SIGNUP -->
+            <!-- SIGNUP -->
 
-    <a
-        href="/studentsignup.html"
-        class="nav-btn signup-btn-nav"
-    >
-        Signup
-    </a>
+            <a
+                href="/studentsignup.html"
+                class="nav-btn signup-btn-nav"
+            >
+                Signup
+            </a>
 
-    <!-- PROFILE -->
+            <!-- PROFILE -->
 
-    <a
-        href="/profile.html"
-        class="nav-btn"
-    >
-        Profile
-    </a>
+            <a
+                href="/profile.html"
+                class="nav-btn"
+            >
+                Profile
+            </a>
 
-    <!-- THEME -->
+            <!-- MOBILE -->
 
-    <button
-        class="theme-btn"
-        id="themeBtn"
-    >
-        🌙
-    </button>
+            <button
+                class="mobile-btn"
+                id="mobileBtn"
+            >
+                ☰
+            </button>
 
-</div>
+            <!-- THEME -->
 
-    </header>
-
-    <!-- =========================
-         HERO
-    ========================= -->
-
-    <section class="hero">
-
-        <div class="hero-badge">
-
-            🚀 Modern Computer Science Learning
+            <button
+                class="theme-btn"
+                id="themeBtn"
+            >
+                🌙
+            </button>
 
         </div>
 
-        <h1>
-
-            Learn Smarter With
-            <span>EXCEL YOU</span>
-
-        </h1>
-
-        <p>
-
-            Explore modern computer science subjects,
-            structured lessons, theory concepts,
-            quizzes and immersive learning experiences.
-
-        </p>
-
-    </section>
+    </header>
 
     <!-- =========================
          MAIN LAYOUT
@@ -190,98 +168,56 @@
     <main class="main-layout">
 
         <!-- =========================
-             SIDEBAR
+             LEFT SIDEBAR
         ========================= -->
 
         <aside
-            class="sidebar"
+            class="left-sidebar"
             id="sidebar"
         >
 
-            <!-- STUDENT CTA -->
+            <!-- SIDEBAR TITLE -->
 
-            <div class="student-cta">
-
-                <img
-                    src="/assets/anime/anime-boy.png"
-                    alt="Anime Student"
-                    class="anime-character"
-                >
-
-                <h3>
-
-                    Become an Immortal Scholar ⚡
-
-                </h3>
-
-                <p>
-
-                    Login to unlock:
-
-                </p>
-
-                <ul>
-
-                    <li>
-                        📈 Study Progress Status
-                    </li>
-
-                    <li>
-                        🏆 XP Rewards
-                    </li>
-
-                    <li>
-                        🎖 Achievement Badges
-                    </li>
-
-                    <li>
-                        🧠 Quiz Battles
-                    </li>
-
-                    <li>
-                        ⚔ Immortal Rank System
-                    </li>
-
-                </ul>
-
-                <a
-                    href="/student-login"
-                    class="cta-btn"
-                >
-
-                    Student Login
-
-                </a>
-
-            </div>
-
-            <!-- SUBJECT HEADER -->
-
-            <div class="sidebar-header">
+            <div class="sidebar-title">
 
                 <h2>
+
                     📚 Subjects
+
                 </h2>
 
             </div>
 
-            <!-- SUBJECT CONTAINER -->
+            <!-- SUBJECT SEARCH -->
+
+            <div class="sidebar-search">
+
+                <input
+                    type="text"
+                    placeholder="Search subjects..."
+                >
+
+            </div>
+
+            <!-- SUBJECTS -->
 
             <div id="subjectContainer">
 
-                <div class="skeleton"></div>
-                <div class="skeleton"></div>
-                <div class="skeleton"></div>
+                <!-- LOADING -->
+
+                <div class="subject-skeleton"></div>
+                <div class="subject-skeleton"></div>
+                <div class="subject-skeleton"></div>
 
             </div>
 
         </aside>
 
         <!-- =========================
-             CONTENT AREA
+             CENTER CONTENT
         ========================= -->
 
-        <section class="content-area">
+        <section class="center-content">
 
             <!-- WELCOME -->
 
@@ -290,22 +226,62 @@
                 id="welcomeBox"
             >
 
-                <h2>
+                <div class="welcome-badge">
 
-                    Welcome Student 👋
+                    🚀 EXCEL YOU
 
-                </h2>
+                </div>
+
+                <h1>
+
+                    Modern Computer Science
+                    Learning Platform
+
+                </h1>
 
                 <p>
 
-                    Select a subject from the sidebar
-                    to start your learning journey.
+                    Learn theory subjects with
+                    structured topic systems,
+                    progress tracking, quizzes,
+                    XP rewards and anime-style
+                    scholar progression.
 
                 </p>
 
+                <!-- QUICK FEATURES -->
+
+                <div class="feature-grid">
+
+                    <div class="feature-card">
+
+                        📚 Structured Subjects
+
+                    </div>
+
+                    <div class="feature-card">
+
+                        ⚡ XP Reward System
+
+                    </div>
+
+                    <div class="feature-card">
+
+                        🎯 Quiz Challenges
+
+                    </div>
+
+                    <div class="feature-card">
+
+                        👑 Scholar Rank Progression
+
+                    </div>
+
+                </div>
+
             </div>
 
-            <!-- TOPICS -->
+            <!-- TOPIC SECTION -->
 
             <div
                 class="topic-box hidden"
@@ -315,10 +291,14 @@
                 <div class="section-title">
 
                     <h2>
-                        📘 Topics
+
+                        📖 Topics
+
                     </h2>
 
                 </div>
+
+                <!-- TOPICS -->
 
                 <div
                     class="topics-grid"
@@ -334,7 +314,7 @@
                 id="lessonViewer"
             >
 
-                <!-- LESSON HEADER -->
+                <!-- TITLE -->
 
                 <div class="lesson-header">
 
@@ -346,7 +326,7 @@
 
                 </div>
 
-                <!-- LESSON CONTENT -->
+                <!-- CONTENT -->
 
                 <div
                     class="lesson-content"
@@ -355,45 +335,168 @@
 
                 <!-- REFERENCES -->
 
-                <div class="references-section">
+                <div class="reference-section">
 
                     <h3>
-                        📚 References
+
+                        📑 References
+
                     </h3>
 
                     <ul>
 
                         <li>
-                            Research Papers
+                            Academic Books
                         </li>
 
                         <li>
-                            Academic References
+                            University Notes
                         </li>
 
                         <li>
-                            External Resources
+                            Research Materials
                         </li>
 
                     </ul>
 
                 </div>
 
-                <!-- ARTICLE END LINE -->
-
-                <div class="article-end-line"></div>
-
-                <!-- ADSENSE PLACEHOLDER -->
+                <!-- ADSENSE -->
 
                 <div class="adsense-box">
 
-                    Adsense Area
+                    AdSense Area
 
                 </div>
 
             </div>
 
         </section>
+
+        <!-- =========================
+             RIGHT SIDEBAR
+        ========================= -->
+
+        <aside class="right-sidebar">
+
+            <!-- LOGIN CARD -->
+
+            <div class="login-card">
+
+                <div class="anime-avatar">
+
+                    ⚔️
+
+                </div>
+
+                <h2>
+
+                    Become an
+                    Immortal Scholar
+
+                </h2>
+
+                <p>
+
+                    Login to unlock your
+                    progress system and
+                    rewards.
+
+                </p>
+
+                <!-- BENEFITS -->
+
+                <div class="benefit-list">
+
+                    <div class="benefit-item">
+
+                        📈 Study Progress Status
+
+                    </div>
+
+                    <div class="benefit-item">
+
+                        ⚡ Earn XP Rewards
+
+                    </div>
+
+                    <div class="benefit-item">
+
+                        🏆 Unlock Anime Badges
+
+                    </div>
+
+                    <div class="benefit-item">
+
+                        🎯 Participate in Quizzes
+
+                    </div>
+
+                    <div class="benefit-item">
+
+                        👑 Reach Final Rank:
+                        Celestial Immortal
+
+                    </div>
+
+                </div>
+
+                <!-- BUTTONS -->
+
+                <div class="login-buttons">
+
+                    <a
+                        href="/studentlogin.html"
+                        class="login-main-btn"
+                    >
+                        Login
+                    </a>
+
+                    <a
+                        href="/studentsignup.html"
+                        class="signup-main-btn"
+                    >
+                        Signup
+                    </a>
+
+                </div>
+
+            </div>
+
+            <!-- DAILY STATUS -->
+
+            <div class="daily-card">
+
+                <h3>
+
+                    🔥 Daily Scholar Status
+
+                </h3>
+
+                <div class="daily-item">
+
+                    Current Realm:
+                    Beginner Researcher
+
+                </div>
+
+                <div class="daily-item">
+
+                    Daily XP:
+                    +0 XP
+
+                </div>
+
+                <div class="daily-item">
+
+                    Quiz Rank:
+                    Unranked
+
+                </div>
+
+            </div>
+
+        </aside>
 
     </main>
 
@@ -408,9 +511,7 @@
 
     </footer>
 
-    <!-- =========================
-         STUDENT JS
-    ========================= -->
+    <!-- JS -->
 
     <script src="/student/js/student.js"></script>
 
