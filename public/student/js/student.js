@@ -45,7 +45,7 @@ async function loadSubjects(){
 
     try {
 
-        // FETCH API
+        // FETCH
 
         const response =
             await fetch(
@@ -65,17 +65,17 @@ async function loadSubjects(){
             allSubjects
         );
 
-        // DROPDOWN
+        // SELECT
 
         populateSubjectSelect(
             allSubjects
         );
 
-    } catch(err){
+    } catch(error){
 
         console.error(
             "❌ SUBJECT LOAD ERROR:",
-            err
+            error
         );
 
         subjectContainer.innerHTML = `
@@ -147,7 +147,7 @@ function renderSubjects(subjects){
 
         tile.innerHTML = `
 
-            <!-- SUBJECT IMAGE -->
+            <!-- IMAGE -->
 
             <div class="subject-image-wrap">
 
@@ -167,7 +167,7 @@ function renderSubjects(subjects){
 
             </div>
 
-            <!-- SUBJECT NAME -->
+            <!-- BOTTOM -->
 
             <div class="subject-bottom">
 
@@ -203,13 +203,13 @@ function renderSubjects(subjects){
 
         `;
 
-        // OPEN SUBJECT PAGE
+        // SUBJECT OPEN
 
         tile.addEventListener(
             "click",
             (e) => {
 
-                // PREVENT INFO CLICK
+                // IGNORE INFO BUTTON
 
                 if(
                     e.target.classList.contains(
@@ -221,7 +221,7 @@ function renderSubjects(subjects){
 
                 }
 
-                // SUBJECT SLUG
+                // CREATE SLUG
 
                 const slug =
 
@@ -307,7 +307,7 @@ function populateSubjectSelect(subjects){
     subjectSelect.innerHTML = `
 
         <option value="">
-            Select Subject
+            All Subjects
         </option>
 
     `;
@@ -337,7 +337,7 @@ function populateSubjectSelect(subjects){
 
 
 // =========================
-// SEARCH SUBJECTS
+// SEARCH
 // =========================
 
 function searchSubjects(){
@@ -393,7 +393,7 @@ function searchSubjects(){
 
 
 // =========================
-// CREATE SLUG
+// SLUG
 // =========================
 
 function createSlug(text){
@@ -521,7 +521,7 @@ function updateStudentNavbar(){
             "student"
         );
 
-    // NAV ELEMENTS
+    // ELEMENTS
 
     const loginBtn =
         document.querySelector(
@@ -538,7 +538,7 @@ function updateStudentNavbar(){
             'a[href="/profile.html"]'
         );
 
-    // NOT LOGGED
+    // NOT LOGIN
 
     if(!studentData){
 
@@ -551,27 +551,17 @@ function updateStudentNavbar(){
     const student =
         JSON.parse(studentData);
 
-    // REMOVE LOGIN
+    // REMOVE BUTTONS
 
-    if(loginBtn){
+    loginBtn?.remove();
 
-        loginBtn.remove();
+    signupBtn?.remove();
 
-    }
+    // TOP RIGHT
 
-    // REMOVE SIGNUP
-
-    if(signupBtn){
-
-        signupBtn.remove();
-
-    }
-
-    // TOPBAR
-
-    const topbarRight =
+    const topRight =
         document.querySelector(
-            ".topbar-right"
+            ".top-right"
         );
 
     // XP BADGE
@@ -595,7 +585,7 @@ function updateStudentNavbar(){
 
     if(profileBtn){
 
-        topbarRight.insertBefore(
+        topRight.insertBefore(
             badge,
             profileBtn
         );
@@ -628,11 +618,11 @@ function updateStudentNavbar(){
         }
     );
 
-    topbarRight.appendChild(
+    topRight.appendChild(
         logoutBtn
     );
 
-    // RIGHT SIDEBAR UPDATE
+    // UPDATE SIDEBAR
 
     const loginCard =
         document.querySelector(
@@ -643,53 +633,54 @@ function updateStudentNavbar(){
 
         loginCard.innerHTML = `
 
-            <div class="anime-avatar">
+            <div class="anime-box">
 
                 ⚔️
 
             </div>
 
-            <h2>
+            <h3>
 
                 Welcome Back,
                 ${student.name || "Scholar"}
 
-            </h2>
+            </h3>
 
             <p>
 
-                Continue your path toward
-                becoming a Celestial Immortal.
+                Continue your journey
+                toward becoming a
+                Celestial Immortal.
 
             </p>
 
-            <div class="benefit-list">
+            <div class="mini-benefits">
 
-                <div class="benefit-item">
+                <div class="mini-item">
 
                     ⚡ XP:
                     ${student.xp || 0}
 
                 </div>
 
-                <div class="benefit-item">
+                <div class="mini-item">
 
                     👑 Rank:
                     ${student.rank || "Scholar"}
 
                 </div>
 
-                <div class="benefit-item">
+                <div class="mini-item">
 
                     📈 Level:
                     ${student.level || 1}
 
                 </div>
 
-                <div class="benefit-item">
+                <div class="mini-item">
 
                     🔥 Daily Streak:
-                    ${student.streak || 0} Days
+                    ${student.streak || 0}
 
                 </div>
 
@@ -742,7 +733,7 @@ window.addEventListener(
 
         initTheme();
 
-        // LOGIN UI
+        // LOGIN STATUS
 
         updateStudentNavbar();
 

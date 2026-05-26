@@ -10,24 +10,11 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <meta
-        name="theme-color"
-        content="#07111f"
-    >
-
     <title>
-        EXCEL YOU — Learn Computer Science
+        EXCEL YOU — Subjects
     </title>
 
-    <!-- FAVICON -->
-
-    <link
-        rel="icon"
-        type="image/png"
-        href="/assets/logo/favicon.png"
-    >
-
-    <!-- GOOGLE FONT -->
+    <!-- FONT -->
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
@@ -66,58 +53,65 @@
 
     <header class="topbar">
 
-        <!-- LOGO -->
+        <!-- LEFT -->
 
-        <a
-            href="/"
-            class="logo-wrap"
-        >
+        <div class="top-left">
 
-            <img
-                src="/assets/logo/full-logo-white.png"
-                alt="EXCEL YOU"
-                class="logo-img"
-                id="siteLogo"
+            <!-- LOGO -->
+
+            <a
+                href="/"
+                class="logo-wrap"
             >
 
-        </a>
-
-        <!-- TOPBAR RIGHT -->
-
-        <div class="topbar-right">
-
-            <!-- GLOBAL SEARCH -->
-
-            <div class="top-search">
-
-                <input
-                    type="text"
-                    id="search"
-                    placeholder="Search computer science subjects..."
+                <img
+                    src="/assets/logo/full-logo-white.png"
+                    alt="EXCEL YOU"
+                    class="logo-img"
                 >
 
-            </div>
+            </a>
+
+        </div>
+
+        <!-- CENTER -->
+
+        <div class="top-center">
+
+            <!-- SEARCH -->
+
+            <input
+                type="text"
+                id="search"
+                placeholder="Search subjects..."
+            >
 
             <!-- SUBJECT SELECT -->
 
             <select id="subjectSelect">
 
                 <option value="">
-                    Select Subject
+                    All Subjects
                 </option>
 
             </select>
+
+        </div>
+
+        <!-- RIGHT -->
+
+        <div class="top-right">
 
             <!-- LANGUAGE -->
 
             <select id="lang">
 
                 <option value="en">
-                    English
+                    EN
                 </option>
 
                 <option value="ta">
-                    Tamil
+                    தமிழ்
                 </option>
 
             </select>
@@ -135,7 +129,7 @@
 
             <a
                 href="/studentsignup.html"
-                class="nav-btn signup-btn-nav"
+                class="nav-btn signup-btn"
             >
                 Signup
             </a>
@@ -169,35 +163,25 @@
     <main class="main-layout">
 
         <!-- =========================
-             CONTENT AREA
+             CONTENT
         ========================= -->
 
         <section class="content-area">
 
-            <!-- HERO -->
+            <!-- SMALL HEADER -->
 
-            <div class="hero-box">
+            <div class="page-head">
 
-                <div class="hero-badge">
+                <h2>
 
-                    ⚡ EXCEL YOU
+                    📚 Computer Science Subjects
 
-                </div>
-
-                <h1>
-
-                    Explore Computer Science
-                    Subjects
-
-                </h1>
+                </h2>
 
                 <p>
 
-                    Learn theory-based computer
-                    science subjects through
-                    structured topic systems,
-                    anime progression rewards,
-                    quizzes and XP ranking.
+                    Explore theory-based
+                    computer science learning.
 
                 </p>
 
@@ -205,35 +189,19 @@
 
             <!-- SUBJECT GRID -->
 
-            <div class="subject-section">
+            <div
+                class="subject-grid"
+                id="subjectContainer"
+            >
 
-                <div class="section-header">
+                <!-- LOADING -->
 
-                    <h2>
-
-                        📚 Subjects
-
-                    </h2>
-
-                </div>
-
-                <!-- SUBJECT TILES -->
-
-                <div
-                    class="subject-grid"
-                    id="subjectContainer"
-                >
-
-                    <!-- LOADING -->
-
-                    <div class="subject-tile-skeleton"></div>
-                    <div class="subject-tile-skeleton"></div>
-                    <div class="subject-tile-skeleton"></div>
-                    <div class="subject-tile-skeleton"></div>
-                    <div class="subject-tile-skeleton"></div>
-                    <div class="subject-tile-skeleton"></div>
-
-                </div>
+                <div class="subject-skeleton"></div>
+                <div class="subject-skeleton"></div>
+                <div class="subject-skeleton"></div>
+                <div class="subject-skeleton"></div>
+                <div class="subject-skeleton"></div>
+                <div class="subject-skeleton"></div>
 
             </div>
 
@@ -247,60 +215,60 @@
 
             <!-- LOGIN STATUS -->
 
-            <div class="login-card">
+            <div class="status-card login-card">
 
-                <!-- ANIME ICON -->
+                <!-- ANIME -->
 
-                <div class="anime-avatar">
+                <div class="anime-box">
 
                     ⚔️
 
                 </div>
 
-                <h2>
+                <h3>
 
                     Become a
                     Celestial Scholar
 
-                </h2>
+                </h3>
 
                 <p>
 
-                    Login to unlock your
-                    study progression system,
-                    anime rewards and quizzes.
+                    Login to unlock XP,
+                    rewards, quizzes
+                    and study progression.
 
                 </p>
 
                 <!-- BENEFITS -->
 
-                <div class="benefit-list">
+                <div class="mini-benefits">
 
-                    <div class="benefit-item">
+                    <div class="mini-item">
 
-                        📈 Study Progress Status
-
-                    </div>
-
-                    <div class="benefit-item">
-
-                        ⚡ Earn XP Rewards
+                        ⚡ XP Rewards
 
                     </div>
 
-                    <div class="benefit-item">
+                    <div class="mini-item">
 
-                        🏆 Unlock Anime Badges
-
-                    </div>
-
-                    <div class="benefit-item">
-
-                        🎯 Participate in Quizzes
+                        🏆 Anime Badges
 
                     </div>
 
-                    <div class="benefit-item">
+                    <div class="mini-item">
+
+                        📈 Study Status
+
+                    </div>
+
+                    <div class="mini-item">
+
+                        🎯 Quiz Arena
+
+                    </div>
+
+                    <div class="mini-item">
 
                         👑 Final Rank:
                         Celestial Immortal
@@ -311,18 +279,18 @@
 
                 <!-- BUTTONS -->
 
-                <div class="login-buttons">
+                <div class="side-buttons">
 
                     <a
                         href="/studentlogin.html"
-                        class="login-main-btn"
+                        class="side-login-btn"
                     >
                         Login
                     </a>
 
                     <a
                         href="/studentsignup.html"
-                        class="signup-main-btn"
+                        class="side-signup-btn"
                     >
                         Signup
                     </a>
@@ -331,9 +299,9 @@
 
             </div>
 
-            <!-- DAILY STATUS -->
+            <!-- STATUS -->
 
-            <div class="daily-card">
+            <div class="status-card">
 
                 <h3>
 
@@ -341,31 +309,31 @@
 
                 </h3>
 
-                <div class="daily-item">
+                <div class="status-item">
 
-                    Current Realm:
-                    Beginner Scholar
-
-                </div>
-
-                <div class="daily-item">
-
-                    Daily XP:
-                    +0 XP
+                    Realm:
+                    Beginner
 
                 </div>
 
-                <div class="daily-item">
+                <div class="status-item">
 
-                    Quiz Rank:
-                    Unranked
+                    XP:
+                    Locked
 
                 </div>
 
-                <div class="daily-item">
+                <div class="status-item">
 
                     Rewards:
                     Locked
+
+                </div>
+
+                <div class="status-item">
+
+                    Quiz Rank:
+                    Unranked
 
                 </div>
 
@@ -373,7 +341,7 @@
 
             <!-- ADSENSE -->
 
-            <div class="sidebar-ad">
+            <div class="ads-box">
 
                 AdSense Area
 
@@ -390,8 +358,7 @@
     <footer>
 
         © 2026 EXCEL YOU —
-        Modern Computer Science
-        Learning Platform
+        Computer Science Learning Platform
 
     </footer>
 
