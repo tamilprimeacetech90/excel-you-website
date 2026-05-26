@@ -1,67 +1,24 @@
 // =========================
-// EXCEL YOU STUDENT SYSTEM
+// EXCEL YOU
 // student.js
+// SUBJECT HOME PAGE
 // =========================
 
 
 // =========================
-// GLOBAL STATE
+// GLOBALS
 // =========================
 
 let allSubjects = [];
-
-let allTopics = [];
-
-let activeSubjectId = null;
-
-let activeTopicId = null;
 
 
 // =========================
 // ELEMENTS
 // =========================
 
-const body =
-    document.body;
-
 const subjectContainer =
     document.getElementById(
         "subjectContainer"
-    );
-
-const topicContainer =
-    document.getElementById(
-        "topicContainer"
-    );
-
-const topicsGrid =
-    document.getElementById(
-        "topicsGrid"
-    );
-
-const lessonViewer =
-    document.getElementById(
-        "lessonViewer"
-    );
-
-const lessonTitle =
-    document.getElementById(
-        "lessonTitle"
-    );
-
-const lessonContent =
-    document.getElementById(
-        "lessonContent"
-    );
-
-const welcomeBox =
-    document.getElementById(
-        "welcomeBox"
-    );
-
-const siteLogo =
-    document.getElementById(
-        "siteLogo"
     );
 
 const searchInput =
@@ -69,19 +26,9 @@ const searchInput =
         "search"
     );
 
-const langSelect =
+const subjectSelect =
     document.getElementById(
-        "lang"
-    );
-
-const sidebar =
-    document.getElementById(
-        "sidebar"
-    );
-
-const mobileBtn =
-    document.getElementById(
-        "mobileBtn"
+        "subjectSelect"
     );
 
 const themeBtn =
@@ -91,191 +38,55 @@ const themeBtn =
 
 
 // =========================
-// MOBILE SIDEBAR
-// =========================
-
-if(mobileBtn){
-
-    mobileBtn.addEventListener(
-        "click",
-        () => {
-
-            sidebar.classList.toggle(
-                "active"
-            );
-
-        }
-    );
-
-}
-
-
-// =========================
-// SAFE HTML
-// =========================
-
-function escapeHTML(str = "") {
-
-    return String(str).replace(
-        /[&<>"']/g,
-        match => ({
-
-            "&": "&amp;",
-            "<": "&lt;",
-            ">": "&gt;",
-            '"': "&quot;",
-            "'": "&#39;"
-
-        }[match])
-    );
-
-}
-
-
-// =========================
-// SHORT TEXT
-// =========================
-
-function shortText(
-    text = "",
-    limit = 100
-){
-
-    text = String(text);
-
-    return text.length > limit
-
-        ? text.substring(0, limit) + "..."
-
-        : text;
-
-}
-
-
-// =========================
-// LOADING UI
-// =========================
-
-function showLoading(container) {
-
-    if(!container) return;
-
-    container.innerHTML = `
-
-        <div class="skeleton"></div>
-        <div class="skeleton"></div>
-        <div class="skeleton"></div>
-
-    `;
-
-}
-
-
-// =========================
-// EMPTY UI
-// =========================
-
-function emptyBox(message) {
-
-    return `
-
-        <div class="welcome-box">
-
-            <p>
-
-                ${escapeHTML(message)}
-
-            </p>
-
-        </div>
-
-    `;
-
-}
-
-
-// =========================
-// FETCH JSON
-// =========================
-
-async function fetchJSON(url) {
-
-    const res =
-        await fetch(url);
-
-    if(!res.ok){
-
-        throw new Error(
-            "Request Failed"
-        );
-
-    }
-
-    return await res.json();
-
-}
-
-
-// =========================
 // LOAD SUBJECTS
 // =========================
 
-async function loadSubjects() {
+async function loadSubjects(){
 
     try {
 
-        showLoading(
-            subjectContainer
-        );
+        // FETCH API
 
-        const lang =
-            langSelect?.value || "en";
-
-        const subjects =
-            await fetchJSON(
+        const response =
+            await fetch(
                 "/api/subjects"
             );
 
-        // LANGUAGE FILTER
+        const data =
+            await response.json();
 
-        allSubjects =
-            subjects.filter(subject =>
+        // SAVE
 
-                !subject.language ||
+        allSubjects = data;
 
-                subject.language === lang
-
-            );
+        // RENDER
 
         renderSubjects(
             allSubjects
         );
 
-        // RESET VIEW
+        // DROPDOWN
 
-        welcomeBox?.classList.remove(
-            "hidden"
+        populateSubjectSelect(
+            allSubjects
         );
 
-        topicContainer?.classList.add(
-            "hidden"
-        );
-
-        lessonViewer?.classList.add(
-            "hidden"
-        );
-
-    } catch(err) {
+    } catch(err){
 
         console.error(
-            "LOAD SUBJECTS ERROR:",
+            "❌ SUBJECT LOAD ERROR:",
             err
         );
 
-        subjectContainer.innerHTML =
-            emptyBox(
-                "❌ Failed to load subjects"
-            );
+        subjectContainer.innerHTML = `
+
+            <div class="empty-box">
+
+                Failed to load subjects
+
+            </div>
+
+        `;
 
     }
 
@@ -286,470 +97,241 @@ async function loadSubjects() {
 // RENDER SUBJECTS
 // =========================
 
-function renderSubjects(subjects) {
+function renderSubjects(subjects){
 
-    if(!subjectContainer) return;
+    // RESET
 
     subjectContainer.innerHTML = "";
 
-    if(
-        !Array.isArray(subjects) ||
-        !subjects.length
-    ){
+    // EMPTY
 
-        subjectContainer.innerHTML =
-            emptyBox(
-                "No subjects found."
-            );
+    if(!subjects.length){
+
+        subjectContainer.innerHTML = `
+
+            <div class="empty-box">
+
+                No subjects found
+
+            </div>
+
+        `;
 
         return;
 
     }
+
+    // LOOP
 
     subjects.forEach(subject => {
 
-        const activeClass =
+        // TILE
 
-            activeSubjectId === subject._id
+        const tile =
+            document.createElement(
+                "div"
+            );
 
-            ? "active"
+        tile.className =
+            "subject-tile";
 
-            : "";
+        // IMAGE
 
-        subjectContainer.innerHTML += `
+        const image =
 
-            <div
-                class="subject-card ${activeClass}"
-                onclick="openSubject(
-                    '${subject._id}'
-                )"
-            >
+            subject.image ||
+
+            "/assets/default-subject.jpg";
+
+        // HTML
+
+        tile.innerHTML = `
+
+            <!-- SUBJECT IMAGE -->
+
+            <div class="subject-image-wrap">
+
+                <img
+                    src="${image}"
+                    alt="${subject.name}"
+                    class="subject-image"
+                >
+
+                <!-- INFO -->
+
+                <button
+                    class="info-btn"
+                >
+                    ⓘ
+                </button>
+
+            </div>
+
+            <!-- SUBJECT NAME -->
+
+            <div class="subject-bottom">
 
                 <h3>
 
-                    📘
-                    ${escapeHTML(
+                    ${subject.name}
+
+                </h3>
+
+            </div>
+
+            <!-- INFO POPUP -->
+
+            <div class="subject-info">
+
+                <h4>
+
+                    ${subject.name}
+
+                </h4>
+
+                <p>
+
+                    ${
+                        subject.description ||
+
+                        "No description available."
+                    }
+
+                </p>
+
+            </div>
+
+        `;
+
+        // OPEN SUBJECT PAGE
+
+        tile.addEventListener(
+            "click",
+            (e) => {
+
+                // PREVENT INFO CLICK
+
+                if(
+                    e.target.classList.contains(
+                        "info-btn"
+                    )
+                ){
+
+                    return;
+
+                }
+
+                // SUBJECT SLUG
+
+                const slug =
+
+                    createSlug(
                         subject.name
-                    )}
+                    );
 
-                </h3>
+                // REDIRECT
 
-                <p>
+                window.location.href =
 
-                    ${shortText(
+                    `/subject/${slug}`;
 
-                        escapeHTML(
-
-                            subject.description ||
-
-                            "No description available"
-
-                        ),
-
-                        90
-                    )}
-
-                </p>
-
-            </div>
-
-        `;
-
-    });
-
-}
-
-
-// =========================
-// OPEN SUBJECT
-// =========================
-
-async function openSubject(subjectId) {
-
-    try {
-
-        activeSubjectId =
-            subjectId;
-
-        activeTopicId = null;
-
-        renderSubjects(
-            allSubjects
+            }
         );
 
-        // HIDE WELCOME
+        // INFO BUTTON
 
-        welcomeBox?.classList.add(
-            "hidden"
-        );
-
-        // SHOW TOPIC AREA
-
-        topicContainer?.classList.remove(
-            "hidden"
-        );
-
-        // HIDE LESSON
-
-        lessonViewer?.classList.add(
-            "hidden"
-        );
-
-        showLoading(
-            topicsGrid
-        );
-
-        const topics =
-            await fetchJSON(
-                `/api/topics/${subjectId}`
+        const infoBtn =
+            tile.querySelector(
+                ".info-btn"
             );
 
-        allTopics = topics;
-
-        renderTopics(
-            topics
-        );
-
-        // MOBILE AUTO CLOSE
-
-        if(window.innerWidth < 992){
-
-            sidebar.classList.remove(
-                "active"
+        const infoPopup =
+            tile.querySelector(
+                ".subject-info"
             );
 
-        }
+        infoBtn.addEventListener(
+            "click",
+            (e) => {
 
-    } catch(err) {
+                e.stopPropagation();
 
-        console.error(
-            "OPEN SUBJECT ERROR:",
-            err
-        );
+                // CLOSE OTHERS
 
-        topicsGrid.innerHTML =
-            emptyBox(
-                "❌ Failed to load topics"
-            );
+                document
+                    .querySelectorAll(
+                        ".subject-info"
+                    )
+                    .forEach(popup => {
 
-    }
+                        if(
+                            popup !== infoPopup
+                        ){
 
-}
+                            popup.classList.remove(
+                                "active"
+                            );
 
+                        }
 
-// =========================
-// RENDER TOPICS
-// =========================
+                    });
 
-function renderTopics(topics) {
+                // TOGGLE
 
-    if(!topicsGrid) return;
-
-    topicsGrid.innerHTML = "";
-
-    if(
-        !Array.isArray(topics) ||
-        !topics.length
-    ){
-
-        topicsGrid.innerHTML =
-            emptyBox(
-                "No topics available."
-            );
-
-        return;
-
-    }
-
-    topics.forEach(topic => {
-
-        const activeClass =
-
-            activeTopicId === topic._id
-
-            ? "active"
-
-            : "";
-
-        const preview =
-
-            topic.contentHTML
-
-            ? String(topic.contentHTML)
-                .replace(/<[^>]*>/g, "")
-
-            : topic.content
-
-            ? String(topic.content)
-                .replace(/<[^>]*>/g, "")
-
-            : "Interactive lesson available.";
-
-        topicsGrid.innerHTML += `
-
-            <div
-                class="topic-card ${activeClass}"
-                onclick="openTopic(
-                    '${topic._id}'
-                )"
-            >
-
-                <h3>
-
-                    📖
-                    ${escapeHTML(
-                        topic.title ||
-                        "Untitled Topic"
-                    )}
-
-                </h3>
-
-                <p>
-
-                    ${shortText(
-                        escapeHTML(preview),
-                        100
-                    )}
-
-                </p>
-
-            </div>
-
-        `;
-
-    });
-
-}
-
-
-// =========================
-// OPEN TOPIC
-// =========================
-
-async function openTopic(topicId) {
-
-    try {
-
-        activeTopicId =
-            topicId;
-
-        renderTopics(
-            allTopics
-        );
-
-        // SHOW LESSON
-
-        lessonViewer?.classList.remove(
-            "hidden"
-        );
-
-        lessonTitle.innerHTML =
-            "Loading Lesson...";
-
-        lessonContent.innerHTML = `
-
-            <div class="skeleton"></div>
-            <div class="skeleton"></div>
-
-        `;
-
-        const topic =
-            await fetchJSON(
-                `/api/topic/${topicId}`
-            );
-
-        // TITLE
-
-        lessonTitle.innerHTML =
-
-            escapeHTML(
-                topic.title || "Lesson"
-            );
-
-        // RESET CONTENT
-
-        lessonContent.innerHTML = "";
-
-        // =========================
-        // HTML CONTENT
-        // =========================
-
-        if(topic.contentHTML){
-
-            lessonContent.innerHTML =
-                topic.contentHTML;
-
-        }
-
-        // =========================
-        // NORMAL CONTENT
-        // =========================
-
-        else if(topic.content){
-
-            lessonContent.innerHTML = `
-
-                <div class="lesson-text">
-
-                    ${topic.content}
-
-                </div>
-
-            `;
-
-        }
-
-        // =========================
-        // BLOCK CONTENT
-        // =========================
-
-        else if(
-            Array.isArray(
-                topic.contentBlocks
-            ) &&
-            topic.contentBlocks.length
-        ){
-
-            topic.contentBlocks.forEach(block => {
-
-                // HEADING
-
-                if(block.type === "heading"){
-
-                    lessonContent.innerHTML += `
-
-                        <h2>
-
-                            ${escapeHTML(block.value)}
-
-                        </h2>
-
-                    `;
-
-                }
-
-                // TEXT
-
-                if(block.type === "text"){
-
-                    lessonContent.innerHTML += `
-
-                        <p>
-
-                            ${escapeHTML(block.value)}
-
-                        </p>
-
-                    `;
-
-                }
-
-                // IMAGE
-
-                if(block.type === "image"){
-
-                    lessonContent.innerHTML += `
-
-                        <img
-                            src="${escapeHTML(block.value)}"
-                            alt="Lesson Image"
-                        >
-
-                    `;
-
-                }
-
-                // VIDEO
-
-                if(block.type === "video"){
-
-                    lessonContent.innerHTML += `
-
-                        <iframe
-                            src="${escapeHTML(block.value)}"
-                            frameborder="0"
-                            allowfullscreen
-                        ></iframe>
-
-                    `;
-
-                }
-
-                // CODE
-
-                if(block.type === "code"){
-
-                    lessonContent.innerHTML += `
-
-<pre>
-
-<code>${escapeHTML(block.value)}</code>
-
-</pre>
-
-                    `;
-
-                }
-
-                // QUOTE
-
-                if(block.type === "quote"){
-
-                    lessonContent.innerHTML += `
-
-                        <blockquote>
-
-                            ${escapeHTML(block.value)}
-
-                        </blockquote>
-
-                    `;
-
-                }
-
-            });
-
-        }
-
-        // =========================
-        // EMPTY CONTENT
-        // =========================
-
-        else {
-
-            lessonContent.innerHTML =
-                emptyBox(
-                    "No lesson content available."
+                infoPopup.classList.toggle(
+                    "active"
                 );
 
-        }
-
-        // =========================
-        // SCROLL
-        // =========================
-
-        window.scrollTo({
-
-            top:
-                lessonViewer.offsetTop - 100,
-
-            behavior: "smooth"
-
-        });
-
-    } catch(err) {
-
-        console.error(
-            "OPEN TOPIC ERROR:",
-            err
+            }
         );
 
-        lessonContent.innerHTML =
-            emptyBox(
-                "❌ Failed to load lesson"
+        // APPEND
+
+        subjectContainer.appendChild(
+            tile
+        );
+
+    });
+
+}
+
+
+// =========================
+// SUBJECT DROPDOWN
+// =========================
+
+function populateSubjectSelect(subjects){
+
+    // RESET
+
+    subjectSelect.innerHTML = `
+
+        <option value="">
+            Select Subject
+        </option>
+
+    `;
+
+    // LOOP
+
+    subjects.forEach(subject => {
+
+        const option =
+            document.createElement(
+                "option"
             );
 
-    }
+        option.value =
+            subject.name;
+
+        option.innerHTML =
+            subject.name;
+
+        subjectSelect.appendChild(
+            option
+        );
+
+    });
 
 }
 
@@ -758,23 +340,52 @@ async function openTopic(topicId) {
 // SEARCH SUBJECTS
 // =========================
 
-function searchSubjects() {
+function searchSubjects(){
 
-    const value =
+    // VALUES
+
+    const searchValue =
 
         searchInput.value
             .toLowerCase()
             .trim();
 
+    const selectedValue =
+
+        subjectSelect.value
+            .toLowerCase()
+            .trim();
+
+    // FILTER
+
     const filtered =
 
-        allSubjects.filter(subject =>
+        allSubjects.filter(subject => {
 
-            subject.name
-                .toLowerCase()
-                .includes(value)
+            const name =
 
-        );
+                subject.name
+                    .toLowerCase();
+
+            return (
+
+                name.includes(
+                    searchValue
+                ) &&
+
+                (
+                    selectedValue === "" ||
+
+                    name.includes(
+                        selectedValue
+                    )
+                )
+
+            );
+
+        });
+
+    // RENDER
 
     renderSubjects(filtered);
 
@@ -782,43 +393,18 @@ function searchSubjects() {
 
 
 // =========================
-// APPLY THEME
+// CREATE SLUG
 // =========================
 
-function applyTheme(theme){
+function createSlug(text){
 
-    body.setAttribute(
-        "data-theme",
-        theme
-    );
+    return text
 
-    // BUTTON ICON
+        .toLowerCase()
 
-    if(themeBtn){
+        .replace(/[^a-z0-9]+/g, "-")
 
-        themeBtn.innerHTML =
-
-            theme === "dark"
-
-            ? "☀️"
-
-            : "🌙";
-
-    }
-
-    // LOGO
-
-    if(siteLogo){
-
-        siteLogo.src =
-
-            theme === "dark"
-
-            ? "/assets/logo/full-logo-white.png"
-
-            : "/assets/logo/full-logo.png";
-
-    }
+        .replace(/(^-|-$)/g, "");
 
 }
 
@@ -827,93 +413,115 @@ function applyTheme(theme){
 // THEME INIT
 // =========================
 
-const savedTheme =
+function initTheme(){
 
-    localStorage.getItem(
-        "theme"
-    ) || "dark";
+    const savedTheme =
 
-applyTheme(savedTheme);
+        localStorage.getItem(
+            "theme"
+        ) || "dark";
+
+    document.body.setAttribute(
+        "data-theme",
+        savedTheme
+    );
+
+    updateThemeIcon();
+
+}
+
+
+// =========================
+// UPDATE ICON
+// =========================
+
+function updateThemeIcon(){
+
+    const currentTheme =
+
+        document.body.getAttribute(
+            "data-theme"
+        );
+
+    if(currentTheme === "dark"){
+
+        themeBtn.innerHTML = "☀️";
+
+    } else {
+
+        themeBtn.innerHTML = "🌙";
+
+    }
+
+}
 
 
 // =========================
 // THEME TOGGLE
 // =========================
 
-if(themeBtn){
+themeBtn?.addEventListener(
+    "click",
+    () => {
 
-    themeBtn.addEventListener(
-        "click",
-        () => {
+        const currentTheme =
 
-            const current =
-
-                body.getAttribute(
-                    "data-theme"
-                );
-
-            const next =
-
-                current === "dark"
-
-                ? "light"
-
-                : "dark";
-
-            applyTheme(next);
-
-            localStorage.setItem(
-                "theme",
-                next
+            document.body.getAttribute(
+                "data-theme"
             );
 
-        }
-    );
+        const newTheme =
 
-}
+            currentTheme === "dark"
+                ? "light"
+                : "dark";
+
+        document.body.setAttribute(
+            "data-theme",
+            newTheme
+        );
+
+        localStorage.setItem(
+            "theme",
+            newTheme
+        );
+
+        updateThemeIcon();
+
+    }
+);
+
+
+// =========================
+// SEARCH EVENTS
+// =========================
+
+searchInput?.addEventListener(
+    "keyup",
+    searchSubjects
+);
+
+subjectSelect?.addEventListener(
+    "change",
+    searchSubjects
+);
 
 
 // =========================
-// SEARCH EVENT
-// =========================
-
-if(searchInput){
-
-    searchInput.addEventListener(
-        "keyup",
-        searchSubjects
-    );
-
-}
-
-
-// =========================
-// LANGUAGE CHANGE
-// =========================
-
-if(langSelect){
-
-    langSelect.addEventListener(
-        "change",
-        loadSubjects
-    );
-
-}
-
-// =========================
-// STUDENT LOGIN UI
+// LOGIN STATUS UI
 // =========================
 
 function updateStudentNavbar(){
 
-    // GET STUDENT
+    // STUDENT DATA
 
     const studentData =
+
         localStorage.getItem(
             "student"
         );
 
-    // NAV BUTTONS
+    // NAV ELEMENTS
 
     const loginBtn =
         document.querySelector(
@@ -930,7 +538,7 @@ function updateStudentNavbar(){
             'a[href="/profile.html"]'
         );
 
-    // IF NOT LOGGED IN
+    // NOT LOGGED
 
     if(!studentData){
 
@@ -938,12 +546,12 @@ function updateStudentNavbar(){
 
     }
 
-    // PARSE DATA
+    // PARSE
 
     const student =
         JSON.parse(studentData);
 
-    // REMOVE LOGIN/SIGNUP
+    // REMOVE LOGIN
 
     if(loginBtn){
 
@@ -951,18 +559,22 @@ function updateStudentNavbar(){
 
     }
 
+    // REMOVE SIGNUP
+
     if(signupBtn){
 
         signupBtn.remove();
 
     }
 
-    // CREATE XP BADGE
+    // TOPBAR
 
-    const controls =
+    const topbarRight =
         document.querySelector(
-            ".controls"
+            ".topbar-right"
         );
+
+    // XP BADGE
 
     const badge =
         document.createElement(
@@ -979,18 +591,18 @@ function updateStudentNavbar(){
 
     `;
 
-    // INSERT BEFORE PROFILE
+    // INSERT
 
     if(profileBtn){
 
-        controls.insertBefore(
+        topbarRight.insertBefore(
             badge,
             profileBtn
         );
 
     }
 
-    // LOGOUT BUTTON
+    // LOGOUT
 
     const logoutBtn =
         document.createElement(
@@ -1016,43 +628,99 @@ function updateStudentNavbar(){
         }
     );
 
-    controls.appendChild(
+    topbarRight.appendChild(
         logoutBtn
     );
+
+    // RIGHT SIDEBAR UPDATE
+
+    const loginCard =
+        document.querySelector(
+            ".login-card"
+        );
+
+    if(loginCard){
+
+        loginCard.innerHTML = `
+
+            <div class="anime-avatar">
+
+                ⚔️
+
+            </div>
+
+            <h2>
+
+                Welcome Back,
+                ${student.name || "Scholar"}
+
+            </h2>
+
+            <p>
+
+                Continue your path toward
+                becoming a Celestial Immortal.
+
+            </p>
+
+            <div class="benefit-list">
+
+                <div class="benefit-item">
+
+                    ⚡ XP:
+                    ${student.xp || 0}
+
+                </div>
+
+                <div class="benefit-item">
+
+                    👑 Rank:
+                    ${student.rank || "Scholar"}
+
+                </div>
+
+                <div class="benefit-item">
+
+                    📈 Level:
+                    ${student.level || 1}
+
+                </div>
+
+                <div class="benefit-item">
+
+                    🔥 Daily Streak:
+                    ${student.streak || 0} Days
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
 
 }
 
 
 // =========================
-// INIT
-// =========================
-
-updateStudentNavbar();
-// =========================
-// CLOSE SIDEBAR
+// CLOSE INFO POPUPS
 // =========================
 
 document.addEventListener(
     "click",
-    (e) => {
+    () => {
 
-        if(
+        document
+            .querySelectorAll(
+                ".subject-info"
+            )
+            .forEach(popup => {
 
-            window.innerWidth < 992 &&
+                popup.classList.remove(
+                    "active"
+                );
 
-            sidebar &&
-            !sidebar.contains(e.target) &&
-
-            mobileBtn &&
-            !mobileBtn.contains(e.target)
-
-        ){
-
-            sidebar.classList.remove(
-                "active"
-            );
-
-        }
+            });
 
     }
 );
@@ -1066,11 +734,15 @@ window.addEventListener(
     "load",
     () => {
 
+        // SUBJECTS
+
         loadSubjects();
 
-        // =====================
-        // UPDATE LOGIN NAVBAR
-        // =====================
+        // THEME
+
+        initTheme();
+
+        // LOGIN UI
 
         updateStudentNavbar();
 

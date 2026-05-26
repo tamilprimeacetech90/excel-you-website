@@ -16,7 +16,7 @@
     >
 
     <title>
-        EXCEL YOU — Student Learning
+        EXCEL YOU — Learn Computer Science
     </title>
 
     <!-- FAVICON -->
@@ -86,17 +86,27 @@
 
         <div class="topbar-right">
 
-            <!-- SEARCH -->
+            <!-- GLOBAL SEARCH -->
 
             <div class="top-search">
 
                 <input
                     type="text"
                     id="search"
-                    placeholder="Search subjects..."
+                    placeholder="Search computer science subjects..."
                 >
 
             </div>
+
+            <!-- SUBJECT SELECT -->
+
+            <select id="subjectSelect">
+
+                <option value="">
+                    Select Subject
+                </option>
+
+            </select>
 
             <!-- LANGUAGE -->
 
@@ -139,15 +149,6 @@
                 Profile
             </a>
 
-            <!-- MOBILE -->
-
-            <button
-                class="mobile-btn"
-                id="mobileBtn"
-            >
-                ☰
-            </button>
-
             <!-- THEME -->
 
             <button
@@ -168,204 +169,69 @@
     <main class="main-layout">
 
         <!-- =========================
-             LEFT SIDEBAR
+             CONTENT AREA
         ========================= -->
 
-        <aside
-            class="left-sidebar"
-            id="sidebar"
-        >
+        <section class="content-area">
 
-            <!-- SIDEBAR TITLE -->
+            <!-- HERO -->
 
-            <div class="sidebar-title">
+            <div class="hero-box">
 
-                <h2>
+                <div class="hero-badge">
 
-                    📚 Subjects
-
-                </h2>
-
-            </div>
-
-            <!-- SUBJECT SEARCH -->
-
-            <div class="sidebar-search">
-
-                <input
-                    type="text"
-                    placeholder="Search subjects..."
-                >
-
-            </div>
-
-            <!-- SUBJECTS -->
-
-            <div id="subjectContainer">
-
-                <!-- LOADING -->
-
-                <div class="subject-skeleton"></div>
-                <div class="subject-skeleton"></div>
-                <div class="subject-skeleton"></div>
-
-            </div>
-
-        </aside>
-
-        <!-- =========================
-             CENTER CONTENT
-        ========================= -->
-
-        <section class="center-content">
-
-            <!-- WELCOME -->
-
-            <div
-                class="welcome-box"
-                id="welcomeBox"
-            >
-
-                <div class="welcome-badge">
-
-                    🚀 EXCEL YOU
+                    ⚡ EXCEL YOU
 
                 </div>
 
                 <h1>
 
-                    Modern Computer Science
-                    Learning Platform
+                    Explore Computer Science
+                    Subjects
 
                 </h1>
 
                 <p>
 
-                    Learn theory subjects with
+                    Learn theory-based computer
+                    science subjects through
                     structured topic systems,
-                    progress tracking, quizzes,
-                    XP rewards and anime-style
-                    scholar progression.
+                    anime progression rewards,
+                    quizzes and XP ranking.
 
                 </p>
 
-                <!-- QUICK FEATURES -->
-
-                <div class="feature-grid">
-
-                    <div class="feature-card">
-
-                        📚 Structured Subjects
-
-                    </div>
-
-                    <div class="feature-card">
-
-                        ⚡ XP Reward System
-
-                    </div>
-
-                    <div class="feature-card">
-
-                        🎯 Quiz Challenges
-
-                    </div>
-
-                    <div class="feature-card">
-
-                        👑 Scholar Rank Progression
-
-                    </div>
-
-                </div>
-
             </div>
 
-            <!-- TOPIC SECTION -->
+            <!-- SUBJECT GRID -->
 
-            <div
-                class="topic-box hidden"
-                id="topicContainer"
-            >
+            <div class="subject-section">
 
-                <div class="section-title">
+                <div class="section-header">
 
                     <h2>
 
-                        📖 Topics
+                        📚 Subjects
 
                     </h2>
 
                 </div>
 
-                <!-- TOPICS -->
+                <!-- SUBJECT TILES -->
 
                 <div
-                    class="topics-grid"
-                    id="topicsGrid"
-                ></div>
+                    class="subject-grid"
+                    id="subjectContainer"
+                >
 
-            </div>
+                    <!-- LOADING -->
 
-            <!-- LESSON VIEWER -->
-
-            <div
-                class="lesson-viewer hidden"
-                id="lessonViewer"
-            >
-
-                <!-- TITLE -->
-
-                <div class="lesson-header">
-
-                    <h1 id="lessonTitle">
-
-                        Lesson Title
-
-                    </h1>
-
-                </div>
-
-                <!-- CONTENT -->
-
-                <div
-                    class="lesson-content"
-                    id="lessonContent"
-                ></div>
-
-                <!-- REFERENCES -->
-
-                <div class="reference-section">
-
-                    <h3>
-
-                        📑 References
-
-                    </h3>
-
-                    <ul>
-
-                        <li>
-                            Academic Books
-                        </li>
-
-                        <li>
-                            University Notes
-                        </li>
-
-                        <li>
-                            Research Materials
-                        </li>
-
-                    </ul>
-
-                </div>
-
-                <!-- ADSENSE -->
-
-                <div class="adsense-box">
-
-                    AdSense Area
+                    <div class="subject-tile-skeleton"></div>
+                    <div class="subject-tile-skeleton"></div>
+                    <div class="subject-tile-skeleton"></div>
+                    <div class="subject-tile-skeleton"></div>
+                    <div class="subject-tile-skeleton"></div>
+                    <div class="subject-tile-skeleton"></div>
 
                 </div>
 
@@ -379,9 +245,11 @@
 
         <aside class="right-sidebar">
 
-            <!-- LOGIN CARD -->
+            <!-- LOGIN STATUS -->
 
             <div class="login-card">
+
+                <!-- ANIME ICON -->
 
                 <div class="anime-avatar">
 
@@ -391,16 +259,16 @@
 
                 <h2>
 
-                    Become an
-                    Immortal Scholar
+                    Become a
+                    Celestial Scholar
 
                 </h2>
 
                 <p>
 
                     Login to unlock your
-                    progress system and
-                    rewards.
+                    study progression system,
+                    anime rewards and quizzes.
 
                 </p>
 
@@ -434,7 +302,7 @@
 
                     <div class="benefit-item">
 
-                        👑 Reach Final Rank:
+                        👑 Final Rank:
                         Celestial Immortal
 
                     </div>
@@ -469,14 +337,14 @@
 
                 <h3>
 
-                    🔥 Daily Scholar Status
+                    🔥 Scholar Status
 
                 </h3>
 
                 <div class="daily-item">
 
                     Current Realm:
-                    Beginner Researcher
+                    Beginner Scholar
 
                 </div>
 
@@ -494,6 +362,21 @@
 
                 </div>
 
+                <div class="daily-item">
+
+                    Rewards:
+                    Locked
+
+                </div>
+
+            </div>
+
+            <!-- ADSENSE -->
+
+            <div class="sidebar-ad">
+
+                AdSense Area
+
             </div>
 
         </aside>
@@ -507,7 +390,8 @@
     <footer>
 
         © 2026 EXCEL YOU —
-        Modern Tamil + English Learning Platform
+        Modern Computer Science
+        Learning Platform
 
     </footer>
 
