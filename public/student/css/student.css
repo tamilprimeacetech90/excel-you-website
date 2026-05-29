@@ -287,6 +287,12 @@ body {
 
 .nav-btn {
 
+    position: relative;
+
+    z-index: 1000;
+
+    pointer-events: auto;
+
     height: 42px;
 
     padding: 0 18px;
