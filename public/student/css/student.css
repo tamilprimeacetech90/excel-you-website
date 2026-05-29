@@ -284,6 +284,9 @@ body {
 /* =========================
    NAV BUTTONS
 ========================= */
+/* =========================
+   GRAPHIC NAV BUTTONS
+========================= */
 
 .nav-btn {
 
@@ -293,9 +296,9 @@ body {
 
     pointer-events: auto;
 
-    height: 42px;
+    height: 44px;
 
-    padding: 0 18px;
+    padding: 0 22px;
 
     display: flex;
 
@@ -303,7 +306,9 @@ body {
 
     justify-content: center;
 
-    border-radius: 14px;
+    gap: 8px;
+
+    border-radius: 16px;
 
     text-decoration: none;
 
@@ -311,35 +316,152 @@ body {
 
     font-weight: 600;
 
+    letter-spacing: 0.3px;
+
     color: white;
 
-    background: rgba(255,255,255,0.06);
+    overflow: hidden;
 
-    border: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(12px);
 
-    transition: 0.25s;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,0.10),
+            rgba(255,255,255,0.03)
+        );
+
+    border:
+        1px solid rgba(255,255,255,0.12);
+
+    box-shadow:
+
+        0 6px 18px rgba(0,0,0,0.22),
+
+        inset 0 1px 0 rgba(255,255,255,0.12);
+
+    transition:
+        transform 0.25s,
+        box-shadow 0.25s,
+        border-color 0.25s;
 
 }
+
+
+/* GLOW EFFECT */
+
+.nav-btn::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+
+        linear-gradient(
+            120deg,
+            transparent,
+            rgba(255,255,255,0.18),
+            transparent
+        );
+
+    transform: translateX(-120%);
+
+    transition: 0.6s;
+
+}
+
+
+/* HOVER */
 
 .nav-btn:hover {
 
-    transform: translateY(-2px);
+    transform:
+        translateY(-3px)
+        scale(1.02);
 
-    background: rgba(255,255,255,0.12);
+    border-color:
+        rgba(56,189,248,0.45);
+
+    box-shadow:
+
+        0 10px 26px rgba(56,189,248,0.18),
+
+        inset 0 1px 0 rgba(255,255,255,0.18);
 
 }
+
+
+.nav-btn:hover::before {
+
+    transform: translateX(120%);
+
+}
+
+
+/* ACTIVE CLICK */
+
+.nav-btn:active {
+
+    transform:
+        scale(0.97);
+
+}
+
+
+/* SIGNUP SPECIAL */
 
 .signup-btn {
 
-    background: linear-gradient(
-        135deg,
-        var(--primary),
-        var(--secondary)
-    );
+    background:
+
+        linear-gradient(
+            135deg,
+            #38bdf8,
+            #6366f1
+        );
+
+    border:
+        1px solid rgba(255,255,255,0.18);
+
+    box-shadow:
+
+        0 8px 24px rgba(99,102,241,0.35);
 
 }
 
 
+/* SIGNUP HOVER */
+
+.signup-btn:hover {
+
+    box-shadow:
+
+        0 12px 32px rgba(56,189,248,0.35);
+
+}
+
+
+/* LIGHT MODE */
+
+body[data-theme="light"] .nav-btn {
+
+    color: #111827;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,0.92),
+            rgba(240,240,240,0.75)
+        );
+
+    border:
+        1px solid rgba(0,0,0,0.08);
+
+}
 /* =========================
    THEME BUTTON
 ========================= */
