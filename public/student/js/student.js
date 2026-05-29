@@ -135,12 +135,7 @@ function renderSubjects(subjects){
         tile.className =
             "subject-tile";
 
-        // IMAGE
-
-     let image =
-    "/assets/subjects/DATAMINING.png";
-
-
+        
 // SUBJECT IMAGES
 const image =
 
