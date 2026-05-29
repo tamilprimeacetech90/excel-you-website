@@ -142,16 +142,11 @@ function renderSubjects(subjects){
 
 
 // SUBJECT IMAGES
+const image =
 
-if(
-    subject.name ===
-    "Data Mining and Data Warehouse Architecture"
-){
+    subject.image ||
 
-    image =
     "/assets/subjects/DATAMINING.png";
-
-}
 
         // HTML
 
