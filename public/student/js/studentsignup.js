@@ -256,7 +256,7 @@ if(signupForm){
                     // REDIRECT
 
                     window.location.href =
-                        "/studentlogin.html";
+                        "/student-login.html";
 
                 }
 

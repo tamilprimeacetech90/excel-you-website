@@ -525,7 +525,7 @@ function updateStudentNavbar(){
 
     const loginBtn =
         document.querySelector(
-            'a[href="/studentlogin.html"]'
+            'a[href="/student-login.html"]'
         );
 
     const signupBtn =
