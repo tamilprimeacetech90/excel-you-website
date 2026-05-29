@@ -11,7 +11,9 @@
     >
 
     <title>
+
         EXCEL YOU — Student Login
+
     </title>
 
     <!-- FAVICON -->
@@ -48,12 +50,12 @@
 
 <body data-theme="dark">
 
-    <!-- =========================
-         BACKGROUND GLOW
-    ========================= -->
+    <!-- BACKGROUND -->
 
     <div class="bg-glow glow1"></div>
+
     <div class="bg-glow glow2"></div>
+
 
     <!-- =========================
          TOPBAR
@@ -61,9 +63,11 @@
 
     <header class="topbar">
 
+        <!-- LOGO -->
+
         <a
-            href="/student"
-            class="logo-wrap"
+            href="/"
+            class="logo-link"
         >
 
             <img
@@ -75,103 +79,113 @@
 
         </a>
 
-        <button
-            class="theme-btn"
-            id="themeBtn"
-        >
-            🌙
-        </button>
+        <!-- RIGHT -->
+
+        <div class="topbar-right">
+
+            <a
+                href="/studentsignup.html"
+                class="nav-btn signup-btn"
+            >
+
+                Create Account
+
+            </a>
+
+            <button
+                class="theme-btn"
+                id="themeBtn"
+            >
+
+                🌙
+
+            </button>
+
+        </div>
 
     </header>
 
+
     <!-- =========================
-         MAIN LOGIN
+         MAIN LAYOUT
     ========================= -->
 
-    <main class="login-container">
+    <main class="login-wrapper">
+
 
         <!-- =========================
              LEFT SIDE
         ========================= -->
 
-        <section class="left-side">
+        <section class="login-left">
 
-            <div class="anime-wrap">
+            <div class="badge">
 
-                <img
-                    src="/assets/anime/default-anime.png"
-                    alt="Anime Character"
-                    class="anime-image"
-                >
+                ⚡ Immortal Knowledge Path
 
             </div>
 
-            <div class="left-content">
+            <h1>
 
-                <div class="immortal-badge">
+                Begin Your
 
-                    ⚡ Immortal Knowledge Path
+                <span>
+
+                    EXCEL YOU
+
+                </span>
+
+                Journey
+
+            </h1>
+
+            <p>
+
+                Login to unlock rewards,
+                track study progress,
+                earn XP, participate in quizzes,
+                and rise through immortal ranks.
+
+            </p>
+
+
+            <!-- FEATURES -->
+
+            <div class="feature-list">
+
+                <div class="feature-card">
+
+                    📈 Study Progress Status
 
                 </div>
 
-                <h1>
+                <div class="feature-card">
 
-                    Begin Your
-                    <span>
-                        EXCEL YOU
-                    </span>
-                    Journey
+                    🏆 Earn Rewards & Badges
 
-                </h1>
+                </div>
 
-                <p>
+                <div class="feature-card">
 
-                    Login to unlock rewards,
-                    track study progress,
-                    earn XP, join quizzes,
-                    and rise through immortal ranks.
+                    ⚡ Unlock Immortal Rank
 
-                </p>
+                </div>
 
-                <!-- BENEFITS -->
+                <div class="feature-card">
 
-                <div class="benefits-list">
+                    🧠 Participate in Quizzes
 
-                    <div class="benefit-item">
+                </div>
 
-                        📈 Study Progress Status
+                <div class="feature-card">
 
-                    </div>
+                    🔥 Daily Streak Rewards
 
-                    <div class="benefit-item">
+                </div>
 
-                        🏆 Earn Rewards & Badges
+                <div class="feature-card">
 
-                    </div>
-
-                    <div class="benefit-item">
-
-                        ⚡ Unlock Immortal Rank
-
-                    </div>
-
-                    <div class="benefit-item">
-
-                        🧠 Participate in Quizzes
-
-                    </div>
-
-                    <div class="benefit-item">
-
-                        🔥 Daily Streak Rewards
-
-                    </div>
-
-                    <div class="benefit-item">
-
-                        ⚔️ Future Quiz Arena Access
-
-                    </div>
+                    ⚔️ Quiz Arena Access
 
                 </div>
 
@@ -179,33 +193,54 @@
 
         </section>
 
+
         <!-- =========================
              RIGHT SIDE
         ========================= -->
 
-        <section class="right-side">
+        <section class="login-right">
 
-            <div class="login-card">
+            <div class="login-container">
 
-                <div class="card-header">
+                <!-- LOGO -->
 
-                    <h2>
+                <div class="logo-wrap">
 
-                        Student Login
-
-                    </h2>
-
-                    <p>
-
-                        Continue your learning journey
-
-                    </p>
+                    <img
+                        src="/assets/logo/full-logo-white.png"
+                        alt="EXCEL YOU"
+                    >
 
                 </div>
+
+
+                <!-- TITLE -->
+
+                <h2 class="login-title">
+
+                    Student Login
+
+                </h2>
+
+                <p class="login-subtitle">
+
+                    Continue your learning journey
+
+                </p>
+
+
+                <!-- ERROR -->
+
+                <div
+                    class="error-box"
+                    id="errorBox"
+                ></div>
+
 
                 <!-- FORM -->
 
                 <form
+                    class="login-form"
                     id="studentLoginForm"
                 >
 
@@ -221,11 +256,13 @@
 
                         <input
                             type="email"
+                            id="email"
                             placeholder="Enter your email"
                             required
                         >
 
                     </div>
+
 
                     <!-- PASSWORD -->
 
@@ -239,17 +276,19 @@
 
                         <input
                             type="password"
+                            id="password"
                             placeholder="Enter your password"
                             required
                         >
 
                     </div>
 
+
                     <!-- OPTIONS -->
 
-                    <div class="form-options">
+                    <div class="remember-row">
 
-                        <label class="remember">
+                        <label>
 
                             <input type="checkbox">
 
@@ -265,6 +304,7 @@
 
                     </div>
 
+
                     <!-- BUTTON -->
 
                     <button
@@ -278,35 +318,16 @@
 
                 </form>
 
-                <!-- DIVIDER -->
 
-                <div class="divider">
+                <!-- FOOT -->
 
-                    <span>
-
-                        OR
-
-                    </span>
-
-                </div>
-
-                <!-- GOOGLE -->
-
-                <button class="google-btn">
-
-                    🔵 Continue with Google
-
-                </button>
-
-                <!-- REGISTER -->
-
-                <div class="register-text">
+                <div class="bottom-text">
 
                     Don't have an account?
 
-                    <a href="#">
+                    <a href="/studentsignup.html">
 
-                        Register Now
+                        Create Account
 
                     </a>
 
@@ -318,6 +339,7 @@
 
     </main>
 
+
     <!-- =========================
          FOOTER
     ========================= -->
@@ -328,6 +350,7 @@
         Modern Tamil + English Learning Platform
 
     </footer>
+
 
     <!-- JS -->
 
