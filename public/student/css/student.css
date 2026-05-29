@@ -407,7 +407,6 @@ body {
 
 }
 
-
 /* =========================
    SUBJECT GRID
 ========================= */
@@ -417,9 +416,9 @@ body {
     display: grid;
 
     grid-template-columns:
-        repeat(auto-fit,minmax(220px,1fr));
+        repeat(auto-fit,minmax(180px,1fr));
 
-    gap: 18px;
+    gap: 14px;
 
 }
 
@@ -434,7 +433,7 @@ body {
 
     overflow: hidden;
 
-    border-radius: 20px;
+    border-radius: 18px;
 
     cursor: pointer;
 
@@ -442,13 +441,13 @@ body {
 
     border: 1px solid var(--border);
 
-    transition: 0.28s;
+    transition: 0.25s;
 
 }
 
 .subject-tile:hover {
 
-    transform: translateY(-4px);
+    transform: translateY(-3px);
 
     border-color: rgba(56,189,248,0.45);
 
@@ -465,7 +464,7 @@ body {
 
     width: 100%;
 
-    height: 140px;
+    height: 95px;
 
     overflow: hidden;
 
@@ -484,10 +483,9 @@ body {
 
 .subject-tile:hover .subject-image {
 
-    transform: scale(1.06);
+    transform: scale(1.05);
 
 }
-
 
 /* =========================
    INFO BUTTON
@@ -526,19 +524,19 @@ body {
 
 .subject-bottom {
 
-    padding: 14px;
+    padding: 10px 12px;
 
 }
 
 .subject-bottom h3 {
 
-    font-size: 15px;
+    font-size: 13px;
 
-    line-height: 1.5;
+    line-height: 1.4;
+
+    font-weight: 600;
 
 }
-
-
 /* =========================
    INFO POPUP
 ========================= */
