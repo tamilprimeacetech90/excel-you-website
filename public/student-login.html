@@ -5,97 +5,61 @@
 
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-    <title>
+    <title>EXCEL YOU — Student Login</title>
 
-        EXCEL YOU — Student Login
+    <link rel="icon"
+          type="image/png"
+          href="/assets/logo/favicon.png">
 
-    </title>
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
 
-    <!-- FAVICON -->
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
 
-    <link
-        rel="icon"
-        type="image/png"
-        href="/assets/logo/favicon.png"
-    >
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
 
-    <!-- GOOGLE FONT -->
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet"
-    >
-
-    <!-- CSS -->
-
-    <link
-        rel="stylesheet"
-        href="/student/css/student-login.css"
-    >
+    <link rel="stylesheet"
+          href="/student/css/student-login.css">
 
 </head>
 
 <body data-theme="dark">
 
-    <!-- BACKGROUND -->
+    <!-- GLOW -->
 
     <div class="bg-glow glow1"></div>
-
     <div class="bg-glow glow2"></div>
 
-
-    <!-- =========================
-         TOPBAR
-    ========================= -->
+    <!-- TOPBAR -->
 
     <header class="topbar">
 
-        <!-- LOGO -->
+        <a href="/"
+           class="logo-link">
 
-        <a
-            href="/"
-            class="logo-link"
-        >
-
-            <img
-                src="/assets/logo/full-logo-white.png"
-                alt="EXCEL YOU"
-                class="logo-img"
-                id="siteLogo"
-            >
+            <img src="/assets/logo/full-logo-white.png"
+                 alt="EXCEL YOU"
+                 class="logo-img">
 
         </a>
 
-        <!-- RIGHT -->
-
         <div class="topbar-right">
 
-            <a
-                href="/studentsignup.html"
-                class="nav-btn signup-btn"
-            >
+            <a href="/studentsignup.html"
+               class="signup-btn">
 
                 Create Account
 
             </a>
 
-            <button
-                class="theme-btn"
-                id="themeBtn"
-            >
+            <button id="themeBtn"
+                    class="theme-btn">
 
                 🌙
 
@@ -105,17 +69,11 @@
 
     </header>
 
-
-    <!-- =========================
-         MAIN LAYOUT
-    ========================= -->
+    <!-- MAIN -->
 
     <main class="login-wrapper">
 
-
-        <!-- =========================
-             LEFT SIDE
-        ========================= -->
+        <!-- LEFT -->
 
         <section class="login-left">
 
@@ -128,13 +86,7 @@
             <h1>
 
                 Begin Your
-
-                <span>
-
-                    EXCEL YOU
-
-                </span>
-
+                <span>EXCEL YOU</span>
                 Journey
 
             </h1>
@@ -143,193 +95,137 @@
 
                 Login to unlock rewards,
                 track study progress,
-                earn XP, participate in quizzes,
+                earn XP,
+                participate in quizzes,
                 and rise through immortal ranks.
 
             </p>
 
-
-            <!-- FEATURES -->
-
             <div class="feature-list">
 
                 <div class="feature-card">
-
-                    📈 Study Progress Status
-
+                    📈 Study Progress Tracking
                 </div>
 
                 <div class="feature-card">
-
-                    🏆 Earn Rewards & Badges
-
+                    🏆 Rewards & Achievements
                 </div>
 
                 <div class="feature-card">
-
-                    ⚡ Unlock Immortal Rank
-
+                    ⚡ Immortal Rank System
                 </div>
 
                 <div class="feature-card">
-
-                    🧠 Participate in Quizzes
-
+                    🧠 Smart Quiz Challenges
                 </div>
 
                 <div class="feature-card">
-
-                    🔥 Daily Streak Rewards
-
+                    🔥 Daily Study Streaks
                 </div>
 
                 <div class="feature-card">
-
-                    ⚔️ Quiz Arena Access
-
+                    ⚔️ Quiz Arena Battles
                 </div>
 
             </div>
 
         </section>
 
-
-        <!-- =========================
-             RIGHT SIDE
-        ========================= -->
+        <!-- RIGHT -->
 
         <section class="login-right">
 
             <div class="login-container">
 
-                <!-- LOGO -->
+                <div class="login-card">
 
-                <div class="logo-wrap">
+                    <div class="logo-wrap">
 
-                    <img
-                        src="/assets/logo/full-logo-white.png"
-                        alt="EXCEL YOU"
-                    >
-
-                </div>
-
-
-                <!-- TITLE -->
-
-                <h2 class="login-title">
-
-                    Student Login
-
-                </h2>
-
-                <p class="login-subtitle">
-
-                    Continue your learning journey
-
-                </p>
-
-
-                <!-- ERROR -->
-
-                <div
-                    class="error-box"
-                    id="errorBox"
-                ></div>
-
-
-                <!-- FORM -->
-
-                <form
-                    class="login-form"
-                    id="studentLoginForm"
-                >
-
-                    <!-- EMAIL -->
-
-                    <div class="input-group">
-
-                        <label>
-
-                            Email
-
-                        </label>
-
-                        <input
-                            type="email"
-                            id="email"
-                            placeholder="Enter your email"
-                            required
-                        >
+                        <img src="/assets/logo/full-logo-white.png"
+                             alt="EXCEL YOU">
 
                     </div>
 
+                    <h2 class="login-title">
 
-                    <!-- PASSWORD -->
+                        Student Login
 
-                    <div class="input-group">
+                    </h2>
 
-                        <label>
+                    <p class="login-subtitle">
 
-                            Password
+                        Continue your learning journey
 
-                        </label>
+                    </p>
 
-                        <input
-                            type="password"
-                            id="password"
-                            placeholder="Enter your password"
-                            required
-                        >
+                    <div id="errorBox"
+                         class="error-box">
 
                     </div>
 
+                    <form id="studentLoginForm"
+                          class="login-form">
 
-                    <!-- OPTIONS -->
+                        <div class="input-group">
 
-                    <div class="remember-row">
+                            <label>Email Address</label>
 
-                        <label>
+                            <input type="email"
+                                   id="email"
+                                   placeholder="Enter your email"
+                                   required>
 
-                            <input type="checkbox">
+                        </div>
 
-                            Remember Me
+                        <div class="input-group">
 
-                        </label>
+                            <label>Password</label>
 
-                        <a href="#">
+                            <input type="password"
+                                   id="password"
+                                   placeholder="Enter your password"
+                                   required>
 
-                            Forgot Password?
+                        </div>
+
+                        <div class="remember-row">
+
+                            <label>
+
+                                <input type="checkbox">
+
+                                Remember Me
+
+                            </label>
+
+                            <a href="#">
+
+                                Forgot Password?
+
+                            </a>
+
+                        </div>
+
+                        <button type="submit"
+                                class="login-btn">
+
+                            🚀 Login
+
+                        </button>
+
+                    </form>
+
+                    <div class="bottom-text">
+
+                        Don't have an account?
+
+                        <a href="/studentsignup.html">
+
+                            Create Account
 
                         </a>
 
                     </div>
-
-
-                    <!-- BUTTON -->
-
-                    <button
-                        type="submit"
-                        class="login-btn"
-                    >
-
-                        🚀 Login
-
-                    </button>
-
-                </form>
-
-
-                <!-- FOOT -->
-
-                <div class="bottom-text">
-
-                    Don't have an account?
-
-                    <a href="/studentsignup.html">
-
-                        Create Account
-
-                    </a>
 
                 </div>
 
@@ -339,10 +235,7 @@
 
     </main>
 
-
-    <!-- =========================
-         FOOTER
-    ========================= -->
+    <!-- FOOTER -->
 
     <footer>
 
@@ -351,10 +244,8 @@
 
     </footer>
 
-
-    <!-- JS -->
-
     <script src="/student/js/studentlogin.js"></script>
 
 </body>
+
 </html>

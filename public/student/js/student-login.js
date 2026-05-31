@@ -3,257 +3,268 @@
 // STUDENT LOGIN JS
 // =========================
 
+document.addEventListener("DOMContentLoaded", () => {
 
-// =========================
-// ELEMENTS
-// =========================
+    // =========================
+    // ELEMENTS
+    // =========================
 
-const loginForm =
-    document.getElementById(
-        "studentLoginForm"
-    );
+    const loginForm =
+        document.getElementById(
+            "studentLoginForm"
+        );
 
-const loginBtn =
-    document.getElementById(
-        "loginBtn"
-    );
+    const errorBox =
+        document.getElementById(
+            "errorBox"
+        );
 
-const loginText =
-    document.getElementById(
-        "loginText"
-    );
+    const loginBtn =
+        document.querySelector(
+            ".login-btn"
+        );
 
-const loginLoader =
-    document.getElementById(
-        "loginLoader"
-    );
+    const themeBtn =
+        document.getElementById(
+            "themeBtn"
+        );
 
-const errorBox =
-    document.getElementById(
-        "errorBox"
-    );
+    // =========================
+    // AUTO REDIRECT
+    // =========================
 
+    const loggedIn =
+        localStorage.getItem(
+            "studentLoggedIn"
+        );
 
-// =========================
-// SHOW ERROR
-// =========================
+    if (loggedIn === "true") {
 
-function showError(message){
+        window.location.href =
+            "/student";
 
-    errorBox.innerText = message;
-
-    errorBox.style.display = "block";
-
-}
-
-
-// =========================
-// HIDE ERROR
-// =========================
-
-function hideError(){
-
-    errorBox.style.display = "none";
-
-}
-
-
-// =========================
-// BUTTON LOADING
-// =========================
-
-function setLoading(state){
-
-    if(state){
-
-        loginBtn.disabled = true;
-
-        loginText.style.display =
-            "none";
-
-        loginLoader.style.display =
-            "inline-block";
-
+        return;
     }
 
-    else{
+    // =========================
+    // ERROR FUNCTIONS
+    // =========================
 
-        loginBtn.disabled = false;
+    function showError(message) {
 
-        loginText.style.display =
-            "inline-block";
+        if (!errorBox) return;
 
-        loginLoader.style.display =
-            "none";
+        errorBox.textContent =
+            message;
 
+        errorBox.style.display =
+            "block";
     }
 
-}
+    function hideError() {
 
+        if (!errorBox) return;
 
-// =========================
-// LOGIN SUBMIT
-// =========================
+        errorBox.style.display =
+            "none";
+    }
 
-loginForm.addEventListener(
-    "submit",
-    async (e) => {
+    // =========================
+    // LOADING BUTTON
+    // =========================
 
-        e.preventDefault();
+    function setLoading(state) {
 
-        hideError();
+        if (!loginBtn) return;
 
-        const username =
-            document.getElementById(
-                "username"
-            ).value.trim();
+        if (state) {
 
-        const password =
-            document.getElementById(
-                "password"
-            ).value.trim();
+            loginBtn.disabled =
+                true;
 
-        // =====================
-        // VALIDATION
-        // =====================
+            loginBtn.innerHTML =
+                "⏳ Logging In...";
 
-        if(!username || !password){
+        } else {
 
-            showError(
-                "Please fill all fields."
-            );
+            loginBtn.disabled =
+                false;
 
-            return;
-
+            loginBtn.innerHTML =
+                "🚀 Login";
         }
+    }
 
-        try {
+    // =========================
+    // LOGIN FORM
+    // =========================
 
-            setLoading(true);
+    if (loginForm) {
 
-            const response =
-                await fetch(
-                    "/api/student/login",
-                    {
+        loginForm.addEventListener(
+            "submit",
+            async (e) => {
 
-                        method: "POST",
+                e.preventDefault();
 
-                        headers: {
+                hideError();
 
-                            "Content-Type":
-                                "application/json"
+                const email =
+                    document
+                    .getElementById(
+                        "email"
+                    )
+                    ?.value
+                    .trim();
 
-                        },
+                const password =
+                    document
+                    .getElementById(
+                        "password"
+                    )
+                    ?.value
+                    .trim();
 
-                        body: JSON.stringify({
+                if (!email || !password) {
 
-                            username,
-                            password
+                    showError(
+                        "Please fill all fields."
+                    );
 
-                        })
+                    return;
+                }
 
+                try {
+
+                    setLoading(true);
+
+                    const response =
+                        await fetch(
+                            "/api/student/login",
+                            {
+                                method: "POST",
+
+                                headers: {
+                                    "Content-Type":
+                                        "application/json"
+                                },
+
+                                body: JSON.stringify({
+                                    email,
+                                    password
+                                })
+                            }
+                        );
+
+                    const data =
+                        await response.json();
+
+                    if (data.success) {
+
+                        localStorage.setItem(
+                            "studentLoggedIn",
+                            "true"
+                        );
+
+                        localStorage.setItem(
+                            "studentName",
+                            data.student?.name || ""
+                        );
+
+                        localStorage.setItem(
+                            "studentRank",
+                            data.student?.rank || "Beginner"
+                        );
+
+                        localStorage.setItem(
+                            "studentXP",
+                            data.student?.xp || 0
+                        );
+
+                        localStorage.setItem(
+                            "studentAvatar",
+                            data.student?.avatar ||
+                            "/assets/anime/default.png"
+                        );
+
+                        window.location.href =
+                            "/student";
+
+                    } else {
+
+                        showError(
+                            data.message ||
+                            "Invalid email or password."
+                        );
                     }
-                );
 
-            const data =
-                await response.json();
+                } catch (error) {
 
-            // =====================
-            // SUCCESS
-            // =====================
+                    console.error(error);
 
-            if(data.success){
+                    showError(
+                        "Server error. Please try again."
+                    );
 
-                localStorage.setItem(
-                    "studentLoggedIn",
-                    "true"
-                );
+                } finally {
 
-                localStorage.setItem(
-                    "studentName",
-                    data.student.name || username
-                );
-
-                localStorage.setItem(
-                    "studentRank",
-                    data.student.rank ||
-                    "Beginner"
-                );
-
-                localStorage.setItem(
-                    "studentXP",
-                    data.student.xp || 0
-                );
-
-                localStorage.setItem(
-                    "studentAvatar",
-                    data.student.avatar ||
-                    "/assets/anime/default.png"
-                );
-
-                // REDIRECT
-                window.location.href =
-                    "/student";
-
+                    setLoading(false);
+                }
             }
-
-            // =====================
-            // FAILED
-            // =====================
-
-            else {
-
-                showError(
-
-                    data.message ||
-
-                    "Invalid login credentials."
-
-                );
-
-            }
-
-        }
-
-        catch(err){
-
-            console.error(err);
-
-            showError(
-                "Server error. Please try again."
-            );
-
-        }
-
-        finally {
-
-            setLoading(false);
-
-        }
-
+        );
     }
-);
 
+    // =========================
+    // THEME TOGGLE
+    // =========================
 
-// =========================
-// AUTO REDIRECT
-// =========================
+    if (themeBtn) {
 
-window.addEventListener(
-    "load",
-    () => {
-
-        const loggedIn =
+        const savedTheme =
             localStorage.getItem(
-                "studentLoggedIn"
-            );
+                "theme"
+            ) || "dark";
 
-        if(loggedIn === "true"){
+        document.body.setAttribute(
+            "data-theme",
+            savedTheme
+        );
 
-            window.location.href =
-                "/student";
+        themeBtn.innerHTML =
+            savedTheme === "light"
+                ? "☀️"
+                : "🌙";
 
-        }
+        themeBtn.addEventListener(
+            "click",
+            () => {
 
+                const currentTheme =
+                    document.body.getAttribute(
+                        "data-theme"
+                    );
+
+                const newTheme =
+                    currentTheme === "dark"
+                        ? "light"
+                        : "dark";
+
+                document.body.setAttribute(
+                    "data-theme",
+                    newTheme
+                );
+
+                localStorage.setItem(
+                    "theme",
+                    newTheme
+                );
+
+                themeBtn.innerHTML =
+                    newTheme === "light"
+                        ? "☀️"
+                        : "🌙";
+            }
+        );
     }
-);
+
+});
