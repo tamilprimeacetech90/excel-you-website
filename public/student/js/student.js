@@ -520,6 +520,7 @@ function updateStudentNavbar(){
         localStorage.getItem(
             "student"
         );
+     console.log("Student Data:", studentData);
 
     // ELEMENTS
 
