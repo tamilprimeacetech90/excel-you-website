@@ -159,36 +159,27 @@ document.addEventListener("DOMContentLoaded", () => {
                     const data =
                         await response.json();
 
-                    if (data.success) {
+                  if(data.success){
 
-                        localStorage.setItem(
-                            "studentLoggedIn",
-                            "true"
-                        );
+                     localStorage.setItem(
+                        "studentLoggedIn",
+                       "true"
+                     );
 
-                        localStorage.setItem(
-                            "studentName",
-                            data.student?.name || ""
-                        );
+                       localStorage.setItem(
+                       "student",
+                       JSON.stringify({
+                          name: data.student?.name || "",
+                         rank: data.student?.rank || "Beginner",
+                         xp: data.student?.xp || 0,
+                           level: data.student?.level || 1,
+                           streak: data.student?.streak || 0,
+                            avatar: data.student?.avatar || "/assets/anime/default.png"
+                       })
+                   );
 
-                        localStorage.setItem(
-                            "studentRank",
-                            data.student?.rank || "Beginner"
-                        );
-
-                        localStorage.setItem(
-                            "studentXP",
-                            data.student?.xp || 0
-                        );
-
-                        localStorage.setItem(
-                            "studentAvatar",
-                            data.student?.avatar ||
-                            "/assets/anime/default.png"
-                        );
-
-                        window.location.href =
-                            "/student";
+                     window.location.href =
+                    "/student";
 
                     } else {
 
@@ -266,5 +257,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         );
     }
+
 
 });
