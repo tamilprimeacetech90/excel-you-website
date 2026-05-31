@@ -26,6 +26,47 @@ body{
 }
 
 /* =========================
+   LIGHT THEME
+========================= */
+
+body[data-theme="light"]{
+    --bg:#f8fafc;
+    --text:#0f172a;
+    --muted:#475569;
+}
+
+body[data-theme="light"]{
+    background:var(--bg);
+    color:var(--text);
+}
+
+body[data-theme="light"] .login-card,
+body[data-theme="light"] .feature-card{
+    background:rgba(255,255,255,0.9);
+    border:1px solid rgba(15,23,42,0.08);
+}
+
+body[data-theme="light"] .input-group input{
+    background:#ffffff;
+    color:#0f172a;
+    border:1px solid #cbd5e1;
+}
+
+body[data-theme="light"] .input-group input::placeholder{
+    color:#64748b;
+}
+
+body[data-theme="light"] .login-left p,
+body[data-theme="light"] .login-subtitle,
+body[data-theme="light"] .bottom-text,
+body[data-theme="light"] footer{
+    color:#475569;
+}
+
+body[data-theme="light"] .feature-card{
+    color:#0f172a;
+}
+/* =========================
    GLOW BACKGROUND
 ========================= */
 
