@@ -1,7 +1,7 @@
 /* =========================================================
    EXCEL YOU TEXT FORMAT SYSTEM
 ========================================================= */
-
+console.log("TEXT-FORMAT.JS LOADED");
 class TextFormatManager {
 
     constructor(editor) {
@@ -325,6 +325,119 @@ class TextFormatManager {
         );
     }
 }
+
+
+/* =========================================================
+   HTML TOOLBAR COMPATIBILITY
+========================================================= */
+
+function formatText(command) {
+
+    document.execCommand(
+        command,
+        false,
+        null
+    );
+}
+
+function undoEditor() {
+
+    document.execCommand(
+        "undo"
+    );
+}
+
+function redoEditor() {
+
+    document.execCommand(
+        "redo"
+    );
+}
+
+function insertLink() {
+
+    const url =
+        prompt("Enter URL");
+
+    if (!url) return;
+
+    document.execCommand(
+        "createLink",
+        false,
+        url
+    );
+}
+
+function insertImage() {
+
+    const url =
+        prompt("Image URL");
+
+    if (!url) return;
+
+    document.execCommand(
+        "insertImage",
+        false,
+        url
+    );
+}
+
+function insertVideo() {
+
+    const url =
+        prompt("Video URL");
+
+    if (!url) return;
+
+    document.execCommand(
+        "insertHTML",
+        false,
+        `<iframe src="${url}" frameborder="0" allowfullscreen></iframe>`
+    );
+}
+
+function toggleHTMLMode() {
+
+    const editor =
+        document.getElementById(
+            "editor"
+        );
+
+    if (!editor) return;
+
+    if (
+        editor.getAttribute(
+            "contenteditable"
+        ) === "true"
+    ) {
+
+        editor.textContent =
+            editor.innerHTML;
+
+        editor.setAttribute(
+            "contenteditable",
+            "false"
+        );
+
+    } else {
+
+        editor.innerHTML =
+            editor.textContent;
+
+        editor.setAttribute(
+            "contenteditable",
+            "true"
+        );
+    }
+}
+
+window.formatText = formatText;
+window.undoEditor = undoEditor;
+window.redoEditor = redoEditor;
+window.insertLink = insertLink;
+window.insertImage = insertImage;
+window.insertVideo = insertVideo;
+window.toggleHTMLMode = toggleHTMLMode;
 
 /* =========================================================
    INITIALIZE
