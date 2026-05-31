@@ -370,32 +370,96 @@ function insertLink() {
 
 function insertImage() {
 
-    const url =
-        prompt("Image URL");
+    const input =
+        document.createElement("input");
 
-    if (!url) return;
+    input.type = "file";
 
-    document.execCommand(
-        "insertImage",
-        false,
-        url
-    );
+    input.accept = "image/*";
+
+    input.onchange = e => {
+
+        const file =
+            e.target.files[0];
+
+        if (!file) return;
+
+        const reader =
+            new FileReader();
+
+        reader.onload = event => {
+
+            document.execCommand(
+                "insertImage",
+                false,
+                event.target.result
+            );
+        };
+
+        reader.readAsDataURL(file);
+    };
+
+    input.click();
 }
 
 function insertVideo() {
 
-    const url =
-        prompt("Video URL");
+    let url =
+        prompt(
+            "Paste YouTube URL"
+        );
 
     if (!url) return;
+
+    let videoId = "";
+
+    if (
+        url.includes("watch?v=")
+    ) {
+
+        videoId =
+            url.split(
+                "watch?v="
+            )[1]
+            .split("&")[0];
+
+    } else if (
+        url.includes("youtu.be/")
+    ) {
+
+        videoId =
+            url.split(
+                "youtu.be/"
+            )[1]
+            .split("?")[0];
+    }
+
+    if (!videoId) {
+
+        alert(
+            "Invalid YouTube URL"
+        );
+
+        return;
+    }
+
+    const embedUrl =
+        `https://www.youtube.com/embed/${videoId}`;
 
     document.execCommand(
         "insertHTML",
         false,
-        `<iframe src="${url}" frameborder="0" allowfullscreen></iframe>`
+        `
+        <div class="video-block">
+            <iframe
+                src="${embedUrl}"
+                frameborder="0"
+                allowfullscreen>
+            </iframe>
+        </div>
+        `
     );
 }
-
 function toggleHTMLMode() {
 
     const editor =
