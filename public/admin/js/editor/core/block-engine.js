@@ -353,81 +353,88 @@ class BlockEngine {
         );
     }
 
-    /* =====================================================
-       ENABLE BLOCK DRAGGING
-    ===================================================== */
+/* =====================================================
+   ENABLE BLOCK DRAGGING
+===================================================== */
 
-    enableBlockDragging() {
+enableBlockDragging() {
 
-        this.editor.addEventListener(
-            "dragstart",
-            e => {
+    this.editor.addEventListener(
+        "dragstart",
+        e => {
 
-                const block =
-                    e.target.closest(
-                        ".editor-block"
+            const block =
+                e.target.closest(
+                    ".editor-block"
+                );
+
+            if (!block) {
+                return;
+            }
+
+            this.draggingBlock =
+                block;
+
+            block.classList.add(
+                "dragging"
+            );
+        }
+    );
+
+    this.editor.addEventListener(
+        "dragend",
+        () => {
+
+            if (
+                this.draggingBlock
+            ) {
+
+                this.draggingBlock
+                    .classList.remove(
+                        "dragging"
                     );
-
-                if (!block) return;
 
                 this.draggingBlock =
-                    block;
+                    null;
+            }
+        }
+    );
 
-                block.classList.add(
-                    "dragging"
+    this.editor.addEventListener(
+        "dragover",
+        e => {
+
+            e.preventDefault();
+
+            // IMPORTANT FIX
+            if (
+                !this.draggingBlock ||
+                !(this.draggingBlock instanceof Node)
+            ) {
+                return;
+            }
+
+            const afterElement =
+                this.getDragAfterElement(
+                    e.clientY
+                );
+
+            if (!afterElement) {
+
+                this.editor.appendChild(
+                    this.draggingBlock
+                );
+
+            } else {
+
+                this.editor.insertBefore(
+                    this.draggingBlock,
+                    afterElement
                 );
             }
-        );
-
-        this.editor.addEventListener(
-            "dragend",
-            () => {
-
-                if (
-                    this.draggingBlock
-                ) {
-
-                    this.draggingBlock
-                        .classList.remove(
-                            "dragging"
-                        );
-
-                    this.draggingBlock =
-                        null;
-                }
-            }
-        );
-
-        this.editor.addEventListener(
-            "dragover",
-            e => {
-
-                e.preventDefault();
-
-                const afterElement =
-                    this.getDragAfterElement(
-                        e.clientY
-                    );
-
-                if (
-                    afterElement == null
-                ) {
-
-                    this.editor.appendChild(
-                        this.draggingBlock
-                    );
-                }
-                else {
-
-                    this.editor.insertBefore(
-                        this.draggingBlock,
-                        afterElement
-                    );
-                }
-            }
-        );
-    }
-
+        }
+    );
+}
     /* =====================================================
        DRAG POSITION
     ===================================================== */
@@ -581,7 +588,7 @@ class BlockEngine {
    INITIALIZE BLOCK ENGINE
 ========================================================= */
 
-const blockEngine =
+window.blockEngine =
     new BlockEngine(
         document.getElementById(
             "editor"
