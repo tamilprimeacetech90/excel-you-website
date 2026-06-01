@@ -147,10 +147,14 @@ function setupTheme(){
 
 function toggleTheme(){
 
+    console.log("THEME CLICKED");
+
     currentTheme =
         currentTheme === "dark"
         ? "light"
         : "dark";
+
+    console.log(currentTheme);
 
     applyTheme();
 
