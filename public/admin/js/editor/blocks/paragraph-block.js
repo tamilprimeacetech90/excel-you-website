@@ -19,8 +19,7 @@ class ParagraphBlock {
 
         this.setupEditor();
 
-        this.setupParagraphCreation();
-
+      
         console.log(
             "Paragraph Block Initialized ✔"
         );
