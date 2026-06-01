@@ -435,11 +435,4 @@ class ExcelYouEditor {
     }
 }
 
-/* =========================================================
-   INITIALIZE EDITOR
-========================================================= */
 
-const excelEditor =
-    new ExcelYouEditor(
-        "editor"
-    );

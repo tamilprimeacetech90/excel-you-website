@@ -2,7 +2,7 @@
    EXCEL YOU EDITOR INIT
 ========================================================= */
 
-class ExcelYouEditor {
+class EditorInitializer {
 
     constructor(config = {}) {
 
@@ -175,47 +175,60 @@ Start writing here...
        CORE
     ===================================================== */
 
-    initializeCore() {
+ initializeCore() {
 
-        // =====================
-        // BLOCK ENGINE
-        // =====================
-        if (
-            window.BlockEngine
-        ) {
+    // =====================
+    // CORE EDITOR
+    // =====================
+    if (
+        window.ExcelYouEditor
+    ) {
 
-            this.modules.blockEngine =
-                new BlockEngine(
-                    this.editor
-                );
-        }
-
-        // =====================
-        // BLOCK MANAGER
-        // =====================
-        if (
-            window.BlockManager
-        ) {
-
-            this.modules.blockManager =
-                new BlockManager(
-                    this.editor
-                );
-        }
-
-        // =====================
-        // SELECTION
-        // =====================
-        if (
-            window.SelectionManager
-        ) {
-
-            this.modules.selectionManager =
-                new SelectionManager(
-                    this.editor
-                );
-        }
+        this.modules.editor =
+            new ExcelYouEditor(
+                this.config.editorId
+            );
     }
+
+    // =====================
+    // BLOCK ENGINE
+    // =====================
+    if (
+        window.BlockEngine
+    ) {
+
+        this.modules.blockEngine =
+            new BlockEngine(
+                this.editor
+            );
+    }
+
+    // =====================
+    // BLOCK MANAGER
+    // =====================
+    if (
+        window.BlockManager
+    ) {
+
+        this.modules.blockManager =
+            new BlockManager(
+                this.editor
+            );
+    }
+
+    // =====================
+    // SELECTION
+    // =====================
+    if (
+        window.SelectionManager
+    ) {
+
+        this.modules.selectionManager =
+            new SelectionManager(
+                this.editor
+            );
+    }
+}
 
     /* =====================================================
        BLOCKS
@@ -476,7 +489,7 @@ document.addEventListener(
         // AUTO INIT
         // =====================
         window.excelEditor =
-            new ExcelYouEditor({
+            new EditorInitializer({
 
                 editorId:
                     "editor",
