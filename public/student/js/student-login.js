@@ -138,26 +138,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     setLoading(true);
 
-                    const response =
-                        await fetch(
-                            "/api/student/login",
-                            {
-                                method: "POST",
+               const response =
+                    await fetch(
+                    "/api/student/login",
+                 {
+                     method: "POST",
 
-                                headers: {
-                                    "Content-Type":
-                                        "application/json"
-                                },
+                    headers: {
+                     "Content-Type":
+                       "application/json"
+                  },
 
-                                body: JSON.stringify({
-                                    email,
-                                    password
-                                })
-                            }
-                        );
+                  body: JSON.stringify({
+                   email,
+                  password
+                  })
+                  }
+                  );
 
-                    const data =
-                        await response.json();
+                  const data =
+                    await response.json();
+
+                   console.log(
+                     "LOGIN RESPONSE:",
+                        data
+                     );
+
+
 
                   if(data.success){
 
