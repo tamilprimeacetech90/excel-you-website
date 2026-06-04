@@ -220,58 +220,101 @@ document.addEventListener("DOMContentLoaded", () => {
         );
     }
 
-    // =========================
-    // THEME TOGGLE
-    // =========================
+ // =========================
+// THEME TOGGLE
+// =========================
 
-    if (themeBtn) {
+if (themeBtn) {
 
-        const savedTheme =
-            localStorage.getItem(
-                "theme"
-            ) || "dark";
-
-        document.body.setAttribute(
-            "data-theme",
-            savedTheme
+    const logo =
+        document.getElementById(
+            "siteLogo"
         );
 
-        themeBtn.innerHTML =
-            savedTheme === "light"
-                ? "☀️"
-                : "🌙";
+    // LOAD SAVED THEME
 
-        themeBtn.addEventListener(
-            "click",
-            () => {
+    const savedTheme =
+        localStorage.getItem(
+            "theme"
+        ) || "dark";
 
-                const currentTheme =
-                    document.body.getAttribute(
-                        "data-theme"
-                    );
+    document.body.setAttribute(
+        "data-theme",
+        savedTheme
+    );
 
-                const newTheme =
-                    currentTheme === "dark"
-                        ? "light"
-                        : "dark";
+    // LOAD CORRECT LOGO
 
-                document.body.setAttribute(
-                    "data-theme",
-                    newTheme
-                );
+    if (logo) {
 
-                localStorage.setItem(
-                    "theme",
-                    newTheme
-                );
+        if (savedTheme === "light") {
 
-                themeBtn.innerHTML =
-                    newTheme === "light"
-                        ? "☀️"
-                        : "🌙";
-            }
-        );
+            logo.src =
+                "/assets/logo/full-logo.png";
+
+            themeBtn.innerHTML =
+                "☀️";
+
+        } else {
+
+            logo.src =
+                "/assets/logo/excel-you-logo.png";
+
+            themeBtn.innerHTML =
+                "🌙";
+        }
     }
+
+    // TOGGLE THEME
+
+    themeBtn.addEventListener(
+        "click",
+        () => {
+
+            const currentTheme =
+                document.body.getAttribute(
+                    "data-theme"
+                );
+
+            const newTheme =
+                currentTheme === "dark"
+                    ? "light"
+                    : "dark";
+
+            document.body.setAttribute(
+                "data-theme",
+                newTheme
+            );
+
+            localStorage.setItem(
+                "theme",
+                newTheme
+            );
+
+            // CHANGE LOGO
+
+            if (logo) {
+
+                if (newTheme === "light") {
+
+                    logo.src =
+                        "/assets/logo/full-logo.png";
+
+                    themeBtn.innerHTML =
+                        "☀️";
+
+                } else {
+
+                    logo.src =
+                        "/assets/logo/full-logo-white.png";
+
+                    themeBtn.innerHTML =
+                        "🌙";
+                }
+            }
+        }
+    );
+}
 
 
 });
