@@ -230,6 +230,10 @@ if (themeBtn) {
         document.getElementById(
             "siteLogo"
         );
+     const loginBoxLogo =
+         document.getElementById(
+             "loginBoxLogo"
+        );
 
     // LOAD SAVED THEME
 
