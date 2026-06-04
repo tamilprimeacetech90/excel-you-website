@@ -237,38 +237,44 @@ if (themeBtn) {
 
     // LOAD SAVED THEME
 
-    const savedTheme =
-        localStorage.getItem(
-            "theme"
-        ) || "dark";
+const savedTheme =
+    localStorage.getItem(
+        "theme"
+    ) || "dark";
 
-    document.body.setAttribute(
-        "data-theme",
-        savedTheme
-    );
+document.body.setAttribute(
+    "data-theme",
+    savedTheme
+);
 
-    // LOAD CORRECT LOGO
+// LOAD CORRECT LOGOS
 
-    if (logo) {
+if(savedTheme === "light"){
 
-        if (savedTheme === "light") {
-
-            logo.src =
-                "/assets/logo/full-logo.png";
-
-            themeBtn.innerHTML =
-                "☀️";
-
-        } else {
-
-            logo.src =
-                "/assets/logo/excel-you-logo.png";
-
-            themeBtn.innerHTML =
-                "🌙";
-        }
+    if(logo){
+        logo.src =
+            "/assets/logo/full-logo.png";
     }
 
+    if(loginBoxLogo){
+        loginBoxLogo.src =
+            "/assets/logo/full-logo.png";
+    }
+
+
+else{
+
+    if(logo){
+        logo.src =
+            "/assets/logo/full-logo-white.png";
+    }
+
+    if(loginBoxLogo){
+        loginBoxLogo.src =
+            "/assets/logo/full-logo-white.png";
+    }
+
+}
     // TOGGLE THEME
 
     themeBtn.addEventListener(
