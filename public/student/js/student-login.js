@@ -260,7 +260,7 @@ if(savedTheme === "light"){
         loginBoxLogo.src =
             "/assets/logo/full-logo.png";
     }
-
+}
 
 else{
 
