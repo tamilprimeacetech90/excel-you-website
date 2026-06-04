@@ -34,17 +34,25 @@ document.addEventListener("DOMContentLoaded", () => {
     // =========================
 
     const loggedIn =
-        localStorage.getItem(
-            "studentLoggedIn"
-        );
+    localStorage.getItem(
+        "studentLoggedIn"
+               );
 
-    if (loggedIn === "true") {
+    const student =
+          localStorage.getItem(
+             "student"
+               );
 
-        window.location.href =
-            "/student";
+    if (
+            loggedIn === "true" &&
+            student
+        ) {
+
+       window.location.href =
+        "/student";
 
         return;
-    }
+       }
 
     // =========================
     // ERROR FUNCTIONS
