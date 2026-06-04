@@ -273,6 +273,16 @@ else{
         loginBoxLogo.src =
             "/assets/logo/full-logo-white.png";
     }
+if(savedTheme === "light"){
+
+    themeBtn.innerHTML = "☀️";
+
+}
+else{
+
+    themeBtn.innerHTML = "🌙";
+
+}
 
 }
     // TOGGLE THEME
@@ -303,25 +313,37 @@ else{
 
             // CHANGE LOGO
 
-            if (logo) {
+          if (newTheme === "light") {
 
-                if (newTheme === "light") {
+    themeBtn.innerHTML =
+        "☀️";
 
-                    logo.src =
-                        "/assets/logo/full-logo.png";
+    if (logo) {
+        logo.src =
+            "/assets/logo/full-logo.png";
+    }
 
-                    themeBtn.innerHTML =
-                        "☀️";
+    if (loginBoxLogo) {
+        loginBoxLogo.src =
+            "/assets/logo/full-logo.png";
+    }
 
-                } else {
+} else {
 
-                    logo.src =
-                        "/assets/logo/full-logo-white.png";
+    themeBtn.innerHTML =
+        "🌙";
 
-                    themeBtn.innerHTML =
-                        "🌙";
-                }
-            }
+    if (logo) {
+        logo.src =
+            "/assets/logo/full-logo-white.png";
+    }
+
+    if (loginBoxLogo) {
+        loginBoxLogo.src =
+            "/assets/logo/full-logo-white.png";
+    }
+
+}
         }
     );
 }
