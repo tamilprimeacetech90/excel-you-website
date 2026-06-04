@@ -102,57 +102,109 @@
 
         <div class="top-right">
 
-            <!-- LANGUAGE -->
+           <div class="top-right">
 
-            <select id="lang">
+<!-- LANGUAGE -->
 
-                <option value="en">
-                    EN
-                </option>
+<select id="lang">
 
-                <option value="ta">
-                    தமிழ்
-                </option>
+    <option value="en">
+        EN
+    </option>
 
-            </select>
+    <option value="ta">
+        தமிழ்
+    </option>
 
-       
+</select>
 
-          <!-- LOGIN -->
+<!-- GUEST MENU -->
 
-          <a
-           href="/student-login.html"
-           class="nav-btn"
-           >
-           Login
-          </a>
- 
-          <!-- SIGNUP -->
+<div id="guestMenu">
 
-          <a
-           href="/studentsignup.html"
-           class="nav-btn signup-btn"
-           >
-           Signup
-            </a>
+    <a
+        href="/student-login.html"
+        class="nav-btn"
+    >
+        Login
+    </a>
 
-            <!-- PROFILE -->
+    <a
+        href="/studentsignup.html"
+        class="nav-btn signup-btn"
+    >
+        Signup
+    </a>
 
-            <a
-                href="/profile.html"
-                class="nav-btn"
-            >
-                Profile
-            </a>
+</div>
 
-            <!-- THEME -->
+<!-- STUDENT MENU -->
 
-            <button
-                class="theme-btn"
-                id="themeBtn"
-            >
-                🌙
-            </button>
+<div
+    id="studentMenu"
+    class="student-menu"
+    style="display:none;"
+>
+
+    <button
+        id="studentDropdownBtn"
+        class="student-dropdown-btn"
+    >
+
+        <span id="studentAvatar">
+            👤
+        </span>
+
+        <span id="studentName">
+            Student
+        </span>
+
+        ▼
+
+    </button>
+
+    <div
+        id="studentDropdown"
+        class="student-dropdown"
+    >
+
+        <a href="/profile.html">
+            👤 View Profile
+        </a>
+
+        <a href="#">
+            ⚙ Manage Account
+        </a>
+
+        <a href="#">
+            🏆 My Progress
+        </a>
+
+        <a href="#">
+            🎯 Achievements
+        </a>
+
+        <button
+            id="logoutBtn"
+            class="logout-btn"
+        >
+            🚪 Logout
+        </button>
+
+    </div>
+
+</div>
+
+<!-- THEME -->
+
+<button
+    class="theme-btn"
+    id="themeBtn"
+>
+    🌙
+</button>
+
+</div>
 
         </div>
 
@@ -176,14 +228,14 @@
 
                 <h2>
 
-                    📚 Computer Science Subjects
+                    <center> Computer Science Subjects</center>
 
                 </h2>
 
                 <p>
 
-                    Explore theory-based
-                    computer science learning.
+                <center>    Explore theory-based
+                    computer science learning.</center>
 
                 </p>
 

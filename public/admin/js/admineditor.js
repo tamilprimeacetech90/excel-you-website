@@ -248,8 +248,17 @@ function setupEditor(){
         "drop",
         handleDrop
     );
-}
 
+    editor.addEventListener(
+        "dragleave",
+        () => {
+
+            editor.classList.remove(
+                "drag-over"
+            );
+        }
+    );
+}
 
 /* =========================================================
    INPUT
@@ -686,6 +695,13 @@ function handlePaste(e){
 function handleDragOver(e){
 
     e.preventDefault();
+
+    if(editor){
+
+        editor.classList.add(
+            "drag-over"
+        );
+    }
 }
 
 
@@ -693,15 +709,91 @@ function handleDragOver(e){
    DROP
 ========================================================= */
 
-function handleDrop(e){
+async function handleDrop(e){
 
     e.preventDefault();
 
-    console.log(
-        "DROP DETECTED"
+    editor.classList.remove(
+        "drag-over"
     );
-}
 
+    const files =
+        e.dataTransfer.files;
+
+    if(!files.length){
+        return;
+    }
+
+    for(const file of files){
+
+        const reader =
+            new FileReader();
+
+        // IMAGE
+        if(
+            file.type.startsWith(
+                "image/"
+            )
+        ){
+
+            reader.onload =
+            function(event){
+
+                const imageHTML = `
+                    <div class="image-block">
+                        <img
+                            src="${event.target.result}"
+                            class="editor-image"
+                        >
+                    </div>
+                `;
+
+                insertHTML(
+                    imageHTML
+                );
+            };
+
+            reader.readAsDataURL(
+                file
+            );
+        }
+
+        // VIDEO
+        else if(
+            file.type.startsWith(
+                "video/"
+            )
+        ){
+
+            reader.onload =
+            function(event){
+
+                const videoHTML = `
+                    <div class="video-block">
+                        <video
+                            controls
+                            class="editor-video"
+                        >
+                            <source
+                                src="${event.target.result}"
+                                type="${file.type}">
+                        </video>
+                    </div>
+                `;
+
+                insertHTML(
+                    videoHTML
+                );
+            };
+
+            reader.readAsDataURL(
+                file
+            );
+        }
+    }
+
+    scheduleAutosave();
+}
 
 /* =========================================================
    SHORTCUTS

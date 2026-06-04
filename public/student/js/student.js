@@ -529,15 +529,66 @@ function updateStudentNavbar(){
             'a[href="/student-login.html"]'
         );
 
-    const signupBtn =
-        document.querySelector(
-            'a[href="/studentsignup.html"]'
-        );
+const guestMenu =
+document.getElementById(
+"guestMenu"
+);
 
-    const profileBtn =
-        document.querySelector(
-            'a[href="/profile.html"]'
-        );
+const studentMenu =
+document.getElementById(
+"studentMenu"
+);
+
+const studentName =
+document.getElementById(
+"studentName"
+);
+
+const logoutBtn =
+document.getElementById(
+"logoutBtn"
+);
+
+if(!studentData){
+return;
+}
+
+const student =
+JSON.parse(studentData);
+
+if(guestMenu){
+guestMenu.style.display =
+"none";
+}
+
+if(studentMenu){
+studentMenu.style.display =
+"block";
+}
+
+if(studentName){
+studentName.textContent =
+student.name || "Student";
+}
+
+logoutBtn?.addEventListener(
+"click",
+() => {
+
+    localStorage.removeItem(
+        "student"
+    );
+
+    localStorage.removeItem(
+        "studentLoggedIn"
+    );
+
+    window.location.reload();
+
+}
+
+);
+
 
     // NOT LOGIN
 
@@ -552,72 +603,6 @@ function updateStudentNavbar(){
     const student =
         JSON.parse(studentData);
 
-    // REMOVE BUTTONS
-
-    loginBtn?.remove();
-
-    signupBtn?.remove();
-
-    // TOP RIGHT
-
-    const topRight =
-        document.querySelector(
-            ".top-right"
-        );
-
-    // XP BADGE
-
-    const badge =
-        document.createElement(
-            "div"
-        );
-
-    badge.className =
-        "xp-badge";
-
-    badge.innerHTML = `
-
-        ⚡ Lv.${student.level || 1}
-        ${student.rank || "Scholar"}
-
-    `;
-
-    // INSERT
-
-    if(profileBtn){
-
-        topRight.insertBefore(
-            badge,
-            profileBtn
-        );
-
-    }
-
-    // LOGOUT
-
-    const logoutBtn =
-        document.createElement(
-            "button"
-        );
-
-    logoutBtn.className =
-        "logout-btn";
-
-    logoutBtn.innerHTML =
-        "Logout";
-
-    logoutBtn.addEventListener(
-        "click",
-        () => {
-
-            localStorage.removeItem(
-                "student"
-            );
-
-            window.location.reload();
-
-        }
-    );
 
     topRight.appendChild(
         logoutBtn
