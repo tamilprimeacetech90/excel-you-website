@@ -713,6 +713,8 @@ async function handleDrop(e){
 
     e.preventDefault();
 
+    console.log("DROP FIRED");
+
     editor.classList.remove(
         "drag-over"
     );
@@ -720,37 +722,60 @@ async function handleDrop(e){
     const files =
         e.dataTransfer.files;
 
+    console.log(
+        "FILES:",
+        files
+    );
+
     if(!files.length){
+
+        console.log(
+            "NO FILES FOUND"
+        );
+
         return;
     }
 
     for(const file of files){
 
+        console.log(
+            "FILE:",
+            file.name
+        );
+
+        console.log(
+            "TYPE:",
+            file.type
+        );
+
         const reader =
             new FileReader();
 
-        // IMAGE
         if(
             file.type.startsWith(
                 "image/"
             )
         ){
 
+            console.log(
+                "IMAGE DETECTED"
+            );
+
             reader.onload =
             function(event){
 
-                const imageHTML = `
+                console.log(
+                    "IMAGE LOADED"
+                );
+
+                insertHTML(`
                     <div class="image-block">
                         <img
                             src="${event.target.result}"
                             class="editor-image"
                         >
                     </div>
-                `;
-
-                insertHTML(
-                    imageHTML
-                );
+                `);
             };
 
             reader.readAsDataURL(
@@ -758,17 +783,24 @@ async function handleDrop(e){
             );
         }
 
-        // VIDEO
         else if(
             file.type.startsWith(
                 "video/"
             )
         ){
 
+            console.log(
+                "VIDEO DETECTED"
+            );
+
             reader.onload =
             function(event){
 
-                const videoHTML = `
+                console.log(
+                    "VIDEO LOADED"
+                );
+
+                insertHTML(`
                     <div class="video-block">
                         <video
                             controls
@@ -779,11 +811,7 @@ async function handleDrop(e){
                                 type="${file.type}">
                         </video>
                     </div>
-                `;
-
-                insertHTML(
-                    videoHTML
-                );
+                `);
             };
 
             reader.readAsDataURL(
