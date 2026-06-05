@@ -34,13 +34,13 @@ router.post("/signup", async (req, res) => {
 
         }
 
-     const avatar =
+ const avatar =
 
-      gender === "female"
+    gender === "female"
 
-        ? "/assets/avatars/female.png"
+        ? "/assets/avatars/female-beginner.png"
 
-        : "/assets/avatars/male.png";
+        : "/assets/avatars/male-beginner.png";
 
         const student =
              new Student({
