@@ -1182,6 +1182,16 @@ footer {
 }
 
 /* =========================
+   GUEST MENU
+========================= */
+
+#guestMenu{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+/* =========================
    STUDENT MENU
 ========================= */
 
