@@ -665,14 +665,12 @@ async function handleDrop(e){
 
     console.log("DROP FIRED");
 
-    editor.classList.remove(
-        "drag-over"
-    );
-
     const files =
         e.dataTransfer.files;
 
-   }
+    console.log(files);
+
+}
 /* =========================================================
    SHORTCUTS
 ========================================================= */
