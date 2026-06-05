@@ -511,86 +511,25 @@ subjectSelect?.addEventListener(
 // LOGIN STATUS UI
 // =========================
 
+// =========================
+// LOGIN STATUS UI
+// =========================
+
 function updateStudentNavbar(){
 
     // STUDENT DATA
 
     const studentData =
-
         localStorage.getItem(
             "student"
         );
-     console.log("Student Data:", studentData);
 
-    // ELEMENTS
-
-    const loginBtn =
-        document.querySelector(
-            'a[href="/student-login.html"]'
-        );
-
-const guestMenu =
-document.getElementById(
-"guestMenu"
-);
-
-const studentMenu =
-document.getElementById(
-"studentMenu"
-);
-
-const studentName =
-document.getElementById(
-"studentName"
-);
-
-const logoutBtn =
-document.getElementById(
-"logoutBtn"
-);
-
-if(!studentData){
-return;
-}
-
-const student =
-JSON.parse(studentData);
-
-if(guestMenu){
-guestMenu.style.display =
-"none";
-}
-
-if(studentMenu){
-studentMenu.style.display =
-"block";
-}
-
-if(studentName){
-studentName.textContent =
-student.name || "Student";
-}
-
-logoutBtn?.addEventListener(
-"click",
-() => {
-
-    localStorage.removeItem(
-        "student"
+    console.log(
+        "Student Data:",
+        studentData
     );
 
-    localStorage.removeItem(
-        "studentLoggedIn"
-    );
-
-    window.location.reload();
-
-}
-
-);
-
-
-    // NOT LOGIN
+    // NOT LOGGED IN
 
     if(!studentData){
 
@@ -598,14 +537,81 @@ logoutBtn?.addEventListener(
 
     }
 
-    // PARSE
+    // PARSE STUDENT
 
     const student =
-        JSON.parse(studentData);
+        JSON.parse(
+            studentData
+        );
 
+    // TOP MENU ELEMENTS
 
-    topRight.appendChild(
-        logoutBtn
+    const guestMenu =
+        document.getElementById(
+            "guestMenu"
+        );
+
+    const studentMenu =
+        document.getElementById(
+            "studentMenu"
+        );
+
+    const studentName =
+        document.getElementById(
+            "studentName"
+        );
+
+    const logoutBtn =
+        document.getElementById(
+            "logoutBtn"
+        );
+
+    // HIDE LOGIN / SIGNUP
+
+    if(guestMenu){
+
+        guestMenu.style.display =
+            "none";
+
+    }
+
+    // SHOW STUDENT MENU
+
+    if(studentMenu){
+
+        studentMenu.style.display =
+            "block";
+
+    }
+
+    // SHOW NAME
+
+    if(studentName){
+
+        studentName.textContent =
+            student.name ||
+            "Student";
+
+    }
+
+    // LOGOUT
+
+    logoutBtn?.addEventListener(
+        "click",
+        () => {
+
+            localStorage.removeItem(
+                "student"
+            );
+
+            localStorage.removeItem(
+                "studentLoggedIn"
+            );
+
+            window.location.href =
+                "/student-login.html";
+
+        }
     );
 
     // UPDATE SIDEBAR
@@ -677,7 +683,6 @@ logoutBtn?.addEventListener(
     }
 
 }
-
 
 // =========================
 // CLOSE INFO POPUPS
