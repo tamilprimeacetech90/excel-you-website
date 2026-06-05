@@ -142,6 +142,13 @@ body {
     background: rgba(5,10,20,0.72);
 
 }
+body[data-theme="light"] .topbar{
+
+    background: rgba(255,255,255,0.92);
+
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+
+}
 
 .logo-img {
 
