@@ -174,27 +174,51 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-                  if(data.success){
+                if(data.success){
 
-                     localStorage.setItem(
-                        "studentLoggedIn",
-                       "true"
-                     );
+    console.log(
+        "Student Object:",
+        data.student
+    );
 
-                       localStorage.setItem(
-                       "student",
-                       JSON.stringify({
-                          name: data.student?.name || "",
-                         rank: data.student?.rank || "Beginner",
-                         xp: data.student?.xp || 0,
-                           level: data.student?.level || 1,
-                           streak: data.student?.streak || 0,
-                            avatar: data.student?.avatar || "/assets/anime/default.png"
-                       })
-                   );
+    localStorage.setItem(
+        "studentLoggedIn",
+        "true"
+    );
 
-                     window.location.href =
-                    "/student";
+    localStorage.setItem(
+        "student",
+        JSON.stringify({
+            name:
+                data.student?.name ||
+                data.student?.username ||
+                "Student",
+
+            rank:
+                data.student?.rank ||
+                "Beginner",
+
+            xp:
+                data.student?.xp ||
+                0,
+
+            level:
+                data.student?.level ||
+                1,
+
+            streak:
+                data.student?.streak ||
+                0,
+
+            avatar:
+                data.student?.avatar ||
+                "/assets/anime/default.png"
+        })
+    );
+
+    window.location.href =
+        "/student";
+}
 
                     } else {
 
