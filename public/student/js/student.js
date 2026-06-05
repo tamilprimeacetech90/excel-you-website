@@ -558,9 +558,15 @@ function updateStudentNavbar(){
     }
 
     if(studentName){
+
         studentName.textContent =
-            student.name || "Student";
-    }
+
+           student.username ||
+
+          student.name ||
+
+          "Student";
+     }
 
     logoutBtn?.addEventListener(
         "click",
@@ -593,8 +599,8 @@ function updateStudentNavbar(){
             </div>
 
             <h3>
-                Welcome Back,
-                ${student.name || "Scholar"}
+               Welcome Back,
+               ${student.username || student.name || "Scholar"}
             </h3>
 
             <p>
