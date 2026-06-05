@@ -40,7 +40,7 @@ const studentSchema = new mongoose.Schema({
 
     avatar: {
         type: String,
-        default: "/assets/anime/default.png"
+        default: "/assets/avatars/male-beginner.png"
     }
 
 }, {
