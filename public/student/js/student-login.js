@@ -28,7 +28,9 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById(
             "themeBtn"
         );
-
+    console.log(data);
+    console.log(data.student);
+     console.log(data.student?.name);
     // =========================
     // AUTO REDIRECT
     // =========================
