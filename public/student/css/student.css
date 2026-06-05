@@ -1234,16 +1234,14 @@ footer {
 
     display:none;
 
-    z-index:9999;
+    z-index:99999;
 
-    background:var(--card);
+    background:#0f172a;
 
-    backdrop-filter:blur(20px);
-
-    border:1px solid var(--border);
+    border:1px solid rgba(255,255,255,.08);
 
     box-shadow:
-        0 10px 30px rgba(0,0,0,.25);
+        0 15px 40px rgba(0,0,0,.45);
 }
 
 .student-dropdown.show{
@@ -1315,4 +1313,68 @@ footer {
             var(--primary),
             var(--secondary)
         );
+}
+body[data-theme="light"] .student-dropdown{
+
+    background:white;
+
+    border:1px solid rgba(0,0,0,.08);
+}
+
+/* =========================
+   DARK MODE DROPDOWNS FIX
+========================= */
+
+.student-dropdown{
+
+    background:#0f172a;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.45);
+
+    z-index:99999;
+}
+
+body[data-theme="light"] .student-dropdown{
+
+    background:white;
+
+    border:1px solid rgba(0,0,0,.08);
+}
+
+/* SUBJECT DROPDOWN */
+
+#subjectSelect option,
+#lang option{
+
+    background:#0f172a;
+
+    color:white;
+}
+
+body[data-theme="light"] #subjectSelect option,
+body[data-theme="light"] #lang option{
+
+    background:white;
+
+    color:#111827;
+}
+
+/* TOPBAR */
+
+.topbar{
+
+    z-index:10000;
+}
+
+.top-right{
+
+    flex-wrap:nowrap;
+}
+
+.nav-btn{
+
+    white-space:nowrap;
 }
