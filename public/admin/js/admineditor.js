@@ -532,57 +532,6 @@ function insertLink(){
 }
 
 
-/* =========================================================
-   IMAGE
-========================================================= */
-
-function insertImage(){
-
-    const url =
-        prompt(
-            "Enter image URL"
-        );
-
-    if(!url){
-        return;
-    }
-
-    document.execCommand(
-        "insertImage",
-        false,
-        url
-    );
-}
-
-
-/* =========================================================
-   VIDEO
-========================================================= */
-
-function insertVideo(){
-
-    const url =
-        prompt(
-            "Paste YouTube Embed URL"
-        );
-
-    if(!url){
-        return;
-    }
-
-    const iframe = `
-    <div class="video-block">
-        <iframe
-        src="${url}"
-        frameborder="0"
-        allowfullscreen>
-        </iframe>
-    </div>
-    `;
-
-    insertHTML(iframe);
-}
-
 
 /* =========================================================
    HTML MODE
@@ -705,6 +654,7 @@ function handleDragOver(e){
 }
 
 
+
 /* =========================================================
    DROP
 ========================================================= */
@@ -722,107 +672,7 @@ async function handleDrop(e){
     const files =
         e.dataTransfer.files;
 
-    console.log(
-        "FILES:",
-        files
-    );
-
-    if(!files.length){
-
-        console.log(
-            "NO FILES FOUND"
-        );
-
-        return;
-    }
-
-    for(const file of files){
-
-        console.log(
-            "FILE:",
-            file.name
-        );
-
-        console.log(
-            "TYPE:",
-            file.type
-        );
-
-        const reader =
-            new FileReader();
-
-        if(
-            file.type.startsWith(
-                "image/"
-            )
-        ){
-
-            console.log(
-                "IMAGE DETECTED"
-            );
-
-            reader.onload =
-            function(event){
-
-                console.log(
-                    "IMAGE LOADED"
-                );
-
-                insertHTML(`
-                    <div class="image-block">
-                        <img
-                            src="${event.target.result}"
-                            class="editor-image"
-                        >
-                    </div>
-                `);
-            };
-
-            reader.readAsDataURL(
-                file
-            );
-        }
-
-        else if(
-            file.type.startsWith(
-                "video/"
-            )
-        ){
-
-            console.log(
-                "VIDEO DETECTED"
-            );
-
-            reader.onload =
-            function(event){
-
-                console.log(
-                    "VIDEO LOADED"
-                );
-
-                insertHTML(`
-                    <div class="video-block">
-                        <video
-                            controls
-                            class="editor-video"
-                        >
-                            <source
-                                src="${event.target.result}"
-                                type="${file.type}">
-                        </video>
-                    </div>
-                `);
-            };
-
-            reader.readAsDataURL(
-                file
-            );
-        }
-    }
-
-    scheduleAutosave();
-}
-
+   }
 /* =========================================================
    SHORTCUTS
 ========================================================= */
