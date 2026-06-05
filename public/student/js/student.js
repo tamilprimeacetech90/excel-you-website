@@ -507,9 +507,7 @@ subjectSelect?.addEventListener(
 );
 
 
-// =========================
-// LOGIN STATUS UI
-// =========================
+
 
 // =========================
 // LOGIN STATUS UI
@@ -517,34 +515,17 @@ subjectSelect?.addEventListener(
 
 function updateStudentNavbar(){
 
-    // STUDENT DATA
-
     const studentData =
         localStorage.getItem(
             "student"
         );
 
-    console.log(
-        "Student Data:",
-        studentData
-    );
-
-    // NOT LOGGED IN
-
     if(!studentData){
-
         return;
-
     }
 
-    // PARSE STUDENT
-
     const student =
-        JSON.parse(
-            studentData
-        );
-
-    // TOP MENU ELEMENTS
+        JSON.parse(studentData);
 
     const guestMenu =
         document.getElementById(
@@ -566,35 +547,20 @@ function updateStudentNavbar(){
             "logoutBtn"
         );
 
-    // HIDE LOGIN / SIGNUP
-
     if(guestMenu){
-
         guestMenu.style.display =
             "none";
-
     }
-
-    // SHOW STUDENT MENU
 
     if(studentMenu){
-
         studentMenu.style.display =
             "block";
-
     }
-
-    // SHOW NAME
 
     if(studentName){
-
         studentName.textContent =
-            student.name ||
-            "Student";
-
+            student.name || "Student";
     }
-
-    // LOGOUT
 
     logoutBtn?.addEventListener(
         "click",
@@ -610,11 +576,8 @@ function updateStudentNavbar(){
 
             window.location.href =
                 "/student-login.html";
-
         }
     );
-
-    // UPDATE SIDEBAR
 
     const loginCard =
         document.querySelector(
@@ -626,64 +589,84 @@ function updateStudentNavbar(){
         loginCard.innerHTML = `
 
             <div class="anime-box">
-
                 ⚔️
-
             </div>
 
             <h3>
-
                 Welcome Back,
                 ${student.name || "Scholar"}
-
             </h3>
 
             <p>
-
                 Continue your journey
                 toward becoming a
                 Celestial Immortal.
-
             </p>
 
             <div class="mini-benefits">
 
                 <div class="mini-item">
-
                     ⚡ XP:
                     ${student.xp || 0}
-
                 </div>
 
                 <div class="mini-item">
-
                     👑 Rank:
                     ${student.rank || "Scholar"}
-
                 </div>
 
                 <div class="mini-item">
-
                     📈 Level:
                     ${student.level || 1}
-
                 </div>
 
                 <div class="mini-item">
-
                     🔥 Daily Streak:
                     ${student.streak || 0}
-
                 </div>
 
             </div>
 
         `;
-
     }
 
-}
+    // =========================
+    // DROPDOWN
+    // =========================
 
+    const dropdownBtn =
+        document.getElementById(
+            "studentDropdownBtn"
+        );
+
+    const dropdown =
+        document.getElementById(
+            "studentDropdown"
+        );
+
+    dropdownBtn?.addEventListener(
+        "click",
+        (e) => {
+
+            e.stopPropagation();
+
+            dropdown?.classList.toggle(
+                "show"
+            );
+        }
+    );
+
+    document.addEventListener(
+        "click",
+        () => {
+
+            dropdown?.classList.remove(
+                "show"
+            );
+        }
+    );
+
+}
 // =========================
 // CLOSE INFO POPUPS
 // =========================

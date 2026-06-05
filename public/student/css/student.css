@@ -1180,3 +1180,139 @@ footer {
     }
 
 }
+
+/* =========================
+   STUDENT MENU
+========================= */
+
+.student-menu{
+    position: relative;
+}
+
+.student-dropdown-btn{
+
+    height:44px;
+
+    padding:0 16px;
+
+    border:none;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    color:var(--text);
+
+    background:var(--glass);
+
+    border:1px solid var(--border);
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+}
+
+.student-dropdown{
+
+    position:absolute;
+
+    top:55px;
+
+    right:0;
+
+    min-width:220px;
+
+    border-radius:16px;
+
+    overflow:hidden;
+
+    display:none;
+
+    z-index:9999;
+
+    background:var(--card);
+
+    backdrop-filter:blur(20px);
+
+    border:1px solid var(--border);
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.25);
+}
+
+.student-dropdown.show{
+    display:block;
+}
+
+.student-dropdown a{
+
+    display:block;
+
+    padding:14px 16px;
+
+    text-decoration:none;
+
+    color:var(--text);
+
+    font-size:14px;
+
+    transition:.2s;
+}
+
+.student-dropdown a:hover{
+
+    background:
+        rgba(255,255,255,.05);
+}
+
+.student-dropdown .logout-btn{
+
+    width:100%;
+
+    border:none;
+
+    cursor:pointer;
+
+    padding:14px 16px;
+
+    text-align:left;
+
+    color:white;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ef4444,
+            #dc2626
+        );
+}
+
+/* avatar */
+
+#studentAvatar{
+
+    width:28px;
+
+    height:28px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--secondary)
+        );
+}
