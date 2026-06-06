@@ -121,6 +121,37 @@ if(themeBtn){
 
 }
 
+// =========================
+// avatar preview
+// =========================
+
+const avatarPreview =
+    document.getElementById(
+        "avatarPreview"
+    );
+
+document
+    .querySelectorAll(
+        'input[name="gender"]'
+    )
+    .forEach(radio => {
+
+        radio.addEventListener(
+            "change",
+            () => {
+
+                avatarPreview.src =
+
+                    radio.value === "female"
+
+                    ? "/assets/avatars/female-beginner.png"
+
+                    : "/assets/avatars/male-beginner.png";
+
+            }
+        );
+
+    });
 
 // =========================
 // SIGNUP FORM
