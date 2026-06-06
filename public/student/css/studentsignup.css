@@ -329,13 +329,18 @@ body[data-theme="light"] .topbar{
 
 }
 
-
 /* =========================
    RIGHT SIDE
 ========================= */
 
-.signup-card {
+.signup-right{
+    display: flex;
+    align-items: flex-start;
+}
 
+
+.signup-card {
+    margin-top: -50px;
     width: 100%;
 
     padding: 40px;
