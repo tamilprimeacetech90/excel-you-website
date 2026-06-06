@@ -21,6 +21,24 @@ const siteLogo =
         "siteLogo"
     );
 
+const student =
+    JSON.parse(
+        localStorage.getItem("student")
+    );
+
+const avatarImg =
+    document.getElementById(
+        "studentAvatar"
+    );
+
+if (
+    student &&
+    student.avatar &&
+    avatarImg
+) {
+    avatarImg.src =
+        student.avatar;
+}
 
 // =========================
 // APPLY THEME

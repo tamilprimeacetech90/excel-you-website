@@ -212,7 +212,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             avatar:
                 data.student?.avatar ||
-                "/assets/anime/default.png"
+               "/assets/avatars/male-beginner.png"
         })
     );
 

@@ -1,0 +1,1001 @@
+/* =========================================================
+   GOOGLE FONT
+========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+
+/* =========================================================
+   ROOT
+========================================================= */
+
+:root{
+
+    --bg:
+    linear-gradient(
+        135deg,
+        #eef2ff,
+        #f8fafc
+    );
+
+    --sidebar:
+    rgba(255,255,255,.72);
+
+    --card:
+    rgba(255,255,255,.72);
+
+    --border:
+    rgba(255,255,255,.22);
+
+    --shadow:
+    0 12px 40px rgba(99,102,241,.08);
+
+    --text:
+    #0f172a;
+
+    --muted:
+    #64748b;
+
+    --primary:
+    #6366f1;
+
+    --primary-dark:
+    #4f46e5;
+
+    --danger:
+    #ef4444;
+
+    --success:
+    #10b981;
+
+    --radius:
+    26px;
+}
+
+
+/* =========================================================
+   DARK THEME
+========================================================= */
+
+body.dark-theme{
+
+    --bg:
+    linear-gradient(
+        135deg,
+        #020617,
+        #0f172a
+    );
+
+    --sidebar:
+    rgba(15,23,42,.72);
+
+    --card:
+    rgba(15,23,42,.72);
+
+    --border:
+    rgba(255,255,255,.05);
+
+    --shadow:
+    0 12px 40px rgba(0,0,0,.35);
+
+    --text:
+    #f8fafc;
+
+    --muted:
+    #94a3b8;
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+*{
+
+    margin:0;
+    padding:0;
+
+    box-sizing:border-box;
+}
+
+
+/* =========================================================
+   BODY
+========================================================= */
+
+body{
+
+    font-family:
+    'Inter',
+    sans-serif;
+
+    background:
+    var(--bg);
+
+    color:
+    var(--text);
+
+    min-height:100vh;
+
+    overflow-x:hidden;
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.container{
+
+    display:flex;
+
+    min-height:100vh;
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar{
+
+    width:280px;
+
+    background:
+    var(--sidebar);
+
+    backdrop-filter:
+    blur(20px);
+
+    border-right:
+    1px solid var(--border);
+
+    padding:24px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:space-between;
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    height:100vh;
+
+    z-index:1000;
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.logo{
+
+    display:flex;
+
+    justify-content:center;
+
+    margin-bottom:36px;
+}
+
+.logo-image{
+
+    width:180px;
+
+    object-fit:contain;
+}
+
+
+/* =========================================================
+   SIDEBAR MENU
+========================================================= */
+
+.sidebar-menu{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+}
+
+.sidebar-menu a{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    padding:15px 18px;
+
+    border-radius:18px;
+
+    text-decoration:none;
+
+    color:
+    var(--muted);
+
+    transition:.25s ease;
+
+    font-weight:600;
+}
+
+.sidebar-menu a:hover{
+
+    background:
+    rgba(99,102,241,.08);
+
+    color:
+    var(--primary);
+
+    transform:
+    translateX(4px);
+}
+
+.sidebar-menu a.active{
+
+    background:
+    linear-gradient(
+        135deg,
+        var(--primary),
+        var(--primary-dark)
+    );
+
+    color:white;
+
+    box-shadow:
+    0 10px 24px rgba(99,102,241,.28);
+}
+
+.sidebar-menu i{
+
+    width:22px;
+
+    text-align:center;
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+.logout-btn{
+
+    color:
+    var(--danger) !important;
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main{
+
+    margin-left:280px;
+
+    width:calc(100% - 280px);
+
+    min-height:100vh;
+
+    padding:26px;
+}
+
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.topbar{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    margin-bottom:24px;
+}
+
+.topbar-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+}
+
+.topbar-left h1{
+
+    font-size:32px;
+
+    font-weight:900;
+}
+
+.topbar-left p{
+
+    color:
+    var(--muted);
+
+    margin-top:4px;
+}
+
+
+/* =========================================================
+   MOBILE TOGGLE
+========================================================= */
+
+.mobile-toggle{
+
+    display:none;
+
+    width:44px;
+    height:44px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:
+    var(--card);
+
+    color:
+    var(--text);
+
+    cursor:pointer;
+
+    font-size:18px;
+
+    box-shadow:
+    var(--shadow);
+}
+
+
+/* =========================================================
+   THEME BUTTON
+========================================================= */
+
+.theme-toggle{
+
+    width:48px;
+    height:48px;
+
+    border:none;
+
+    border-radius:16px;
+
+    background:
+    var(--card);
+
+    color:
+    var(--text);
+
+    cursor:pointer;
+
+    font-size:18px;
+
+    box-shadow:
+    var(--shadow);
+
+    transition:.25s ease;
+}
+
+.theme-toggle:hover{
+
+    transform:
+    rotate(12deg)
+    scale(1.06);
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.content{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:24px;
+}
+
+
+/* =========================================================
+   BREADCRUMB
+========================================================= */
+
+.editor-breadcrumb{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    color:
+    var(--muted);
+
+    font-size:14px;
+}
+
+.editor-breadcrumb .active{
+
+    color:
+    var(--primary);
+
+    font-weight:700;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.editor-header{
+
+    background:
+    var(--card);
+
+    backdrop-filter:
+    blur(20px);
+
+    border:
+    1px solid var(--border);
+
+    border-radius:
+    var(--radius);
+
+    padding:28px;
+
+    box-shadow:
+    var(--shadow);
+
+    display:flex;
+
+    align-items:flex-start;
+
+    justify-content:space-between;
+
+    gap:20px;
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.editor-title-wrap{
+
+    flex:1;
+}
+
+.editor-title{
+
+    width:100%;
+
+    border:none;
+
+    background:transparent;
+
+    outline:none;
+
+    font-size:46px;
+
+    font-weight:900;
+
+    color:
+    var(--text);
+
+    margin-bottom:12px;
+}
+
+.editor-title::placeholder{
+
+    color:
+    var(--muted);
+}
+
+
+/* =========================================================
+   META
+========================================================= */
+
+.editor-meta{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+    color:
+    var(--muted);
+
+    font-size:14px;
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.editor-actions{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+}
+
+.editor-actions button{
+
+    border:none;
+
+    cursor:pointer;
+
+    padding:14px 20px;
+
+    border-radius:16px;
+
+    font-weight:700;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    transition:.25s ease;
+}
+
+.draft-btn{
+
+    background:
+    rgba(99,102,241,.08);
+
+    color:
+    var(--primary);
+}
+
+.publish-btn{
+
+    background:
+    linear-gradient(
+        135deg,
+        var(--primary),
+        var(--primary-dark)
+    );
+
+    color:white;
+
+    box-shadow:
+    0 10px 22px rgba(99,102,241,.28);
+}
+
+.editor-actions button:hover{
+
+    transform:
+    translateY(-2px);
+}
+
+
+/* =========================================================
+   LAYOUT
+========================================================= */
+
+.editor-layout{
+
+    display:grid;
+
+    grid-template-columns:
+    1fr 340px;
+
+    gap:24px;
+}
+
+
+/* =========================================================
+   EDITOR MAIN
+========================================================= */
+
+.editor-main{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:20px;
+}
+
+
+/* =========================================================
+   WRAPPER
+========================================================= */
+
+.editor-wrapper{
+
+    width:100%;
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.editor-sidebar{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:20px;
+}
+
+
+/* =========================================================
+   SIDEBAR CARD
+========================================================= */
+
+.sidebar-card{
+
+    background:
+    var(--card);
+
+    backdrop-filter:
+    blur(20px);
+
+    border:
+    1px solid var(--border);
+
+    border-radius:
+    var(--radius);
+
+    padding:22px;
+
+    box-shadow:
+    var(--shadow);
+}
+
+
+/* =========================================================
+   CARD TITLE
+========================================================= */
+
+.card-title{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    margin-bottom:22px;
+}
+
+.card-title i{
+
+    color:
+    var(--primary);
+
+    font-size:18px;
+}
+
+.card-title h3{
+
+    font-size:18px;
+
+    font-weight:800;
+}
+
+
+/* =========================================================
+   FORM GROUP
+========================================================= */
+
+.form-group{
+
+    margin-bottom:18px;
+}
+
+.form-group label{
+
+    display:block;
+
+    margin-bottom:10px;
+
+    font-size:14px;
+
+    font-weight:700;
+
+    color:
+    var(--muted);
+}
+
+.form-group input,
+.form-group select{
+
+    width:100%;
+
+    padding:14px 16px;
+
+    border-radius:16px;
+
+    border:
+    1px solid var(--border);
+
+    background:
+    rgba(255,255,255,.45);
+
+    color:
+    var(--text);
+
+    outline:none;
+
+    font-size:15px;
+}
+
+body.dark-theme
+.form-group input,
+
+body.dark-theme
+.form-group select{
+
+    background:
+    rgba(15,23,42,.55);
+}
+
+
+/* =========================================================
+   THUMBNAIL
+========================================================= */
+
+.thumbnail-preview{
+
+    width:100%;
+
+    min-height:180px;
+
+    border-radius:22px;
+
+    background:
+    rgba(99,102,241,.05);
+
+    overflow:hidden;
+
+    margin-bottom:18px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+}
+
+.thumbnail-preview img{
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+}
+
+
+/* =========================================================
+   UPLOAD BOX
+========================================================= */
+
+.upload-box{
+
+    border:
+    2px dashed rgba(99,102,241,.22);
+
+    border-radius:20px;
+
+    padding:30px;
+
+    text-align:center;
+
+    cursor:pointer;
+
+    transition:.25s ease;
+}
+
+.upload-box:hover{
+
+    background:
+    rgba(99,102,241,.05);
+}
+
+.upload-box i{
+
+    font-size:38px;
+
+    color:
+    var(--primary);
+
+    margin-bottom:14px;
+}
+
+.upload-box p{
+
+    color:
+    var(--muted);
+
+    font-weight:600;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar{
+
+    width:10px;
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:
+    rgba(99,102,241,.22);
+
+    border-radius:999px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1200px){
+
+    .editor-layout{
+
+        grid-template-columns:
+        1fr;
+    }
+
+    .editor-sidebar{
+
+        width:100%;
+    }
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media(max-width:992px){
+
+    .sidebar{
+
+        transform:
+        translateX(-100%);
+
+        transition:.3s ease;
+    }
+
+    .sidebar.active{
+
+        transform:
+        translateX(0);
+    }
+
+    .main{
+
+        width:100%;
+
+        margin-left:0;
+    }
+
+    .mobile-toggle{
+
+        display:block;
+    }
+
+    .editor-header{
+
+        flex-direction:column;
+    }
+
+    .editor-actions{
+
+        width:100%;
+    }
+
+    .editor-actions button{
+
+        flex:1;
+
+        justify-content:center;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:768px){
+
+    .main{
+
+        padding:14px;
+    }
+
+    .topbar{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:18px;
+    }
+
+    .editor-title{
+
+        font-size:32px;
+    }
+
+    .editor-meta{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:8px;
+    }
+
+    .editor-actions{
+
+        flex-direction:column;
+    }
+
+    .editor-actions button{
+
+        width:100%;
+    }
+
+    .sidebar-card{
+
+        padding:18px;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media(max-width:480px){
+
+    .editor-title{
+
+        font-size:26px;
+    }
+
+    .topbar-left h1{
+
+        font-size:24px;
+    }
+
+    .editor-header{
+
+        padding:20px;
+    }
+
+    .sidebar{
+
+        width:260px;
+    }
+}

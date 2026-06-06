@@ -1,0 +1,547 @@
+/* =========================================================
+   EXCEL YOU TOOLBAR CSS
+========================================================= */
+
+/* =========================================================
+   MAIN TOOLBAR
+========================================================= */
+
+.editor-toolbar {
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 999;
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 14px 18px;
+
+    border-radius: 22px;
+
+    margin-bottom: 24px;
+
+    background:
+    rgba(255,255,255,.75);
+
+    backdrop-filter: blur(18px);
+
+    border:
+    1px solid
+    rgba(255,255,255,.25);
+
+    box-shadow:
+    0 8px 30px
+    rgba(99,102,241,.08);
+
+    transition: .25s ease;
+}
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+body.dark-theme .editor-toolbar {
+
+    background:
+    rgba(15,23,42,.72);
+
+    border:
+    1px solid
+    rgba(255,255,255,.06);
+
+    box-shadow:
+    0 8px 30px
+    rgba(0,0,0,.35);
+}
+
+/* =========================================================
+   TOOLBAR GROUP
+========================================================= */
+
+.toolbar-group {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+}
+
+/* =========================================================
+   DIVIDER
+========================================================= */
+
+.toolbar-divider {
+
+    width: 1px;
+
+    height: 28px;
+
+    background:
+    rgba(148,163,184,.25);
+
+    margin: 0 4px;
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.editor-toolbar button,
+.floating-toolbar button {
+
+    width: 42px;
+    height: 42px;
+
+    border: none;
+
+    border-radius: 14px;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 15px;
+
+    background: transparent;
+
+    color: inherit;
+
+    transition: .2s ease;
+}
+
+/* =========================================================
+   HOVER
+========================================================= */
+
+.editor-toolbar button:hover,
+.floating-toolbar button:hover {
+
+    background:
+    rgba(99,102,241,.12);
+
+    transform:
+    translateY(-2px);
+}
+
+/* =========================================================
+   ACTIVE BUTTON
+========================================================= */
+
+.editor-toolbar button.active,
+.floating-toolbar button.active {
+
+    background:
+    linear-gradient(
+        135deg,
+        #6366f1,
+        #4f46e5
+    );
+
+    color: white;
+
+    box-shadow:
+    0 6px 18px
+    rgba(99,102,241,.3);
+}
+
+/* =========================================================
+   ICONS
+========================================================= */
+
+.editor-toolbar button i,
+.floating-toolbar button i {
+
+    pointer-events: none;
+}
+
+/* =========================================================
+   DROPDOWN
+========================================================= */
+
+.toolbar-dropdown {
+
+    position: relative;
+}
+
+.toolbar-dropdown-menu {
+
+    position: absolute;
+
+    top: 54px;
+    left: 0;
+
+    min-width: 220px;
+
+    background:
+    rgba(255,255,255,.95);
+
+    backdrop-filter: blur(18px);
+
+    border-radius: 18px;
+
+    border:
+    1px solid
+    rgba(255,255,255,.2);
+
+    box-shadow:
+    0 10px 30px
+    rgba(0,0,0,.08);
+
+    padding: 10px;
+
+    display: none;
+
+    flex-direction: column;
+
+    gap: 6px;
+
+    z-index: 9999;
+}
+
+/* =========================================================
+   DROPDOWN OPEN
+========================================================= */
+
+.toolbar-dropdown.open
+.toolbar-dropdown-menu {
+
+    display: flex;
+}
+
+/* =========================================================
+   DROPDOWN BUTTON
+========================================================= */
+
+.toolbar-dropdown-menu button {
+
+    width: 100%;
+
+    justify-content: flex-start;
+
+    gap: 10px;
+
+    padding: 12px;
+
+    border-radius: 12px;
+
+    background: transparent;
+}
+
+/* =========================================================
+   DROPDOWN HOVER
+========================================================= */
+
+.toolbar-dropdown-menu button:hover {
+
+    background:
+    rgba(99,102,241,.08);
+}
+
+/* =========================================================
+   DARK DROPDOWN
+========================================================= */
+
+body.dark-theme
+.toolbar-dropdown-menu {
+
+    background:
+    rgba(15,23,42,.92);
+
+    border:
+    1px solid
+    rgba(255,255,255,.06);
+}
+
+/* =========================================================
+   FLOATING TOOLBAR
+========================================================= */
+
+.floating-toolbar {
+
+    position: absolute;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 10px 12px;
+
+    border-radius: 18px;
+
+    background:
+    rgba(15,23,42,.92);
+
+    backdrop-filter: blur(16px);
+
+    color: white;
+
+    border:
+    1px solid
+    rgba(255,255,255,.08);
+
+    box-shadow:
+    0 12px 30px
+    rgba(0,0,0,.3);
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transform:
+    translateY(10px)
+    scale(.95);
+
+    transition: .22s ease;
+
+    z-index: 99999;
+}
+
+/* =========================================================
+   FLOATING SHOW
+========================================================= */
+
+.floating-toolbar.show {
+
+    opacity: 1;
+
+    pointer-events: auto;
+
+    transform:
+    translateY(0)
+    scale(1);
+}
+
+/* =========================================================
+   FLOATING TOOLBAR ARROW
+========================================================= */
+
+.floating-toolbar::after {
+
+    content: "";
+
+    position: absolute;
+
+    bottom: -7px;
+    left: 50%;
+
+    transform:
+    translateX(-50%)
+    rotate(45deg);
+
+    width: 14px;
+    height: 14px;
+
+    background:
+    rgba(15,23,42,.92);
+}
+
+/* =========================================================
+   COLOR PICKER
+========================================================= */
+
+.toolbar-color-picker {
+
+    width: 34px;
+    height: 34px;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    cursor: pointer;
+
+    border:
+    2px solid
+    rgba(255,255,255,.12);
+}
+
+.toolbar-color-picker input {
+
+    width: 100%;
+    height: 100%;
+
+    border: none;
+
+    cursor: pointer;
+}
+
+/* =========================================================
+   SELECT
+========================================================= */
+
+.toolbar-select {
+
+    height: 42px;
+
+    padding: 0 14px;
+
+    border-radius: 14px;
+
+    border:
+    1px solid
+    rgba(148,163,184,.22);
+
+    background:
+    rgba(255,255,255,.08);
+
+    color: inherit;
+
+    outline: none;
+
+    cursor: pointer;
+}
+
+/* =========================================================
+   SEARCH TOOLBAR
+========================================================= */
+
+.toolbar-search {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 0 14px;
+
+    height: 42px;
+
+    border-radius: 14px;
+
+    background:
+    rgba(255,255,255,.08);
+
+    border:
+    1px solid
+    rgba(148,163,184,.15);
+}
+
+.toolbar-search input {
+
+    border: none;
+
+    background: transparent;
+
+    outline: none;
+
+    color: inherit;
+
+    width: 180px;
+}
+
+/* =========================================================
+   TOOLBAR LABEL
+========================================================= */
+
+.toolbar-label {
+
+    font-size: 13px;
+
+    color: #94a3b8;
+
+    font-weight: 600;
+
+    margin-right: 4px;
+}
+
+/* =========================================================
+   DISABLED
+========================================================= */
+
+.editor-toolbar button:disabled {
+
+    opacity: .4;
+
+    pointer-events: none;
+}
+
+/* =========================================================
+   TOOLTIP
+========================================================= */
+
+.toolbar-tooltip {
+
+    position: absolute;
+
+    bottom: -38px;
+    left: 50%;
+
+    transform:
+    translateX(-50%);
+
+    background:
+    rgba(15,23,42,.95);
+
+    color: white;
+
+    padding: 6px 10px;
+
+    border-radius: 10px;
+
+    font-size: 12px;
+
+    white-space: nowrap;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transition: .2s ease;
+}
+
+.editor-toolbar button:hover
+.toolbar-tooltip {
+
+    opacity: 1;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:768px){
+
+    .editor-toolbar {
+
+        gap: 8px;
+
+        padding: 12px;
+
+        border-radius: 18px;
+    }
+
+    .editor-toolbar button {
+
+        width: 38px;
+        height: 38px;
+
+        font-size: 14px;
+    }
+
+    .toolbar-search {
+
+        display: none;
+    }
+
+    .floating-toolbar {
+
+        max-width: 92vw;
+
+        overflow-x: auto;
+    }
+}
