@@ -334,13 +334,13 @@ body[data-theme="light"] .topbar{
 ========================= */
 
 .signup-right{
-    display: flex;
-    align-items: flex-start;
+    display:flex;
+    align-items:flex-start;
+    transform: translateY(-80px);
 }
 
-
 .signup-card {
-    margin-top: -120px;
+    margin-top: 0;
     width: 100%;
 
     padding: 40px;
