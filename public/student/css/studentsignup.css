@@ -560,104 +560,88 @@ footer {
 }
 
 /* =========================
-   AVATAR PREVIEW
+   CHARACTER PANEL
 ========================= */
 
-.avatar-preview{
+.character-panel{
 
-    text-align:center;
-
-    margin-bottom:25px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    margin-bottom:30px;
 
 }
 
-.avatar-preview img{
+.character-preview{
 
-    width:220px;
+    width:280px;
 
-    max-height:320px;
+    max-height:420px;
 
     object-fit:contain;
 
     filter:
-        drop-shadow(0 0 20px rgba(56,189,248,.4));
+        drop-shadow(0 0 25px rgba(56,189,248,.45));
+
+    animation:
+        floatAvatar 4s ease-in-out infinite;
 
 }
 
-/* =========================
-   AVATAR SELECTION
-========================= */
+@keyframes floatAvatar{
 
-.avatar-selection{
+    0%{
+        transform:translateY(0px);
+    }
+
+    50%{
+        transform:translateY(-12px);
+    }
+
+    100%{
+        transform:translateY(0px);
+    }
+
+}
+
+.avatar-switch{
 
     display:flex;
 
-    justify-content:center;
+    gap:15px;
 
-    gap:20px;
-
-    margin-top:15px;
+    margin-top:20px;
 
 }
 
-.avatar-card{
+.switch-btn{
 
-    width:180px;
+    padding:12px 18px;
 
-    text-align:center;
-
-    padding:15px;
-
-    border:2px solid rgba(0,191,255,.25);
-
-    border-radius:18px;
+    border-radius:14px;
 
     cursor:pointer;
 
+    background:rgba(255,255,255,.05);
+
+    border:1px solid rgba(56,189,248,.25);
+
     transition:.3s;
 
-    background:rgba(255,255,255,.03);
-
 }
 
-.avatar-card:hover{
+.switch-btn:hover{
 
-    transform:translateY(-5px);
-
-    border-color:#00bfff;
+    border-color:#38bdf8;
 
     box-shadow:
-        0 0 20px rgba(0,191,255,.35);
+        0 0 15px rgba(56,189,248,.25);
 
 }
 
-.avatar-card img{
+.switch-btn input{
 
-    width:100%;
-
-    max-width:140px;
-
-    height:auto;
-
-    display:block;
-
-    margin:auto;
-
-}
-
-.avatar-card span{
-
-    display:block;
-
-    margin-top:10px;
-
-    font-weight:600;
-
-}
-
-.avatar-card input{
-
-    display:none;
+    margin-right:8px;
 
 }
 /* =========================
