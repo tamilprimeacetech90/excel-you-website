@@ -164,13 +164,34 @@ if (
                 "div"
             );
 
-        wrapper.className =
-            "editor-block image-block media-block";
+    wrapper.className =
+    "editor-block image-block media-block";
 
-        wrapper.setAttribute(
-            "draggable",
-            "true"
-        );
+wrapper.draggable = true;
+
+/* =========================
+   BLOCK IDENTIFIER
+========================= */
+
+wrapper.dataset.blockType =
+    "image";
+
+wrapper.dataset.blockId =
+    "img_" +
+    Date.now() +
+    "_" +
+    Math.random()
+        .toString(36)
+        .substring(2, 8);
+
+/* =========================
+   DRAG HANDLE SUPPORT
+========================= */
+
+wrapper.setAttribute(
+    "data-draggable",
+    "true"
+);
 
         // Image
         const image =

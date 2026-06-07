@@ -166,24 +166,6 @@ window.addEventListener(
 
 
 // =========================
-// FUTURE USER DATA
-// =========================
-
-// Later we will connect:
-//
-// - student login
-// - mongodb profile
-// - xp system
-// - rewards
-// - streak system
-// - quiz stats
-// - live arena
-// - anime avatar system
-//
-// using API routes
-
-
-// =========================
 // DEMO ARENA BUTTON
 // =========================
 

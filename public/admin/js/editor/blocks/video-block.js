@@ -183,13 +183,26 @@ https://www.youtube.com/embed/${videoId}
                 "div"
             );
 
-        wrapper.className =
-            "editor-block video-block media-block";
+     wrapper.className =
+    "editor-block video-block media-block";
 
-        wrapper.setAttribute(
-            "draggable",
-            "true"
-        );
+wrapper.draggable = true;
+
+wrapper.dataset.blockType =
+    "video";
+
+wrapper.dataset.blockId =
+    "vid_" +
+    Date.now() +
+    "_" +
+    Math.random()
+        .toString(36)
+        .substring(2, 8);
+
+wrapper.setAttribute(
+    "data-draggable",
+    "true"
+);
 
         // Video iframe
         const iframe =

@@ -59,6 +59,15 @@ class DragDropManager {
             "dragstart",
             e => {
 
+                // Ignore caption editing
+                if (
+                    e.target.closest(
+                        ".image-caption, .video-caption"
+                    )
+                ) {
+                    return;
+                }
+
                 const block =
                     e.target.closest(
                         ".editor-block"
@@ -73,6 +82,13 @@ class DragDropManager {
 
                 block.classList.add(
                     "dragging"
+                );
+
+                block.style.opacity =
+                    "0.5";
+
+                document.body.classList.add(
+                    "editor-dragging"
                 );
 
                 e.dataTransfer.effectAllowed =
@@ -113,7 +129,7 @@ class DragDropManager {
                 }
 
                 if (
-                    afterBlock == null
+                    afterBlock === null
                 ) {
 
                     this.editor.appendChild(
@@ -214,6 +230,12 @@ class DragDropManager {
                 console.log(
                     "Block dropped ✔"
                 );
+
+                document.dispatchEvent(
+                    new CustomEvent(
+                        "editor-block-reordered"
+                    )
+                );
             }
         );
 
@@ -229,6 +251,10 @@ class DragDropManager {
                     "drag-over"
                 );
 
+                document.body.classList.remove(
+                    "editor-dragging"
+                );
+
                 if (
                     this.draggedBlock
                 ) {
@@ -236,6 +262,9 @@ class DragDropManager {
                     this.draggedBlock.classList.remove(
                         "dragging"
                     );
+
+                    this.draggedBlock.style.opacity =
+                        "";
                 }
 
                 if (
