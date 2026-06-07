@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXCEL YOU — Student Signup</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="studentsignup.css">
+</head>
+<body data-theme="dark">
+    <!-- BACKGROUND GLOW -->
+    <div class="bg-glow glow1"></div>
+    <div class="bg-glow glow2"></div>
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+        <a href="/" class="logo">EXCEL YOU</a>
+        <nav class="nav-links">
+            <a href="/">Home</a>
+            <a href="/subjects">Subjects</a>
+            <a href="#">Roadmap</a>
+            <a href="#">Community</a>
+        </nav>
+        <div class="topbar-right">
+            <a href="student-login.html" class="login-btn">Login</a>
+            <button id="themeBtn" class="theme-btn">🌙</button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="signup-v2-container">
+        <section class="hero-section">
+            <!-- LEFT SIDE -->
+            <div class="hero-left">
+                <div class="badge">🚀 BEGINNER STAGE</div>
+                <h1>Begin Your <span>Code Journey</span></h1>
+                <p>Step into the world of Computer Science.<br>Learn. Build. Innovate. Excel.</p>
+                
+                <ul class="features">
+                    <li>✅ Learn DSA, Web Dev, AI & More</li>
+                    <li>✅ Hands-on Projects</li>
+                    <li>✅ Certifications</li>
+                    <li>✅ Tamil + English Support</li>
+                </ul>
+            </div>
+
+            <!-- CENTER - AVATAR -->
+            <div class="hero-center">
+                <img id="avatarPreview" src="https://via.placeholder.com/320x420/1a0033/00d4ff?text=Male+Scholar" alt="Scholar Avatar" class="character-preview">
+                <div class="avatar-switch">
+                    <label class="switch-btn active">
+                        <input type="radio" name="gender" value="male" checked> Male Scholar
+                    </label>
+                    <label class="switch-btn">
+                        <input type="radio" name="gender" value="female"> Female Scholar
+                    </label>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDE - SIGNUP FORM -->
+            <div class="hero-right">
+                <div class="signup-card">
+                    <h2>JOIN EXCEL YOU</h2>
+                    <p class="sub-text">Start your journey today</p>
+                    
+                    <form id="signupForm">
+                        <div class="input-group">
+                            <label>Full Name</label>
+                            <input type="text" id="fullName" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Email Address</label>
+                            <input type="email" id="email" placeholder="you@example.com" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Username</label>
+                            <input type="text" id="username" placeholder="Create username" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Password</label>
+                            <input type="password" id="password" placeholder="Create password" required>
+                        </div>
+                        <button type="submit" class="signup-btn">SIGN UP</button>
+                    </form>
+
+                    <div class="bottom-text">
+                        Already have an account? 
+                        <a href="student-login.html">Login</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="studentsignup.js"></script>
+</body>
+</html>
