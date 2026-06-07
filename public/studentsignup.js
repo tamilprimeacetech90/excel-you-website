@@ -8,9 +8,13 @@ document.querySelectorAll('.switch-btn').forEach(btn => {
         const gender = this.querySelector('input').value;
         
         if (gender === 'male') {
-            avatar.src = "https://via.placeholder.com/320x420/1a0033/00d4ff?text=Male+Scholar";
+            avatar.src = "/assets/avatars/male-beginner.png";
+
+
         } else {
-            avatar.src = "https://via.placeholder.com/320x420/4b0082/ff00ff?text=Female+Scholar";
+            avatar.src = "/assets/avatars/female-beginner.png"
+
+;
         }
     });
 });
