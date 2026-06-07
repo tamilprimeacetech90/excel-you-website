@@ -84,41 +84,101 @@ class ImageUploadManager {
         );
     }
 
-    /* =====================================================
-       INSERT IMAGE
-    ===================================================== */
+/* =====================================================
+   INSERT IMAGE
+===================================================== */
 
-    insertImage(file) {
+insertImage(file) {
 
-        // Validate image
+    if (
+        !file.type.startsWith(
+            "image/"
+        )
+    ) {
+
+        alert(
+            "Invalid image file"
+        );
+
+        return;
+    }
+
+    const reader =
+        new FileReader();
+
+    reader.onload = e => {
+
+        const imageUrl =
+            e.target.result;
+
+        /* =========================
+           USE IMAGE BLOCK SYSTEM
+        ========================= */
+
         if (
-            !file.type.startsWith(
-                "image/"
-            )
+            window.imageBlock &&
+            typeof window.imageBlock
+                .createImageBlock ===
+                "function"
         ) {
 
-            alert(
-                "Invalid image file"
+            const block =
+                window.imageBlock
+                    .createImageBlock(
+                        imageUrl
+                    );
+
+            const selection =
+                window.getSelection();
+
+            if (
+                selection &&
+                selection.rangeCount > 0
+            ) {
+
+                const range =
+                    selection.getRangeAt(
+                        0
+                    );
+
+                range.insertNode(
+                    block
+                );
+
+            } else {
+
+                this.editor.appendChild(
+                    block
+                );
+            }
+
+            block.scrollIntoView({
+
+                behavior: "smooth",
+
+                block: "center"
+            });
+
+            console.log(
+                "Image inserted ✔"
             );
 
             return;
         }
 
-        const reader =
-            new FileReader();
+        /* =========================
+           FALLBACK
+        ========================= */
 
-        reader.onload = e => {
+        this.createImageBlock(
+            imageUrl
+        );
+    };
 
-            const imageUrl =
-                e.target.result;
-
-            this.createImageBlock(
-                imageUrl
-            );
-        };
-
-        reader.readAsDataURL(file);
-    }
+    reader.readAsDataURL(
+        file
+    );
+}
 
     /* =====================================================
        CREATE IMAGE BLOCK

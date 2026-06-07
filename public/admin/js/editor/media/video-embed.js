@@ -48,39 +48,70 @@ class VideoEmbedManager {
         );
     }
 
-    /* =====================================================
-       VIDEO PROMPT
-    ===================================================== */
+/* =====================================================
+   VIDEO PROMPT
+===================================================== */
 
-    openVideoPrompt() {
+openVideoPrompt() {
 
-        const url =
-            prompt(
-                "Paste YouTube Video URL"
-            );
+    const url =
+        prompt(
+            "Paste YouTube Video URL"
+        );
 
-        if (!url) {
-            return;
-        }
+    if (!url) {
+        return;
+    }
 
-        const embedUrl =
-            this.convertToEmbedURL(
-                url
-            );
+    const embedUrl =
+        this.convertToEmbedURL(
+            url
+        );
 
-        if (!embedUrl) {
+    if (!embedUrl) {
 
-            alert(
-                "Invalid YouTube URL"
-            );
+        alert(
+            "Invalid YouTube URL"
+        );
 
-            return;
-        }
+        return;
+    }
 
+    const block =
         this.createVideoBlock(
             embedUrl
         );
+
+    const selection =
+        window.getSelection();
+
+    if (
+        selection &&
+        selection.rangeCount > 0
+    ) {
+
+        const range =
+            selection.getRangeAt(0);
+
+        range.insertNode(
+            block
+        );
+
+    } else {
+
+        this.editor.appendChild(
+            block
+        );
     }
+
+    block.scrollIntoView({
+
+        behavior: "smooth",
+
+        block: "center"
+    });
+}
+
 
     /* =====================================================
        CONVERT URL
@@ -129,124 +160,109 @@ class VideoEmbedManager {
             return null;
         }
     }
+/* =====================================================
+   CREATE VIDEO BLOCK
+===================================================== */
 
-    /* =====================================================
-       CREATE VIDEO BLOCK
-    ===================================================== */
+createVideoBlock(embedUrl) {
 
-    createVideoBlock(embedUrl) {
-
-        // Main wrapper
-        const wrapper =
-            document.createElement(
-                "div"
-            );
-
-        wrapper.className =
-            "editor-block media-block video-block";
-
-        wrapper.setAttribute(
-            "draggable",
-            "true"
+    const wrapper =
+        document.createElement(
+            "div"
         );
 
-        // Video container
-        const videoContainer =
-            document.createElement(
-                "div"
-            );
+    wrapper.className =
+        "editor-block media-block video-block";
 
-        videoContainer.className =
-            "video-container";
+    wrapper.draggable = true;
 
-        // iframe
-        const iframe =
-            document.createElement(
-                "iframe"
-            );
+    wrapper.dataset.blockType =
+        "video";
 
-        iframe.src =
-            embedUrl;
+    wrapper.dataset.blockId =
+        "video_" +
+        Date.now() +
+        "_" +
+        Math.random()
+            .toString(36)
+            .substring(2, 8);
 
-        iframe.allowFullscreen =
-            true;
-
-        iframe.className =
-            "editor-video";
-
-        iframe.setAttribute(
-            "frameborder",
-            "0"
+    const videoContainer =
+        document.createElement(
+            "div"
         );
 
-        iframe.setAttribute(
-            "allow",
-            "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    videoContainer.className =
+        "video-container";
+
+    const iframe =
+        document.createElement(
+            "iframe"
         );
 
-        // Controls
-        const controls =
-            document.createElement(
-                "div"
-            );
+    iframe.src =
+        embedUrl;
 
-        controls.className =
-            "media-controls";
+    iframe.allowFullscreen =
+        true;
 
-        // Delete button
-        const deleteBtn =
-            document.createElement(
-                "button"
-            );
+    iframe.className =
+        "editor-video";
 
-        deleteBtn.innerHTML =
-            `<i class="fas fa-trash"></i>`;
+    iframe.setAttribute(
+        "frameborder",
+        "0"
+    );
 
-        deleteBtn.className =
-            "media-delete-btn";
+    iframe.setAttribute(
+        "allow",
+        "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    );
 
-        deleteBtn.addEventListener(
-            "click",
-            () => {
-
-                wrapper.remove();
-            }
+    const controls =
+        document.createElement(
+            "div"
         );
 
-        // Append
-        controls.appendChild(
-            deleteBtn
+    controls.className =
+        "media-controls";
+
+    const deleteBtn =
+        document.createElement(
+            "button"
         );
 
-        videoContainer.appendChild(
-            iframe
-        );
+    deleteBtn.className =
+        "media-delete-btn";
 
-        wrapper.appendChild(
-            videoContainer
-        );
+    deleteBtn.innerHTML =
+        `<i class="fas fa-trash"></i>`;
 
-        wrapper.appendChild(
-            controls
-        );
+    deleteBtn.addEventListener(
+        "click",
+        () => {
 
-        // Add to editor
-        this.editor.appendChild(
-            wrapper
-        );
+            wrapper.remove();
+        }
+    );
 
-        // Scroll
-        wrapper.scrollIntoView({
+    controls.appendChild(
+        deleteBtn
+    );
 
-            behavior: "smooth",
+    videoContainer.appendChild(
+        iframe
+    );
 
-            block: "center"
-        });
+    wrapper.appendChild(
+        videoContainer
+    );
 
-        console.log(
-            "Video inserted ✔"
-        );
-    }
+    wrapper.appendChild(
+        controls
+    );
+
+    return wrapper;
 }
 
 /* =========================================================
