@@ -1,34 +1,39 @@
+// Theme Toggle
+const themeBtn = document.getElementById('themeBtn');
+let currentTheme = 'dark';
+
+themeBtn.addEventListener('click', () => {
+    if (currentTheme === 'dark') {
+        document.body.setAttribute('data-theme', 'light');
+        themeBtn.textContent = '🌙';
+        currentTheme = 'light';
+    } else {
+        document.body.setAttribute('data-theme', 'dark');
+        themeBtn.textContent = '☀️';
+        currentTheme = 'dark';
+    }
+});
+
 // Avatar Switch
 document.querySelectorAll('.switch-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
+    btn.addEventListener('click', () => {
         document.querySelectorAll('.switch-btn').forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
+        btn.classList.add('active');
         
         const avatar = document.getElementById('avatarPreview');
-        const gender = this.querySelector('input').value;
+        const gender = btn.dataset.gender;
         
         if (gender === 'male') {
             avatar.src = "/assets/avatars/male-beginner.png";
-
-
         } else {
-            avatar.src = "/assets/avatars/female-beginner.png"
-
-;
+            avatar.src = "/assets/avatars/female-beginner.png";
         }
     });
 });
 
-// Form Submission
+// Form Submit
 document.getElementById('signupForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    const name = document.getElementById('fullName').value;
-    
-    alert(`🎉 Welcome ${name || 'Scholar'}!\nYour EXCEL YOU account has been created successfully!`);
-    // Here you can later add fetch() to send data to backend
-});
-
-// Theme Toggle (Optional)
-document.getElementById('themeBtn').addEventListener('click', function() {
-    alert("🌟 Theme toggle coming soon!");
+    const name = document.getElementById('fullName').value || "Scholar";
+    alert(`🎉 Welcome ${name}! Your EXCEL YOU account has been created successfully.`);
 });
