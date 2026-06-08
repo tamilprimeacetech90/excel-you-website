@@ -1,5 +1,5 @@
 /* =========================================================
-   EXCEL YOU DRAG DROP SYSTEM - FIXED VERSION
+   EXCEL YOU DRAG DROP SYSTEM - STEP 3 FIXED
 ========================================================= */
 class DragDropManager {
     constructor(editor) {
@@ -9,84 +9,58 @@ class DragDropManager {
         this.init();
     }
 
-    /* =====================================================
-       INIT
-    ===================================================== */
     init() {
         this.createPlaceholder();
         this.setupDragging();
-        this.makeBlocksDraggable();   // ← Important fix
+        this.makeBlocksDraggable();
         console.log("Drag Drop Manager Initialized ✔");
     }
 
-    /* =====================================================
-       PLACEHOLDER
-    ===================================================== */
     createPlaceholder() {
         this.placeholder = document.createElement("div");
         this.placeholder.className = "drag-placeholder";
     }
 
-    /* =====================================================
-       MAKE BLOCKS DRAGGABLE + DISABLE NATIVE IMAGE DRAG
-    ===================================================== */
+    /* Make blocks draggable + protect media */
     makeBlocksDraggable() {
-        const applyDragSettings = () => {
-            // Make all editor blocks draggable
+        const applySettings = () => {
             this.editor.querySelectorAll('.editor-block').forEach(block => {
                 block.draggable = true;
             });
 
-            // Prevent images and videos from triggering native browser drag (copy)
-            this.editor.querySelectorAll('img, video').forEach(media => {
+            this.editor.querySelectorAll('img, video, iframe').forEach(media => {
                 media.draggable = false;
+                media.setAttribute('draggable', 'false');
             });
         };
 
-        // Apply immediately
-        applyDragSettings();
+        applySettings();
 
-        // Watch for new blocks added dynamically
-        const observer = new MutationObserver(applyDragSettings);
-        observer.observe(this.editor, { 
-            childList: true, 
-            subtree: true 
-        });
+        const observer = new MutationObserver(applySettings);
+        observer.observe(this.editor, { childList: true, subtree: true });
     }
 
-    /* =====================================================
-       MAIN EVENTS
-    ===================================================== */
     setupDragging() {
-       /* =========================================
-   DRAG START - FIXED
-========================================= */
-this.editor.addEventListener("dragstart", e => {
-    // Ignore caption editing
-    if (e.target.closest(".image-caption, .video-caption")) {
-        return;
-    }
+        /* DRAG START */
+        this.editor.addEventListener("dragstart", e => {
+            if (e.target.closest(".image-caption, .video-caption")) return;
 
-    // Find the block (works even if user drags on image)
-    const block = e.target.closest(".editor-block");
-    if (!block) return;
+            const block = e.target.closest(".editor-block");
+            if (!block) return;
 
-    // === CRITICAL FIX: Stop native image copying ===
-    if (e.target.tagName === "IMG" || 
-        e.target.tagName === "VIDEO" || 
-        e.target.closest("img, video, iframe")) {
-        e.preventDefault();   // This stops the browser from copying the image
-    }
+            // Prevent native image copy behavior
+            if (e.target.tagName === "IMG" || e.target.tagName === "VIDEO" || e.target.closest("iframe")) {
+                e.dataTransfer.setData("text/plain", ""); // Helps some browsers
+            }
 
-    this.draggedBlock = block;
-    block.classList.add("dragging");
-    block.style.opacity = "0.5";
-    document.body.classList.add("editor-dragging");
-    e.dataTransfer.effectAllowed = "move";
-});
-        /* =========================================
-           DRAG OVER
-        ========================================= */
+            this.draggedBlock = block;
+            block.classList.add("dragging");
+            block.style.opacity = "0.5";
+            document.body.classList.add("editor-dragging");
+            e.dataTransfer.effectAllowed = "move";
+        });
+
+        /* DRAG OVER */
         this.editor.addEventListener("dragover", e => {
             e.preventDefault();
             this.editor.classList.add("drag-over");
@@ -95,9 +69,7 @@ this.editor.addEventListener("dragstart", e => {
 
             const afterBlock = this.getDragAfterElement(e.clientY);
 
-            if (this.placeholder.parentNode) {
-                this.placeholder.remove();
-            }
+            if (this.placeholder.parentNode) this.placeholder.remove();
 
             if (afterBlock === null) {
                 this.editor.appendChild(this.placeholder);
@@ -106,35 +78,23 @@ this.editor.addEventListener("dragstart", e => {
             }
         });
 
-        /* =========================================
-           DRAG LEAVE
-        ========================================= */
+        /* DRAG LEAVE */
         this.editor.addEventListener("dragleave", () => {
             this.editor.classList.remove("drag-over");
         });
 
-        /* =========================================
-           DROP
-        ========================================= */
+        /* DROP */
         this.editor.addEventListener("drop", e => {
             e.preventDefault();
             this.editor.classList.remove("drag-over");
 
-            // Desktop file drop (images, videos, etc.)
             if (e.dataTransfer.files && e.dataTransfer.files.length) {
-                document.dispatchEvent(
-                    new CustomEvent("editor-file-drop", {
-                        detail: {
-                            files: e.dataTransfer.files,
-                            x: e.clientX,
-                            y: e.clientY
-                        }
-                    })
-                );
+                document.dispatchEvent(new CustomEvent("editor-file-drop", {
+                    detail: { files: e.dataTransfer.files, x: e.clientX, y: e.clientY }
+                }));
                 return;
             }
 
-            // Block reordering
             if (!this.draggedBlock) return;
 
             if (this.placeholder.parentNode) {
@@ -146,9 +106,7 @@ this.editor.addEventListener("dragstart", e => {
             document.dispatchEvent(new CustomEvent("editor-block-reordered"));
         });
 
-        /* =========================================
-           DRAG END
-        ========================================= */
+        /* DRAG END */
         this.editor.addEventListener("dragend", () => {
             this.editor.classList.remove("drag-over");
             document.body.classList.remove("editor-dragging");
@@ -166,23 +124,16 @@ this.editor.addEventListener("dragstart", e => {
         });
     }
 
-    /* =====================================================
-       FIND DROP POSITION
-    ===================================================== */
     getDragAfterElement(y) {
         const draggableElements = [
             ...this.editor.querySelectorAll(".editor-block:not(.dragging)")
         ];
 
-        let closest = {
-            offset: Number.NEGATIVE_INFINITY,
-            element: null
-        };
+        let closest = { offset: Number.NEGATIVE_INFINITY, element: null };
 
         draggableElements.forEach(element => {
             const box = element.getBoundingClientRect();
             const offset = y - box.top - box.height / 2;
-
             if (offset < 0 && offset > closest.offset) {
                 closest = { offset, element };
             }
@@ -198,6 +149,5 @@ this.editor.addEventListener("dragstart", e => {
 document.addEventListener("DOMContentLoaded", () => {
     const editor = document.getElementById("editor");
     if (!editor) return;
-
     window.dragDropManager = new DragDropManager(editor);
 });
