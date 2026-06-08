@@ -1,173 +1,45 @@
-/* =========================================================
-   EXCEL YOU LIVE PREVIEW SYSTEM
-========================================================= */
+function openArticlePreview() {
+const editor =
+    document.getElementById(
+        "editor"
+    );
 
-class LivePreviewManager {
+if (!editor) {
+    return;
+}
 
-    constructor(editor) {
+// Clone editor content
+const articleContent =
+    editor.innerHTML;
 
-        this.editor = editor;
+// Title
+const articleTitle =
+    document.getElementById(
+        "articleTitle"
+    )?.value ||
+    "Untitled Article";
 
-        this.previewFrame =
-            document.getElementById(
-                "livePreviewFrame"
-            );
+// Open preview window
+const previewWindow =
+    window.open(
+        "",
+        "_blank"
+    );
 
-        this.previewContainer =
-            document.getElementById(
-                "livePreview"
-            );
+if (!previewWindow) {
 
-        this.previewToggle =
-            document.getElementById(
-                "previewToggle"
-            );
+    alert(
+        "Popup blocked"
+    );
 
-        this.previewMode =
-            "desktop";
+    return;
+}
 
-        this.init();
-    }
-
-    /* =====================================================
-       INIT
-    ===================================================== */
-
-    init() {
-
-        this.setupLivePreview();
-
-        this.setupPreviewToggle();
-
-        this.setupResponsiveModes();
-
-        this.renderPreview();
-
-        console.log(
-            "Live Preview Initialized ✔"
-        );
-    }
-
-    /* =====================================================
-       LIVE PREVIEW
-    ===================================================== */
-
-    setupLivePreview() {
-
-        if (!this.editor) {
-            return;
-        }
-
-        this.editor.addEventListener(
-            "input",
-            () => {
-
-                this.renderPreview();
-            }
-        );
-
-        // Title changes
-        const titleInput =
-            document.getElementById(
-                "articleTitle"
-            );
-
-        if (
-            titleInput
-        ) {
-
-            titleInput.addEventListener(
-                "input",
-                () => {
-
-                    this.renderPreview();
-                }
-            );
-        }
-    }
-
-    /* =====================================================
-       RENDER PREVIEW
-    ===================================================== */
-
-    renderPreview() {
-
-        if (
-            !this.previewContainer
-        ) {
-            return;
-        }
-
-        const title =
-            document.getElementById(
-                "articleTitle"
-            )?.value ||
-
-            "Untitled Article";
-
-        const content =
-            this.editor.innerHTML;
-
-        const thumbnail =
-            document.querySelector(
-                ".thumbnail-preview img"
-            )?.src || "";
-
-        const html =
-            this.generatePreviewHTML({
-
-                title,
-
-                content,
-
-                thumbnail
-            });
-
-        // =====================
-        // IFRAME MODE
-        // =====================
-        if (
-            this.previewFrame
-        ) {
-
-            const doc =
-                this.previewFrame
-                .contentDocument ||
-
-                this.previewFrame
-                .contentWindow
-                .document;
-
-            doc.open();
-
-            doc.write(
-                html
-            );
-
-            doc.close();
-        }
-
-        // =====================
-        // DIV MODE
-        // =====================
-        else {
-
-            this.previewContainer
-                .innerHTML = html;
-        }
-    }
-
-    /* =====================================================
-       PREVIEW HTML
-    ===================================================== */
-
-    generatePreviewHTML(data) {
-
-        return `
+previewWindow.document.write(`
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
 
 <head>
 
@@ -178,130 +50,123 @@ name="viewport"
 content="width=device-width, initial-scale=1.0">
 
 <title>
-${data.title}
+${articleTitle}
 </title>
 
 <style>
 
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
 body{
 
     font-family:
-    Inter,
-    sans-serif;
+        Inter,
+        Arial,
+        sans-serif;
 
-    background:#f8fafc;
+    background:#f8f9fb;
 
-    margin:0;
-
-    padding:40px;
-
-    color:#111827;
+    color:#222;
 
     line-height:1.8;
 }
 
-.preview-wrapper{
+.article-wrapper{
 
     max-width:900px;
 
-    margin:auto;
+    margin:50px auto;
 
-    background:white;
+    background:#fff;
 
-    border-radius:24px;
+    padding:50px;
 
-    overflow:hidden;
+    border-radius:16px;
 
     box-shadow:
-    0 10px 40px rgba(0,0,0,.08);
+        0 10px 30px rgba(
+            0,0,0,.08
+        );
 }
 
-.preview-thumbnail{
-
-    width:100%;
-
-    height:420px;
-
-    object-fit:cover;
-}
-
-.preview-content{
-
-    padding:40px;
-}
-
-.preview-title{
+.article-title{
 
     font-size:42px;
 
+    font-weight:700;
+
+    margin-bottom:30px;
+}
+
+.editor-block{
+
+    margin-bottom:30px;
+}
+
+.paragraph-block{
+
+    font-size:18px;
+}
+
+.heading-block h1,
+.heading-block h2,
+.heading-block h3{
+
+    margin-top:30px;
     margin-bottom:20px;
-
-    line-height:1.3;
 }
 
-.preview-content img{
-
-    max-width:100%;
-
-    border-radius:16px;
-
-    margin:20px 0;
-}
-
-.preview-content iframe{
+.editor-image{
 
     width:100%;
 
-    height:500px;
+    display:block;
 
-    border:none;
+    border-radius:12px;
 
-    border-radius:18px;
-
-    margin:20px 0;
+    margin:20px auto;
 }
 
-.preview-content pre{
+.video-container{
 
-    background:#111827;
+    position:relative;
 
-    color:#f8fafc;
+    width:100%;
 
-    padding:20px;
-
-    border-radius:18px;
-
-    overflow:auto;
+    padding-top:56.25%;
 }
 
-.preview-content code{
+.video-container iframe{
 
-    font-family:
-    Consolas,
-    monospace;
+    position:absolute;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
 }
 
-.preview-content h1,
-.preview-content h2,
-.preview-content h3{
+.image-caption{
 
-    margin-top:32px;
+    text-align:center;
+
+    margin-top:10px;
+
+    color:#777;
+
+    font-size:14px;
 }
 
-.preview-content p{
+.media-controls,
+.block-controls,
+.resize-handle{
 
-    margin:18px 0;
-}
-
-.file-card{
-
-    border:1px solid #e2e8f0;
-
-    padding:18px;
-
-    border-radius:16px;
-
-    margin:20px 0;
+    display:none !important;
 }
 
 </style>
@@ -310,26 +175,13 @@ body{
 
 <body>
 
-<div class="preview-wrapper">
+<div class="article-wrapper">
 
-${data.thumbnail
-? `
-<img
-src="${data.thumbnail}"
-class="preview-thumbnail">
-`
-: ""
-}
-
-<div class="preview-content">
-
-<h1 class="preview-title">
-${data.title}
+<h1 class="article-title">
+${articleTitle}
 </h1>
 
-${data.content}
-
-</div>
+${articleContent}
 
 </div>
 
@@ -337,265 +189,8 @@ ${data.content}
 
 </html>
 
-        `;
-    }
+`);
 
-    /* =====================================================
-       PREVIEW TOGGLE
-    ===================================================== */
+previewWindow.document.close();
 
-    setupPreviewToggle() {
-
-        if (
-            !this.previewToggle
-        ) {
-            return;
-        }
-
-        this.previewToggle.addEventListener(
-            "click",
-            () => {
-
-                this.togglePreview();
-            }
-        );
-    }
-
-    /* =====================================================
-       TOGGLE
-    ===================================================== */
-
-    togglePreview() {
-
-        if (
-            !this.previewContainer
-        ) {
-            return;
-        }
-
-        this.previewContainer
-            .classList.toggle(
-                "preview-hidden"
-            );
-
-        const hidden =
-            this.previewContainer
-            .classList.contains(
-                "preview-hidden"
-            );
-
-        if (
-            this.previewToggle
-        ) {
-
-            this.previewToggle.innerHTML =
-
-                hidden
-
-                ? `
-<i class="fas fa-eye"></i>
-`
-
-                : `
-<i class="fas fa-eye-slash"></i>
-`;
-        }
-    }
-
-    /* =====================================================
-       RESPONSIVE MODES
-    ===================================================== */
-
-    setupResponsiveModes() {
-
-        const desktopBtn =
-            document.getElementById(
-                "previewDesktop"
-            );
-
-        const tabletBtn =
-            document.getElementById(
-                "previewTablet"
-            );
-
-        const mobileBtn =
-            document.getElementById(
-                "previewMobile"
-            );
-
-        // Desktop
-        if (
-            desktopBtn
-        ) {
-
-            desktopBtn.addEventListener(
-                "click",
-                () => {
-
-                    this.setPreviewMode(
-                        "desktop"
-                    );
-                }
-            );
-        }
-
-        // Tablet
-        if (
-            tabletBtn
-        ) {
-
-            tabletBtn.addEventListener(
-                "click",
-                () => {
-
-                    this.setPreviewMode(
-                        "tablet"
-                    );
-                }
-            );
-        }
-
-        // Mobile
-        if (
-            mobileBtn
-        ) {
-
-            mobileBtn.addEventListener(
-                "click",
-                () => {
-
-                    this.setPreviewMode(
-                        "mobile"
-                    );
-                }
-            );
-        }
-    }
-
-    /* =====================================================
-       SET MODE
-    ===================================================== */
-
-    setPreviewMode(mode) {
-
-        this.previewMode =
-            mode;
-
-        if (
-            !this.previewFrame
-        ) {
-            return;
-        }
-
-        switch (mode) {
-
-            case "desktop":
-
-                this.previewFrame.style.width =
-                    "100%";
-
-                this.previewFrame.style.height =
-                    "100vh";
-
-                break;
-
-            case "tablet":
-
-                this.previewFrame.style.width =
-                    "820px";
-
-                this.previewFrame.style.height =
-                    "1180px";
-
-                break;
-
-            case "mobile":
-
-                this.previewFrame.style.width =
-                    "390px";
-
-                this.previewFrame.style.height =
-                    "844px";
-
-                break;
-        }
-    }
-
-    /* =====================================================
-       OPEN NEW WINDOW
-    ===================================================== */
-
-    openPreviewWindow() {
-
-        const previewHTML =
-            this.generatePreviewHTML({
-
-                title:
-                    document.getElementById(
-                        "articleTitle"
-                    )?.value ||
-
-                    "Untitled",
-
-                content:
-                    this.editor.innerHTML,
-
-                thumbnail:
-                    document.querySelector(
-                        ".thumbnail-preview img"
-                    )?.src || ""
-            });
-
-        const previewWindow =
-            window.open(
-                "",
-                "_blank"
-            );
-
-        previewWindow.document.write(
-            previewHTML
-        );
-
-        previewWindow.document.close();
-    }
-
-    /* =====================================================
-       PRINT PREVIEW
-    ===================================================== */
-
-    printPreview() {
-
-        if (
-            this.previewFrame
-        ) {
-
-            this.previewFrame
-                .contentWindow
-                .print();
-        }
-    }
 }
-
-/* =========================================================
-   INITIALIZE
-========================================================= */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
-
-        const editor =
-            document.getElementById(
-                "editor"
-            );
-
-        if (!editor) {
-            return;
-        }
-
-        window.livePreviewManager =
-            new LivePreviewManager(
-                editor
-            );
-    }
-);

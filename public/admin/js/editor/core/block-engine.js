@@ -182,69 +182,113 @@ class BlockEngine {
         return block;
     }
 
-    /* =====================================================
-       CREATE IMAGE BLOCK
-    ===================================================== */
+/* =====================================================
+   CREATE IMAGE BLOCK
+===================================================== */
 
-    createImageBlock(src) {
+createImageBlock(src) {
 
-        const block =
-            this.createBaseBlock(
-                "image"
-            );
+    const block =
+        this.createBaseBlock(
+            "image"
+        );
 
-        block.innerHTML += `
+    block.innerHTML += `
 
-            <div class="image-container">
+        <div class="image-container">
 
-                <img
-                    src="${src}"
-                    class="editor-image"
-                >
+            <img
+                src="${src}"
+                class="editor-image"
+                draggable="false"
+            >
 
-                <div
-                    class="resize-handle">
-
-                </div>
-
+            <div
+                class="resize-handle">
             </div>
 
-        `;
+        </div>
 
-        this.editor.appendChild(block);
+    `;
 
-        return block;
-    }
+    this.insertBlockAtCursor(
+        block
+    );
 
-    /* =====================================================
-       CREATE VIDEO BLOCK
-    ===================================================== */
+    return block;
+}
 
-    createVideoBlock(videoUrl) {
+/* =====================================================
+   CREATE VIDEO BLOCK
+===================================================== */
 
-        const block =
-            this.createBaseBlock(
-                "video"
+createVideoBlock(videoUrl) {
+
+    const block =
+        this.createBaseBlock(
+            "video"
+        );
+
+    block.innerHTML += `
+
+        <div class="video-container">
+
+            <iframe
+                src="${videoUrl}"
+                frameborder="0"
+                allowfullscreen>
+            </iframe>
+
+        </div>
+
+    `;
+
+    this.insertBlockAtCursor(
+        block
+    );
+
+    return block;
+}
+
+/* =====================================================
+   INSERT BLOCK AT CURSOR
+===================================================== */
+
+insertBlockAtCursor(block) {
+
+    const selection =
+        window.getSelection();
+
+    if (
+        selection &&
+        selection.rangeCount > 0
+    ) {
+
+        const range =
+            selection.getRangeAt(0);
+
+        const currentBlock =
+            range.startContainer
+                .parentElement
+                ?.closest(
+                    ".editor-block"
+                );
+
+        if (currentBlock) {
+
+            currentBlock.after(
+                block
             );
 
-        block.innerHTML += `
-
-            <div class="video-container">
-
-                <iframe
-                    src="${videoUrl}"
-                    frameborder="0"
-                    allowfullscreen>
-                </iframe>
-
-            </div>
-
-        `;
-
-        this.editor.appendChild(block);
-
-        return block;
+            return;
+        }
     }
+
+    this.editor.appendChild(
+        block
+    );
+}
+
 
     /* =====================================================
        CREATE FILE BLOCK
