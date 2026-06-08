@@ -402,27 +402,4 @@ exportBlocks() {
 
 }
 
-/* =========================================================
-INITIALIZE
-========================================================= */
-
-document.addEventListener(
-"DOMContentLoaded",
-() => {
-
-    const editor =
-        document.getElementById(
-            "editor"
-        );
-
-    if (!editor) {
-        return;
-    }
-
-    window.blockEngine =
-        new BlockEngine(
-            editor
-        );
-}
-
 );

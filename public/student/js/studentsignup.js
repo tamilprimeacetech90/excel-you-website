@@ -39,8 +39,6 @@ function applyTheme(theme){
         theme
     );
 
-    // BUTTON ICON
-
     if(themeBtn){
 
         themeBtn.innerHTML =
@@ -52,8 +50,6 @@ function applyTheme(theme){
             : "🌙";
 
     }
-
-    // LOGO CHANGE
 
     if(siteLogo){
 
@@ -69,7 +65,99 @@ function applyTheme(theme){
 
 }
 
+const savedTheme =
+    localStorage.getItem(
+        "theme"
+    ) || "dark";
 
+applyTheme(savedTheme);
+
+if(themeBtn){
+
+    themeBtn.addEventListener(
+        "click",
+        () => {
+
+            const currentTheme =
+                body.getAttribute(
+                    "data-theme"
+                );
+
+            const nextTheme =
+
+                currentTheme === "dark"
+
+                ? "light"
+
+                : "dark";
+
+            applyTheme(
+                nextTheme
+            );
+
+            localStorage.setItem(
+                "theme",
+                nextTheme
+            );
+
+        }
+    );
+
+}
+
+// =========================
+// AVATAR SYSTEM
+// =========================
+
+const avatarPreview =
+    document.getElementById(
+        "avatarPreview"
+    );
+
+const switchButtons =
+    document.querySelectorAll(
+        ".switch-btn"
+    );
+
+switchButtons.forEach(btn => {
+
+    btn.addEventListener(
+        "click",
+        () => {
+
+            switchButtons.forEach(b => {
+
+                b.classList.remove(
+                    "active"
+                );
+
+            });
+
+            btn.classList.add(
+                "active"
+            );
+
+            const gender =
+                btn.dataset.gender;
+
+            if(gender === "female"){
+
+                avatarPreview.src =
+                    "/assets/avatars/female-beginner.png";
+
+            }
+
+            else{
+
+                avatarPreview.src =
+                    "/assets/avatars/male-beginner.png";
+
+            }
+
+        }
+    );
+
+});
 // =========================
 // LOAD SAVED THEME
 // =========================
@@ -183,6 +271,10 @@ if(signupForm){
                 document.getElementById(
                     "password"
                 ).value.trim();
+            const confirmPassword =
+                 document.getElementById(
+                 "confirmPassword"
+                 ).value.trim();
 
             const gender =
                 document.querySelector(
@@ -221,6 +313,15 @@ if(signupForm){
                 );
 
                 return;
+             if(password !== confirmPassword){
+
+                   alert(
+                       "Passwords do not match."
+                   );
+
+                  return;
+
+                 }
 
             }
 
@@ -235,8 +336,8 @@ if(signupForm){
 
             submitBtn.disabled = true;
 
-            submitBtn.innerHTML =
-                "Creating Account...";
+           submitBtn.innerHTML =
+            "⏳ Creating Account...";
 
             try {
 
@@ -323,8 +424,8 @@ if(signupForm){
 
             submitBtn.disabled = false;
 
-            submitBtn.innerHTML =
-                "Create Account";
+           submitBtn.innerHTML =
+            "🚀 Create Account";
 
         }
     );

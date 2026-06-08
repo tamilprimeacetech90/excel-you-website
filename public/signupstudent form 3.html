@@ -1,90 +1,406 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EXCEL YOU — Begin Your Code Journey</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="studentsignup.css">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        EXCEL YOU — Student Signup
+    </title>
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="/student/css/studentsignup2.css">
+
 </head>
+
 <body data-theme="dark">
-    <!-- BACKGROUND -->
-    <div class="bg-glow glow1"></div>
-    <div class="bg-glow glow2"></div>
+
+    <!-- BACKGROUND OVERLAY -->
+
+    <div class="background-overlay"></div>
 
     <!-- TOPBAR -->
+
     <header class="topbar">
-        <div class="logo">EXCEL YOU</div>
+
+        <a href="/">
+
+            <img
+                src="/assets/logo/full-logo-white.png"
+                alt="EXCEL YOU"
+                class="logo-img"
+                id="siteLogo"
+            >
+
+        </a>
+
         <nav class="nav-links">
-            <a href="#">Home</a>
-            <a href="#">Subjects</a>
-            <a href="#">Roadmap</a>
-            <a href="#">Community</a>
+
+            <a href="/">Home</a>
+
+            <a href="/subjects">
+                Subjects
+            </a>
+
+            <a href="#">
+                Roadmap
+            </a>
+
         </nav>
+
         <div class="topbar-right">
-            <a href="student-login.html" class="login-btn">Login</a>
-            <button id="themeBtn" class="theme-btn">☀️</button>
+
+            <a href="/student-login.html"
+               class="login-btn">
+
+                Login
+
+            </a>
+
+            <button
+                id="themeBtn"
+                class="theme-btn"
+            >
+
+                🌙
+
+            </button>
+
         </div>
+
     </header>
 
-    <main class="hero-section">
-        <!-- LEFT -->
-        <div class="hero-left">
-            <div class="badge">🚀 BEGINNER STAGE</div>
-            <h1>Begin Your <span>Code Journey</span></h1>
-            <p>Step into the world of Computer Science.<br>Learn. Build. Innovate. Excel.</p>
-            <ul class="features">
-                <li>✅ Learn DSA, Web Dev, AI & More</li>
-                <li>✅ Hands-on Projects</li>
-                <li>✅ Certifications</li>
-                <li>✅ Tamil + English Support</li>
-            </ul>
-        </div>
+    <!-- MAIN -->
 
-        <!-- CENTER - CHARACTER -->
-        <div class="hero-center">
-            <div class="hologram-container">
-                <img id="avatarPreview" 
-                     src="/assets/avatars/female-beginner.png"
+    <main class="signup-wrapper">
 
-                     alt="Female Scholar" class="main-avatar">
+        <!-- LEFT SIDE -->
+
+        <section class="left-panel">
+
+            <div class="badge">
+
+                🚀 Join EXCEL YOU
+
             </div>
+
+            <h1>
+
+                Become an
+
+                <span>
+
+                    Immortal Scholar
+
+                </span>
+
+            </h1>
+
+            <div class="feature-list">
+
+                <div class="feature-item">
+
+                    📚 Study Progress Status
+
+                </div>
+
+                <div class="feature-item">
+
+                    ⚡ Earn XP Rewards
+
+                </div>
+
+                <div class="feature-item">
+
+                    🏆 Unlock Scholar Ranks
+
+                </div>
+
+                <div class="feature-item">
+
+                    🎯 Participate in Quizzes
+
+                </div>
+
+                <div class="feature-item">
+
+                    🔥 Build Your Profile
+
+                </div>
+
+                <div class="feature-item">
+
+                    👑 Become Celestial Immortal
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- CENTER -->
+
+        <section class="center-panel">
+
+            <div class="academy-logo">
+
+                <img
+                    src="/assets/logo/excelyou-circle-logo.png"
+                    alt="Excel You Academy"
+                >
+
+            </div>
+
+            <img
+                id="avatarPreview"
+                src="/assets/avatars/male-beginner.png"
+                alt="Scholar Avatar"
+                class="main-avatar"
+            >
+
+            <div class="hologram-ring"></div>
+
             <div class="avatar-switch">
-                <button class="switch-btn" data-gender="male">Male Scholar</button>
-                <button class="switch-btn active" data-gender="female">Female Scholar</button>
-            </div>
-        </div>
 
-        <!-- RIGHT - SIGNUP -->
-        <div class="hero-right">
-            <div class="signup-card">
-                <h2>JOIN EXCEL YOU</h2>
-                <p class="sub-text">Start your journey today</p>
-                <form id="signupForm">
-                    <div class="input-group">
-                        <label>Full Name</label>
-                        <input type="text" id="fullName" placeholder="Enter your full name" required>
-                    </div>
-                    <div class="input-group">
-                        <label>Email Address</label>
-                        <input type="email" id="email" placeholder="you@example.com" required>
-                    </div>
-                    <div class="input-group">
-                        <label>Username</label>
-                        <input type="text" id="username" placeholder="Create username" required>
-                    </div>
-                    <div class="input-group">
-                        <label>Password</label>
-                        <input type="password" id="password" placeholder="Create password" required>
-                    </div>
-                    <button type="submit" class="signup-btn">SIGN UP</button>
-                </form>
+                <label class="switch-btn">
+
+                    <input
+                        type="radio"
+                        name="gender"
+                        value="male"
+                        checked
+                    >
+
+                    Male Scholar
+
+                </label>
+
+                <label class="switch-btn">
+
+                    <input
+                        type="radio"
+                        name="gender"
+                        value="female"
+                    >
+
+                    Female Scholar
+
+                </label>
+
             </div>
-        </div>
+
+        </section>
+
+        <!-- RIGHT -->
+
+        <section class="signup-right">
+
+            <div class="signup-card">
+
+                <h2>
+
+                    Join The
+
+                    <span>
+
+                        Immortal computer science Scholar Academy
+
+                    </span>
+
+                </h2>
+
+                <p class="sub-text">
+
+                    Create your account and begin your cultivation journey.
+
+                </p>
+
+                <form id="signupForm">
+
+                    <div class="input-group">
+
+                        <label>
+
+                            Username
+
+                        </label>
+
+                        <input
+                            type="text"
+                            id="username"
+                            placeholder="Choose username"
+                            required
+                        >
+
+                    </div>
+
+                    <div class="input-group">
+
+                        <label>
+
+                            Email
+
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="you@example.com"
+                            required
+                        >
+
+                    </div>
+
+                    <div class="input-group">
+
+                        <label>
+
+                            Password
+
+                        </label>
+
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Create password"
+                            required
+                        >
+
+                    </div>
+                    <div class="input-group">
+
+                     <label>
+                        Confirm Password
+                     </label>
+
+                      <input
+                         type="password"
+                         id="confirmPassword"
+                          placeholder="Confirm password"
+                          required
+                        >
+
+                       </div>
+
+                    <div class="input-group">
+
+                        <label>
+
+                            Learning Path
+
+                        </label>
+
+                        <select id="learningPath">
+
+                            <option value="Computer Science">
+
+                                Computer Science
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="rank-box">
+
+                        🌱 Initial Rank:
+
+                        <span>
+
+                            Beginner Researcher
+
+                        </span>
+
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="signup-btn"
+                    >
+
+                        Create Account
+
+                    </button>
+
+                </form>
+
+                <div class="bottom-text">
+
+                    Already have an account?
+
+                    <a href="/student-login.html">
+
+                        Login
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
     </main>
 
-    <script src="studentsignup.js"></script>
+    <!-- JOURNEY -->
+
+    <section class="journey-section">
+
+        <h2>
+
+            Scholar Evolution Journey
+
+        </h2>
+
+        <div class="journey-line">
+
+            🌱 Beginner Researcher
+
+            ➜
+
+            📖 Junior Scholar
+
+            ➜
+
+            ⚔ Master Scholar
+
+            ➜
+
+            👑 Celestial Scholar
+
+            ➜
+
+            ✨ Immortal Scholar
+
+        </div>
+
+    </section>
+
+    <footer>
+
+        © 2026 EXCEL YOU — Modern Tamil + English Learning Platform
+
+    </footer>
+
+    <script src="/student/js/studentsignup.js"></script>
+
 </body>
+
 </html>
