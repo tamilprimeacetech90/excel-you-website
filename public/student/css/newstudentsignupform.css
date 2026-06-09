@@ -15,7 +15,7 @@
 
     --muted:#cbd5e1;
 
-    --card:rgba(15,23,42,.68);
+    --card:rgba(15,23,42,.0.45);
 
     --glass:rgba(255,255,255,.08);
 
@@ -366,7 +366,7 @@ body[data-theme="light"]{
 
     font-size:36px;
 
-    line-height:1.25;
+    line-height:1.15;
 
 }
 
@@ -627,13 +627,13 @@ body[data-theme="light"]{
 
     max-width:420px;
 
-    padding:32px;
+    padding:22px 24px;
 
     border-radius:28px;
 
     background:var(--card);
 
-    backdrop-filter:blur(24px);
+    backdrop-filter:blur(30px);
 
     -webkit-backdrop-filter:blur(24px);
 
@@ -641,7 +641,7 @@ body[data-theme="light"]{
 
         1px solid
 
-        var(--border);
+        rgba(255,255,255,.23);
 
     box-shadow:
 
@@ -857,54 +857,39 @@ body[data-theme="light"]{
    SOCIAL LOGIN
 ========================= */
 
-.social-login{
+.social-login {
 
-    display:flex;
+    display: flex;
 
-    flex-direction:column;
+    justify-content: center;
 
-    gap:12px;
+    gap: 12px;
 
-}
-
-.google-btn,
-.github-btn{
-
-    width:100%;
-
-    padding:14px;
-
-    border-radius:14px;
-
-    border:
-
-        1px solid
-
-        var(--border);
-
-    background:var(--glass);
-
-    backdrop-filter:blur(12px);
-
-    color:var(--text);
-
-    cursor:pointer;
-
-    font-weight:600;
-
-    transition:.3s;
+    margin-top: 18px;
 
 }
 
-.google-btn:hover,
-.github-btn:hover{
+.social-btn {
 
-    border-color:
+    width: 52px;
 
-        var(--primary);
+    height: 52px;
+
+    border-radius: 14px;
+
+    border: 1px solid rgba(255,255,255,.12);
+
+    background: rgba(255,255,255,.05);
+
+    cursor: pointer;
 
 }
 
+.social-btn img {
+
+    width: 24px;
+
+}
 /* =========================
    LOGIN TEXT
 ========================= */
@@ -1011,7 +996,7 @@ footer{
 
     color:var(--muted);
 
-    font-size:13px;
+    font-size:0.9rem;
 
 }
 
