@@ -863,7 +863,7 @@ body[data-theme="light"]{
 
     justify-content: center;
 
-    gap: 12px;
+    gap: 14px;
 
     margin-top: 18px;
 
@@ -871,23 +871,52 @@ body[data-theme="light"]{
 
 .social-btn {
 
-    width: 52px;
+    width: 50px;
 
-    height: 52px;
+    height: 50px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
 
     border-radius: 14px;
 
-    border: 1px solid rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.10);
 
-    background: rgba(255,255,255,.05);
+    background: rgba(255,255,255,.04);
+
+    backdrop-filter: blur(12px);
+
+    -webkit-backdrop-filter: blur(12px);
 
     cursor: pointer;
+
+    transition: all .25s ease;
+
+}
+
+.social-btn:hover {
+
+    transform: translateY(-3px);
+
+    border-color: rgba(56,189,248,.5);
+
+    box-shadow:
+        0 0 18px rgba(56,189,248,.25);
+
+    background: rgba(56,189,248,.08);
 
 }
 
 .social-btn img {
 
     width: 24px;
+
+    height: 24px;
+
+    object-fit: contain;
 
 }
 /* =========================
