@@ -1,0 +1,1138 @@
+/* =========================
+   EXCEL YOU SIGNUP V2
+   PART 1 / 2
+========================= */
+
+/* =========================
+   IMPORTED FONTS
+========================= */
+
+:root{
+
+    /* DARK THEME */
+
+    --text:#f8fafc;
+
+    --muted:#cbd5e1;
+
+    --card:rgba(15,23,42,.68);
+
+    --glass:rgba(255,255,255,.08);
+
+    --border:rgba(255,255,255,.12);
+
+    --primary:#38bdf8;
+
+    --secondary:#8b5cf6;
+
+    --shadow:
+        0 20px 45px
+        rgba(0,0,0,.28);
+
+}
+
+/* =========================
+   LIGHT THEME
+========================= */
+
+[data-theme="light"]{
+
+    --text:#0f172a;
+
+    --muted:#475569;
+
+    --card:rgba(255,255,255,.72);
+
+    --glass:rgba(255,255,255,.55);
+
+    --border:rgba(15,23,42,.10);
+
+    --shadow:
+        0 20px 40px
+        rgba(0,0,0,.08);
+
+}
+
+/* =========================
+   RESET
+========================= */
+
+*{
+
+    margin:0;
+
+    padding:0;
+
+    box-sizing:border-box;
+
+}
+
+html,
+body{
+
+    width:100%;
+
+    min-height:100vh;
+
+    overflow-x:hidden;
+
+}
+
+body{
+
+    font-family:
+        "Poppins",
+        sans-serif;
+
+    color:var(--text);
+
+    transition:
+        background .4s ease,
+        color .4s ease;
+
+}
+
+/* =========================
+   BACKGROUND IMAGES
+========================= */
+
+body[data-theme="dark"]{
+
+    background:
+
+        url("/assets/backgrounds/signup-dark.png")
+
+        center center /
+
+        cover
+
+        no-repeat
+
+        fixed;
+
+}
+
+body[data-theme="light"]{
+
+    background:
+
+        url("/assets/backgrounds/signup-light.png")
+
+        center center /
+
+        cover
+
+        no-repeat
+
+        fixed;
+
+}
+
+/* =========================
+   OVERLAY
+========================= */
+
+.background-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:-1;
+
+    background:
+
+        linear-gradient(
+
+            180deg,
+
+            rgba(15,23,42,.18),
+
+            rgba(15,23,42,.28)
+
+        );
+
+    pointer-events:none;
+
+}
+
+/* =========================
+   TOPBAR
+========================= */
+
+.topbar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:18px 5%;
+
+    backdrop-filter:blur(14px);
+
+    border-bottom:
+
+        1px solid
+
+        rgba(255,255,255,.08);
+
+}
+
+.logo-img{
+
+    width:170px;
+
+    height:auto;
+
+}
+
+/* =========================
+   NAVIGATION
+========================= */
+
+.nav-links{
+
+    display:flex;
+
+    gap:32px;
+
+}
+
+.nav-links a{
+
+    text-decoration:none;
+
+    color:var(--text);
+
+    font-weight:500;
+
+    transition:.3s;
+
+}
+
+.nav-links a:hover{
+
+    color:var(--primary);
+
+}
+
+/* =========================
+   RIGHT NAV
+========================= */
+
+.topbar-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+}
+
+.login-btn{
+
+    text-decoration:none;
+
+    color:white;
+
+    padding:12px 24px;
+
+    border-radius:14px;
+
+    font-weight:600;
+
+    background:
+
+        linear-gradient(
+
+            135deg,
+
+            var(--primary),
+
+            var(--secondary)
+
+        );
+
+}
+
+.theme-btn{
+
+    width:46px;
+
+    height:46px;
+
+    border:none;
+
+    border-radius:50%;
+
+    cursor:pointer;
+
+    font-size:18px;
+
+    background:var(--glass);
+
+    color:var(--text);
+
+    backdrop-filter:blur(12px);
+
+    border:
+
+        1px solid
+
+        var(--border);
+
+}
+
+/* =========================
+   MAIN LAYOUT
+========================= */
+
+.signup-wrapper{
+
+    display:grid;
+
+    grid-template-columns:
+
+        320px
+
+        1fr
+
+        430px;
+
+    align-items:center;
+
+    gap:40px;
+
+    padding:
+
+        35px
+
+        5%
+
+        20px;
+
+}
+
+/* =========================
+   LEFT PANEL
+========================= */
+
+.left-panel{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+.badge{
+
+    width:max-content;
+
+    padding:
+
+        10px 18px;
+
+    border-radius:999px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    background:
+
+        rgba(56,189,248,.14);
+
+    border:
+
+        1px solid
+
+        rgba(56,189,248,.25);
+
+}
+
+.left-panel h1{
+
+    font-family:
+
+        "Orbitron",
+
+        sans-serif;
+
+    font-size:36px;
+
+    line-height:1.25;
+
+}
+
+.left-panel h1 span{
+
+    color:var(--primary);
+
+}
+
+.hero-description{
+
+    font-size:15px;
+
+    color:var(--muted);
+
+    line-height:1.7;
+
+}
+
+/* =========================
+   FEATURE LIST
+========================= */
+
+.feature-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
+}
+
+.feature-item{
+
+    font-size:15px;
+
+    font-weight:500;
+
+    padding:
+
+        12px 18px;
+
+    border-radius:16px;
+
+    background:var(--glass);
+
+    backdrop-filter:blur(14px);
+
+    border:
+
+        1px solid
+
+        var(--border);
+
+}
+
+/* =========================
+   CENTER PANEL
+========================= */
+
+.center-panel{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+/* =========================
+   AVATAR
+========================= */
+
+.avatar-container{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+}
+
+.main-avatar{
+
+    width:280px;
+
+    max-height:420px;
+
+    object-fit:contain;
+
+    animation:
+
+        floatAvatar
+
+        4s ease-in-out
+
+        infinite;
+
+    filter:
+
+        drop-shadow(
+
+            0 0 30px
+
+            rgba(56,189,248,.35)
+
+        );
+
+}
+
+/* =========================
+   FLOATING EFFECT
+========================= */
+
+@keyframes floatAvatar{
+
+    0%{
+
+        transform:
+
+            translateY(0);
+
+    }
+
+    50%{
+
+        transform:
+
+            translateY(-10px);
+
+    }
+
+    100%{
+
+        transform:
+
+            translateY(0);
+
+    }
+
+}
+
+/* =========================
+   HOLOGRAM RING
+========================= */
+
+.hologram-ring{
+
+    width:220px;
+
+    height:38px;
+
+    border-radius:50%;
+
+    margin-top:-15px;
+
+    background:
+
+        radial-gradient(
+
+            ellipse,
+
+            rgba(56,189,248,.85),
+
+            transparent 70%
+
+        );
+
+    filter:blur(10px);
+
+}
+
+/* =========================
+   GENDER SWITCH
+========================= */
+
+.avatar-switch{
+
+    display:flex;
+
+    gap:14px;
+
+    margin-top:20px;
+
+}
+
+.switch-btn{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:
+
+        12px 18px;
+
+    border-radius:14px;
+
+    background:var(--glass);
+
+    border:
+
+        1px solid
+
+        var(--border);
+
+    backdrop-filter:blur(12px);
+
+    cursor:pointer;
+
+    font-size:14px;
+
+    font-weight:500;
+
+}
+
+.switch-btn input{
+
+    accent-color:
+
+        var(--primary);
+
+}
+
+/* =========================
+   EXCEL YOU SIGNUP V2
+   PART 2 / 2
+========================= */
+
+/* =========================
+   RIGHT PANEL
+========================= */
+
+.signup-right{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+/* =========================
+   SIGNUP CARD
+========================= */
+
+.signup-card{
+
+    width:100%;
+
+    max-width:420px;
+
+    padding:32px;
+
+    border-radius:28px;
+
+    background:var(--card);
+
+    backdrop-filter:blur(24px);
+
+    -webkit-backdrop-filter:blur(24px);
+
+    border:
+
+        1px solid
+
+        var(--border);
+
+    box-shadow:
+
+        var(--shadow);
+
+}
+
+.signup-card h2{
+
+    font-family:
+
+        "Orbitron",
+
+        sans-serif;
+
+    font-size:28px;
+
+    text-align:center;
+
+    margin-bottom:12px;
+
+    color:var(--text);
+
+}
+
+.sub-text{
+
+    text-align:center;
+
+    color:var(--muted);
+
+    margin-bottom:28px;
+
+    font-size:14px;
+
+    line-height:1.6;
+
+}
+
+/* =========================
+   INPUT GROUPS
+========================= */
+
+.input-group{
+
+    margin-bottom:18px;
+
+}
+
+.input-group label{
+
+    display:block;
+
+    margin-bottom:8px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+}
+
+.input-group input{
+
+    width:100%;
+
+    padding:14px 16px;
+
+    border-radius:14px;
+
+    border:
+
+        1px solid
+
+        var(--border);
+
+    background:var(--glass);
+
+    backdrop-filter:blur(12px);
+
+    color:var(--text);
+
+    font-size:14px;
+
+    outline:none;
+
+    transition:.3s;
+
+}
+
+.input-group input::placeholder{
+
+    color:var(--muted);
+
+}
+
+.input-group input:focus{
+
+    border-color:
+
+        var(--primary);
+
+    box-shadow:
+
+        0 0 0 3px
+
+        rgba(56,189,248,.15);
+
+}
+
+/* =========================
+   RANK BOX
+========================= */
+
+.rank-box{
+
+    padding:14px 18px;
+
+    border-radius:16px;
+
+    margin-bottom:24px;
+
+    font-size:14px;
+
+    background:
+
+        rgba(56,189,248,.12);
+
+    border:
+
+        1px solid
+
+        rgba(56,189,248,.25);
+
+}
+
+.rank-box span{
+
+    color:var(--primary);
+
+    font-weight:600;
+
+}
+
+/* =========================
+   SIGNUP BUTTON
+========================= */
+
+.signup-btn{
+
+    width:100%;
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:16px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    color:white;
+
+    background:
+
+        linear-gradient(
+
+            135deg,
+
+            var(--primary),
+
+            var(--secondary)
+
+        );
+
+    transition:.3s;
+
+}
+
+.signup-btn:hover{
+
+    transform:
+
+        translateY(-2px);
+
+}
+
+/* =========================
+   DIVIDER
+========================= */
+
+.social-divider{
+
+    display:flex;
+
+    justify-content:center;
+
+    margin:24px 0 18px;
+
+}
+
+.social-divider span{
+
+    color:var(--muted);
+
+    font-size:13px;
+
+}
+
+/* =========================
+   SOCIAL LOGIN
+========================= */
+
+.social-login{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
+}
+
+.google-btn,
+.github-btn{
+
+    width:100%;
+
+    padding:14px;
+
+    border-radius:14px;
+
+    border:
+
+        1px solid
+
+        var(--border);
+
+    background:var(--glass);
+
+    backdrop-filter:blur(12px);
+
+    color:var(--text);
+
+    cursor:pointer;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.google-btn:hover,
+.github-btn:hover{
+
+    border-color:
+
+        var(--primary);
+
+}
+
+/* =========================
+   LOGIN TEXT
+========================= */
+
+.bottom-text{
+
+    text-align:center;
+
+    margin-top:24px;
+
+    font-size:14px;
+
+    color:var(--muted);
+
+}
+
+.bottom-text a{
+
+    color:var(--primary);
+
+    text-decoration:none;
+
+    font-weight:600;
+
+}
+
+/* =========================
+   JOURNEY SECTION
+========================= */
+
+.journey-section{
+
+    padding:25px 5%;
+
+    text-align:center;
+
+}
+
+.journey-section h2{
+
+    font-family:
+
+        "Orbitron",
+
+        sans-serif;
+
+    font-size:22px;
+
+    margin-bottom:20px;
+
+}
+
+.journey-line{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    flex-wrap:wrap;
+
+    gap:12px;
+
+}
+
+.journey-step{
+
+    padding:12px 16px;
+
+    border-radius:14px;
+
+    background:var(--glass);
+
+    backdrop-filter:blur(12px);
+
+    border:
+
+        1px solid
+
+        var(--border);
+
+    font-size:14px;
+
+}
+
+.journey-arrow{
+
+    color:var(--primary);
+
+    font-weight:700;
+
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+
+    padding:20px;
+
+    text-align:center;
+
+    color:var(--muted);
+
+    font-size:13px;
+
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:1200px){
+
+    .signup-wrapper{
+
+        grid-template-columns:
+
+            1fr;
+
+        gap:35px;
+
+        text-align:center;
+
+    }
+
+    .left-panel{
+
+        align-items:center;
+
+    }
+
+    .feature-list{
+
+        max-width:420px;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .topbar{
+
+        flex-wrap:wrap;
+
+        gap:18px;
+
+    }
+
+    .nav-links{
+
+        display:none;
+
+    }
+
+    .left-panel h1{
+
+        font-size:30px;
+
+    }
+
+    .main-avatar{
+
+        width:220px;
+
+    }
+
+    .signup-card{
+
+        padding:24px;
+
+    }
+
+    .journey-line{
+
+        flex-direction:column;
+
+    }
+
+    .journey-arrow{
+
+        transform:
+
+            rotate(90deg);
+
+    }
+
+}
+
+@media(max-width:480px){
+
+    .signup-wrapper{
+
+        padding:
+
+            25px
+
+            20px;
+
+    }
+
+    .signup-card{
+
+        padding:20px;
+
+    }
+
+    .left-panel h1{
+
+        font-size:26px;
+
+    }
+
+    .avatar-switch{
+
+        flex-direction:column;
+
+        width:100%;
+
+    }
+
+    .switch-btn{
+
+        justify-content:center;
+
+    }
+
+}
