@@ -15,7 +15,7 @@
 
     --muted:#cbd5e1;
 
-    --card:rgba(15,23,42,..42);
+    --card:rgba(15,23,42,..35);
 
     --glass:rgba(255,255,255,.08);
 
@@ -325,6 +325,7 @@ body[data-theme="light"]{
     display:flex;
 
     flex-direction:column;
+    margin-top: -70px;
 
     gap:18px;
 
@@ -404,7 +405,7 @@ body[data-theme="light"]{
 
     gap: 14px;
 
-    padding: 0;
+    padding:6px 0;
 
     background: none;
 
@@ -412,7 +413,7 @@ body[data-theme="light"]{
 
     backdrop-filter: none;
 
-    font-size: .98rem;
+    font-size: .95rem;
 
     color: var(--muted);
 
@@ -455,9 +456,9 @@ body[data-theme="light"]{
 
 .main-avatar{
 
-    width:280px;
+    width:420px;
 
-    max-height:455px;
+    max-height:590px;
 
     object-fit:contain;
 
@@ -626,7 +627,7 @@ body[data-theme="light"]{
 
     max-width:420px;
 
-    padding:22px 20px;
+    padding:18px 20px;
 
     border-radius:28px;
 
