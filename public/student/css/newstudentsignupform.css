@@ -392,38 +392,43 @@ body[data-theme="light"]{
 ========================= */
 
 .feature-list{
-
-    gap: 16px;
-
+    display:flex;
+    flex-direction:column;
+    gap:14px;
 }
 
 .feature-item{
+    display:flex;
+    align-items:center;
+    gap:14px;
 
-    display: flex;
+    padding:8px 0;
 
-    align-items: center;
-
-    gap: 14px;
-
-    padding:6px 0;
-
-    background: none;
-
-    border: none;
-
-    backdrop-filter: none;
-
-    font-size: .95rem;
-
-    color: var(--muted);
-
+    background:none;
+    border:none;
+    backdrop-filter:none;
 }
 
 .feature-icon{
+    width:30px;
+    height:30px;
 
-    color: var(--primary);
+    object-fit:contain;
 
+    flex-shrink:0;
+
+    filter:
+        drop-shadow(
+            0 0 8px rgba(56,189,248,.35)
+        );
 }
+
+.feature-item span{
+    font-size:15px;
+    font-weight:500;
+    color:var(--text);
+}
+
 /* =========================
    CENTER PANEL
 ========================= */
