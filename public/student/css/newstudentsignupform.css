@@ -170,7 +170,7 @@ body[data-theme="light"]{
 
     padding:18px 5%;
 
-    backdrop-filter:blur(14px);
+    backdrop-filter:blur(10px);
 
     border-bottom:
 
@@ -675,6 +675,8 @@ body[data-theme="light"]{
     justify-content:center;
 
     align-items:center;
+   
+    margin-top:-40px;
 
 }
 
