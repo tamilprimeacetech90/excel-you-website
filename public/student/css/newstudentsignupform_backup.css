@@ -15,7 +15,7 @@
 
     --muted:#cbd5e1;
 
-    --card:rgba(15,23,42,.35);
+    --card:rgba(15,23,42,..35);
 
     --glass:rgba(255,255,255,.08);
 
@@ -140,11 +140,6 @@ body[data-theme="light"]{
 
     z-index:-1;
 
-    pointer-events:none;
-
-}
-body[data-theme="dark"] .background-overlay{
-
     background:
 
         linear-gradient(
@@ -157,21 +152,7 @@ body[data-theme="dark"] .background-overlay{
 
         );
 
-}
-
-body[data-theme="light"] .background-overlay{
-
-    background:
-
-        linear-gradient(
-
-            180deg,
-
-            rgba(255,255,255,.20),
-
-            rgba(255,255,255,.35)
-
-        );
+    pointer-events:none;
 
 }
 
@@ -308,6 +289,7 @@ body[data-theme="light"] .background-overlay{
 /* =========================
    MAIN LAYOUT
 ========================= */
+
 .signup-wrapper{
 
     display:grid;
@@ -331,8 +313,6 @@ body[data-theme="light"] .background-overlay{
         5%
 
         20px;
-
-    min-height:calc(100vh - 90px);
 
 }
 
@@ -1167,21 +1147,6 @@ footer{
 /* =========================
    RESPONSIVE
 ========================= */
-@media(max-width:1400px){
-
-    .signup-wrapper{
-
-        grid-template-columns:
-
-            260px
-            1fr
-            380px;
-
-        gap:30px;
-
-    }
-
-}
 
 @media(max-width:1200px){
 
@@ -1189,56 +1154,23 @@ footer{
 
         grid-template-columns:
 
-            1fr
-            380px;
+            1fr;
 
-        gap:30px;
-
-    }
-
-    .left-panel{
-
-        display:none;
-
-    }
-
-}
-@media(max-width:992px){
-
-    .signup-wrapper{
-
-        display:flex;
-
-        flex-direction:column;
-
-        align-items:center;
+        gap:35px;
 
         text-align:center;
 
     }
 
-    .center-panel{
+    .left-panel{
 
-        margin-top:0;
-
-    }
-.main-avatar{
-
-    width:300px;
-
-}
-
-    .signup-right{
-
-        margin-top:0;
+        align-items:center;
 
     }
 
-    .signup-card{
+    .feature-list{
 
-        width:100%;
-
-        max-width:500px;
+        max-width:420px;
 
     }
 
@@ -1291,21 +1223,6 @@ footer{
             rotate(90deg);
 
     }
-.input-group{
-
-    grid-template-columns:1fr;
-
-    gap:6px;
-
-    text-align:left;
-
-}
-
-.input-group label{
-
-    margin-bottom:4px;
-
-}
 
 }
 
