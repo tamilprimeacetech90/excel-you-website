@@ -448,9 +448,13 @@ body[data-theme="light"] .background-overlay{
 
 .feature-card:hover{
 
-    transform:translateY(-4px);
+    transform:
+        translateY(-6px)
+        scale(1.02);
 
-    background:rgba(56,189,248,.08);
+    box-shadow:
+        0 12px 28px
+        rgba(56,189,248,.15);
 
 }
 
@@ -466,9 +470,9 @@ body[data-theme="light"] .background-overlay{
 
 .feature-icon{
 
-    width:42px;
+    width:52px;
 
-    height:42px;
+    height:52px;
 
     object-fit:contain;
 
@@ -495,6 +499,7 @@ body[data-theme="light"] .background-overlay{
     border:1px solid rgba(56,189,248,.15);
 
     backdrop-filter:blur(12px);
+     transition:.3s;
 
 }
 
@@ -503,6 +508,11 @@ body[data-theme="light"] .background-overlay{
     font-weight:600;
 
     font-size:15px;
+
+}
+.immortal-card:hover{
+
+    transform:translateY(-4px);
 
 }
 /* =========================
