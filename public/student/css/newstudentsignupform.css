@@ -17,13 +17,13 @@
 
     --card:rgba(15,23,42,.35);
 
-    --glass:rgba(255,255,255,.08);
+    --glass:rgba(255,255,255,.06);
 
-    --border:rgba(255,255,255,.12);
+    --border:rgba(255,255,255,.10);
 
-    --signup-card: rgba(8,18,40,0.65);
+    --signup-card: rgba(8,18,40,0.72);
 
-    --signup-border: rgba(56,189,248,0.18);
+    --signup-border: rgba(56,189,248,0.15);
 
     --primary:#38bdf8;
 
@@ -54,8 +54,8 @@
     --shadow:
         0 20px 40px
         rgba(0,0,0,.08);
-    --signup-card: rgba(255,255,255,.92);
-    --signup-border: rgba(15,23,42,.12);
+    --signup-card: rgba(255,255,255,0.92);
+    --signup-border: rgba(15,23,42,0.12);
 
 }
 
@@ -732,7 +732,7 @@ body[data-theme="light"] .background-overlay{
 
     background:var(--signup-card);
 
-    backdrop-filter:blur(18px);
+    backdrop-filter:blur(24px);
 
     -webkit-backdrop-filter:blur(24px);
 
@@ -744,7 +744,38 @@ body[data-theme="light"] .background-overlay{
 
     box-shadow:
 
-        var(--shadow);
+         0 20px 45px rgba(0,0,0,.30),
+
+        0 0 0 1px rgba(255,255,255,.03),
+
+        0 0 25px rgba(56,189,248,.06);
+
+}
+.signup-card::before{
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    border-radius: inherit;
+
+    background:
+
+        linear-gradient(
+
+            135deg,
+
+            rgba(255,255,255,.10),
+
+            rgba(255,255,255,.03) 30%,
+
+            transparent 55%
+
+        );
+
+    pointer-events: none;
 
 }
 
