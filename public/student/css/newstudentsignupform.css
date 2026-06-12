@@ -21,7 +21,7 @@
 
     --border:rgba(255,255,255,.10);
 
-    --signup-card: rgba(8,18,40,0.72);
+    --signup-card: rgba(8,18,40,0.58);
 
     --signup-border: rgba(56,189,248,0.15);
 
@@ -157,9 +157,9 @@ body[data-theme="dark"] .background-overlay{
 
             180deg,
 
-            rgba(15,23,42,.18),
+            rgba(15,23,42,.08),
 
-            rgba(15,23,42,.28)
+            rgba(15,23,42,.15)
 
         );
 
@@ -722,6 +722,10 @@ body[data-theme="light"] .background-overlay{
 
 .signup-card{
 
+    position:relative;
+
+    overflow:hidden;
+
     width:100%;
 
     max-width:420px;
@@ -737,21 +741,18 @@ body[data-theme="light"] .background-overlay{
     -webkit-backdrop-filter:blur(24px);
 
     border:
-
         1px solid
-
         var(--signup-border);
 
     box-shadow:
 
-         0 20px 45px rgba(0,0,0,.30),
+        0 20px 45px rgba(0,0,0,.30),
 
         0 0 0 1px rgba(255,255,255,.03),
 
         0 0 25px rgba(56,189,248,.06);
 
-}
-.signup-card::before{
+}.signup-card::before{
 
     content: "";
 
