@@ -21,9 +21,15 @@
 
     --border:rgba(255,255,255,.10);
 
-    --signup-card: rgba(8,18,40,0.58);
+    --signup-card:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.15),
+            rgba(255,255,255,.04)
+        );
 
-    --signup-border: rgba(56,189,248,0.15);
+    --signup-border:
+        rgba(255,255,255,.15);
 
     --primary:#38bdf8;
 
@@ -149,35 +155,21 @@ body[data-theme="light"]{
     pointer-events:none;
 
 }
-body[data-theme="dark"] .background-overlay{
+body[data-theme="dark"]{
 
     background:
-
-        linear-gradient(
-
-            180deg,
-
-            rgba(15,23,42,.08),
-
-            rgba(15,23,42,.15)
-
-        );
+        url("/assets/backgrounds/signup-dark.png")
+        center center / cover
+        no-repeat fixed;
 
 }
 
-body[data-theme="light"] .background-overlay{
+body[data-theme="light"]{
 
     background:
-
-        linear-gradient(
-
-            180deg,
-
-            rgba(255,255,255,.20),
-
-            rgba(255,255,255,.35)
-
-        );
+        url("/assets/backgrounds/signup-light.png")
+        center center / cover
+        no-repeat fixed;
 
 }
 
@@ -736,9 +728,9 @@ body[data-theme="light"] .background-overlay{
 
     background:var(--signup-card);
 
-    backdrop-filter:blur(24px);
+    backdrop-filter:blur(28px);
 
-    -webkit-backdrop-filter:blur(24px);
+    -webkit-backdrop-filter:blur(28px);
 
     border:
         1px solid
@@ -746,13 +738,13 @@ body[data-theme="light"] .background-overlay{
 
     box-shadow:
 
-        0 20px 45px rgba(0,0,0,.30),
+        0 20px 40px rgba(0,0,0,.20),
 
-        0 0 0 1px rgba(255,255,255,.03),
+        0 8px 32px rgba(56,189,248,.08);
 
-        0 0 25px rgba(56,189,248,.06);
 
-}.signup-card::before{
+}
+.signup-card::before{
 
     content: "";
 
@@ -1096,12 +1088,19 @@ body[data-theme="light"] .background-overlay{
 
 /* GITHUB ICON */
 
-.github-icon{
+/* Dark Theme */
+body[data-theme="dark"] .github-icon{
 
     filter:brightness(0) invert(1);
 
 }
 
+/* Light Theme */
+body[data-theme="light"] .github-icon{
+
+    filter:none;
+
+}
 /* =========================
    LOGIN TEXT
 ========================= */
