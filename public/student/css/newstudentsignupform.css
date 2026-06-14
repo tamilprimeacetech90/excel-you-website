@@ -60,8 +60,30 @@
     --shadow:
         0 20px 40px
         rgba(0,0,0,.08);
-    --signup-card: rgba(255,255,255,0.92);
-    --signup-border: rgba(15,23,42,0.12);
+   --signup-card:
+    linear-gradient(
+        135deg,
+        rgba(255,255,255,.78),
+        rgba(248,252,255,.65)
+    );
+
+--signup-border:
+    rgba(59,130,246,.12);
+
+}
+body[data-theme="light"] .signup-card{
+
+    box-shadow:
+        0 20px 45px rgba(37,99,235,.08),
+        0 8px 24px rgba(0,0,0,.04);
+
+}
+body[data-theme="light"] .main-avatar{
+
+    filter:
+        drop-shadow(
+            0 12px 24px rgba(0,0,0,.12)
+        );
 
 }
 
@@ -394,6 +416,12 @@ body[data-theme="light"]{
     color:var(--primary);
 
 }
+body[data-theme="light"] .left-panel h1{
+
+    text-shadow:
+        0 2px 8px rgba(255,255,255,.6);
+
+}
 
 .hero-description{
 
@@ -428,17 +456,9 @@ body[data-theme="light"]{
 
     align-items:center;
 
-    justify-content:center;
-
     text-align:center;
 
-    padding:18px 14px;
-
-    border-radius:18px;
-
-    background:rgba(255,255,255,.04);
-
-    backdrop-filter:blur(12px);
+    gap:10px;
 
     transition:.3s;
 
@@ -446,33 +466,35 @@ body[data-theme="light"]{
 
 .feature-card:hover{
 
-    transform:
-        translateY(-6px)
-        scale(1.02);
-
-    box-shadow:
-        0 12px 28px
-        rgba(56,189,248,.15);
+    transform:translateY(-6px);
 
 }
 
+.feature-card:hover .feature-icon{
+
+    transform:scale(1.08);
+
+}
 .feature-card span{
 
     margin-top:10px;
 
-    font-size:14px;
+    font-size:15px;
 
-    font-weight:500;
+    font-weight:600;
+     lline-height: 1.4
 
 }
 
 .feature-icon{
 
-    width:52px;
+    width:80px;
 
-    height:52px;
+    height:80px;
 
     object-fit:contain;
+
+    transition:.3s;
 
 }
 
@@ -511,6 +533,30 @@ body[data-theme="light"]{
 .immortal-card:hover{
 
     transform:translateY(-4px);
+
+}
+.feature-icon svg{
+
+    width:80px;
+    height:80px;
+
+    filter:
+        drop-shadow(
+            0 0 10px rgba(56,189,248,.35)
+        );
+
+    transition:.3s;
+
+}
+
+.feature-card:hover svg{
+
+    transform:translateY(-4px) scale(1.05);
+
+    filter:
+        drop-shadow(
+            0 0 18px rgba(56,189,248,.55)
+        );
 
 }
 /* =========================
