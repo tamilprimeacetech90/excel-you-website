@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        EXCEL YOU — Student Signup
+    </title>
+
+    <!-- GOOGLE FONT -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- CSS -->
+
+    <link
+        rel="stylesheet"
+        href="/student/css/studentsignup.css"
+    >
+
+</head>
+
+<body data-theme="dark">
+
+    <!-- BACKGROUND GLOW -->
+
+    <div class="bg-glow glow1"></div>
+    <div class="bg-glow glow2"></div>
+
+    <!-- TOPBAR -->
+
+    <header class="topbar">
+
+        <a href="/">
+
+            <img
+                src="/assets/logo/full-logo-white.png"
+                alt="EXCEL YOU"
+                class="logo-img"
+                id="siteLogo"
+            >
+
+        </a>
+
+          <div class="topbar-right">
+
+              <a
+              href="/student-login.html"
+             class="login-btn"
+            >
+                Login
+            </a>
+
+            <button
+                class="theme-btn"
+                id="themeBtn"
+            >
+                🌙
+            </button>
+
+        </div>
+
+    </header>
+
+    <!-- MAIN -->
+    <main class="signup-wrapper">
+
+        <!-- LEFT SIDE -->
+
+        <section class="signup-left">
+  <div class="input-group">
+                        <label>
+                            Choose Your Avatar Style
+                        </label> </div>
+                        
+  <!-- AVATAR PREVIEW-->
+   <!-- GENDER -->
+                   
+                <div class="character-panel">
+
+    <img
+        id="avatarPreview"
+        src="/assets/avatars/male-beginner.png"
+        alt="Scholar Avatar"
+        class="character-preview"
+    >
+
+    <div class="avatar-switch"> 
+        <label class="switch-btn">
+
+            <input
+                type="radio"
+                name="gender"
+                value="male"
+                checked
+            >
+
+            Male Scholar
+
+        </label>
+
+        <label class="switch-btn">
+
+            <input
+                type="radio"
+                name="gender"
+                value="female"
+            >
+
+            Female Scholar
+
+        </label>
+
+    </div>
+            <h1>
+                Become an
+                <span>Immortal Scholar</span>
+
+            </h1>
+
+            <p>
+
+                Track your study progress,
+                earn XP rewards, unlock ranks,
+                participate in quizzes and grow
+                into the strongest scholar.
+
+            </p></div>
+
+
+            <!-- FEATURES -->
+
+            <div class="feature-list">
+
+                <div class="feature-card">
+
+                    📚 Study Progress Status
+
+                </div>
+
+                <div class="feature-card">
+
+                    ⚡ Earn XP Rewards
+
+                </div>
+
+                <div class="feature-card">
+
+                    🏆 Unlock Scholar Ranks
+
+                </div>
+
+                <div class="feature-card">
+
+                    🎯 Participate in Quizzes
+
+                </div>
+
+                <div class="feature-card">
+
+                    🔥 Build Your Profile
+
+                </div>
+
+                <div class="feature-card">
+
+                    👑 Become Celestial Immortal
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- RIGHT SIDE -->
+       
+        <section class="signup-right">
+            <div class="signup-card"> 
+            <div class="badge">
+                         🚀 Join EXCEL YOU
+                        </div>
+
+                <h2>
+
+                    Student Signup
+
+                </h2>
+
+                <p class="sub-text">
+
+                    Create your EXCEL YOU account
+
+                </p>
+
+            
+                <!-- FORM -->
+
+                <form id="signupForm">
+
+                    <!-- USERNAME -->
+
+                    <div class="input-group">
+
+                        <label>
+                            Username
+                        </label>
+
+                        <input
+                            type="text"
+                            id="username"
+                            placeholder="Enter username"
+                            required
+                        >
+
+                    </div>
+
+                    <!-- EMAIL -->
+
+                    <div class="input-group">
+
+                        <label>
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="Enter email"
+                            required
+                        >
+
+                    </div>
+
+                    <!-- PASSWORD -->
+
+                    <div class="input-group">
+
+                        <label>
+                            Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Enter password"
+                            required
+                        >
+
+                    </div>
+                 
+
+                 
+
+                    <!-- LEARNING PATH -->
+
+                    <div class="input-group">
+
+                        <label>
+                            Learning Path
+                        </label>
+
+                        <select id="learningPath">
+
+                            <option value="Computer Science">
+
+                                Computer Science
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <!-- RANK -->
+
+                    <div class="rank-box">
+
+                        🌱 Initial Rank:
+                        <span>
+
+                            Beginner Researcher
+
+                        </span>
+
+                    </div>
+
+                    <!-- BUTTON -->
+
+                    <button
+                        type="submit"
+                        class="signup-btn"
+                    >
+
+                        Create Account
+
+                    </button>
+
+                </form>
+
+                <!-- LOGIN -->
+
+                <div class="bottom-text">
+
+                    Already have an account?
+
+                    <a href="/student-login.html">
+
+                        Login
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        © 2026 EXCEL YOU —
+        Modern Tamil + English Learning Platform
+
+    </footer>
+
+    <!-- JS -->
+
+    <script src="/student/js/studentsignup.js"></script>
+
+</body>
+</html>

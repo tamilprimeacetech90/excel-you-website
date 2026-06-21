@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        EXCEL YOU — Subjects
+    </title>
+
+    <!-- FONT -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- CSS -->
+
+    <link
+        rel="stylesheet"
+        href="/student/css/student.css"
+    >
+<link rel="icon" type="image/png" href="/assets/logo/favicon.png">
+</head>
+
+<body data-theme="dark">
+
+    <!-- =========================
+         BACKGROUND GLOW
+    ========================= -->
+
+    <div class="bg-glow glow1"></div>
+    <div class="bg-glow glow2"></div>
+
+    <!-- =========================
+         TOPBAR
+    ========================= -->
+
+    <header class="topbar">
+
+        <!-- LEFT -->
+
+        <div class="top-left">
+
+            <!-- LOGO -->
+
+            <a
+                href="/"
+                class="logo-wrap"
+            >
+
+                <img
+                    src="/assets/logo/full-logo-white.png"
+                    alt="EXCEL YOU"
+                    class="logo-img"
+                >
+
+            </a>
+
+        </div>
+
+        <!-- CENTER -->
+
+        <div class="top-center">
+
+            <!-- SEARCH -->
+
+            <input
+                type="text"
+                id="search"
+                placeholder="Search subjects..."
+            >
+
+            <!-- SUBJECT SELECT -->
+
+            <select id="subjectSelect">
+
+                <option value="">
+                    All Subjects
+                </option>
+
+            </select>
+
+        </div>
+
+        <!-- RIGHT -->
+
+      
+  <div class="top-right">
+ 
+
+<!-- LANGUAGE -->
+
+<select id="lang">
+
+    <option value="en">
+        EN
+    </option>
+
+    <option value="ta">
+        தமிழ்
+    </option>
+
+</select>
+
+<!-- GUEST MENU -->
+
+<div id="guestMenu">
+    <a href="/student-login.html"
+       class="nav-btn">
+       Login
+    </a>
+
+
+    <a href="/studentsignup2.html"
+       class="nav-btn signup-btn">
+       Signup
+    </a>
+</div>
+
+<!-- STUDENT MENU -->
+
+<div
+    id="studentMenu"
+    class="student-menu"
+    style="display:none;"
+>
+
+    <button
+        id="studentDropdownBtn"
+        class="student-dropdown-btn"
+    >
+
+        <span id="studentAvatar">
+            👤
+        </span>
+
+        <span id="studentName">
+            Student
+        </span>
+
+        ▼
+
+    </button>
+
+    <div
+        id="studentDropdown"
+        class="student-dropdown"
+    >
+
+        <a href="/profile.html">
+            👤 View Profile
+        </a>
+
+        <a href="#">
+            ⚙ Manage Account
+        </a>
+
+        <a href="#">
+            🏆 My Progress
+        </a>
+
+        <a href="#">
+            🎯 Achievements
+        </a>
+
+        <button
+            id="logoutBtn"
+            class="logout-btn"
+        >
+            🚪 Logout
+        </button>
+
+    </div>
+
+</div>
+
+<!-- THEME -->
+
+<button
+    class="theme-btn"
+    id="themeBtn"
+>
+    🌙
+</button>
+
+</div>
+
+        </div>
+
+    </header>
+
+    <!-- =========================
+         MAIN LAYOUT
+    ========================= -->
+
+    <main class="main-layout">
+
+        <!-- =========================
+             CONTENT
+        ========================= -->
+
+        <section class="content-area">
+
+            <!-- SMALL HEADER -->
+
+            <div class="page-head">
+
+                <h2>
+
+                    <center> Computer Science Subjects</center>
+
+                </h2>
+
+                <p>
+
+                <center>    Explore theory-based
+                    computer science learning.</center>
+
+                </p>
+
+            </div>
+
+            <!-- SUBJECT GRID -->
+
+            <div
+                class="subject-grid"
+                id="subjectContainer"
+            >
+
+                <!-- LOADING -->
+
+                <div class="subject-skeleton"></div>
+                <div class="subject-skeleton"></div>
+                <div class="subject-skeleton"></div>
+                <div class="subject-skeleton"></div>
+                <div class="subject-skeleton"></div>
+                <div class="subject-skeleton"></div>
+
+            </div>
+
+        </section>
+
+        <!-- =========================
+             RIGHT SIDEBAR
+        ========================= -->
+
+        <aside class="right-sidebar">
+
+            <!-- LOGIN STATUS -->
+
+            <div class="status-card login-card">
+
+                <!-- ANIME -->
+
+                <div class="anime-box">
+
+                    ⚔️
+
+                </div>
+
+                <h3>
+
+                    Become a
+                    Celestial Scholar
+
+                </h3>
+
+                <p>
+
+                    Login to unlock XP,
+                    rewards, quizzes
+                    and study progression.
+
+                </p>
+
+                <!-- BENEFITS -->
+
+                <div class="mini-benefits">
+
+                    <div class="mini-item">
+
+                        ⚡ XP Rewards
+
+                    </div>
+
+                    <div class="mini-item">
+
+                        🏆 Anime Badges
+
+                    </div>
+
+                    <div class="mini-item">
+
+                        📈 Study Status
+
+                    </div>
+
+                    <div class="mini-item">
+
+                        🎯 Quiz Arena
+
+                    </div>
+
+                    <div class="mini-item">
+
+                        👑 Final Rank:
+                        Celestial Immortal
+
+                    </div>
+
+                </div>
+
+                <!-- BUTTONS -->
+
+                <div class="side-buttons">
+
+                   <a
+                    href="/student-login.html"
+                    class="nav-btn"
+                   >
+                      Login
+                   </a>
+
+                    <a
+                        href="/signupstudent form 3.html"
+                        class="side-signup-btn"
+                    >
+                        Signup
+                    </a>
+
+                </div>
+
+            </div>
+
+            <!-- STATUS -->
+
+            <div class="status-card">
+
+                <h3>
+
+                    🔥 Scholar Status
+
+                </h3>
+
+                <div class="status-item">
+
+                    Realm:
+                    Beginner
+
+                </div>
+
+                <div class="status-item">
+
+                    XP:
+                    Locked
+
+                </div>
+
+                <div class="status-item">
+
+                    Rewards:
+                    Locked
+
+                </div>
+
+                <div class="status-item">
+
+                    Quiz Rank:
+                    Unranked
+
+                </div>
+
+            </div>
+
+            <!-- ADSENSE -->
+
+            <div class="ads-box">
+
+                AdSense Area
+
+            </div>
+
+        </aside>
+
+    </main>
+
+    <!-- =========================
+         FOOTER
+    ========================= -->
+
+    <footer>
+
+        © 2026 EXCEL YOU —
+        Computer Science Learning Platform
+
+    </footer>
+
+    <!-- JS -->
+
+    <script src="/student/js/student.js"></script>
+
+</body>
+</html>

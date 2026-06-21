@@ -1,0 +1,625 @@
+/* =========================================================
+   EXCEL YOU RESPONSIVE CSS
+========================================================= */
+
+/* =========================================================
+   LARGE SCREENS
+========================================================= */
+
+@media(min-width:1600px){
+
+    .editor-wrapper {
+
+        max-width: 1400px;
+    }
+
+    .excel-editor {
+
+        padding: 60px;
+
+        font-size: 18px;
+    }
+
+    .editor-title {
+
+        font-size: 56px;
+    }
+}
+
+/* =========================================================
+   LAPTOP
+========================================================= */
+
+@media(max-width:1200px){
+
+    .editor-wrapper {
+
+        max-width: 100%;
+    }
+
+    .excel-editor {
+
+        padding: 32px;
+    }
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media(max-width:992px){
+
+    /* =====================
+       WRAPPER
+    ===================== */
+
+    .editor-wrapper {
+
+        padding: 18px;
+    }
+
+    /* =====================
+       TOOLBAR
+    ===================== */
+
+    .editor-toolbar {
+
+        gap: 8px;
+
+        padding: 12px;
+
+        border-radius: 18px;
+    }
+
+    .editor-toolbar button {
+
+        width: 40px;
+        height: 40px;
+
+        font-size: 14px;
+    }
+
+    /* =====================
+       TITLE
+    ===================== */
+
+    .editor-title {
+
+        font-size: 38px;
+    }
+
+    /* =====================
+       EDITOR
+    ===================== */
+
+    .excel-editor {
+
+        min-height: 550px;
+
+        padding: 26px;
+
+        border-radius: 22px;
+    }
+
+    /* =====================
+       HEADINGS
+    ===================== */
+
+    .excel-editor h1 {
+
+        font-size: 36px;
+    }
+
+    .excel-editor h2 {
+
+        font-size: 30px;
+    }
+
+    .excel-editor h3 {
+
+        font-size: 24px;
+    }
+
+    /* =====================
+       MEDIA
+    ===================== */
+
+    .video-block video,
+    .video-block iframe {
+
+        min-height: 320px;
+    }
+
+    /* =====================
+       MODALS
+    ===================== */
+
+    .modal-box {
+
+        width: 92vw;
+    }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:768px){
+
+    /* =====================
+       BODY
+    ===================== */
+
+    body {
+
+        overflow-x: hidden;
+    }
+
+    /* =====================
+       WRAPPER
+    ===================== */
+
+    .editor-wrapper {
+
+        padding: 12px;
+    }
+
+    /* =====================
+       TOPBAR
+    ===================== */
+
+    .editor-topbar {
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 14px;
+    }
+
+    /* =====================
+       TOOLBAR
+    ===================== */
+
+    .editor-toolbar {
+
+        position: sticky;
+
+        top: 0;
+
+        z-index: 999;
+
+        overflow-x: auto;
+
+        flex-wrap: nowrap;
+
+        padding: 10px;
+
+        gap: 6px;
+
+        border-radius: 18px;
+
+        scrollbar-width: none;
+    }
+
+    .editor-toolbar::-webkit-scrollbar {
+
+        display: none;
+    }
+
+    .toolbar-group {
+
+        flex-shrink: 0;
+    }
+
+    .toolbar-divider {
+
+        height: 24px;
+    }
+
+    /* =====================
+       TOOLBAR BUTTON
+    ===================== */
+
+    .editor-toolbar button {
+
+        width: 38px;
+        height: 38px;
+
+        min-width: 38px;
+
+        border-radius: 12px;
+    }
+
+    /* =====================
+       FLOATING TOOLBAR
+    ===================== */
+
+    .floating-toolbar {
+
+        max-width: 94vw;
+
+        overflow-x: auto;
+
+        padding: 8px 10px;
+
+        gap: 4px;
+
+        scrollbar-width: none;
+    }
+
+    .floating-toolbar::-webkit-scrollbar {
+
+        display: none;
+    }
+
+    /* =====================
+       TITLE
+    ===================== */
+
+    .editor-title {
+
+        font-size: 30px;
+
+        line-height: 1.3;
+    }
+
+    /* =====================
+       EDITOR
+    ===================== */
+
+    .excel-editor {
+
+        min-height: 450px;
+
+        padding: 20px;
+
+        border-radius: 20px;
+
+        font-size: 16px;
+
+        line-height: 1.8;
+    }
+
+    /* =====================
+       HEADINGS
+    ===================== */
+
+    .excel-editor h1 {
+
+        font-size: 30px;
+    }
+
+    .excel-editor h2 {
+
+        font-size: 26px;
+    }
+
+    .excel-editor h3 {
+
+        font-size: 22px;
+    }
+
+    .excel-editor h4 {
+
+        font-size: 20px;
+    }
+
+    /* =====================
+       BLOCK ACTIONS
+    ===================== */
+
+    .block-actions {
+
+        opacity: 1;
+
+        right: 0;
+
+        top: -16px;
+
+        transform: none;
+
+        flex-direction: row;
+    }
+
+    /* =====================
+       DRAG HANDLE
+    ===================== */
+
+    .block-drag-handle,
+    .drag-handle {
+
+        opacity: 1;
+
+        left: -12px;
+    }
+
+    /* =====================
+       MEDIA TOOLBAR
+    ===================== */
+
+    .media-toolbar {
+
+        opacity: 1;
+
+        pointer-events: auto;
+
+        top: 8px;
+        right: 8px;
+    }
+
+    .media-toolbar button {
+
+        width: 34px;
+        height: 34px;
+
+        border-radius: 10px;
+    }
+
+    /* =====================
+       RESIZE HANDLE
+    ===================== */
+
+    .resize-handle {
+
+        opacity: 1;
+
+        width: 18px;
+        height: 18px;
+    }
+
+    /* =====================
+       VIDEO
+    ===================== */
+
+    .video-block video,
+    .video-block iframe {
+
+        min-height: 220px;
+
+        border-radius: 14px;
+    }
+
+    /* =====================
+       FILE BLOCK
+    ===================== */
+
+    .file-block {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 14px;
+    }
+
+    .file-download {
+
+        width: 100%;
+    }
+
+    /* =====================
+       NOTIFICATIONS
+    ===================== */
+
+    .notification-container {
+
+        left: 12px;
+        right: 12px;
+
+        top: 12px;
+    }
+
+    .notification {
+
+        width: 100%;
+
+        min-width: unset;
+
+        border-radius: 18px;
+    }
+
+    /* =====================
+       MODAL
+    ===================== */
+
+    .modal-box {
+
+        width: 96vw;
+
+        border-radius: 22px;
+    }
+
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+
+        padding: 18px;
+    }
+
+    /* =====================
+       MEDIA GRID
+    ===================== */
+
+    .media-library-grid {
+
+        grid-template-columns:
+        repeat(2,1fr);
+
+        gap: 12px;
+    }
+
+    .media-card img {
+
+        height: 130px;
+    }
+
+    /* =====================
+       STATUSBAR
+    ===================== */
+
+    .editor-statusbar {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 10px;
+    }
+}
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media(max-width:480px){
+
+    /* =====================
+       EDITOR
+    ===================== */
+
+    .excel-editor {
+
+        padding: 16px;
+
+        border-radius: 18px;
+    }
+
+    /* =====================
+       TITLE
+    ===================== */
+
+    .editor-title {
+
+        font-size: 26px;
+    }
+
+    /* =====================
+       TOOLBAR
+    ===================== */
+
+    .editor-toolbar {
+
+        padding: 8px;
+    }
+
+    .editor-toolbar button {
+
+        width: 34px;
+        height: 34px;
+
+        min-width: 34px;
+
+        font-size: 13px;
+    }
+
+    /* =====================
+       HEADINGS
+    ===================== */
+
+    .excel-editor h1 {
+
+        font-size: 26px;
+    }
+
+    .excel-editor h2 {
+
+        font-size: 22px;
+    }
+
+    .excel-editor h3 {
+
+        font-size: 20px;
+    }
+
+    /* =====================
+       VIDEO
+    ===================== */
+
+    .video-block video,
+    .video-block iframe {
+
+        min-height: 190px;
+    }
+
+    /* =====================
+       MODAL
+    ===================== */
+
+    .modal-box {
+
+        border-radius: 18px;
+    }
+
+    /* =====================
+       MEDIA GRID
+    ===================== */
+
+    .media-library-grid {
+
+        grid-template-columns:
+        1fr;
+    }
+
+    /* =====================
+       FLOATING TOOLBAR
+    ===================== */
+
+    .floating-toolbar {
+
+        gap: 2px;
+    }
+
+    .floating-toolbar button {
+
+        width: 34px;
+        height: 34px;
+    }
+}
+
+/* =========================================================
+   LANDSCAPE MOBILE
+========================================================= */
+
+@media(max-height:500px)
+and (orientation:landscape){
+
+    .excel-editor {
+
+        min-height: 300px;
+    }
+
+    .modal-box {
+
+        max-height: 92vh;
+    }
+
+    .notification-container {
+
+        top: 8px;
+    }
+}
+
+/* =========================================================
+   TOUCH DEVICES
+========================================================= */
+
+@media(hover:none){
+
+    .media-toolbar,
+    .block-actions,
+    .drag-handle,
+    .block-drag-handle,
+    .resize-handle {
+
+        opacity: 1 !important;
+
+        pointer-events: auto;
+    }
+
+    .editor-toolbar button:hover,
+    .floating-toolbar button:hover {
+
+        transform: none;
+    }
+}

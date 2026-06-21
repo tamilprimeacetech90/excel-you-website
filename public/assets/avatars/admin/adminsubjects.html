@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>EXCEL YOU - Subjects</title>
+
+    <link
+        rel="stylesheet"
+        href="/admin/css/admindashboard.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    >
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- =========================================================
+       SIDEBAR
+    ========================================================= -->
+
+    <aside class="sidebar" id="sidebar">
+
+        <div>
+
+            <!-- LOGO -->
+
+            <div class="sidebar-header">
+
+                <div class="logo">
+
+                    <div class="logo-circle">
+                        E
+                    </div>
+
+                    <div class="logo-text">
+
+                        <h2>EXCEL YOU</h2>
+
+                        <p>Admin Panel</p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- MENU -->
+
+            <nav class="sidebar-menu">
+
+                <a href="/admin/admindashboard.html">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                    Dashboard
+
+                </a>
+
+                <a
+                    href="/admin/adminsubjects.html"
+                    class="active"
+                >
+
+                    <i class="fa-solid fa-book"></i>
+
+                    Subjects
+
+                </a>
+
+                <a href="/admin/admintopics.html">
+
+                    <i class="fa-solid fa-layer-group"></i>
+
+                    Topics
+
+                </a>
+
+                <a href="/admin/adminarticles.html">
+
+                    <i class="fa-solid fa-newspaper"></i>
+
+                    Articles
+
+                </a>
+
+                <a href="/admin/admineditor.html">
+
+                    <i class="fa-solid fa-pen"></i>
+
+                    Editor
+
+                </a>
+
+            </nav>
+
+        </div>
+
+        <!-- FOOTER -->
+
+        <div class="sidebar-footer">
+
+            <button
+                class="theme-btn"
+                id="themeToggle"
+            >
+
+                🌙 Theme
+
+            </button>
+
+            <button class="logout-btn">
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+                Logout
+
+            </button>
+
+        </div>
+
+    </aside>
+
+    <!-- =========================================================
+       MOBILE OVERLAY
+    ========================================================= -->
+
+    <div class="overlay" id="overlay"></div>
+
+    <!-- =========================================================
+       MAIN
+    ========================================================= -->
+
+    <main class="main">
+
+        <!-- =========================================================
+           TOPBAR
+        ========================================================= -->
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button
+                    class="menu-btn"
+                    id="mobileToggle"
+                >
+
+                    ☰
+
+                </button>
+
+                <div class="page-info">
+
+                    <h1>Subjects</h1>
+
+                    <p>
+                        Manage all computer science subjects
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="topbar-right">
+
+                <div class="admin-profile">
+
+                    <div class="admin-avatar">
+                        A
+                    </div>
+
+                    <div class="admin-details">
+
+                        <h4>Admin</h4>
+
+                        <p>EXCEL YOU</p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+        <!-- =========================================================
+           CONTENT
+        ========================================================= -->
+
+        <div class="content">
+
+            <!-- =====================================================
+               ADD SUBJECT CARD
+            ====================================================== -->
+
+            <div class="dashboard-card">
+
+                <div class="card-title">
+
+                    <h3>Add New Subject</h3>
+
+                </div>
+
+                <form id="subjectForm">
+
+                    <input
+                        type="text"
+                        id="subjectName"
+                        placeholder="Enter subject name"
+                        required
+                    >
+
+                    <input
+                        type="text"
+                        id="subjectSlug"
+                        placeholder="Enter subject slug"
+                    >
+
+                    <button
+                        type="submit"
+                        class="quick-btn"
+                    >
+
+                        <i class="fa-solid fa-plus"></i>
+
+                        Create Subject
+
+                    </button>
+
+                </form>
+
+            </div>
+
+            <!-- =====================================================
+               SUBJECTS LIST
+            ====================================================== -->
+
+            <div
+                class="dashboard-card"
+                style="margin-top:24px;"
+            >
+
+                <div class="card-title">
+
+                    <h3>All Subjects</h3>
+
+                </div>
+
+                <div class="article-list">
+
+                    <!-- SUBJECT ITEM -->
+
+                    <div class="article-item">
+
+                        <h4>
+                            Computer Science
+                        </h4>
+
+                        <div class="article-meta">
+
+                            <span>
+                                18 Topics
+                            </span>
+
+                            <span
+                                class="status published"
+                            >
+                                Active
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <!-- SUBJECT ITEM -->
+
+                    <div class="article-item">
+
+                        <h4>
+                            Programming
+                        </h4>
+
+                        <div class="article-meta">
+
+                            <span>
+                                12 Topics
+                            </span>
+
+                            <span
+                                class="status published"
+                            >
+                                Active
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <!-- SUBJECT ITEM -->
+
+                    <div class="article-item">
+
+                        <h4>
+                            Web Development
+                        </h4>
+
+                        <div class="article-meta">
+
+                            <span>
+                                9 Topics
+                            </span>
+
+                            <span
+                                class="status draft"
+                            >
+                                Draft
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+<script
+    defer
+    src="/admin/js/adminsubjects.js"
+></script>
+
+</body>
+</html>

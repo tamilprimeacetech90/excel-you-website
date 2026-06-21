@@ -1,0 +1,1606 @@
+/* =========================
+   EXCEL YOU SIGNUP V2
+   PART 1 / 2
+========================= */
+
+/* =========================
+   IMPORTED FONTS
+========================= */
+
+:root{
+
+    /* DARK THEME */
+
+    --text:#f8fafc;
+
+    --muted:#cbd5e1;
+
+    --card:rgba(15,23,42,.35);
+
+    --glass:rgba(255,255,255,.06);
+
+    --border:rgba(255,255,255,.10);
+
+    --signup-card:
+        linear-gradient(
+            135deg,
+            rgba(5,18,45,.95),
+            rgba(8,32,78,.92)
+        );
+
+    --signup-border:
+         rgba(56,189,248,.25);
+
+    --primary:#38bdf8;
+
+    --secondary:#8b5cf6;
+
+    --shadow:
+        0 20px 45px
+        rgba(0,0,0,.28);
+
+}
+
+/* =========================
+   RESET
+========================= */
+
+*{
+
+    margin:0;
+
+    padding:0;
+
+    box-sizing:border-box;
+
+}
+
+html,
+body{
+
+    width:100%;
+
+    min-height:100vh;
+
+    overflow-x:hidden;
+
+}
+
+body{
+
+    font-family:
+        "Poppins",
+        sans-serif;
+
+    color:var(--text);
+
+    transition:
+        background .4s ease,
+        color .4s ease;
+
+}
+
+/* =========================
+   BACKGROUND IMAGES
+========================= */
+
+body[data-theme="dark"]{
+
+    background:
+
+        url("/assets/backgrounds/signup-dark.png")
+
+        center center /
+
+        cover
+
+        no-repeat
+
+        fixed;
+
+}
+
+
+/* =========================
+   OVERLAY
+========================= */
+
+.background-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:-1;
+
+    pointer-events:none;
+
+}
+body[data-theme="dark"]{
+
+    background:
+        url("/assets/backgrounds/signup-dark.png")
+        center center / cover
+        no-repeat fixed;
+
+}
+
+
+/* =========================
+   TOPBAR
+========================= */
+
+.topbar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:10px 5%;
+
+    backdrop-filter:blur(6px);
+
+    border-bottom:
+
+        1px solid
+
+        rgba(255,255,255,.08);
+
+}
+
+.logo-img{
+
+    width:170px;
+
+    height:auto;
+
+}
+
+/* =========================
+   NAVIGATION
+========================= */
+
+.nav-links{
+
+    display:flex;
+
+    gap:32px;
+
+}
+
+.nav-links a{
+
+    text-decoration:none;
+
+    color:var(--text);
+
+    font-weight:500;
+
+    transition:.3s;
+
+}
+
+.nav-links a:hover{
+
+    color:var(--primary);
+
+}
+
+/* =========================
+   RIGHT NAV
+========================= */
+
+.topbar-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+}
+
+.login-btn{
+
+    text-decoration:none;
+
+    color:white;
+
+    padding:10px 20px;
+
+    border-radius:14px;
+
+    font-weight:600;
+
+    background:
+
+        linear-gradient(
+
+            135deg,
+
+            var(--primary),
+
+            var(--secondary)
+
+        );
+
+}
+
+.theme-btn{
+
+    width:40px;
+
+    height:40px;
+
+    border:none;
+
+    border-radius:50%;
+
+    cursor:pointer;
+
+    font-size:18px;
+
+    background:var(--glass);
+
+    color:var(--text);
+
+    backdrop-filter:blur(12px);
+
+    border:
+
+        1px solid
+
+        var(--border);
+
+}
+
+/* =========================
+   MAIN LAYOUT
+========================= */
+.signup-wrapper{
+
+    display:grid;
+
+    grid-template-columns:
+
+        430px
+
+        1fr
+
+        430px;
+
+    align-items:flex-start;
+
+    gap:40px;
+
+    padding:
+
+        35px
+
+        5%
+
+        20px;
+
+    min-height:calc(100vh - 90px);
+
+}
+
+/* =========================
+   LEFT PANEL
+========================= */
+
+.left-panel{
+
+    display:flex;
+
+    flex-direction:column;
+    margin-top: -20px;
+
+    gap:18px;
+
+}
+
+.badge{
+
+    width:max-content;
+
+    padding:
+
+        10px 18px;
+
+    border-radius:999px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    background:
+
+        rgba(56,189,248,.14);
+
+    border:
+
+        1px solid
+
+        rgba(56,189,248,.25);
+
+}
+
+.left-panel h1{
+
+    font-family:
+
+        "Orbitron",
+
+        sans-serif;
+
+    font-size:2rem;
+
+    line-height:1.11;
+
+}
+
+.left-panel h1 span{
+
+    color:var(--primary);
+
+}
+
+.hero-description{
+
+    font-size:15px;
+
+    color:var(--muted);
+
+    line-height:1.7;
+
+}
+
+/* =========================
+   FEATURE LIST
+========================= */
+.feature-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    column-gap:5px;
+    row-gap:5px;
+
+    margin-top:5px;
+
+}
+
+.feature-card{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    text-align:center;
+
+    padding:14px;
+     border-radius:20px;
+
+    background:none;
+ position:relative;
+    overflow:visible; 
+
+    transition:.3s;
+
+}
+
+.feature-card:hover{
+
+    transform:translateY(-3px);
+
+}
+
+.feature-icon:hover{
+
+    transform:
+
+        translateY(-6px)
+
+        scale(1.08);
+
+
+}
+.feature-card span{
+
+    margin-top:14px;
+
+    font-size:16px;
+
+    font-weight:600;
+
+}
+.feature-icon{
+
+    width:150px;
+
+    height:140px;
+
+    padding:2px;
+
+    border-radius:8%;
+
+    background:
+
+        radial-gradient(
+
+             circle,
+            rgba(255,255,255,.05),
+            transparent 70%
+
+        );
+
+    backdrop-filter:blur(3px);
+  border:1px solid rgba(56,189,248,.35);
+
+    box-shadow:
+
+        0 0 20px rgba(56,189,248,.18),
+
+        inset 0 0 12px rgba(255,255,255,.08);
+
+    transition:.35s;
+
+}
+
+.immortal-title{
+
+    font-family: "Orbitron", sans-serif;
+
+    font-size: 1.8rem;
+
+    font-weight: 700;
+
+    letter-spacing: 3px;
+
+    text-transform: uppercase;
+
+    line-height: 1.2;
+
+}
+
+/* ==================================
+   IMMORTAL TECH SCHOLAR HERO CARD
+================================== */
+
+
+.immortal-card{
+
+    position:relative;
+
+    display:flex;
+   
+    gap:12px;
+    flex-direction:column; 
+    padding:20px;
+
+    border-radius:12px;
+
+    overflow: visible;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(5,18,45,.95),
+            rgba(8,32,78,.92)
+        );
+
+     border:1px solid rgba(59,130,246,.45);
+
+    box-shadow:
+        0 0 8px rgba(59,130,246,.12),
+        0 0 18px rgba(59,130,246,.08),
+        inset 0 0 12px rgba(255,255,255,.30);
+
+    backdrop-filter:blur(10px);
+
+    transition:.35s;
+}
+
+.immortal-card:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:
+        0 0 40px rgba(56,189,248,.25),
+        inset 0 0 20px rgba(56,189,248,.12);
+}
+
+/* OUTER GLOW */
+
+.immortal-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    border-radius:inherit;
+
+    padding:1px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(56,189,248,.7),
+            transparent,
+            rgba(56,189,248,.4)
+        );
+
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+
+    mask-composite:exclude;
+    -webkit-mask-composite:xor;
+}
+
+/* HUD CORNERS */
+
+.immortal-card::after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:12px;
+
+    border-radius:20px;
+
+    border:
+        1px solid rgba(56,189,248,.12);
+
+    pointer-events:none;
+}
+
+/* IMAGE */
+
+.immortal-image-wrap{
+
+    flex-shrink:0;
+        
+}
+
+.immortal-image-wrap img{
+
+    width:150px;
+    height:170px;
+
+    filter:
+        drop-shadow(
+            0 0 20px rgba(56,189,248,.45)
+        );
+}
+
+/* CONTENT */
+
+.immortal-content{
+
+    display:flex;
+padding-top:15px;
+ flex-direction:column;
+    
+    justify-content:center;
+
+    color:white;
+    min-width:auto;
+}
+
+/* CROWN */
+
+.hero-crown{
+
+    font-size:24px;
+
+     margin-bottom:6px;
+     line-height:1;
+}
+
+/* TITLE */
+
+.immortal-content h2{
+
+    margin:0;
+
+    font-family:"Orbitron",sans-serif;
+
+    font-size:2rem;
+
+    font-weight:800;
+
+    line-height:1;
+
+    letter-spacing:.5px;
+}
+
+.hero-subtitle
+{
+    font-size:1rem;
+    font-weight:500;
+    color:#dbeafe;
+    margin-bottom:3px;
+
+}
+
+
+
+.immortal-content h2 span{
+      font-size:2.2rem;
+
+    color:#38bdf8;
+
+    text-shadow:
+        0 0 12px rgba(56,189,248,.45);
+}
+
+/* SLOGAN */
+
+.hero-top{
+    display:flex;
+ align-items:flex-start;
+     gap:4px;
+width:100%;
+
+}
+
+
+.hero-line{ 
+
+  display:block;
+   margin-top:0;
+   transform:translateY(-6px);
+   
+
+    width:100%;
+
+    text-align:center;
+
+    margin-top:0px;
+     clear:both;
+
+    font-size:.95rem;
+
+    font-weight:500;
+
+    white-space:nowrap;
+
+    color:#dbeafe;
+}
+
+
+
+
+
+
+
+/* =========================
+   CENTER PANEL
+========================= */
+
+.center-panel{
+
+    display:flex;
+   margin-top:-20px;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+/* =========================
+   AVATAR
+========================= */
+
+.avatar-container{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+gap:67px;
+   
+}
+
+.main-avatar{
+
+    width:430px;
+
+    max-height:560px;
+    margin-bottom:-25px;
+
+    object-fit:contain;
+
+    animation:
+
+        floatAvatar
+
+        4s ease-in-out
+
+        infinite;
+  transition:
+        opacity .8s ease,
+        transform .8s ease;
+
+    filter:
+
+        drop-shadow(
+
+            0 0 30px
+
+            rgba(56,189,248,.35)
+
+        );
+
+}
+/* =========================
+   FLOATING EFFECT
+========================= */
+
+@keyframes floatAvatar{
+
+    0%{
+
+        transform:
+
+            translateY(0);
+
+    }
+
+    50%{
+
+        transform:
+
+            translateY(-10px);
+
+    }
+
+    100%{
+
+        transform:
+
+            translateY(0);
+
+    }
+
+}
+
+/* =========================
+   HOLOGRAM RING
+========================= */
+
+.hologram-ring{
+
+    width:280px;
+
+    height:50px;
+
+    border-radius:50%;
+
+    margin-top:-5px;
+
+    background:
+
+        radial-gradient(
+
+            ellipse,
+
+             rgba(56,189,248,.9),
+            rgba(56,189,248,.35),
+            transparent 75%
+
+        );
+
+    filter:blur(13px);
+
+}
+
+/* =========================
+   GENDER SWITCH
+========================= */
+
+.avatar-switch{
+
+    display:flex;
+
+    gap:14px;
+
+    margin-top:20px;
+
+}
+
+.switch-btn{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:
+
+        12px 18px;
+
+    border-radius:14px;
+
+    background:var(--glass);
+
+    border:
+
+        1px solid
+
+        var(--border);
+
+    backdrop-filter:blur(12px);
+
+    cursor:pointer;
+
+    font-size:14px;
+
+    font-weight:500;
+
+}
+
+.switch-btn input{
+
+    accent-color:
+
+        var(--primary);
+
+}
+.avatar-note{
+    margin-top:12px;
+
+    color:#cbd5e1;
+
+    font-size:14px;
+
+    text-align:center;
+
+    letter-spacing:.3px;
+}
+/* =========================
+   EXCEL YOU SIGNUP V2
+   PART 2 / 2
+========================= */
+
+/* =========================
+   RIGHT PANEL
+========================= */
+
+.signup-right{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+   
+    margin-top:-20px;
+    position:relative; /* Add this */
+
+
+}
+
+/* =========================
+   SIGNUP CARD
+========================= */
+
+.signup-card
+{
+    position:relative;
+
+    overflow:hidden;
+
+    width:100%;
+
+    max-width:460px;
+
+    padding:20px 22px;
+
+    border-radius:20px;
+
+    background:var(--signup-card);
+
+    backdrop-filter:blur(28px);
+
+    -webkit-backdrop-filter:blur(28px);
+
+    border:
+        1px solid
+        var(--signup-border);
+
+
+    box-shadow:
+        0 0 35px rgba(56,189,248,.25),
+        0 0 60px rgba(56,189,248,.12),
+        inset 0 0 15px rgba(56,189,248,.08);
+
+
+}
+
+.signup-card::before{
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    border-radius: inherit;
+
+    background:
+
+        linear-gradient(
+
+            135deg,
+
+            rgba(255,255,255,.10),
+
+            rgba(255,255,255,.03) 30%,
+
+            transparent 55%
+
+        );
+
+    pointer-events: none;
+
+}
+.signup-card::after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:12px;
+
+    border-radius:20px;
+
+    border:
+        1px solid rgba(56,189,248,.12);
+
+    pointer-events:none;
+
+}
+.signup-card h2{
+
+    font-family:
+
+        "Orbitron",
+
+        sans-serif;
+
+    font-size:28px;
+
+    text-align:center;
+
+    margin-bottom:10px;
+
+    color:var(--text);
+
+}
+
+.sub-text{
+
+    text-align:center;
+
+    color:var(--muted);
+
+    margin-bottom:28px;
+
+    font-size:14px;
+
+    line-height:1.6;
+
+}
+
+/* =========================
+   INPUT GROUPS
+========================= */
+
+.input-group{
+
+    margin-bottom:18px;
+
+}
+
+.input-group label{
+
+    display:block;
+
+    margin-bottom:8px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+}
+
+.input-group input{
+
+    width:100%;
+
+    padding:14px 16px;
+
+    border-radius:14px;
+
+    border:
+
+        1px solid
+
+        var(--border);
+
+    background:var(--glass);
+
+    backdrop-filter:blur(12px);
+
+    color:var(--text);
+
+    font-size:14px;
+
+    outline:none;
+
+    transition:.3s;
+
+}
+
+.input-group input::placeholder{
+
+    color:var(--muted);
+
+}
+
+.input-group input:focus{
+
+    border-color:
+        var(--primary);
+
+    box-shadow:
+
+        0 0 15px rgba(56,189,248,.25);
+
+}
+
+/* =========================
+   RANK BOX
+========================= */
+
+.rank-box{
+
+    padding:14px 18px;
+
+    border-radius:16px;
+
+    margin-bottom:24px;
+
+    font-size:14px;
+
+    background:
+
+        rgba(56,189,248,.12);
+
+    border:
+
+        1px solid
+
+        rgba(56,189,248,.25);
+
+}
+
+.rank-box span{
+
+    color:var(--primary);
+
+    font-weight:600;
+
+}
+
+/* =========================
+   SIGNUP BUTTON
+========================= */
+.signup-btn{
+
+    width:100%;
+
+    padding:18px;
+
+    border:none;
+
+    border-radius:20px;
+
+    cursor:pointer;
+
+    color:white;
+
+    font-weight:700;
+
+    font-size:18px;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            #38bdf8,
+            #8b5cf6
+        );
+
+    box-shadow:
+
+        0 0 20px rgba(56,189,248,.30),
+
+        0 0 35px rgba(139,92,246,.20);
+
+    transition:.35s;
+
+}
+
+.signup-btn:hover{
+
+    transform:
+        translateY(-4px);
+
+    box-shadow:
+
+        0 0 28px rgba(56,189,248,.45),
+
+        0 0 45px rgba(139,92,246,.30);
+
+}
+/* =========================
+   DIVIDER
+========================= */
+
+.social-divider{
+
+    display:flex;
+
+    justify-content:center;
+
+    margin:24px 0 18px;
+
+}
+
+.social-divider span{
+
+    color:var(--muted);
+
+    font-size:13px;
+
+}
+
+/* =========================
+   SOCIAL LOGIN
+========================= */
+
+.social-login{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:12px;
+
+    margin-top:18px;
+
+}
+
+.social-btn{
+
+    width:44px;
+
+    height:44px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    border-radius:14px;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    background:rgba(255,255,255,.04);
+
+    backdrop-filter:blur(10px);
+
+    cursor:pointer;
+
+    transition:.25s ease;
+
+}
+
+.social-btn:hover{
+
+    transform:translateY(-3px);
+
+    background:rgba(56,189,248,.08);
+
+    border-color:rgba(56,189,248,.25);
+
+    box-shadow:
+        0 0 12px rgba(56,189,248,.2);
+
+}
+
+.social-btn img{
+
+    width:20px;
+
+    height:20px;
+
+    object-fit:contain;
+
+}
+/* INPUT ALIGNMENT */
+
+.input-group{
+
+    display:grid;
+
+    grid-template-columns:120px 1fr;
+
+    align-items:center;
+
+    gap:14px;
+
+    margin-bottom:12px;
+
+}
+
+.input-group label{
+
+    margin:0;
+
+    font-size:14px;
+
+    font-weight:500;
+
+}
+
+.input-group input{
+
+    padding:12px 14px;
+
+}
+
+/* SOCIAL DIVIDER */
+
+.social-divider{
+
+    text-align:center;
+
+    margin:18px 0 14px;
+
+    color:var(--muted);
+
+    font-size:13px;
+
+}
+
+/* GITHUB ICON */
+
+/* Dark Theme */
+body[data-theme="dark"] .github-icon{
+
+    filter:brightness(0) invert(1);
+
+}
+
+
+/* =========================
+   LOGIN TEXT
+========================= */
+
+.bottom-text{
+
+    text-align:center;
+
+    margin-top:24px;
+
+    font-size:14px;
+
+    color:var(--muted);
+
+}
+
+.bottom-text a{
+
+    color:var(--primary);
+
+    text-decoration:none;
+
+    font-weight:600;
+
+}
+
+/* =========================
+   JOURNEY SECTION
+========================= */
+
+.journey-section{
+
+    padding:25px 5%;
+
+    text-align:center;
+
+}
+
+.journey-section h2{
+
+    font-family:
+
+        "Orbitron",
+
+        sans-serif;
+
+    font-size:22px;
+
+    margin-bottom:15px;
+
+}
+
+.journey-line{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    flex-wrap:wrap;
+
+    gap:12px;
+
+}
+
+.journey-step{
+
+    padding:12px 16px;
+
+    border-radius:14px;
+
+    background:var(--glass);
+
+    backdrop-filter:blur(12px);
+
+    border:
+
+        1px solid
+
+        var(--border);
+
+    font-size:14px;
+
+}
+
+.journey-arrow{
+
+    color:var(--primary);
+
+    font-weight:700;
+
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+
+    padding:20px;
+
+    text-align:center;
+
+    color:var(--muted);
+
+    font-size:0.9rem;
+
+}
+
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media(max-width:1400px){
+
+    .signup-wrapper{
+
+        grid-template-columns:
+
+            360px
+            1fr
+            400px;
+
+        gap:30px;
+
+    }
+
+}
+
+@media(max-width:1200px){
+
+    .signup-wrapper{
+
+        grid-template-columns:
+
+            1fr
+            380px;
+
+        gap:30px;
+
+    }
+
+    .left-panel{
+
+        display:none;
+
+    }
+
+}
+@media(max-width:992px){
+
+    .signup-wrapper{
+
+        display:flex;
+
+        flex-direction:column;
+
+        align-items:center;
+
+        text-align:center;
+
+    }
+
+    .center-panel{
+
+        margin-top:0;
+
+    }
+.main-avatar{
+
+    width:300px;
+
+}
+
+    .signup-right{
+
+        margin-top:0;
+
+    }
+
+    .signup-card{
+
+        width:100%;
+
+        max-width:500px;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .topbar{
+
+        flex-wrap:wrap;
+
+        gap:18px;
+
+    }
+
+    .nav-links{
+
+        display:none;
+
+    }
+
+    .left-panel h1{
+
+        font-size:30px;
+
+    }
+
+    .main-avatar{
+
+        width:220px;
+
+    }
+
+    .signup-card{
+
+        padding:24px;
+
+    }
+
+    .journey-line{
+
+        flex-direction:column;
+
+    }
+
+    .journey-arrow{
+
+        transform:
+
+            rotate(90deg);
+
+    }
+.input-group{
+
+    grid-template-columns:1fr;
+
+    gap:6px;
+
+    text-align:left;
+
+}
+
+.input-group label{
+
+    margin-bottom:4px;
+
+}
+
+}
+
+@media(max-width:480px){
+
+    .signup-wrapper{
+
+        padding:
+
+            25px
+
+            20px;
+
+    }
+
+    .signup-card{
+
+        padding:20px;
+
+    }
+
+    .left-panel h1{
+
+        font-size:26px;
+
+    }
+
+    .avatar-switch{
+
+        flex-direction:column;
+
+        width:100%;
+
+    }
+
+    .switch-btn{
+
+        justify-content:center;
+
+    }
+
+}

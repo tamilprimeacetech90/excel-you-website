@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>EXCEL YOU — Student Login</title>
+
+    <link rel="icon"
+          type="image/png"
+          href="/assets/logo/favicon.png">
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="/student/css/student-login.css">
+
+</head>
+
+<body data-theme="dark">
+
+    <!-- GLOW -->
+
+    <div class="bg-glow glow1"></div>
+    <div class="bg-glow glow2"></div>
+
+    <!-- TOPBAR -->
+
+    <header class="topbar">
+
+        <a href="/"
+           class="logo-link">
+
+           <img id="siteLogo"
+     src="/assets/logo/full-logo-white.png"
+     alt="EXCEL YOU"
+     class="logo-img">
+        </a>
+
+        <div class="topbar-right">
+
+            <a href="/newstudentsignupform.html"
+               class="signup-btn">
+
+                Create Account
+
+            </a>
+
+            <button id="themeBtn"
+                    class="theme-btn">
+
+                🌙
+
+            </button>
+
+        </div>
+
+    </header>
+
+    <!-- MAIN -->
+
+    <main class="login-wrapper">
+
+        <!-- LEFT -->
+
+        <section class="login-left">
+
+            <div class="badge">
+
+                ⚡ Immortal Knowledge Path
+
+            </div>
+
+            <h1>
+
+                Begin Your
+                <span>EXCEL YOU</span>
+                Journey
+
+            </h1>
+
+            <p>
+
+                Login to unlock rewards,
+                track study progress,
+                earn XP,
+                participate in quizzes,
+                and rise through immortal ranks.
+
+            </p>
+
+            <div class="feature-list">
+
+                <div class="feature-card">
+                    📈 Study Progress Tracking
+                </div>
+
+                <div class="feature-card">
+                    🏆 Rewards & Achievements
+                </div>
+
+                <div class="feature-card">
+                    ⚡ Immortal Rank System
+                </div>
+
+                <div class="feature-card">
+                    🧠 Smart Quiz Challenges
+                </div>
+
+                <div class="feature-card">
+                    🔥 Daily Study Streaks
+                </div>
+
+                <div class="feature-card">
+                    ⚔️ Quiz Arena Battles
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- RIGHT -->
+
+        <section class="login-right">
+
+            <div class="login-container">
+
+                <div class="login-card">
+
+                    <div class="logo-wrap">
+
+                       <img
+                       id="loginBoxLogo"
+                        src="/assets/logo/full-logo-white.png"
+                       alt="EXCEL YOU"
+                       >
+
+                    </div>
+
+                    <h2 class="login-title">
+
+                        Student Login
+
+                    </h2>
+
+                    <p class="login-subtitle">
+
+                        Continue your learning journey
+
+                    </p>
+
+                    <div id="errorBox"
+                         class="error-box">
+
+                    </div>
+
+                    <form id="studentLoginForm"
+                          class="login-form">
+
+                        <div class="input-group">
+
+                            <label>Email Address</label>
+
+                            <input type="email"
+                                   id="email"
+                                   placeholder="Enter your email"
+                                   required>
+
+                        </div>
+
+                        <div class="input-group">
+
+                            <label>Password</label>
+
+                            <input type="password"
+                                   id="password"
+                                   placeholder="Enter your password"
+                                   required>
+
+                        </div>
+
+                        <div class="remember-row">
+
+                            <label>
+
+                                <input type="checkbox">
+
+                                Remember Me
+
+                            </label>
+
+                            <a href="#">
+
+                                Forgot Password?
+
+                            </a>
+
+                        </div>
+
+                        <button type="submit"
+                                class="login-btn">
+
+                            🚀 Login
+
+                        </button>
+
+                    </form>
+
+                    <div class="bottom-text">
+
+                        Don't have an account?
+
+                        <a href="/newstudentsignupform.html">
+
+                            Create Account
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        © 2026 EXCEL YOU —
+        Modern Tamil + English Learning Platform
+
+    </footer>
+
+    <script src="/student/js/student-login.js"></script>
+
+
+</body>
+
+</html>
